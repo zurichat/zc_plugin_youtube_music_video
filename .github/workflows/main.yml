@@ -3,7 +3,7 @@ name: Youtube Music Deployment
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [dev-main]
+    branches: [master]
   pull_request:
     branches: [master]
 
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -23,5 +23,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd ~/music.zuri.chat
+            cd /var/www/music.zuri.chat
             git pull
+            cd /var/www/music.zuri.chat/frontend
+            yarn install
+            yarn build
+            pm2 start music_zuri_chat
