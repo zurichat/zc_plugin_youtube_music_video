@@ -24,4 +24,5 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           sshkey: ${{ secrets.SSHKEY }}
           script: cd ${{ secrets.PROJECT_PATH }} && git pull
+      - run: npm install
       - run: npm run build
