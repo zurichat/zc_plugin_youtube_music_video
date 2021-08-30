@@ -3,7 +3,7 @@ name: Youtube Music Deployment
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [dev-main]
+    branches: [master]
   pull_request:
     branches: [master]
 
