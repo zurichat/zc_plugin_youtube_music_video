@@ -26,4 +26,6 @@ jobs:
             cd /var/www/music.zuri.chat
             git pull
             cd /var/www/music.zuri.chat/frontend
-            npm run build
+            yarn install
+            yarn build
+            pm2 start music_zuri_chat
