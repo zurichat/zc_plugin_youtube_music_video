@@ -3,9 +3,15 @@ name: Youtube Music Deployment
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
+<<<<<<< HEAD
+    branches: [main]
+  pull_request:
+    branches: [main]
+=======
     branches: [dev-main]
   pull_request:
     branches: [master]
+>>>>>>> 960f8deaf325cb1380d5b761b1422bdc2e7905f2
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
