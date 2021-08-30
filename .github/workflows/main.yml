@@ -22,4 +22,5 @@ jobs:
           host: ${{ secrets.ZURI_HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
+          sshkey: ${{ secrets.SSHKEY }}
           script: cd ${{ secrets.PROJECT_PATH }} && git pull
