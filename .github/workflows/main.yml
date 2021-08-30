@@ -23,4 +23,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           sshkey: ${{ secrets.SSHKEY }}
-          script: cd ${{ secrets.PROJECT_PATH }} && git pull
+          script: cd ${{ secrets.PROJECT_PATH }} && git pull && npm run build
