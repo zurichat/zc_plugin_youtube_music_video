@@ -262,3 +262,6 @@ cython_debug/
 pyvenv.cfg
 pip-selfcheck.json
 
+# Frontend folder
+/frontend/node_modules
+/frontend/build
