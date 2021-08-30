@@ -25,4 +25,5 @@ jobs:
           script: |
             cd /var/www/music.zuri.chat
             git pull
+            cd /var/www/music.zuri.chat/frontend
             npm run build
