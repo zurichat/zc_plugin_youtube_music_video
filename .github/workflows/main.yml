@@ -22,6 +22,4 @@ jobs:
           host: ${{ secrets.ZURI_HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: |
-            cd ~/music.zuri.chat
-            git pull
+          script: cd ${{ secrets.PROJECT_PATH }} && git pull
