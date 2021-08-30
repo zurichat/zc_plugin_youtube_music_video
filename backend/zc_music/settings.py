@@ -127,6 +127,6 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Redirect automatically to https if the environment has a variable called true
-if os.getenv("ENV") != "DEV":
+if os.getenv("ENV") == "PROD":
     SECURE_SSL_REDIRECT = True
     
