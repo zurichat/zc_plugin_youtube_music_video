@@ -1,16 +1,14 @@
-import React from "react";
-import styled from "styled-components";
+// button style
+/**
+ * button {
+      padding: 5px 10px;
+      border: none;
+      background-color: rgb(62, 153, 62);
+      color: white;
+      font-size: 16px;
+      margin: 5px;
+    }
+ */
 
-function Button() {
-  return <Wrapper>Add here</Wrapper>;
-}
-
-const Wrapper = styled.button`
-  padding: 5px 10px;
-  color: white;
-  background: green;
-  border: none;
-  outline: none;
-`;
-
-export default Button;
+// button html
+<button>Add me button</button>;
