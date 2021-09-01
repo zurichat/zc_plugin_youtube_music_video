@@ -30,5 +30,4 @@ jobs:
             python manage.py makemigrations
             python manage.py migrate
             cd /var/www/music.zuri.chat/frontend
-            yarn
             yarn dev
