@@ -29,5 +29,6 @@ jobs:
             pip install -r requirements/local.txt
             python manage.py makemigrations
             python manage.py migrate
+            cd /var/www/music.zuri.chat/frontend
             yarn
             yarn dev
