@@ -7,6 +7,10 @@ class App extends Component {
       <div>
         <h1>Frontend Setup Test</h1>
         <h3>Team Pythagoras</h3>
+        <h3>Team Pythagoras</h3>
+        <h3>Team Pythagoras</h3>
+        <h3>Team Pythagoras</h3>
+        <h3>Team Pythagoras</h3>
       </div>
     );
   }
