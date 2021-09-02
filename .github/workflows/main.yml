@@ -25,9 +25,9 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd /var/www/music.zuri.chat
-            sudo chown pythagoras:pythagoras /var/www/music.zuri.chat -n
+            sudo chown pythagoras:pythagoras /var/www/music.zuri.chat
             source musicenv/bin/activate
-            git pull -n
+            git pull
             sudo chown -R /var/www/music.zuri.chat
             python3 manage.py collectstatic --noinput
             pkill gunicorn
