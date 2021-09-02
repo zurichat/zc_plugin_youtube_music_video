@@ -24,12 +24,9 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd /var/www/music.zuri.chat
-            
+            cd /var/www/music.zuri.chat           
             source musicenv/bin/activate
-            git pull
-            
-            
+            git pull           
             pkill gunicorn
             gunicorn --bind 0.0.0.0:5050 music.zuri.chat.wsgi --daemon
             sudo systemctl restart nginx
