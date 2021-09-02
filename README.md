@@ -8,10 +8,15 @@
 - Django ORM for interacting with the database✔
 - PostgreSQL✔
 
-
 ## How to Run locally 🚀
 
     - Install Dependencies after creating and activating virtual environement
+
+### To create python virtual environment
+
+        python -m venv <name_of_virtualenv>
+
+        <name_of_virtualenv>\scripts\activate
 
         $ pip install -r requirements/local.txt
 
