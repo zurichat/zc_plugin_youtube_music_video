@@ -32,6 +32,7 @@ jobs:
             
             pkill gunicorn
             gunicorn --bind 0.0.0.0:5050 music.zuri.chat.wsgi --daemon
+            sudo systemctl restart nginx
             
             
             
