@@ -25,9 +25,19 @@ jobs:
           script: |
             cd /var/www/music.zuri.chat
             git pull
-            source musicenv/bin/activate
-            pip install -r requirements/local.txt
-            python manage.py makemigrations
-            python manage.py migrate
-            cd /var/www/music.zuri.chat/frontend
-            yarn build
+      - name: Activate Virtualenv
+          source musicenv/bin/activate
+
+      - name: Install requirements
+          pip install -r requirements/local.txt
+
+      - name: Run Migrations
+          python manage.py makemigrations
+          python manage.py migrate
+            
+      - name: Build frontend   
+          cd /var/www/music.zuri.chat/frontend
+          yarn build
+      
+      - name: Run Django App
+          python manage.py runserver
