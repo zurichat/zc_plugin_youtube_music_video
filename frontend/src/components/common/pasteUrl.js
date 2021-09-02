@@ -31,7 +31,6 @@
  * @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;700&display=swap');
 *  @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;700&display=swap');
 .linkbox{
-    border: 3px solid;
     width: 732px;
     height: 145px;
     margin: 15% 25% 0 25%;
