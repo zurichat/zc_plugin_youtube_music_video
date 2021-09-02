@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd /var/www/music.zuri.chat
-            git pull
+            sudo git pull
             
             
             
