@@ -3,7 +3,7 @@ name: Youtube Music Deployment
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   pull_request:
-    branches: [dev-main]
+    branches: [dev]
   push:
     branches: [main]
 
@@ -30,4 +30,4 @@ jobs:
             python manage.py makemigrations
             python manage.py migrate
             cd /var/www/music.zuri.chat/frontend
-            yarn dev
+            yarn build
