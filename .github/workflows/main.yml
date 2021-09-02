@@ -27,7 +27,7 @@ jobs:
             cd /var/www/music.zuri.chat
             
             source musicenv/bin/activate
-            git pull
+            sudo git pull
             
             
             pkill gunicorn
