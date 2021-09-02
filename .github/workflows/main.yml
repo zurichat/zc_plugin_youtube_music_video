@@ -1,20 +1,21 @@
 name: Youtube Music Deployment
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  pull_request:
-    branches: [dev]
   push:
+    branches: [main]
+  pull_request:
     branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
+  
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      
+      - uses: actions/checkout@v2   
 
       - name: Git Pull on Server
         uses: appleboy/ssh-action@master
@@ -24,20 +25,17 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd /var/www/music.zuri.chat
-            git pull
-      - name: Activate Virtualenv
-          source musicenv/bin/activate
-
-      - name: Install requirements
-          pip install -r requirements/local.txt
-
-      - name: Run Migrations
-          python manage.py makemigrations
-          python manage.py migrate
             
-      - name: Build frontend   
-          cd /var/www/music.zuri.chat/frontend
-          yarn build
-      
-      - name: Run Django App
-          python manage.py runserver
+            source musicenv/bin/activate
+            git pull
+            sudo chown -R pythagoras:pythagoras /var/www/music.zuri.chat
+            python3 manage.py collectstatic --noinput
+            pkill gunicorn
+            gunicorn --bind 0.0.0.0:5050 music.zuri.chat.wsgi --daemon
+            sudo systemctl restart nginx
+            
+            
+            
+            
+            
+            
