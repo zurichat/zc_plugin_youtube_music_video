@@ -25,7 +25,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd /var/www/music.zuri.chat
-            sudo chown pythagoras:pythagoras /var/www/music.zuri.chat
+            
             source musicenv/bin/activate
             git pull
             sudo chown -R /var/www/music.zuri.chat
