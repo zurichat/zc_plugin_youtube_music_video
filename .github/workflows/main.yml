@@ -2,7 +2,7 @@ name: Youtube Music Deployment
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   pull_request:
     branches: [main]
 
@@ -28,7 +28,7 @@ jobs:
             
             source musicenv/bin/activate
             git pull
-            sudo chown -R pythagoras:pythagoras /var/www/music.zuri.chat
+            sudo chown -R pythagoras: /var/www/music.zuri.chat
             python3 manage.py collectstatic --noinput
             pkill gunicorn
             gunicorn --bind 0.0.0.0:5050 music.zuri.chat.wsgi --daemon
