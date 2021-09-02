@@ -36,12 +36,12 @@ class User(AbstractUser):
 
 class Comment(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     comment = models.TextField()
 
     class Meta:
-        ordering = ('created',)
+        ordering = ('created_at',)
 
     def __str__(self):
-        return self.username
+        return self.comment
