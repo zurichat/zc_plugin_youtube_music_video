@@ -24,8 +24,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            	source musicenv/bin/activate
-              cd /var/www/music.zuri.chat
+            	cd /var/www/music.zuri.chat
+              source musicenv/bin/activate
               git pull
               sudo chown -R /var/www/music.zuri.chat
               python3 manage.py collectstatic --noinput
