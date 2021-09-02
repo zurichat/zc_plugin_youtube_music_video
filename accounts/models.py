@@ -23,7 +23,7 @@ class User(AbstractUser):
             "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
         ),
         validators=[UnicodeUsernameValidator(), MinLengthValidator(3)],
-        error_messages={"unique": _("A user with that username already exists."),},
+        error_messages={"unique": _("A user with that username already exists."), },
     )
     avatar = models.ForeignKey(
         "Avatar", null=True, blank=True, on_delete=models.PROTECT
@@ -32,3 +32,16 @@ class User(AbstractUser):
 
     class Meta:
         ordering = ["-id"]
+
+
+class Comment(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    comment = models.TextField()
+
+    class Meta:
+        ordering = ('created',)
+
+    def __str__(self):
+        return self.username
