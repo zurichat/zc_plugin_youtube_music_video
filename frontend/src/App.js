@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
 
+// components
+import PlaylistHeader from './components/playlist-header';
+
 class App extends Component {
   render() {
     return (
@@ -12,6 +15,7 @@ class App extends Component {
 
         <em>Waiting for PRs...now from team members.</em>
       </Wrapper>
+      <PlaylistHeader/>
     );
   }
 }
