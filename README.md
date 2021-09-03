@@ -40,5 +40,3 @@
         $ python manage.py runserver
 
 - React app available at `http://localhost:8000/`
-- API root available at `http://localhost:8000/api/`
-- Admin available at `http://localhost:8000/admin/`
