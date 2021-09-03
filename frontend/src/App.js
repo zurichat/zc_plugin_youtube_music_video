@@ -13,7 +13,6 @@ class App extends Component {
 
       //   <em>Waiting for PRs...now from team members.</em>
       // </Wrapper>
-      <PlaylistHeader />
     );
   }
 }

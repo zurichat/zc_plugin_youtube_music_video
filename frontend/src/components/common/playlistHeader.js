@@ -10,7 +10,7 @@ class PlaylistHeader extends Component {
                     <h3> Music Room Playlist </h3>
                     <Para> 10 songs, 38 min 33 sec </Para>
                     <Add> Add song to the playlist </Add>
-                    <Pause> Pause </Pause>
+                    <Play> Play </Play>
                 </Wrapper>
             </Playlist>
         )
