@@ -178,3 +178,4 @@ CORS_ALLOWED_ORIGINS = [
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
+    
