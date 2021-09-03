@@ -1,3 +1,39 @@
+
+import React from 'react';
+import GroupIcon from '@material-ui/icons/Group';
+import person1 from '../media/person1.png'
+import person2 from '../media/person2.png'
+import person3 from '../media/person3.png'
+import styled from 'styled-components'
+
+const roomHeader = () => {
+    return (
+
+
+        <div className="header">
+            <div className="left">
+            <GroupIcon className="icon"/>
+           <a href="/"className="header-heading">Music Room</a>
+            </div>
+
+            <div className="right">
+                <img src={person1} alt="" className="person1" />
+                <img src={person2} alt="" className="person2" />
+                <img src={person3} alt="" className="person3" />
+                <span>12</span>
+            </div>
+        </div>
+    )
+}
+
+
+
+export default roomHeader
+
+
+
+
+
 /*html
 
 <!DOCTYPE html>
