@@ -18,7 +18,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "159.65.123.65"]
+ALLOWED_HOSTS = ["music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1"]
 
 # Application definition
 
@@ -125,9 +125,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+<<<<<<< HEAD
+#Static files (CSS, JavaScript, Images)
+#https://docs.djangoproject.com/en/3.2/howto/static-files/
+
+#STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = '/static/'
+#STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))]
+=======
 STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [str(BASE_DIR.joinpath("static"))]
+>>>>>>> d3341e71b832beadc8797090179240f02b663bea
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_ROOT = "./media"
 MEDIA_URL = "/media/"
