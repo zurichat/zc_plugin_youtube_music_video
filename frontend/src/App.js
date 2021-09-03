@@ -7,6 +7,7 @@ class App extends Component {
   render() {
     return (
       <Wrapper>
+        <h2>Hi here</h2>
         <MusicRoom />
       </Wrapper>
     );
