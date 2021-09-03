@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import styled from "styled-components";
 import PlaylistHeader from "./components/common/playlistHeader"
 
@@ -21,4 +20,6 @@ const Wrapper = styled.div`
   padding: 40px;
 `;
 
-ReactDOM.render(<App />, document.getElementById("app"));
+export default App;
+
+// ReactDOM.render(<App />, document.getElementById("app"));
