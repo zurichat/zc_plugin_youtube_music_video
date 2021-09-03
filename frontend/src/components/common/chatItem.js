@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from "react";
 import styled from "styled-components";
 // import image from "src/media/user.png";
@@ -86,7 +85,7 @@ export const NameTime = styled.div`
   height: 71px;
   margin: 0px 8px;
 `;
-=======
+
 // <!DOCTYPE html>
 // <html lang="en">
 // <head>
@@ -106,14 +105,14 @@ export const NameTime = styled.div`
 //             <div class="chatitem-img">
 //                 <img src="People.png" alt="People">
 //             </div>
-            
+
 //             <div class="right">
-    
+
 //                 <div class="name">
 //                     <h3>Amara</h3>
 //                     <p>23 minutes ago</p>
 //                 </div>
-    
+
 //                 <div class="text">
 //                     <p>If you ask me, I would say it is so overrated, but...</p>
 //                 </div>
@@ -121,14 +120,14 @@ export const NameTime = styled.div`
 //         </div>
 
 //     </div>
-    
+
 // </body>
 // </html>
 
 // html {
 //     font-size: 100%;
 //   }
-  
+
 //   @media (max-width: 1180px){
 //     html{
 //       font-size: 98%;
@@ -159,7 +158,7 @@ export const NameTime = styled.div`
 //       font-size: 50%;
 //     }
 //   }
-  
+
 //   @media (min-width: 1300px){
 //     html{
 //       font-size: 130%;
@@ -201,7 +200,6 @@ export const NameTime = styled.div`
 //     }
 //   }
 
-
 // @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap');
 // * {
 //     padding: 0;
@@ -209,14 +207,14 @@ export const NameTime = styled.div`
 //     box-sizing: border-box;
 // }
 // body {
-//     font-family: 'Lato', sans-serif; 
+//     font-family: 'Lato', sans-serif;
 //     font-size: 1.2rem;
 //     /* display: flex;
 //     align-items: center;
 //     background-color: violet;
 //     min-height: 100vh; */
 // }
-// .layout { 
+// .layout {
 //     display: flex;
 //     align-items: center;
 //     min-height: 100vh;
@@ -234,7 +232,7 @@ export const NameTime = styled.div`
 //     width: 5rem;
 //     height: 3.1rem;
 //     border-radius: 50%;
-//     margin: auto 3rem; 
+//     margin: auto 3rem;
 //     margin-right: 1.2rem;
 //     padding-left: 0rem;
 //     padding-right: 0rem;
@@ -244,7 +242,7 @@ export const NameTime = styled.div`
 //     width: 4rem;
 //     height: auto;
 //     margin:  0 auto;
-// } 
+// }
 
 // .right {
 //     padding-top: 0.7rem;
@@ -300,15 +298,14 @@ export const NameTime = styled.div`
 //     .text {
 //         font-size: 1rem;
 //     }
-// } 
+// }
 // @media (max-width: 375px) {
 //     .chat-item {
 //         justify-content: center;
-        
+
 //     }
 //     .text {
 //         font-size: 1.2rem;
 //         line-height: 1.5rem;
 //     }
-// }
->>>>>>> d2138cd2ac19ff41c033d75f16fe809eb08c1545
+//
