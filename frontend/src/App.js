@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-// import dm from "./media/People of Brooklyn Avatar2.png";
+import MusicRoom from "./components/musicRoom";
 
 class App extends Component {
   render() {
     return (
       <Wrapper>
-        <h1>I'm back up</h1>
+        <MusicRoom />
       </Wrapper>
     );
   }
