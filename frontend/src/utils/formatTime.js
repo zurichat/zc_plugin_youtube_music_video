@@ -1,6 +1,5 @@
 // convert secondes to HH:MM:SS
 
-
 function formatTime(val) {
   let numInSec = parseInt(val, 10);
   let toHours = Math.floor(numInSec / 3600);
