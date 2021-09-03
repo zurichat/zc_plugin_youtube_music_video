@@ -1,3 +1,37 @@
+import styled from "styled-components"
+
+function Button(props) {
+  let classes = "primary"
+  if(props.color == "secondary") classes = "secondary";
+  return <Buttons className={classes} onClick={props.onClick} >
+         <Div className={classes}>
+         {props.children}
+         </Div>
+         </Buttons>;
+}
+
+const Buttons = styled.button`
+&.primary{
+
+}
+
+&.secondary{
+
+}
+`
+
+const Div = styled.div`
+&.primary{
+
+}
+
+&.secondary{
+
+}
+`
+
+export default Button;
+
 /*
 BUTTON  HTML
 <Button class="primary"><div>Add a song to the playlist</div></Button>

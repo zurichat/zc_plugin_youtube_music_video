@@ -1,14 +1,23 @@
-//PlaylistHeader HTML
+import React from 'react';
+import Headset from '../media/Headset.png'
 
-{/* <div class="playlist-header">
-    <div class="playlist-header-img">
-        <img src="music-player.png" alt="music-player-image">
-    </div>
-    <div class="playlist-header-content">
-        <h2>Music Room Playlist</h2>
-        <p>10 songs, 38 min 33 sec</p>
-    </div>
-</div> */}
+const PlaylistHeader = () => {
+    return(
+        <div className="playlist-header">
+            <div className="playlist-header-img">
+                <img src={Headset} alt="Playlist Header Image" />
+            </div>
+            <div className="playlist-header-content">
+                <h2>Music Room Playlist</h2>
+                <p>10 songs, 38 min 33 sec</p>
+            </div>
+        </div>
+    )
+}
+
+export default PlaylistHeader;
+
+
 
 
 //PlaylistHeader CSS

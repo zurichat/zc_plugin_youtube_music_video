@@ -1,9 +1,15 @@
 import React from "react";
 
 import Playlist from "./playlist";
+import RoomHeader from "./roomHeader";
 
 function MusicRoom() {
-  return <Playlist />;
+  return (
+    <>
+      <RoomHeader />
+      <Playlist />
+    </>
+  );
 }
 
 export default MusicRoom;
