@@ -22,11 +22,3 @@ urlpatterns = [
     path("docs/", include_docs_urls(title="Rest API")),
     path("schema/", schema_view),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-if settings.DEBUG:
-    try:
-        import debug_toolbar
-
-        urlpatterns = [path("__debug__/", include(debug_toolbar.urls))] + urlpatterns
-    except ModuleNotFoundError:
-        pass
