@@ -1,14 +1,27 @@
-// <!DOCTYPE html>
-// <html lang="en">
-// <head>
-//     <meta charset="UTF-8">
-//     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>chat item</title>
-//     <link rel="stylesheet" href="style.css">
-//     <link rel="stylesheet" href="index.css">
-// </head>
-// <body>
+import styled from 'styled-components';
+
+const ChatItem = () => {
+  return (
+    <div>
+      <Layout>
+        <CItem>
+          <CItemImg>
+            <img src='src/media/People of Brooklyn Avatar2.png' alt='People' />
+          </CItemImg>
+          <Right>
+            <Name>
+              <h3>Amara</h3>
+              <p>23 minutes ago</p>
+            </Name>
+            <ChatText>
+              <p>If you ask me i would say it's overrated but...</p>
+            </ChatText>
+          </Right>
+        </CItem>
+      </Layout>
+    </div>
+  );
+};
 
 //     <div class="layout">
 
@@ -17,14 +30,14 @@
 //             <div class="chatitem-img">
 //                 <img src="People.png" alt="People">
 //             </div>
-            
+
 //             <div class="right">
-    
+
 //                 <div class="name">
 //                     <h3>Amara</h3>
 //                     <p>23 minutes ago</p>
 //                 </div>
-    
+
 //                 <div class="text">
 //                     <p>If you ask me, I would say it is so overrated, but...</p>
 //                 </div>
@@ -32,14 +45,14 @@
 //         </div>
 
 //     </div>
-    
+
 // </body>
 // </html>
 
 // html {
 //     font-size: 100%;
 //   }
-  
+
 //   @media (max-width: 1180px){
 //     html{
 //       font-size: 98%;
@@ -70,7 +83,7 @@
 //       font-size: 50%;
 //     }
 //   }
-  
+
 //   @media (min-width: 1300px){
 //     html{
 //       font-size: 130%;
@@ -112,7 +125,6 @@
 //     }
 //   }
 
-
 // @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;900&display=swap');
 // * {
 //     padding: 0;
@@ -120,14 +132,14 @@
 //     box-sizing: border-box;
 // }
 // body {
-//     font-family: 'Lato', sans-serif; 
+//     font-family: 'Lato', sans-serif;
 //     font-size: 1.2rem;
 //     /* display: flex;
 //     align-items: center;
 //     background-color: violet;
 //     min-height: 100vh; */
 // }
-// .layout { 
+// .layout {
 //     display: flex;
 //     align-items: center;
 //     min-height: 100vh;
@@ -145,7 +157,7 @@
 //     width: 5rem;
 //     height: 3.1rem;
 //     border-radius: 50%;
-//     margin: auto 3rem; 
+//     margin: auto 3rem;
 //     margin-right: 1.2rem;
 //     padding-left: 0rem;
 //     padding-right: 0rem;
@@ -155,7 +167,7 @@
 //     width: 4rem;
 //     height: auto;
 //     margin:  0 auto;
-// } 
+// }
 
 // .right {
 //     padding-top: 0.7rem;
@@ -211,11 +223,11 @@
 //     .text {
 //         font-size: 1rem;
 //     }
-// } 
+// }
 // @media (max-width: 375px) {
 //     .chat-item {
 //         justify-content: center;
-        
+
 //     }
 //     .text {
 //         font-size: 1.2rem;
