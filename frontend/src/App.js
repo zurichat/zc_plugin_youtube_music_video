@@ -1,19 +1,21 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
+import styled from "styled-components";
+
+import MusicRoom from "./components/musicRoom";
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <h1>Frontend Setup Test</h1>
-        <h3>Team Pythagoras</h3>
-        <h3>Team Pythagoras</h3>
-        <h3>Team Pythagoras</h3>
-        <h3>Team Pythagoras</h3>
-        <h3>Team Pythagoras</h3>
-      </div>
+      <Wrapper>
+        <h2>Hi here</h2>
+        <MusicRoom />
+      </Wrapper>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById("app"));
+const Wrapper = styled.div`
+  padding: 40px;
+`;
+
+export default App;
