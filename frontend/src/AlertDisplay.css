@@ -1,0 +1,45 @@
+body {
+  background-color: rgb(44, 42, 42);
+}
+
+.main-content {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.button {
+  margin: 5px;
+  width: 180px;
+  height: 80px;
+  color: white;
+  font-size: 24px;
+  border-radius: 15px;
+}
+
+.button--success {
+  background-color: #5cb85c;
+}
+
+.button--info {
+  background-color: #5bc0de;
+}
+
+.button--warning {
+  background-color: #f0ad4e;
+}
+
+.button--danger {
+  background-color: #d9534f;
+}
+
+.position-select {
+  width: 100%;
+  font-size: 24px;
+  background-color: black;
+  border: none;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+}

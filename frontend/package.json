@@ -61,7 +61,8 @@
     "redux": "^4.1.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
-    "sass": "^1.32.12"
+    "sass": "^1.32.12",
+    "uuid": "^8.3.2"
   },
   "proxy": "http://localhost:8000/"
 }
