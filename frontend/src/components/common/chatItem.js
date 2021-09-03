@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-
-=======
 // <!DOCTYPE html>
 // <html lang="en">
 // <head>
@@ -225,4 +222,3 @@
 //         line-height: 1.5rem;
 //     }
 // }
->>>>>>> b11de28b02e7b2bba0b6f9c3334af0f2e25b7bdb
