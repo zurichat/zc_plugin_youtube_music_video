@@ -25,6 +25,7 @@ jobs:
           script: |
             cd /var/www/music.zuri.chat
             source pythagorasenv/bin/activate
+            git stash
             git pull origin dev
             git branch -r
             pip install -r requirements/local.txt --upgrade
