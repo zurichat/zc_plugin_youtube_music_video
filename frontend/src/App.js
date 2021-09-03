@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
+import ChatItem from "./components/common/chatItem";
+
 
 class App extends Component {
   render() {
@@ -11,6 +13,7 @@ class App extends Component {
         <h3>Team Pythagoras</h3>
 
         <em>Waiting for PRs...now from team members.</em>
+      
       </Wrapper>
     );
   }
