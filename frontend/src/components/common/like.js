@@ -15,5 +15,5 @@
 
 
 
-//html for heart/like icon
+//html for heart/likes icon
 <i class="far fa-heart"></i>
