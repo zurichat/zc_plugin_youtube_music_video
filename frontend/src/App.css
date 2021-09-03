@@ -1,0 +1,10 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;700&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;700&display=swap'); */
+
+::placeholder {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  padding: 17px 0 17px 24px;
+  color: #001c13;
+}
