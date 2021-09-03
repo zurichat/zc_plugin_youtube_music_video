@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
@@ -61,6 +62,41 @@ const SecondaryBtn = styled.button`
 `;
 
 export default Btn;
+=======
+import styled from "styled-components"
+
+function Button(props) {
+  let classes = "primary"
+  if(props.color == "secondary") classes = "secondary";
+  return <Buttons className={classes} onClick={props.onClick} >
+         <Div className={classes}>
+         {props.children}
+         </Div>
+         </Buttons>;
+}
+
+const Buttons = styled.button`
+&.primary{
+
+}
+
+&.secondary{
+
+}
+`
+
+const Div = styled.div`
+&.primary{
+
+}
+
+&.secondary{
+
+}
+`
+
+export default Button;
+>>>>>>> 561bd2228154eaaee8cc988eddfc591ca688baad
 
 /*
 BUTTON  HTML
