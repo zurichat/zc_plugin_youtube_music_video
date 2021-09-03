@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import store from './app/store';
 
+import MusicRoom from "./components/musicRoom";
+
 class App extends Component {
   render() {
     return (
       <Wrapper>
-        <h1>Frontend Setup Test Complete</h1>
-
-        <h3>Team Pythagoras</h3>
-
-        <em>Waiting for PRs...now from team members.</em>
+        <h2>Hi here</h2>
+        <MusicRoom />
       </Wrapper>
     );
   }
@@ -21,5 +20,3 @@ const Wrapper = styled.div`
 `;
 
 export default App;
-
-// ReactDOM.render(<App />, document.getElementById("app"));

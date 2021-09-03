@@ -399,7 +399,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-staticfiles
 node_modules
 
 
