@@ -24,8 +24,10 @@ jobs:
          # key: ${{ secrets.SSHKEY }}
           script: |
             cd /var/www/music.zuri.chat
-            source musicenv/bin/activate
-            git pull
+            source pythagorasenv/bin/activate
+            git stash
+            git pull origin dev
+            git branch -r
             pip install -r requirements/local.txt --upgrade
             cd /var/www/music.zuri.chat/frontend
             yarn
