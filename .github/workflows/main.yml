@@ -3,8 +3,6 @@ name: Youtube Music Deployment
 on:
   push:
     branches: [dev]
-  pull_request:
-    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -23,19 +21,15 @@ jobs:
           host: ${{ secrets.ZURI_HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
+         # key: ${{ secrets.SSHKEY }}
           script: |
             cd /var/www/music.zuri.chat
-            
             source musicenv/bin/activate
             git pull
-            
-            
-            pkill gunicorn
-            gunicorn --bind 0.0.0.0:5050 music.zuri.chat.wsgi --daemon
-            
-            
-            
-            
-            
-            
-            
+            pip install -r requirements/local.txt --upgrade
+            cd /var/www/music.zuri.chat/frontend
+            yarn
+            yarn build
+            cd /var/www/music.zuri.chat
+            python3 manage.py collectstatic --noinput
+            fuser -k -HUP 8000/tcp
