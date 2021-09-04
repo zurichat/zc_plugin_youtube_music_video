@@ -1,0 +1,10 @@
+[run]
+omit=
+    */pythagorasenv/*
+    */tests/*
+    */staticfiles/*
+    */config/*
+    */migrations/*
+    */__init__.py
+    */manage.py
+

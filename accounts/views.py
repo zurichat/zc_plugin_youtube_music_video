@@ -1,5 +1,6 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views import View
+from django.shortcuts import render
 
 
 class PluginInfo(View):
@@ -15,3 +16,9 @@ class PluginInfo(View):
             "sidebar_url": "music.zuri.chat/sidebar",
         }
         return JsonResponse(data)
+
+
+
+def test_report(req):
+
+    return render(req,"report/index.html")
