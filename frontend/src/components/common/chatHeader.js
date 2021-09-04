@@ -1,56 +1,55 @@
-//chatHeader style
-/**
- *
-      @import url("https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap");
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        color: #00b87c;
-      }
-      .chatHeader {
-        display: flex;
-        flex-direction: row;
-        width: 347px;
-        height: 64px;
-        padding: 16px;
-        justify-content: space-between;
-        align-items: flex-start;
-        font-family: "Lato", sans-serif;
-        border: 1.22693px solid #00b87c;
-        position: static;
-      }
-      .chatHeader__left {
-        display: flex;
-        align-items: center;
-      }
-      .message {
-        width: 13.5px;
-        height: 12.55px;
-      }
+// @ts-nocheck
 
-      .chatHeader__left p {
-        font-weight: bold;
-        font-size: 15px;
-        margin-left: 12px;
-      }
-      .close {
-        cursor: pointer;
-        width: 24px;
-        height: 24px;
-        padding: 3px;
-        background: linear-gradient(0deg, #e5fff6, #e5fff6);
-      }
- */
+import React from "react";
+import styled from "styled-components";
 
-//chatHeader HTML
-/**
-  * <div class="chatHeader">
-      <div class="chatHeader__left">
-        <i class="far fa-comment-alt message"></i>
-        <p>Chat</p>
+import chatIcon from "../../media/chat.svg";
+import chatClose from "../../media/close.svg";
+
+function ChatHeader() {
+  return (
+    <Wrapper>
+      <div className="chatHeader__left">
+        <img src={chatIcon} alt="chat" className="chatHeader__icon" />
+        <div className="chatHeader__title">Chats</div>
       </div>
-      <div class="chatHeader__right"></div>
-      <i class="fas fa-times close"></i>
-    </div>
-  */
+
+      <img src={chatClose} alt="chat" className="chatHeader__close" />
+    </Wrapper>
+  );
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 347px;
+  height: 60px;
+  padding: 16px;
+  background: #fff;
+
+  .chatHeader__left {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90px;
+  }
+
+  .chatHeader__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .chatHeader__title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #00b87c;
+  }
+
+  .chatHeader__close {
+    width: 30px;
+    height: 30px;
+  }
+`;
+
+export default ChatHeader;

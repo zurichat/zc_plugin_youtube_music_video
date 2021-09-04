@@ -1,44 +1,19 @@
-from rest_framework.response import Response
-from rest_framework import serializers, status
-from rest_framework.decorators import api_view
-from .api import Comment
-from .serializers import CommentSerializer
+from django.http import JsonResponse
+from django.views import View
 
 
-@api_view(['GET', 'POST'])
-def commentlistview(request):
-    '''List all comments or create a new comment'''
-    if request.method == 'GET':
-        serializer = CommentSerializer(instance=comment.values(), many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        serializer = CommentSerializer(data=request.data)
-        if serializer.is_valid():
-            comment[max(Comment) + 1] = serializer.save()
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class PluginInfo(View):
+
+    def get(self, request):
+        data = {
+            "plugin_name": "Youtube Music Video Plugin",
+            "description": "This is a plugin that allows individuals in an organization to add music and video links from YouTube. These links are added to a shared playlist so that anyone in that organization can listen to or watch any of the shared videos or songs.",
+            "plugin_structure": "Monolith",
+            "team name": "Team Pythagoras",
+            "plugin_url": "music.zuri.chat",
+            "information_url": "music.zuri.chat/info",
+            "sidebar_url": "music.zuri.chat/sidebar",
+        }
+        return JsonResponse(data)
 
 
-@api_view(['GET', 'PUT', 'PATCH'])
-def commentdetailview(request, pk):
-    try:
-        comment = comments[int(pk)]
-    except KeyError:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-    if request.method == 'GET':
-        serializer = CommentSerializer(instance=comment)
-        return Response(serializer.data)
-
-    elif request.method == 'PUT':
-        serializer = CommentSerializer(instance=comment, data=request.data)
-        if serializer.is_valid():
-            comment[comment.id] = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'PATCH':
-        serializer = CommentSerializer(
-            instance=comment, data=request.data, partial=True)
-        if serializer.is_valid():
-            comments[comment.id] = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
