@@ -7,6 +7,7 @@ from rest_framework.schemas import get_schema_view
 from frontend.views import IndexView
 from accounts.api import SidebarView
 from accounts.views import PluginInfo
+from accounts.views import SongsView
 
 
 schema_view = get_schema_view(title="Rest API")
@@ -16,6 +17,7 @@ urlpatterns = [
     # rendered here in IndexView using Same Django app Server
     path("", IndexView.as_view(), name="home"),
     path("admin/", admin.site.urls),
+    path("songsview/", SongsView.as_view()),
     path("sidebar/", SidebarView.as_view(), name="sidebar"),
     path("api-auth/", include("rest_framework.urls")),
     path("auth/", include("dj_rest_auth.urls")),
