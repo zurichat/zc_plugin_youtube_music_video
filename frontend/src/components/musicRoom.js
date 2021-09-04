@@ -8,14 +8,22 @@ import Chat from "./chat";
 function MusicRoom() {
   return (
     <Wrapper>
-      <RoomHeader />
-      <Playlist />
+      <div className="room-main">
+        <RoomHeader />
+        <Playlist />
+      </div>
+      <Chat />
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  /* display: flex; */
+  display: flex;
+
+  .room-main {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
 `;
 
 export default MusicRoom;
