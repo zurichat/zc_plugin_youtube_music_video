@@ -13,8 +13,8 @@ function Chat() {
     <Wrapper>
       <ChatHeader />
       <div className="chat-item-group">
-        {getChats().map((chat) => (
-          <ChatItem {...chat} />
+        {getChats().map((chat, index) => (
+          <ChatItem key={index} {...chat} />
         ))}
       </div>
       <ChatInput />
