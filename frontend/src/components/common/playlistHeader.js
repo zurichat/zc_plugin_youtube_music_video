@@ -27,6 +27,7 @@ const PlaylistHeader = () => {
 
 const Wrapper = styled.div`
   display: flex;
+  margin-bottom: 20px;
 
   .playlist-img {
     display: block;
