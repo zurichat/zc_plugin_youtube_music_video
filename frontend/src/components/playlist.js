@@ -8,6 +8,10 @@ function Playlist() {
     <Wrapper>
       <PlaylistHeader />
       <PlaylistItem/>
+      <PlaylistItem/>
+      <PlaylistItem/>
+      <PlaylistItem/>
+      <PlaylistItem/>
     </Wrapper>
   );
 }
