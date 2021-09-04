@@ -1,3 +1,4 @@
+import { hot } from "react-hot-loader/root";
 import React, { Component } from "react";
 import styled from "styled-components";
 
@@ -7,7 +8,6 @@ class App extends Component {
   render() {
     return (
       <Wrapper>
-        <h2>Hi here</h2>
         <MusicRoom />
       </Wrapper>
     );
@@ -18,4 +18,4 @@ const Wrapper = styled.div`
   padding: 40px;
 `;
 
-export default App;
+export default hot(App);
