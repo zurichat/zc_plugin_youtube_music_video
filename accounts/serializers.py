@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .api import Comment
+from .models import Songs
 
 
 class CommentSerializer(serializers.Serializer):
@@ -16,3 +17,10 @@ class CommentSerializer(serializers.Serializer):
         for field, value in validated_data.items():
             setattr(instance, field, value)
         return instance
+
+
+#Song ModelSerializers
+class SongsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Songs
+        fields = '__all__'
