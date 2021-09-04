@@ -9,6 +9,7 @@ from accounts.api import SidebarView
 from accounts.views import PluginInfo
 
 
+
 schema_view = get_schema_view(title="Rest API")
 
 urlpatterns = [
@@ -23,4 +24,6 @@ urlpatterns = [
     path("docs/", include_docs_urls(title="Rest API")),
     path("schema/", schema_view),
     path("info/", PluginInfo.as_view(), name="info"),
+
+   
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

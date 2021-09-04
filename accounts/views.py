@@ -1,7 +1,6 @@
 from django.http import JsonResponse
 from django.views import View
 
-
 class PluginInfo(View):
 
     def get(self, request):
@@ -15,3 +14,4 @@ class PluginInfo(View):
             "sidebar_url": "music.zuri.chat/sidebar",
         }
         return JsonResponse(data)
+
