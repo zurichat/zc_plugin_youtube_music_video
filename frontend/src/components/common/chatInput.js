@@ -1,81 +1,60 @@
 // @ts-nocheck
 
 import React from "react";
-
 import styled from "styled-components";
 
-const InputBar = styled.input`
-  height: 48px;
-  width: 347px;
-  left: 778px;
-  top: 418px;
-  border-radius: 0px;
-  position: absolute;
-  padding: 0 12px;
-  font: lato;
-  font-weight: 500;
-  font-style: normal;
-  font-size: 15px;
-  line-height: 18px;
-  border: 2px solid #08ffae;
-
-  ::placeholder {
-    color: #c1c1c1;
-    position: static;
-  }
-`;
-
-const Icon = styled.img`
-  color: #08ffae;
-  width: 22px;
-  left: 66rem;
-  margin-top: 0.6rem;
-  top: 12px;
-  position: absolute;
-  top: 423px;
-`;
-
-const Icon1 = styled.img`
-  color: #08ffae;
-  width: 22px;
-  left: 68rem;
-  margin-top: 0.6rem;
-  top: 14px;
-  position: absolute;
-  top: 425px;
-`;
-const Icon2 = styled.img`
-  color: #08ffae;
-  width: 22px;
-  left: 70rem;
-  margin-top: 0.6rem;
-  top: 12px;
-  position: absolute;
-  top: 424px;
-`;
+import chatEmoji from "../../media/chatEmoji.svg";
+import chatSend from "../../media/chatSend.svg";
+import chatGif from "../../media/chatGif.svg";
 
 function ChatInput() {
   return (
-    <div className="input-group">
-      <div className="input-box">
-        <InputBar
-          type="text"
-          className="chat-input"
-          placeholder="Type a message..."
-        />
-        <a href="#">
-          <Icon src={chatEmoji} alt="" />
-        </a>
-        <a href="#">
-          <Icon1 src={chatGif} alt="" />
-        </a>
-        <a href="#">
-          <Icon2 src={chatSend} alt="" />
-        </a>
+    <Wrapper>
+      <input
+        type="text"
+        className="chat-input"
+        placeholder="Type a message..."
+      />
+      <div className="chat-icon-group">
+        <img src={chatEmoji} alt="emoji" className="chat-icon" />
+        <img src={chatGif} alt="gif" className="chat-icon" />
+        <img src={chatSend} alt="send" className="chat-icon" />
       </div>
-    </div>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  display: flex;
+  width: 100%;
+  border: 1px solid #08ffae;
+  background-color: #fff;
+  padding: 0 12px;
+
+  .chat-input {
+    flex-grow: 1;
+    height: 48px;
+    border-radius: 0px;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 18px;
+    border: none;
+    outline: none;
+  }
+
+  .chat-icon-group {
+    flex-basis: 90px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .chat-icon {
+    color: #08ffae;
+    width: 27px;
+    cursor: pointer;
+  }
+`;
+
 export default ChatInput;
 
 // HTML & CSS
@@ -89,6 +68,64 @@ export default ChatInput;
 
 //     <style>
 //     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
+
+// .chat-input{
+//     height: 48px;
+//     width: 347px;
+//     left: 778px;
+//     top: 418px;
+//     border-radius: 0px;
+//     position: absolute;
+//     padding: 0 12px;
+//     font: lato;
+//     font-weight: 500;
+//     font-style: normal;
+//     font-size: 15px;
+//     line-height: 18px;
+//     border:2px solid #08FFAE;
+// }
+
+// ::placeholder{
+//     color:#C1C1C1;
+//     position: static;
+// }
+
+// .chat-input:focus {
+//     outline: none;
+//     border: 2px solid #08FFAE;
+//     font: lato;
+//     font-size: 15px;
+// }
+
+// .icons1 {
+//     color: #08FFAE;
+//     width: 22px;
+//     left: 66rem;
+//     margin-top: 0.6rem;
+//     top: 12px;
+//     position: absolute;
+//     top: 423px;
+// }
+
+// .icons2 {
+//     color: #08FFAE;
+//     width: 22px;
+//     left: 68rem;
+//     margin-top: 0.6rem;
+//     top: 14px;
+//     position: absolute;
+//     top: 425px;
+// }
+
+// .icons3 {
+//     color: #08FFAE;
+//     width: 22px;
+//     left: 70rem;
+//     margin-top: 0.6rem;
+//     top: 12px;
+//     position: absolute;
+//     top: 424px;
+// }
 
 // </style>
 // <script src="https://kit.fontawesome.com/c51a9b31aa.js" crossorigin="anonymous"></script>
