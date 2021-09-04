@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import PlaylistHeader from "./common/playlistHeader";
+import PlaylistHeader from './common/playlistHeader';
 
 function Playlist() {
   return (
