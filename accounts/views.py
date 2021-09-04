@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-from django.views import View
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Songs
@@ -13,23 +12,27 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
-class PluginInfo(View):
 
-    def get(self, request):
-        data = {
-            "plugin_name": "Youtube Music Video Plugin",
-            "description": "This is a plugin that allows individuals in an organization to add music and video links from YouTube. These links are added to a shared playlist so that anyone in that organization can listen to or watch any of the shared videos or songs.",
-            "plugin_structure": "Monolith",
-            "team name": "Team Pythagoras",
-            "plugin_url": "music.zuri.chat",
-            "information_url": "music.zuri.chat/info",
-            "sidebar_url": "music.zuri.chat/sidebar",
-        }
-        return JsonResponse(data)
-
-        # Create your views here
-class SongsView(generics.ListAPIView):
+# Create your views here
+class SongsView(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin ):
 
     serializer_class =  SongsSerializer
     queryset = Songs.objects.all()
-    # print(dir( serializer_class ))
+    lookup_field = 'id'
+
+
+
+    def get(self,request, id=None):
+        if id:
+            return self.retrieve(request)
+        else:
+            return self.list(request)
+
+    def post(self,request):
+        return self.create(request)
+
+    def put(self,request, id=None):
+        return self.update(request, id)
+
+    def delete(self,request, id=None):
+        return self.destroy(request, id)
