@@ -36,7 +36,7 @@ const Like = () => {
       height: '20px',
       width: '20px',
       cursor: 'pointer',
-      color: 'blackp',
+      color: '#4ECB71',
       transition: 'all 150ms ease-in-out',
     },
   };

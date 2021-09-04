@@ -27,12 +27,8 @@ class PlaylistItem extends Component {
             <p>{this.props.likeNo} likes</p>
           </Paragraph>
           <Vector>
-            <Like onClick={this.handleLike} />
-            {/* <img
-            className='vector2'
-            src='https://img.flaticon.com/icons/png/512/17/17764.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF'
-            alt='option'
-          /> */}
+            <Like />
+
             <div>
               <i className='fas fa-ellipsis-h vector2'></i>
             </div>
@@ -220,6 +216,7 @@ const Vector = styled.div`
     width: 10.67px;
     height: 2.67px;
     cursor: pointer;
+    color: #000;
     @media (min-width: 1024px) {
       /* padding-right: 1em; */
       padding-bottom: 0.5em;
