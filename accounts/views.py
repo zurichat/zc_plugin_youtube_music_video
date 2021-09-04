@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
 
-# Create your views here
+# Create your all views here
 class SongsView(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin ):
 
     serializer_class =  SongsSerializer
