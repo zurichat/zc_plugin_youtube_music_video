@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-export default function chats() {
-  return [{}];
-=======
 // @ts-nocheck
 
 import chatItem from "../media/chatItem.svg";
@@ -69,5 +65,4 @@ export default function chats() {
       avatar: chatItem,
     },
   ];
->>>>>>> 036a84d1db4ffb702b21fea8844d276b0eec9c25
 }

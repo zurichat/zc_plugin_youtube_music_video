@@ -93,11 +93,7 @@
 
 // React component
 import React, { useState } from "react";
-<<<<<<< HEAD
-import "./pasteUrl.css";
-=======
 import { injectGlobal } from "styled-components";
->>>>>>> 036a84d1db4ffb702b21fea8844d276b0eec9c25
 import { FiX } from "react-icons/fi";
 
 const pasteUrl = () => {
@@ -111,18 +107,11 @@ const pasteUrl = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="">
-        Paste Youtube URL here
-        <FiX
-=======
     <Wrapper>
     <form onSubmit={handleSubmit} className="submit-form">
       <label htmlFor="" className="form-label">
         Paste Youtube URL here
         <FiX 
->>>>>>> 036a84d1db4ffb702b21fea8844d276b0eec9c25
           style={{
             color: "#00bb7c",
             background: "#e5fff6",
@@ -132,16 +121,6 @@ const pasteUrl = () => {
         />
       </label>
       <div className="inputs">
-<<<<<<< HEAD
-        <input type="text" name="" id="" value={url} onChange={handleChange} />
-        <input type="submit" value="Add" />
-      </div>
-    </form>
-  );
-};
-
-export default pasteUrl;
-=======
       <div className="input-text">
         <input type="text" name='' id="" value={url} onChange={handleChange} />
       </div>
@@ -209,4 +188,3 @@ const Wrapper = styled.div`
 `;
 
 export default pasteUrl;
->>>>>>> 036a84d1db4ffb702b21fea8844d276b0eec9c25
