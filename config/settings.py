@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1"]
 
@@ -125,7 +125,7 @@ USE_TZ = True
 
 STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [str(BASE_DIR.joinpath("static"))]
+STATICFILES_DIRS = [str(BASE_DIR.joinpath("frontend/static"))]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_ROOT = "./media"
 MEDIA_URL = "/media/"
@@ -173,3 +173,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:9000",
     "http://159.65.123.65",
 ]
+
+if bool(os.environ.get("PRODUCTION_SERVER", default="")):
+    SECURE_SSL_REDIRECT = True
+    
