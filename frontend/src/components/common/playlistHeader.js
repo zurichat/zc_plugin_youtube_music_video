@@ -48,6 +48,7 @@ const Wrapper = styled.div`
 
   .playlist-summary {
     font-size: 14px;
+    margin-bottom: 20px;
   }
   .playlist-button {
     margin-right: 15px !important;
