@@ -27,6 +27,7 @@ const PlaylistHeader = () => {
 
 const Wrapper = styled.div`
   display: flex;
+  margin-bottom: 20px;
 
   .playlist-img {
     display: block;
@@ -47,6 +48,7 @@ const Wrapper = styled.div`
 
   .playlist-summary {
     font-size: 14px;
+    margin-bottom: 20px;
   }
   .playlist-button {
     margin-right: 15px !important;
