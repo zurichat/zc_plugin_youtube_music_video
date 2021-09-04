@@ -1,44 +1,54 @@
-import React from 'react';
-import Headset from '../media/Headset.png'
+// @ts-nocheck
+import React from "react";
+import styled from "styled-components";
 
-import styled from 'styled-components';
+import Button from "./button";
 
-const Playlisth = styled.div`
-  font-family: 'lato', sans-serif;
-  margin: 154px 393px 0px 285px;
-  display: flex; 
-`;
-
-const Playlisthi = styled.div`
-  margin: 24px 40px 0px 24px;
-`;
-
-const Playlisthc = styled.div`
-`;
-
-const Title = styled.h2`
-  margin-top: 72px;
-  font-size: 21px;
-`;
-
-const Paragraph = styled.p`
-  margin-top: 8px;
-  color: #999999;
-`;
-
+import Headset from "../../media/playlistIcon.svg";
 
 const PlaylistHeader = () => {
-    return(
-        <Playlisth>
-            <Playlisthi>
-                <img src={Headset} alt="Playlist Header Image" />
-            </Playlisthi>
-            <Playlisthc>
-                <Title>Music Room Playlist</Title>
-                <Paragraph>10 songs, 38 min 33 sec</Paragraph>
-            </Playlisthc>
-        </Playlisth>
-    )
-}
+  return (
+    <Wrapper>
+      <div className="img">
+        <img src={Headset} alt="Playlist Header Image" />
+      </div>
+      <div className="playlist-content">
+        <div className="playlist-caption">Music Room Playlist</div>
+        <div className="playlist-summary">10 songs, 38 min 33 sec</div>
+        <div>
+          <Button className="playlist-button" color="secondary">
+            Add a song to the playlist
+          </Button>
+          <Button>Play</Button>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+
+const Wrapper = styled.div`
+  display: flex;
+  padding-right: 20px;
+
+  .playlist-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 30px;
+  }
+
+  .playlist-caption {
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  .playlist-summary {
+    font-size: 14px;
+  }
+  .playlist-button {
+    margin-right: 15px !important;
+  }
+`;
 
 export default PlaylistHeader;
