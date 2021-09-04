@@ -1,25 +1,25 @@
 // @ts-nocheck
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
-import Button from "./button";
+import Button from './button';
 
-import Headset from "../../media/playlistIcon.svg";
+import Headset from '../../media/playlistIcon.svg';
 
 const PlaylistHeader = () => {
   return (
     <Wrapper>
-      <div className="img">
-        <img src={Headset} alt="Playlist Header Image" />
+      <div className='img'>
+        <img src={Headset} alt='Playlist Header Image' />
       </div>
-      <div className="playlist-content">
-        <div className="playlist-caption">Music Room Playlist</div>
-        <div className="playlist-summary">10 songs, 38 min 33 sec</div>
+      <div className='playlist-content'>
+        <div className='playlist-caption'>Music Room Playlist</div>
+        <div className='playlist-summary'>10 songs, 38 min 33 sec</div>
         <div>
-          <Button className="playlist-button" color="secondary">
+          <Button className='secondary' color='secondary'>
             Add a song to the playlist
           </Button>
-          <Button>Play</Button>
+          <Button className='primary'>Play</Button>
         </div>
       </div>
     </Wrapper>

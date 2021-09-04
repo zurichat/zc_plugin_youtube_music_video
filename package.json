@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "react-player": "^2.9.0",
-    "styled-components": "^5.3.1"
+    "styled-components": "^5.3.1",
+    "uuid": "^8.3.2"
   }
 }

@@ -30,11 +30,14 @@ const Like = () => {
       height: '20px',
       width: '20px',
       cursor: 'pointer',
+      transition: 'all 150ms ease-in-out',
     },
     emptyHeart: {
       height: '20px',
       width: '20px',
       cursor: 'pointer',
+      color: 'blackp',
+      transition: 'all 150ms ease-in-out',
     },
   };
 

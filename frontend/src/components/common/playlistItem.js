@@ -1,45 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
 // import './playlistitem.css';
 import styled from 'styled-components';
 import Like from './like';
 
-function PlaylistItem() {
-  return (
-    <Playlist>
-      <Container>
-        <img
-          src='https://cdn.vanguardngr.com/wp-content/uploads/2020/05/Wizkid-e1588973158415.jpg'
-          alt='album'
-        />
-        <PlaylistClass>
-          <h3>Essence (ft Tems) - Wizkid</h3>
-          <p>Added by smoothice</p>
-        </PlaylistClass>
-        <Para>
-          <p>4.05 mins</p>
-        </Para>
-        <Paragraph>
-          <p>642 likes</p>
-        </Paragraph>
-        <Vector>
-          <img
-            className='vector1'
-            src='https://png.pngitem.com/pimgs/s/111-1119299_black-hollow-heart-icon-hd-png-download.png'
-            alt='heart'
-          />
-          <img
+class PlaylistItem extends Component {
+  constructor(props) {
+    super(props);
+    this.handleLike = this.handleLike.bind(this);
+  }
+
+  handleLike(id) {}
+
+  render() {
+    return (
+      <Playlist>
+        <Container>
+          <img src={this.props.imgSrc || ''} alt={this.props.songName} />
+          <PlaylistClass>
+            <h3>{this.props.songName}</h3>
+            <p>Added by {this.props.addedBy || ''}</p>
+          </PlaylistClass>
+          <Para>
+            <p>{this.props.duration} mins</p>
+          </Para>
+          <Paragraph>
+            <p>{this.props.likeNo} likes</p>
+          </Paragraph>
+          <Vector>
+            <Like onClick={this.handleLike} />
+            {/* <img
             className='vector2'
             src='https://img.flaticon.com/icons/png/512/17/17764.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF'
             alt='option'
-          />
-        </Vector>
-      </Container>
-    </Playlist>
-  );
+          /> */}
+            <div>
+              <i className='fas fa-ellipsis-h vector2'></i>
+            </div>
+          </Vector>
+        </Container>
+      </Playlist>
+    );
+  }
 }
 
 const Playlist = styled.div`
   font-family: Arial, Helvetica, sans-serif;
+  margin-top: -2.3em;
 `;
 
 const Container = styled.div`
@@ -50,10 +56,16 @@ const Container = styled.div`
   padding-right: 1em;
   padding-left: 1em;
   padding-top: 2em;
-  width: 100%;
-  margin: auto;
+  width: auto;
+  /* margin: auto; */
   box-sizing: border-box;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 4px rgba(0, 36, 24, 0.04);
+  transition: all 150ms ease-in-out;
+  /* cursor: pointer; */
+
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 184, 124, 0.3);
+  }
 
   img {
     width: 100%;
@@ -63,29 +75,29 @@ const Container = styled.div`
   @media (min-width: 1024px) {
     margin-top: 3em !important;
     display: grid;
-    grid-template-columns: 10% 45% 15% 15% 40%;
+    grid-template-columns: 10% 45% 15% 15% auto;
     align-items: center;
     padding-right: 1em;
     padding-left: 1em;
     padding-top: 2em;
-    width: 100%;
-    margin: auto;
+    width: auto;
+    /* margin: auto; */
     box-sizing: border-box;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 4px rgba(0, 36, 24, 0.04);
   }
 
   @media (min-width: 1440px) {
     margin-top: 3em !important;
     display: grid;
-    grid-template-columns: 8% 45% 15% 15% 40%;
+    grid-template-columns: 8% 45% 15% 15% auto;
     align-items: center;
     padding-right: 1em;
     padding-left: 1em;
     padding-top: 2em;
-    width: 100%;
-    margin: auto;
+    width: auto;
+    /* margin: auto; */
     box-sizing: border-box;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 4px rgba(0, 36, 24, 0.04);
   }
 `;
 
@@ -158,15 +170,30 @@ const PlaylistClass = styled.div`
 
 const Paragraph = styled.div`
   p {
-    font-size: 12px;
+    font-size: 0.75em;
+    font-family: 'Lato', sans-serif;
     padding-right: 3em;
     padding-bottom: 1em !important;
+    color: rgba(153, 153, 153, 1);
+  }
+
+  @media (min-width: 1024px) {
+    p {
+      font-size: 0.75em;
+    }
+  }
+  @media (min-width: 1440px) {
+    p {
+      font-size: 1em;
+    }
   }
 `;
 
 const Vector = styled.div`
-  /* display: flex; */
-  width: 100%;
+  display: flex;
+  /* width: 100%; */
+  align-content: center;
+  justify-content: space-evenly;
 
   .vector1 {
     padding-right: 2em;
@@ -181,27 +208,29 @@ const Vector = styled.div`
       height: 30px;
     }
     @media (min-width: 1440px) {
-      padding-right: 2em;
+      /* padding-right: 2em; */
       padding-bottom: 1em;
       width: 50px;
       /* height: 50px; */
     }
   }
-  .vector2 {
+  i {
     padding-bottom: 1em;
+    display: block;
     width: 10.67px;
     height: 2.67px;
+    cursor: pointer;
     @media (min-width: 1024px) {
-      padding-right: 1em;
+      /* padding-right: 1em; */
       padding-bottom: 0.5em;
       width: 10.67px;
       height: 2.67px;
     }
     @media (min-width: 1440px) {
-      padding-right: 1em;
+      /* padding-right: 1em; */
       padding-bottom: 0.5em;
       width: 16px;
-      height: 4px;
+      height: 10px;
     }
   }
 `;

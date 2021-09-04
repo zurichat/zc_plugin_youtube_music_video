@@ -9,7 +9,6 @@ class App extends Component {
     return (
       <Wrapper>
         <MusicRoom />
-        <PlaylistItem />
       </Wrapper>
     );
   }
