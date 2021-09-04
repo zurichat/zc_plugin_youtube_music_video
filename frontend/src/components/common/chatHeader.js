@@ -1,3 +1,22 @@
+import React, { Component } from "react";
+
+import "./App.css";
+
+class App extends Component {
+  render() {
+    return (
+        <div className="chatHeader">
+          <div className="chatHeader__left">
+            <i className="far fa-comment-alt message"></i>
+            <p>Chat</p>
+          </div>
+        <div className="chatHeader__right"></div>
+          <i className="fas fa-times close"></i>
+        </div>
+    );
+  }
+}
+
 //chatHeader style
 /**
  *

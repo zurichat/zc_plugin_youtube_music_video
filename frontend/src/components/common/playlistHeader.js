@@ -1,13 +1,17 @@
-//PlaylistHeader HTML
 import React from 'react';
+
+// components
 import styled from 'styled-components';
-import beat from '../beat.png'
+import Button from "./button";
+//images
+import Headset from "../../media/playlistIcon.svg";
 
 const PlaylistHeader = () => {
   const Playlist = styled.div`
     display: flex;
     align-items: center;
     font-family: 'lato', sans-serif;
+    padding: 10px 15px;
   `;
   const Wrapper = styled.div`
     padding: 0 25px;
@@ -15,39 +19,25 @@ const PlaylistHeader = () => {
   const Title = styled.h2`
     font-size: 1.7rem;
   `;
-  const Para = styled.p`
+  const Paragraph = styled.p`
     font-size: 1rem;
     color: #999;
     padding: 5px 0 15px 0;
   `;
-  const Add = styled.button`
-    padding: 10px;
-    background: #00B87C;
-    border: none;
-    border-radius: 3px;
-    color: white;
-    cursor: pointer;
-  `;
-  const Pause = styled.button`
-    padding: 10px;
-    background: none;
-    border: 1px solid #00B87C;
-    border-radius: 3px;
-    color: #00B87C;
-    margin: 0 10px;
-    cursor: pointer;
-  `;
+
   return (
     <Playlist>
-      <img src={beat} alt='playlist image'/>
+      <img src={Headset} alt='playlist image'/>
       <Wrapper>
         <Title>Music Room Playlist</Title>
-        <Para>10 songs, 38min 33s</Para>
-        <Add>Add song to the play list</Add>
-        <Pause>Pause</Pause>
+        <Paragraph>10 songs, 38min 33s</Paragraph>
+        <Button>Add song to the play list</Button>
+        <Button>Pause</Button>
       </Wrapper>
     </Playlist>
   )
 }
+
+
 
 export default PlaylistHeader;

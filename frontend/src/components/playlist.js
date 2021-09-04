@@ -1,5 +1,13 @@
+import React from "react";
+
+import PlaylistHeader from "./common/playlistHeader";
+
 function Playlist() {
-  return <div>Playlist component goes here.</div>;
+  return (
+    <div>
+      <PlaylistHeader />
+    </div>
+  );
 }
 
 export default Playlist;
