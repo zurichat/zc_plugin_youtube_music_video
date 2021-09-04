@@ -1,34 +1,58 @@
-//PlaylistHeader HTML
+// @ts-nocheck
+import React from "react";
+import styled from "styled-components";
 
-{/* <div class="playlist-header">
-    <div class="playlist-header-img">
-        <img src="music-player.png" alt="music-player-image">
-    </div>
-    <div class="playlist-header-content">
-        <h2>Music Room Playlist</h2>
-        <p>10 songs, 38 min 33 sec</p>
-    </div>
-</div> */}
+import Button from "./button";
 
+import Headset from "../../media/playlistIcon.svg";
 
-//PlaylistHeader CSS
+const PlaylistHeader = () => {
+  return (
+    <Wrapper>
+      <img src={Headset} alt="Playlist Header Image" className="playlist-img" />
 
-// .playlist-header{
-//     font-family: 'lato', sans-serif;
-//     margin: 154px 393px 0px 285px;
-//     display: flex;  
-// }
+      <div className="playlist-content">
+        <div className="playlist-caption">Music Room Playlist</div>
+        <div className="playlist-summary">10 songs, 38 min 33 sec</div>
+        <div>
+          <Button className="playlist-button" color="secondary">
+            Add a song to the playlist
+          </Button>
+          <Button>Play</Button>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
 
-// .playlist-header-img {
-//     margin: 24px 40px 0px 24px; 
-// }
+const Wrapper = styled.div`
+  display: flex;
+  margin-bottom: 20px;
 
-// .playlist-header-content h2{
-//     margin-top: 72px;
-//     font-size: 21px;
-// }
+  .playlist-img {
+    display: block;
+  }
+  .playlist-content {
+    display: flex;
 
-// .playlist-header-content p {
-//     margin-top: 8px;
-//     color: #999999;
-// }
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 30px;
+  }
+
+  .playlist-caption {
+    font-weight: 500;
+    font-size: 20px;
+  }
+
+  .playlist-summary {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .playlist-button {
+    margin-right: 15px !important;
+  }
+`;
+
+export default PlaylistHeader;
