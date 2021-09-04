@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-import Playlist from "./playlist";
 import RoomHeader from "./roomHeader";
+import Playlist from "./playlist";
+import Chat from "./chat";
 
 function MusicRoom() {
   return (
@@ -14,8 +15,7 @@ function MusicRoom() {
 }
 
 const Wrapper = styled.div`
-  /* background: grey; */
-  /* height: 400px; */
+  /* display: flex; */
 `;
 
 export default MusicRoom;
