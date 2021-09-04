@@ -15,7 +15,7 @@ function ChatItem(props) {
             <Username>Amara</Username>
             <Span>3 minute ago</Span>
           </Describe>
-          <P>If you ask me, I would say it is so overrated, but....</P>
+          <P>If you ask me, I would say it is so overrated, but......</P>
         </NameTime>
       </Items>
     </Chat>
