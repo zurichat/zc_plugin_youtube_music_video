@@ -12,6 +12,9 @@ const PlaylistHeader = () => {
   const Wrapper = styled.div`
     padding: 0 25px;
   `;
+  const Title = styled.h2`
+    font-size: 1.7rem;
+  `;
   const Para = styled.p`
     font-size: 1rem;
     color: #999;
@@ -38,7 +41,7 @@ const PlaylistHeader = () => {
     <Playlist>
       <img src={beat} alt='playlist image'/>
       <Wrapper>
-        <h2>Music Room Playlist</h2>
+        <Title>Music Room Playlist</Title>
         <Para>10 songs, 38min 33s</Para>
         <Add>Add song to the play list</Add>
         <Pause>Pause</Pause>
