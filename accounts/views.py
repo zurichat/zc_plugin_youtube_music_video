@@ -15,5 +15,3 @@ class PluginInfo(View):
             "sidebar_url": "music.zuri.chat/sidebar",
         }
         return JsonResponse(data)
-
-
