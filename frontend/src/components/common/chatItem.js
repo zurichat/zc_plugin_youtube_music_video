@@ -1,21 +1,19 @@
+// @ts-nocheck
+
 import React from "react";
 import styled from "styled-components";
-// import image from "src/media/user.png";
 
-function ChatItem(props) {
+function ChatItem({ name, avatar, time, message }) {
   return (
     <Chat>
       <Items>
-        <Img
-          src="https://images.unsplash.com/photo-1498462440456-0dba182e775b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c3BsYXNofGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-          alt="user avater"
-        />
+        <Img src={avatar} alt="user avater" />
         <NameTime>
           <Describe>
-            <Username>Amara</Username>
-            <Span>3 minute ago</Span>
+            <Username>{name}</Username>
+            <Span>{time} minute ago</Span>
           </Describe>
-          <P>If you ask me, I would say it is so overrated, but....</P>
+          <P>{message}</P>
         </NameTime>
       </Items>
     </Chat>
@@ -26,11 +24,9 @@ export default ChatItem;
 
 export const Chat = styled.div`
   width: 347px;
-  height: 573px;
   background: #ffffff;
   align-items: flex-start;
   padding: 1rem;
-  margin: 4px 0px;
 `;
 
 export const Items = styled.div`
@@ -85,4 +81,3 @@ export const NameTime = styled.div`
   height: 71px;
   margin: 0px 8px;
 `;
-

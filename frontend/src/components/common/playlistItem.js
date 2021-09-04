@@ -1,28 +1,80 @@
-import React from 'react'
-import './playlistitem.css'
-function PlaylistItem() {
-return (
+// @ts-nocheck
 
-            <section className="playlist">
-                <div className="container">
-                    <img src="https://cdn.vanguardngr.com/wp-content/uploads/2020/05/Wizkid-e1588973158415.jpg" alt="album" />
-                    <div className="playlistclass">
-                        <h3>Essence (ft Tems) - Wizkid</h3>
-                        <p>Added by smoothice</p>
-                    </div>
-                    <div className="para">
-                        <p>4.05 mins</p>
-                    </div>
-                    <div className="paragraph">
-                        <p>642 likes</p>
-                    </div>
-                    <div className="vector">
-                        <img className="vector1" src="https://png.pngitem.com/pimgs/s/111-1119299_black-hollow-heart-icon-hd-png-download.png" alt="heart" />
-                        <img className="vector2" src="https://img.flaticon.com/icons/png/512/17/17764.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF" alt="option" />
-                    </div>
-                </div>
-            </section>
-);
+import React from "react";
+import styled from "styled-components";
+
+import Like from "./like";
+
+import option from "../../media/option.svg";
+
+function PlaylistItem({ title, addedBy, duration, liked, albumCover }) {
+  return (
+    <Wrapper>
+      <img src={albumCover} alt="album cover" className="item-albumCover" />
+
+      <div className="item-info">
+        <div className="item-title">{title}</div>
+        <div className="item-addedBy">Added by {addedBy}</div>
+      </div>
+
+      <div className="item-group">
+        <div className="item-duration">{duration} mins</div>
+
+        <div className="item-icons">
+          <Like liked={liked} />
+          <img
+            src={option}
+            alt="option img"
+            style={{ cursor: "pointer", width: "20px", height: "20px" }}
+          />
+        </div>
+      </div>
+    </Wrapper>
+  );
 }
 
-export default PlaylistItem
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  height: 77px;
+
+  .item-albumCover {
+    display: block;
+    margin-right: 20px;
+    width: 70px;
+    height: 100%;
+  }
+
+  .item-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 70%;
+  }
+
+  .item-title {
+    font-weight: 500;
+    font-size: 16px;
+  }
+
+  .item-addedBy {
+    font-size: 13px;
+  }
+
+  .item-group {
+    flex-basis: 48%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .item-icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60px;
+  }
+`;
+
+export default PlaylistItem;
