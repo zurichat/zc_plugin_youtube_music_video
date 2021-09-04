@@ -16,8 +16,9 @@ urlpatterns = [
     # coming from frontend app using react every thing we connect in App.js in components will be
     # rendered here in IndexView using Same Django app Server
     path("", IndexView.as_view(), name="home"),
+    path("songs/", SongsView.as_view()),
+    path("songs/<int:id>/", SongsView.as_view()),
     path("admin/", admin.site.urls),
-    path("songsview/", SongsView.as_view()),
     path("sidebar/", SidebarView.as_view(), name="sidebar"),
     path("api-auth/", include("rest_framework.urls")),
     path("auth/", include("dj_rest_auth.urls")),
