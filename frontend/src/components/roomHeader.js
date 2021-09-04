@@ -1,16 +1,17 @@
 
 import React from 'react';
 import GroupIcon from '@material-ui/icons/Group';
-import person1 from '../media/person1.png'
-import person2 from '../media/person2.png'
-import person3 from '../media/person3.png'
+import person1 from './person1.png'
+import person2 from './person2.jpg'
+import person3 from './person3.png'
 import styled from 'styled-components'
+
 
 const roomHeader = () => {
     return (
 
-
-        <div className="header">
+        <HeaderStyled>
+            
             <div className="left">
             <GroupIcon className="icon"/>
            <a href="/"className="header-heading">Music Room</a>
@@ -22,15 +23,122 @@ const roomHeader = () => {
                 <img src={person3} alt="" className="person3" />
                 <span>12</span>
             </div>
-        </div>
+       
+        </HeaderStyled>
+        
     )
 }
 
+const HeaderStyled = styled.div`
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
+        margin-top: 4rem;
+        width: 60%;
+        height: 50px;
+        background-color: #F3F1F5;
+        margin-left: 10rem;
+        display: flex;
+        justify-content:space-between;
+        align-items:center;
+        padding: .6rem .6rem;
+        border-radius: .6rem;
+        font-family: 'Lato', sans-serif;
+
+
+        @media screen and (max-width:530px) {
+        margin-left: 6rem;
+        background-color: #27AE60;
+        color: white;
+        width: 100%;
+        margin-left: 0;
+        padding: .4rem .4rem;
+        .icon {
+            color: white;
+        }
+
+        .header-heading{
+            color: red;
+        }
+        span {
+            color: white;
+        }
+
+    } 
+
+
+    .left {
+        display: flex;
+        align-items: center;
+    }
+    .icon {
+        color: #27AE60;
+        margin-right: 1rem;
+        cursor: pointer;
+
+        @media screen and (max-width:530px) {
+            color: white;
+        }
+    }
+    .header-heading {
+        color: #27AE60;
+        text-decoration: none;
+
+        @media screen and (max-width:530px) {
+            color: white;
+        }
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+    .person1 {
+        color: #519872;
+        font-size: 1.7rem;
+        position: absolute;
+        left: -6rem;
+        z-index: 5;
+    }
+    .person2 {
+        color: red;
+        position: absolute;
+        left: -4.8rem;
+        z-index: 2
+    }
+    .person3 {
+        color: yellow;
+        position: absolute;
+        left: -3.5rem;
+        z-index: 1;
+    }
+    span {
+        color: #519872;
+        margin-left: -.3rem;
+
+        @media screen and (max-width:530px) {
+            color: white;
+        }
+    }
+
+    img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid #519872;
+        cursor: pointer;
+
+        @media screen and (max-width:530px) {
+            border: 1px solid white;
+        }
+
+    }
+
+   
+
+`
 
 
 export default roomHeader
-
-
 
 
 
