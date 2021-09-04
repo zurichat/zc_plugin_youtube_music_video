@@ -22,7 +22,7 @@ const PlaylistHeader = () => {
   const Paragraph = styled.p`
     font-size: 1rem;
     color: #999;
-    padding: 5px 0 15px 0;
+    padding: 6px 0 16px 0;
   `;
 
   return (
