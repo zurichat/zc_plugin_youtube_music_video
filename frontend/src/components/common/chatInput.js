@@ -2,10 +2,6 @@
 
 import React from "react";
 
-import chatEmoji from "../../media/chatEmoji.svg";
-import chatSend from "../../media/chatSend.svg";
-import chatGif from "../../media/chatGif.svg";
-
 import styled from "styled-components";
 
 const InputBar = styled.input`
