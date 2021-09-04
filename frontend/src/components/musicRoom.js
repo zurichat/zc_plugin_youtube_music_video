@@ -13,9 +13,6 @@ function MusicRoom() {
   );
 }
 
-const Wrapper = styled.div`
-  /* background: grey; */
-  /* height: 400px; */
-`;
+const Wrapper = styled.div``;
 
 export default MusicRoom;

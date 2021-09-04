@@ -2,10 +2,11 @@ import React from 'react';
 import { v4 as uuid } from 'uuid';
 import PlaylistHeader from './common/playlistHeader';
 import PlaylistItem from './common/playlistItem';
+import styled from 'styled-components';
 
 function Playlist() {
   return (
-    <div>
+    <Wrapper>
       <PlaylistHeader />
       <PlaylistItem
         songName='Essence - Wizkid ft Tems'
@@ -47,8 +48,13 @@ function Playlist() {
         imgSrc='https://i.ytimg.com/vi/0rOer3k2DWg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA9nQuES1WzXC0EIHDmDCr-kvrzQw'
         id={uuid()}
       />
-    </div>
+    </Wrapper>
   );
 }
+
+const Wrapper = styled.div`
+  background: #fff;
+  padding: 20px;
+`;
 
 export default Playlist;
