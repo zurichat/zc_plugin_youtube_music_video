@@ -1,25 +1,27 @@
 import React from 'react';
-import './playlistitem.css';
+// import './playlistitem.css';
 import styled from 'styled-components';
+import Like from './like';
+
 function PlaylistItem() {
   return (
-    <Playlist className='playlist'>
+    <Playlist>
       <Container>
         <img
           src='https://cdn.vanguardngr.com/wp-content/uploads/2020/05/Wizkid-e1588973158415.jpg'
           alt='album'
         />
-        <PlaylistClass className='playlistclass'>
+        <PlaylistClass>
           <h3>Essence (ft Tems) - Wizkid</h3>
           <p>Added by smoothice</p>
         </PlaylistClass>
-        <Para className='para'>
+        <Para>
           <p>4.05 mins</p>
         </Para>
-        <Paragraph className='paragraph'>
+        <Paragraph>
           <p>642 likes</p>
         </Paragraph>
-        <Vector className='vector'>
+        <Vector>
           <img
             className='vector1'
             src='https://png.pngitem.com/pimgs/s/111-1119299_black-hollow-heart-icon-hd-png-download.png'
@@ -36,6 +38,10 @@ function PlaylistItem() {
   );
 }
 
+const Playlist = styled.div`
+  font-family: Arial, Helvetica, sans-serif;
+`;
+
 const Container = styled.div`
   margin-top: 3em !important;
   display: grid;
@@ -48,6 +54,11 @@ const Container = styled.div`
   margin: auto;
   box-sizing: border-box;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+
+  img {
+    width: 100%;
+    padding-bottom: 1.5em;
+  }
 
   @media (min-width: 1024px) {
     margin-top: 3em !important;
@@ -100,10 +111,11 @@ const Para = styled.div`
 `;
 const PlaylistClass = styled.div`
   padding-bottom: 1em;
+  padding-left: 1em;
 
   h3 {
-    font-family: 'Lato';
-    font-size: 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
     letter-spacing: 0px;
@@ -111,10 +123,10 @@ const PlaylistClass = styled.div`
   }
 
   p {
-    font-size: 8px;
+    font-size: 14px;
     line-height: 2em;
     font-weight: 400;
-    font-family: 'Lato';
+    font-family: 'Lato', sans-serif;
     font-size: 10px;
     font-style: normal;
     font-weight: 500;
@@ -128,7 +140,7 @@ const PlaylistClass = styled.div`
       font-size: 14px;
     }
     p {
-      font-size: 12px;
+      font-size: 16px;
       line-height: 2.5em;
     }
 
@@ -146,41 +158,50 @@ const PlaylistClass = styled.div`
 
 const Paragraph = styled.div`
   p {
-    font-size: 9px;
+    font-size: 12px;
     padding-right: 3em;
     padding-bottom: 1em !important;
   }
 `;
 
 const Vector = styled.div`
+  /* display: flex; */
+  width: 100%;
+
   .vector1 {
     padding-right: 2em;
     padding-bottom: 1em;
-    width: 43px;
+    width: 20px;
+    /* height: 16px; */
 
     @media (min-width: 1024px) {
       padding-right: 2em;
       padding-bottom: 1em;
-      width: 50px;
+      width: 30px;
+      height: 30px;
     }
     @media (min-width: 1440px) {
       padding-right: 2em;
       padding-bottom: 1em;
       width: 50px;
+      /* height: 50px; */
     }
   }
   .vector2 {
     padding-bottom: 1em;
-
+    width: 10.67px;
+    height: 2.67px;
     @media (min-width: 1024px) {
       padding-right: 1em;
       padding-bottom: 0.5em;
-      width: 20px;
+      width: 10.67px;
+      height: 2.67px;
     }
     @media (min-width: 1440px) {
       padding-right: 1em;
       padding-bottom: 0.5em;
-      width: 20px;
+      width: 16px;
+      height: 4px;
     }
   }
 `;

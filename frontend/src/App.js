@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import store from './app/store';
+import PlaylistItem from './components/common/playlistItem';
 
-import MusicRoom from "./components/musicRoom";
+import MusicRoom from './components/musicRoom';
 
 class App extends Component {
   render() {
@@ -10,6 +11,7 @@ class App extends Component {
       <Wrapper>
         <h2>Hi here</h2>
         <MusicRoom />
+        <PlaylistItem />
       </Wrapper>
     );
   }
