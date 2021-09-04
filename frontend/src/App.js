@@ -1,4 +1,3 @@
-import { hot } from "react-hot-loader/root";
 import React, { Component } from "react";
 import styled from "styled-components";
 
@@ -15,7 +14,7 @@ class App extends Component {
 }
 
 const Wrapper = styled.div`
-  padding: 40px;
+  padding: 20px;
 `;
 
-export default hot(App);
+export default App;

@@ -9,9 +9,8 @@ import Headset from "../../media/playlistIcon.svg";
 const PlaylistHeader = () => {
   return (
     <Wrapper>
-      <div className="img">
-        <img src={Headset} alt="Playlist Header Image" />
-      </div>
+      <img src={Headset} alt="Playlist Header Image" className="playlist-img" />
+
       <div className="playlist-content">
         <div className="playlist-caption">Music Room Playlist</div>
         <div className="playlist-summary">10 songs, 38 min 33 sec</div>
@@ -28,10 +27,13 @@ const PlaylistHeader = () => {
 
 const Wrapper = styled.div`
   display: flex;
-  padding-right: 20px;
 
+  .playlist-img {
+    display: block;
+  }
   .playlist-content {
     display: flex;
+
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;

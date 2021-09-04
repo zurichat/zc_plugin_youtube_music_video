@@ -37,7 +37,8 @@ const Wrapper = styled.div`
   border-radius: 1px 1px 0px 0px;
   height: 60px;
   color: #27ae60;
-  padding: 0 10px;
+  padding: 20px;
+  margin-bottom: 10px;
 
   .header-group-icon {
     display: block;
