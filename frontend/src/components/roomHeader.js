@@ -1,82 +1,75 @@
-/*html
+// @ts-nocheck
+import React from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>room-header</title>
+import avatarSvg from "../media/header-avatar.svg";
+import groupIconSvg from "../media/header-group-icon.svg";
 
-    <link rel="stylesheet" href="roomheader.css">
-</head>
-<body>
-    <div class="header">
-        <a href="#" class="music-room">Music Room</a>
-        <div class="header-right">
-            <img src="media/People of Brooklyn Avatar1.png" alt="">
-            <img src="media/People of Brooklyn Avatar2.png" alt="">
-            <img src="media/People of Brooklyn Avatar.png" alt="">
-            <span>12</span>
+const roomHeader = () => {
+  return (
+    <Wrapper className="header">
+      <div className="header-left">
+        <img
+          src={groupIconSvg}
+          alt="header-group-icon"
+          className="header-group-icon"
+        />
+        <Link to="/" className="header-link">
+          Music Room
+        </Link>
+      </div>
+
+      <div className="header-right">
+        <div>
+          <img src={avatarSvg} alt="header-avatar" />
         </div>
-    </div>
-</body>
-</html>*/
+        <div className="header-count">12</div>
+      </div>
+    </Wrapper>
+  );
+};
 
-/*css
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  background: #ffffff;
+  border-radius: 1px 1px 0px 0px;
+  height: 60px;
+  color: #27ae60;
+  padding: 20px;
+  margin-bottom: 10px;
 
-* {box-sizing: border-box;}
-
-body { 
-  margin: 20px;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.header {
-  overflow: hidden;
-  background-color: white;
-  padding: 20px 10px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-}
-
-.header .music-room{
-  color: green;
-}
-
-.header a {
-  float: left;
-  color: black;
-  text-align: center;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 18px; 
-  line-height: 25px;
-  border-radius: 4px;
-}
-
-.header img{
-    padding: 0;
-    border-radius: 50px;
-    border: 1px solid green;
-}
-
-.header a.logo {
-  font-size: 25px;
-  font-weight: bold;
-}
-
-.header-right {
-  float: right;
-}
-
-@media screen and (max-width: 600px) {
-  .header a {
-    float: none;
+  .header-group-icon {
     display: block;
-    text-align: left;
   }
-  
-  .header-right {
-    float: none;
+
+  .header-link {
+    display: block;
+    margin-left: 10px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 8px;
+    letter-spacing: 0px;
+    padding: 12px;
+    border-radius: 4px;
+    color: inherit;
+    text-decoration: none;
+    font-size: 20px;
   }
-}*/
+
+  .header-right,
+  .header-left {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .header-count {
+    font-size: 18px;
+    margin-right: 8px;
+  }
+`;
+
+export default roomHeader;
