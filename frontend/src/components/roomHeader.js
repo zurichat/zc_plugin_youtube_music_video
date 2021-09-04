@@ -16,7 +16,7 @@ const roomHeader = () => {
           className="header-group-icon"
         />
         <Link to="/" className="header-link">
-          Music Room
+          Music Roomss
         </Link>
       </div>
 
