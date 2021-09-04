@@ -15,7 +15,7 @@ function ChatItem(props) {
             <Username>Amara</Username>
             <Span>3 minute ago</Span>
           </Describe>
-          <P>If you ask me, I would say it is so overrated, but....</P>
+          <P>If you ask me, I would say it is so overrated, but......</P>
         </NameTime>
       </Items>
     </Chat>
@@ -85,4 +85,3 @@ export const NameTime = styled.div`
   height: 71px;
   margin: 0px 8px;
 `;
-
