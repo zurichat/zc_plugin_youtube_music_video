@@ -16,5 +16,53 @@ export default function chats() {
       message: "If you ask me, I would say it is so overrated, but...",
       avatar: chatItem,
     },
+    {
+      name: "Amara",
+      time: 3,
+      message: "If you ask me, I would say it is so overrated, but...",
+      avatar: chatItem,
+    },
+    {
+      name: "Amara",
+      time: 3,
+      message: "If you ask me, I would say it is so overrated, but...",
+      avatar: chatItem,
+    },
+    {
+      name: "Amara",
+      time: 3,
+      message: "If you ask me, I would say it is so overrated, but...",
+      avatar: chatItem,
+    },
+    {
+      name: "Amara",
+      time: 3,
+      message: "If you ask me, I would say it is so overrated, but...",
+      avatar: chatItem,
+    },
+    {
+      name: "Amara",
+      time: 3,
+      message: "If you ask me, I would say it is so overrated, but...",
+      avatar: chatItem,
+    },
+    {
+      name: "Amara",
+      time: 3,
+      message: "If you ask me, I would say it is so overrated, but...",
+      avatar: chatItem,
+    },
+    {
+      name: "Amara",
+      time: 3,
+      message: "If you ask me, I would say it is so overrated, but...",
+      avatar: chatItem,
+    },
+    {
+      name: "Amara",
+      time: 3,
+      message: "If you ask me, I would say it is so overrated, but...",
+      avatar: chatItem,
+    },
   ];
 }
