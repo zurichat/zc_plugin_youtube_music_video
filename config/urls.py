@@ -7,14 +7,18 @@ from rest_framework.schemas import get_schema_view
 from frontend.views import IndexView
 from accounts.api import SidebarView
 from accounts.views import PluginInfo
+from accounts.views import SongsView
 
 
 schema_view = get_schema_view(title="Rest API")
+
 
 urlpatterns = [
     # coming from frontend app using react every thing we connect in App.js in components will be
     # rendered here in IndexView using Same Django app Server
     path("", IndexView.as_view(), name="home"),
+    path("songs/", SongsView.as_view()),
+    path("songs/<int:id>/", SongsView.as_view()),
     path("admin/", admin.site.urls),
     path("sidebar/", SidebarView.as_view(), name="sidebar"),
     path("api-auth/", include("rest_framework.urls")),
@@ -23,4 +27,6 @@ urlpatterns = [
     path("docs/", include_docs_urls(title="Rest API")),
     path("schema/", schema_view),
     path("info/", PluginInfo.as_view(), name="info"),
+    path("", include('accounts.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
