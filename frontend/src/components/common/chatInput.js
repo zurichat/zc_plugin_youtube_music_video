@@ -78,31 +78,5 @@ function ChatInput() {
 }
 export default ChatInput;
 
-// HTML & CSS
-// <!DOCTYPE html>
-// <html lang="en">
-// <head>
-//     <meta charset="UTF-8">
-//     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>Chat Input</title>
 
-//     <style>
-//     @import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
 
-// </style>
-// <script src="https://kit.fontawesome.com/c51a9b31aa.js" crossorigin="anonymous"></script>
-// </head>
-// <body>
-
-//     <div class="input-group">
-//         <div class="input-box">
-//           <input type="text" class="chat-input" placeholder="Type a message...">
-//         <a href="#"><img src="./Group 1.svg" alt="" class="icons1"></a>
-//         <a href="#"><img src="./Group 2.svg" alt="" class="icons2"></a>
-//         <a href="#"><img src="./Group 3.svg" alt="" class="icons3"></a>
-//         </div>
-//       </div>
-
-// </body>
-// </html>
