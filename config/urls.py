@@ -8,6 +8,7 @@ from frontend.views import IndexView
 from accounts.api import SidebarView
 from accounts.views import PluginInfo
 from accounts.views import SongsView
+from accounts.views import api_playlist_views 
 
 
 schema_view = get_schema_view(title="Rest API")
@@ -28,6 +29,7 @@ urlpatterns = [
     path("docs/", include_docs_urls(title="Rest API")),
     path("schema/", schema_view),
     path("info/", PluginInfo.as_view(), name="info"),
+    path("playlist/", api_playlist_views, name="playlist"),
     path("", include('accounts.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
