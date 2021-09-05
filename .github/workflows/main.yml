@@ -29,6 +29,7 @@ jobs:
             git pull origin dev
             git branch -r
             pip install -r requirements/local.txt --upgrade
+            python3 manage.py migrate
             cd /var/www/music.zuri.chat/frontend
             yarn
             yarn build
