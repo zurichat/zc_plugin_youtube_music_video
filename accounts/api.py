@@ -1,5 +1,5 @@
-from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
 class SidebarView(APIView):
@@ -36,5 +36,5 @@ class SidebarView(APIView):
 
 class Comment(object):
     def __init__(self, **kwargs):
-        for field in ('id', 'username','created_at', 'message'):
+        for field in ('id', 'username', 'created_at', 'message'):
             setattr(self, field, kwargs.get(field, None))

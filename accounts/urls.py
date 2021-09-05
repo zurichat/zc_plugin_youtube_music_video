@@ -1,6 +1,6 @@
+from rest_framework import routers
 from django.urls import path, include
 from accounts.views import CommentViewSet
-from rest_framework import routers
 
 router = routers.DefaultRouter()
 router.register(r'comments', CommentViewSet, basename='comments')
