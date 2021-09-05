@@ -87,6 +87,12 @@ class PluginInfo(View):
         return JsonResponse(data)
 
 
+class Test_report(View):
+
+    def get(self, request):
+        return render(request,"report/index.html")
+
+
 
 
 
