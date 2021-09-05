@@ -1,7 +1,37 @@
 import React from "react";
+import './alert.css';
 
 function Alert() {
-  return <div>Alert component goes here</div>;
+  const linkBtn = React.createRef();
+  const alertBtn = React.createRef();
+
+  const onClickLinkBtn = () => {
+    alertBtn.current.classList.add('show')
+    alertBtn.current.classList.remove('hide')
+    alertBtn.current.classList.add('showAlert');
+
+    setTimeout(function() {
+      alertBtn.current.classList.remove('show')
+      alertBtn.current.classList.add('hide')
+    }, 3000)
+  }
+  return (
+    <>
+      <div className="alert hide" ref={alertBtn}>
+        {/* <span id="icon" className="fas fa-check"></span> */}
+        <span className="msg">Added Successfully</span>
+      </div>
+      <button 
+        className="add-link" 
+        ref={linkBtn} 
+        onClick={onClickLinkBtn}>
+        Add Link
+      </button>
+    </>
+  )
+
+
+
   /* html 
   <!DOCTYPE html>
   <html lang="en">
