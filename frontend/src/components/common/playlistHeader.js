@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-import React, { Component } from "react";
-import Headset from ".../assets/headset.png"
-
-class PlaylistHeader extends Component {
-    render() {
-        return (
-            <Playlist>
-                <img src = {Headset} alt = "Playlist Header image" />
-                <Wrapper>
-                    <h3> Music Room Playlist </h3>
-                    <Para> 10 songs, 38 min 33 sec </Para>
-                    <Add> Add song to the playlist </Add>
-                    <Play> Play </Play>
-                </Wrapper>
-            </Playlist>
-        )
-    }
-}
-
-export default PlaylistHeader;
-=======
 // @ts-nocheck
 import React from "react";
 import styled from "styled-components";
@@ -36,7 +14,7 @@ const PlaylistHeader = () => {
       <div className="playlist-content">
         <div className="playlist-caption">Music Room Playlist</div>
         <div className="playlist-summary">10 songs, 38 min 33 sec</div>
-        <div>
+        <div className="playlist-buttons">
           <Button className="playlist-button" color="secondary">
             Add a song to the playlist
           </Button>
@@ -63,6 +41,10 @@ const Wrapper = styled.div`
     margin-left: 30px;
   }
 
+  .playlist-content * {
+    white-space: nowrap;
+  }
+
   .playlist-caption {
     font-weight: 500;
     font-size: 20px;
@@ -72,10 +54,21 @@ const Wrapper = styled.div`
     font-size: 14px;
     margin-bottom: 20px;
   }
+
   .playlist-button {
     margin-right: 15px !important;
+  }
+
+  @media (max-width: 768px) {
+    .playlist-buttons {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .playlist-buttons * {
+      min-width: 100%;
+    }
   }
 `;
 
 export default PlaylistHeader;
->>>>>>> 43beb47075bcb6fe7a89a6ae52cba55650eea85a

@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import avatarSvg from "../media/header-avatar.svg";
 import groupIconSvg from "../media/header-group-icon.svg";
+import groupIconSvgMobile from "../media/header-group-icon-mobile.svg"
 
 const roomHeader = () => {
   return (
@@ -14,6 +15,11 @@ const roomHeader = () => {
           src={groupIconSvg}
           alt="header-group-icon"
           className="header-group-icon"
+        />
+        <img
+          src={groupIconSvgMobile}
+          alt="header-group-icon-mobile"
+          className="header-group-icon-mobile"
         />
         <Link to="/" className="header-link">
           Music Room
@@ -44,12 +50,14 @@ const Wrapper = styled.div`
     display: block;
   }
 
+  .header-group-icon-mobile {
+    display: none;
+  }
+
   .header-link {
     display: block;
     margin-left: 10px;
-    font-family: Lato;
     font-style: normal;
-    font-weight: 700;
     line-height: 8px;
     letter-spacing: 0px;
     padding: 12px;
@@ -57,6 +65,7 @@ const Wrapper = styled.div`
     color: inherit;
     text-decoration: none;
     font-size: 20px;
+    white-space: nowrap;
   }
 
   .header-right,
@@ -69,6 +78,19 @@ const Wrapper = styled.div`
   .header-count {
     font-size: 18px;
     margin-right: 8px;
+  }
+
+  @media (max-width: 768px) {
+    background: #27ae60;
+    color: #ffffff;
+
+    .header-group-icon {
+      display: none;
+    }
+  
+    .header-group-icon-mobile {
+      display: block;
+    }
   }
 `;
 
