@@ -1,6 +1,7 @@
 from django.db import models
 
 # Song Model to store each song's data
+# fetched from Youtube
 class Songs(models.Model):
     title = models.CharField(("title"), max_length=100)
     artiste = models.CharField(("artiste"), max_length=100)
