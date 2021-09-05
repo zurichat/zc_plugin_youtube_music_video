@@ -1,14 +1,14 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 function Button({ color, children, className, onClick }) {
-  const Component = color === "secondary" ? Secondary : Primary;
+  const Component = color === 'secondary' ? Secondary : Primary;
 
   // General styles for both buttons
   const styles = {
-    margin: "5px 0",
-    fontSize: "14px",
-    padding: "5px 10px",
+    margin: '5px 0',
+    fontSize: '14px',
+    padding: '5px 10px',
   };
 
   return (
@@ -24,6 +24,10 @@ const Primary = styled.button`
   border-radius: 3px;
   color: #00b87c;
 
+  &:hover {
+    box-shadow: 0 2px 5px rgba(0, 184, 124, 0.3);
+  }
+
   @media (max-width: 388px) {
     font-size: 12px !important;
     padding: 3px 5px;
@@ -37,6 +41,11 @@ const Secondary = styled.button`
   border-color: #00b87c;
   border-style: solid;
   color: #fff;
+
+  &:hover {
+    background-color: rgba(0, 184, 124, 0.8);
+    border-color: rgba(0, 184, 124, 0.8);
+  }
 
   @media (max-width: 388px) {
     font-size: 12px !important;
