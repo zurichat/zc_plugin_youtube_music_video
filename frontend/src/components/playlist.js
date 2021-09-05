@@ -43,7 +43,7 @@ function Playlist() {
   return (
     <Wrapper>
       <PlaylistHeader />
-      {/* {player && <Player />} */}
+      {player && <Player />}
       <div>
         {songs.map((song, index) => (
           <PlaylistItem key={index} {...song} onLike={() => handleLike(song)} />

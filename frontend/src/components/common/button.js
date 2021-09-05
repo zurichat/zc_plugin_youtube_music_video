@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-function Button({ color, children, className }) {
+function Button({ color, children, className, onClick }) {
   const Component = color === "secondary" ? Secondary : Primary;
 
   // General styles for both buttons
@@ -12,7 +12,7 @@ function Button({ color, children, className }) {
   };
 
   return (
-    <Component className={className} style={styles}>
+    <Component className={className} style={styles} onClick={onClick}>
       {children}
     </Component>
   );
