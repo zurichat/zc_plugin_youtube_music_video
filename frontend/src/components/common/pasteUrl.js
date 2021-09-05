@@ -92,43 +92,49 @@
  */
 
 // React component
-import React, { useState } from "react";
-import { injectGlobal } from "styled-components";
-import { FiX } from "react-icons/fi";
+import React, { useState } from 'react';
+import { injectGlobal } from 'styled-components';
+import { FiX } from 'react-icons/fi';
 
 const pasteUrl = () => {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState('');
 
   const handleChange = (event) => setUrl(event.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Song added to the queue");
+    alert('Song added to the queue');
   };
 
   return (
     <Wrapper>
-    <form onSubmit={handleSubmit} className="submit-form">
-      <label htmlFor="" className="form-label">
-        Paste Youtube URL here
-        <FiX 
-          style={{
-            color: "#00bb7c",
-            background: "#e5fff6",
-            width: "1rem",
-            height: "1rem",
-          }}
-        />
-      </label>
-      <div className="inputs">
-      <div className="input-text">
-        <input type="text" name='' id="" value={url} onChange={handleChange} />
-      </div>
-      <div className="input-submit">
-        <input type="submit" value="Add" />
-      </div>
-      </div>
-    </form>
+      <form onSubmit={handleSubmit} className='submit-form'>
+        <label htmlFor='' className='form-label'>
+          Paste Youtube URL here
+          <FiX
+            style={{
+              color: '#00bb7c',
+              background: '#e5fff6',
+              width: '1rem',
+              height: '1rem',
+            }}
+          />
+        </label>
+        <div className='inputs'>
+          <div className='input-text'>
+            <input
+              type='text'
+              name=''
+              id=''
+              value={url}
+              onChange={handleChange}
+            />
+          </div>
+          <div className='input-submit'>
+            <input type='submit' value='Add' />
+          </div>
+        </div>
+      </form>
     </Wrapper>
   );
 };
@@ -141,24 +147,24 @@ injectGlobal`
     font-size: 0.8rem;
     background: #f9f9f9;
   }
-`
+`;
 
 const Wrapper = styled.div`
   box-sizing: border-box;
   padding: 0;
   margin: 0;
- .submit-form {
-   display: flex;
-   justify-content: center;
-   flex-direction: column;
-   background: #fff;
-   width: 400px;
-   height: 80px;
-   border: 2px solid #fff;
-   position: absolute;
-   top: 160px;
-   left: 180px;
-   padding: 1rem;
+  .submit-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background: #fff;
+    width: 400px;
+    height: 80px;
+    border: 2px solid #fff;
+    position: absolute;
+    top: 160px;
+    left: 180px;
+    padding: 1rem;
   }
   .form-label {
     font-weight: 700;
