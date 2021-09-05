@@ -21,24 +21,11 @@ function PlaylistItem({ title, addedBy, duration, liked, albumCover, onLike }) {
         <div className="item-duration">{duration} mins</div>
 
         <div className="item-icons">
-<<<<<<< HEAD
-          <Like liked={liked} />
-          <img
-            src={option}
-            alt="option img"
-            style={{
-              cursor: "pointer",
-              width: "20px",
-              height: "20px",
-              marginLeft: "0.5rem",
-            }}
-=======
           <Like liked={liked} onLike={onLike} />
           <img
             src={option}
             alt="option img"
             style={{ cursor: "pointer", width: "20px", height: "20px" }}
->>>>>>> 5c9119958bf5b5c5cb780e3ec53f4464b34e1a43
           />
         </div>
       </div>
