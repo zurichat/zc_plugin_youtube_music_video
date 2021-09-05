@@ -35,6 +35,10 @@ const Wrapper = styled.div`
     background-color: #08ffae;
     width: 3px;
   }
+
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 export default Chat;

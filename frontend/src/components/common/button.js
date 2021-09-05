@@ -1,18 +1,18 @@
 import React from "react";
 import styled from "styled-components";
 
-function Button({ color, children, className }) {
+function Button({ color, children, className, onClick }) {
   const Component = color === "secondary" ? Secondary : Primary;
 
   // General styles for both buttons
   const styles = {
-    margin: "10px 0",
-    fontSize: "17px",
-    padding: "5px 15px",
+    margin: "5px 0",
+    fontSize: "14px",
+    padding: "5px 10px",
   };
 
   return (
-    <Component className={className} style={styles}>
+    <Component className={className} style={styles} onClick={onClick}>
       {children}
     </Component>
   );
@@ -20,9 +20,14 @@ function Button({ color, children, className }) {
 
 const Primary = styled.button`
   background: #ffffff;
-  border: 1.5px solid #00b87c;
+  border: 1px solid #00b87c;
   border-radius: 3px;
   color: #00b87c;
+
+  @media (max-width: 388px) {
+    font-size: 12px !important;
+    padding: 3px 5px;
+  }
 `;
 
 const Secondary = styled.button`
@@ -32,6 +37,12 @@ const Secondary = styled.button`
   border-color: #00b87c;
   border-style: solid;
   color: #fff;
+
+  @media (max-width: 388px) {
+    font-size: 12px !important;
+    padding: 3px 5px;
+    margin: 3px 0 !important;
+  }
 `;
 
 export default Button;
