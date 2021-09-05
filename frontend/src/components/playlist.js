@@ -16,7 +16,7 @@ const custom = {
   id: "3kfkfk",
   title: "Team Pythagoras (ft Imhade) - Vincent",
   addedBy: "Justice",
-  duration: 3.05,
+  duration: "3:05",
   liked: true,
   albumCover: customCover,
   likes: 300,
@@ -50,7 +50,7 @@ const Wrapper = styled.div`
   overflow-y: scroll;
   background: #fff;
   padding: 20px;
-  height: 550px;
+  height: 540px;
 
   &::-webkit-scrollbar {
     width: 3px;
