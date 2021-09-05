@@ -26,7 +26,7 @@ export const Chat = styled.div`
   width: 347px;
   background: #ffffff;
   align-items: flex-start;
-  padding: 1rem;
+  padding: 10px;
 `;
 
 export const Items = styled.div`
