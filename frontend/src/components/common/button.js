@@ -1,14 +1,14 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 function Button({ color, children, className }) {
-  const Component = color === "secondary" ? Secondary : Primary;
+  const Component = color === 'secondary' ? Secondary : Primary;
 
   // General styles for both buttons
   const styles = {
-    margin: "10px 0",
-    fontSize: "17px",
-    padding: "5px 15px",
+    margin: '10px 0',
+    fontSize: '17px',
+    padding: '5px 15px',
   };
 
   return (
@@ -23,6 +23,11 @@ const Primary = styled.button`
   border: 1.5px solid #00b87c;
   border-radius: 3px;
   color: #00b87c;
+  transition: all 150ms ease-in-out;
+
+  &:hover {
+    box-shadow: 0 2px 10px rgba(0, 184, 124, 0.3);
+  }
 `;
 
 const Secondary = styled.button`
@@ -32,6 +37,12 @@ const Secondary = styled.button`
   border-color: #00b87c;
   border-style: solid;
   color: #fff;
+  transition: all 150ms ease-in-out;
+
+  &:hover {
+    background-color: rgba(0, 184, 124, 0.8);
+    border-color: rgba(0, 184, 124, 0.8);
+  }
 `;
 
 export default Button;
