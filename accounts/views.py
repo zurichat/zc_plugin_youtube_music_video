@@ -95,7 +95,9 @@ class PluginInfo(View):
 class Test_report(View):
 
     def get(self, request):
-        return render(request,"report/report.html")
+
+        html_content = open("reports/report.html")
+        return  HttpResponse(html_content)       #render(request,"report/report.html")
 
 class SongsView(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin ):
 
