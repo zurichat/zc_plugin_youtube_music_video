@@ -6,6 +6,7 @@ import styled from "styled-components";
 import avatarSvg from "../media/header-avatar.svg";
 import groupIconSvg from "../media/header-group-icon.svg";
 
+
 const roomHeader = () => {
   return (
     <Wrapper className="header">
