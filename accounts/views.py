@@ -92,6 +92,7 @@ class PluginInfo(View):
         }
         return JsonResponse(data)
 
+#create views for songs model
 
 class SongsView(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin ):
 
