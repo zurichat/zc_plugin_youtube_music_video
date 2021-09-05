@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
+import ChatInput from "./common/chatInput";
 
 import getChats from "../mock-data/chats";
 
@@ -12,10 +13,11 @@ function Chat() {
     <Wrapper>
       <ChatHeader />
       <div className="chat-item-group">
-        {getChats().map((chat) => (
-          <ChatItem {...chat} />
+        {getChats().map((chat, index) => (
+          <ChatItem key={index} {...chat} />
         ))}
       </div>
+      <ChatInput />
     </Wrapper>
   );
 }
@@ -27,10 +29,11 @@ const Wrapper = styled.div`
     max-height: 400px;
   }
   .chat-item-group::-webkit-scrollbar {
-    width: 4px;
+    width: 3px;
   }
   .chat-item-group::-webkit-scrollbar-thumb {
     background-color: #08ffae;
+    width: 3px;
   }
 `;
 

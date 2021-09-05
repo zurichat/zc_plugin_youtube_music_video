@@ -7,7 +7,7 @@ import Like from "./like";
 
 import option from "../../media/option.svg";
 
-function PlaylistItem({ title, addedBy, duration, liked, albumCover }) {
+function PlaylistItem({ title, addedBy, duration, liked, albumCover, onLike }) {
   return (
     <Wrapper>
       <img src={albumCover} alt="album cover" className="item-albumCover" />
@@ -21,7 +21,7 @@ function PlaylistItem({ title, addedBy, duration, liked, albumCover }) {
         <div className="item-duration">{duration} mins</div>
 
         <div className="item-icons">
-          <Like liked={liked} />
+          <Like liked={liked} onLike={onLike} />
           <img
             src={option}
             alt="option img"
@@ -37,6 +37,13 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   height: 77px;
+  font-family: "Lato", sans-serif;
+  /* box-shadow: 0 4px 4px rgba(0, 36, 24, 0.04); */
+  transition: all 150ms ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 184, 124, 0.3);
+  }
 
   .item-albumCover {
     display: block;
@@ -54,7 +61,7 @@ const Wrapper = styled.div`
   }
 
   .item-title {
-    font-weight: 500;
+    font-weight: 700;
     font-size: 16px;
   }
 

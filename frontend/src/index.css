@@ -1,3 +1,13 @@
 body {
+  overflow-y: scroll;
   background-color: rgb(240, 240, 240);
+}
+
+body::-webkit-scrollbar {
+  width: 5px;
+}
+
+body::-webkit-scrollbar-thumb {
+  width: 6px;
+  background-color: #00b87c;
 }
