@@ -6,7 +6,7 @@ import styled from "styled-components";
 import chatIcon from "../../media/chat.svg";
 import chatClose from "../../media/close.svg";
 
-function ChatHeader() {
+function ChatHeader({ onChat }) {
   return (
     <Wrapper>
       <div className="chatHeader__left">
@@ -14,7 +14,12 @@ function ChatHeader() {
         <div className="chatHeader__title">Chats</div>
       </div>
 
-      <img src={chatClose} alt="chat" className="chatHeader__close" />
+      <img
+        src={chatClose}
+        alt="chat"
+        className="chatHeader__close"
+        onClick={onChat}
+      />
     </Wrapper>
   );
 }
