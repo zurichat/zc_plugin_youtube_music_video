@@ -27,7 +27,7 @@ urlpatterns = [
     path("docs/", include_docs_urls(title="Rest API")),
     path("schema/", schema_view),
     path("info/", PluginInfo.as_view(), name="info"),
-     path("testreport/", Test_report.as_view(), name="report"),
+    path("testreport/", Test_report.as_view(), name="report"),
     path("", include('accounts.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
