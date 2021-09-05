@@ -94,6 +94,7 @@ class PluginInfo(View):
         }
         return JsonResponse(data)
 
+
 class Test_report(View):
 
     template_name = "report/report.html"
@@ -102,6 +103,10 @@ class Test_report(View):
 
        
        return render(request,self.template_name)
+
+#create views for songs model
+#A dictionary was created to add dummy data
+
 
 class SongsView(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin ):
 
