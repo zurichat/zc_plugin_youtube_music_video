@@ -6,7 +6,7 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
 from frontend.views import IndexView
 from accounts.api import SidebarView
-from accounts.views import PluginInfo
+from accounts.views import PluginInfo, test_report
 
 
 schema_view = get_schema_view(title="Rest API")
@@ -23,4 +23,5 @@ urlpatterns = [
     path("docs/", include_docs_urls(title="Rest API")),
     path("schema/", schema_view),
     path("info/", PluginInfo.as_view(), name="info"),
+    path("testreport/", test_report, name="report"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
