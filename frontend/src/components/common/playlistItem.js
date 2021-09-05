@@ -41,6 +41,14 @@ function PlaylistItem({
   );
 }
 
+const media = {
+  mobile: "@media(max-width: 768px)",
+};
+
+const mediaTwo = {
+  mobile: "@media(max-width: 975px)",
+};
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -48,6 +56,16 @@ const Wrapper = styled.div`
 
   transition: all 150ms ease-in-out;
   margin-bottom: 3px;
+
+  ${media.mobile} {
+    width: 375px;
+    height: 77px;
+    padding: 1rem;
+  }
+
+  ${mediaTwo.mobile} {
+    padding: 1rem;
+  }
 
   &:hover {
     box-shadow: 0 4px 6px rgba(0, 184, 124, 0.3);
@@ -58,6 +76,12 @@ const Wrapper = styled.div`
     margin-right: 20px;
     width: 70px;
     height: 100%;
+
+    ${media.mobile} {
+      width: 32px;
+      height: 32px;
+      margin-right: 0.5rem;
+    }
   }
 
   .item-info {
@@ -80,6 +104,11 @@ const Wrapper = styled.div`
 
   .item-addedBy {
     font-size: 13px;
+
+    ${media.mobile} {
+      width: 100%;
+      height: 11px;
+    }
   }
 
   .item-group {
@@ -95,6 +124,13 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 60px;
+
+    ${media.mobile} {
+      width: 30px;
+      height: auto;
+      padding: 0.5rem;
+      justify-content: center;
+    }
   }
 
   @media screen and (max-width: 780px) {
