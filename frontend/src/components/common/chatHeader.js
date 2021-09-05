@@ -49,6 +49,7 @@ const Wrapper = styled.div`
   .chatHeader__close {
     width: 30px;
     height: 30px;
+    cursor: pointer;
   }
 `;
 
