@@ -7,7 +7,15 @@ import Like from "./like";
 
 import option from "../../media/option.svg";
 
-function PlaylistItem({ title, addedBy, duration, liked, albumCover }) {
+function PlaylistItem({
+  title,
+  addedBy,
+  duration,
+  liked,
+  albumCover,
+  onLike,
+  likes,
+}) {
   return (
     <Wrapper>
       <img src={albumCover} alt="album cover" className="item-albumCover" />
@@ -19,9 +27,9 @@ function PlaylistItem({ title, addedBy, duration, liked, albumCover }) {
 
       <div className="item-group">
         <div className="item-duration">{duration} mins</div>
-
+        <div className="item-like">{likes} likes</div>
         <div className="item-icons">
-          <Like liked={liked} />
+          <Like liked={liked} onLike={onLike} />
           <img
             src={option}
             alt="option img"
@@ -36,7 +44,14 @@ function PlaylistItem({ title, addedBy, duration, liked, albumCover }) {
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
-  height: 77px;
+  background: #fff;
+
+  transition: all 150ms ease-in-out;
+  margin-bottom: 3px;
+
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 184, 124, 0.3);
+  }
 
   .item-albumCover {
     display: block;
@@ -50,12 +65,17 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 70%;
+    min-height: 70%;
   }
 
   .item-title {
-    font-weight: 500;
-    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 6px;
+    width: 200px;
   }
 
   .item-addedBy {
@@ -67,6 +87,7 @@ const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 1rem;
   }
 
   .item-icons {
@@ -74,6 +95,31 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 60px;
+  }
+
+  @media screen and (max-width: 780px) {
+    .item-group {
+      flex-basis: 60px;
+    }
+    .item-duration,
+    .item-like {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 460px) {
+    .item-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+
+    .item-albumCover {
+      display: block;
+      margin-right: 10px;
+      width: 50px;
+      height: 100%;
+    }
   }
 `;
 

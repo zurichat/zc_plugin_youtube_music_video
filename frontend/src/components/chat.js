@@ -4,31 +4,40 @@ import styled from "styled-components";
 
 import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
-import chatItem from "../media/chatItem.svg";
+import ChatInput from "./common/chatInput";
+
+import getChats from "../mock-data/chats";
 
 function Chat() {
-  const chat = {
-    name: "Amara",
-    time: 3,
-    message: "If you ask me, I would say it is so overrated, but...",
-    avatar: chatItem,
-  };
-
   return (
     <Wrapper>
       <ChatHeader />
       <div className="chat-item-group">
-        <ChatItem {...chat} />
-        <ChatItem {...chat} />
-        <ChatItem {...chat} />
+        {getChats().map((chat, index) => (
+          <ChatItem key={index} {...chat} />
+        ))}
       </div>
+      <ChatInput />
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   .chat-item-group {
+    overflow-y: scroll;
     margin-top: 10px;
+    max-height: 400px;
+  }
+  .chat-item-group::-webkit-scrollbar {
+    width: 3px;
+  }
+  .chat-item-group::-webkit-scrollbar-thumb {
+    background-color: #08ffae;
+    width: 3px;
+  }
+
+  @media screen and (max-width: 1000px) {
+    display: none;
   }
 `;
 
