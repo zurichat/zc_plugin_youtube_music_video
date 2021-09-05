@@ -18,7 +18,7 @@ class CommentSerializer(serializers.Serializer):
             setattr(instance, field, value)
         return instance
 
-
+#song model serializer
 class SongsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Songs
