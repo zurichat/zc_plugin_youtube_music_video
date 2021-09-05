@@ -5,11 +5,15 @@ import styled from "styled-components";
 
 import avatarSvg from "../media/header-avatar.svg";
 import groupIconSvg from "../media/header-group-icon.svg";
+import hamburger from "../media/hamburger.svg";
 
 const roomHeader = () => {
   return (
     <Wrapper className="header">
       <div className="header-left">
+        <img src= {hamburger}
+        alt="hamburger"
+        className="hamburger"/>
         <img
           src={groupIconSvg}
           alt="header-group-icon"
@@ -39,6 +43,10 @@ const Wrapper = styled.div`
   color: #27ae60;
   padding: 20px;
   margin-bottom: 10px;
+
+.hamburger {
+  display: none;
+}
 
   .header-group-icon {
     display: block;
@@ -70,6 +78,24 @@ const Wrapper = styled.div`
     font-size: 18px;
     margin-right: 8px;
   }
+  @media (max-width: 768px) {
+    background: #27ae60;
+    color: #ffffff;
+
+    .hamburger {
+  display: block;
+  color: #ffffff;
+  width: 0.5rem;
+}
+    .header-group-icon {
+      display: none;
+    }
+
+    .header-group-icon-mobile{
+      display: block;
+    }
+  }
+
 `;
 
 export default roomHeader;
