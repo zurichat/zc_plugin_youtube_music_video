@@ -18,6 +18,7 @@ const song = {
   duration: 4.05,
   liked: false,
   albumCover,
+  likes: 340,
 };
 
 const custom = {
@@ -27,10 +28,11 @@ const custom = {
   duration: 3.05,
   liked: true,
   albumCover: customCover,
+  likes: 300,
 };
 
 function Playlist() {
-  const [player, setPlayer] = useState(true);
+  const [player, setPlayer] = useState(false);
   const [songs, setSongs] = useState([custom, song, { ...song, id: "1" }]);
 
   const handleLike = (song) => {
@@ -44,7 +46,7 @@ function Playlist() {
     <Wrapper>
       <PlaylistHeader />
       {player && <Player />}
-      <div>
+      <div className="playlist-item-group">
         {songs.map((song, index) => (
           <PlaylistItem key={index} {...song} onLike={() => handleLike(song)} />
         ))}
@@ -56,6 +58,14 @@ function Playlist() {
 const Wrapper = styled.div`
   background: #fff;
   padding: 20px;
+
+  .playlist-item-group {
+    background-color: rgb(240, 240, 240);
+  }
+
+  @media (max-width: 370px) {
+    padding: 5px;
+  }
 `;
 
 export default Playlist;

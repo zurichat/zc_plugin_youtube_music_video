@@ -19,10 +19,15 @@ function MusicRoom() {
 
 const Wrapper = styled.div`
   display: flex;
+  margin: 0;
 
   .room-main {
     flex-grow: 1;
     margin-right: 10px;
+  }
+
+  @media (max-width: 600px) {
+    margin-right: 0;
   }
 `;
 
