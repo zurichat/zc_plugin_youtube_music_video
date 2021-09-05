@@ -1,31 +1,31 @@
 // @ts-nocheck
 
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-import Like from './like';
+import Like from "./like";
 
-import option from '../../media/option.svg';
+import option from "../../media/option.svg";
 
-function PlaylistItem({ title, addedBy, duration, liked, albumCover }) {
+function PlaylistItem({ title, addedBy, duration, liked, albumCover, onLike }) {
   return (
     <Wrapper>
-      <img src={albumCover} alt='album cover' className='item-albumCover' />
+      <img src={albumCover} alt="album cover" className="item-albumCover" />
 
-      <div className='item-info'>
-        <div className='item-title'>{title}</div>
-        <div className='item-addedBy'>Added by {addedBy}</div>
+      <div className="item-info">
+        <div className="item-title">{title}</div>
+        <div className="item-addedBy">Added by {addedBy}</div>
       </div>
 
-      <div className='item-group'>
-        <div className='item-duration'>{duration} mins</div>
+      <div className="item-group">
+        <div className="item-duration">{duration} mins</div>
 
-        <div className='item-icons'>
-          <Like liked={liked} />
+        <div className="item-icons">
+          <Like liked={liked} onLike={onLike} />
           <img
             src={option}
-            alt='option img'
-            style={{ cursor: 'pointer', width: '20px', height: '20px' }}
+            alt="option img"
+            style={{ cursor: "pointer", width: "20px", height: "20px" }}
           />
         </div>
       </div>
@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   height: 77px;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   /* box-shadow: 0 4px 4px rgba(0, 36, 24, 0.04); */
   transition: all 150ms ease-in-out;
 
