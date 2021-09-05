@@ -12,6 +12,8 @@ from .serializers import SongsSerializer
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
+import os
+
 
 #A dictionary created for the sake of passing dummy data
 # actual data would be gotten from the database when connected
@@ -92,8 +94,19 @@ class PluginInfo(View):
         }
         return JsonResponse(data)
 
+
+class Test_report(View):
+
+    template_name = "report/report.html"
+
+    def get(self, request):
+
+       
+       return render(request,self.template_name)
+
 #create views for songs model
 #A dictionary was created to add dummy data
+
 
 class SongsView(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin ):
 
