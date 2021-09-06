@@ -1,5 +1,5 @@
 body {
-  overflow-y: scroll;
+  overflow-y: hidden;
   background-color: rgb(240, 240, 240);
   min-width: 352px;
   padding: 0;
