@@ -6,10 +6,13 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
 from frontend.views import IndexView
 from accounts.api import SidebarView
-from accounts.views import PluginInfo
+from accounts.views import PluginInfo, Test_report
 from accounts.views import SongsView
+from accounts.views import api_playlist_views 
+
 
 schema_view = get_schema_view(title="Rest API")
+
 
 urlpatterns = [
     # coming from frontend app using react every thing we connect in App.js in components will be
@@ -25,6 +28,10 @@ urlpatterns = [
     path("auth/registration/", include("dj_rest_auth.registration.urls")),
     path("docs/", include_docs_urls(title="Rest API")),
     path("schema/", schema_view),
-    path("", include('accounts.urls')),
     path("info/", PluginInfo.as_view(), name="info"),
+    path("playlist/", api_playlist_views, name="playlist"),
+    path("testreport/", Test_report.as_view(), name="report"),
+
+    path("", include('accounts.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
