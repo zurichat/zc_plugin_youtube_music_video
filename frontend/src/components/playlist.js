@@ -8,24 +8,15 @@ import Player from "./player";
 import PlaylistHeader from "./common/playlistHeader";
 import PlaylistItem from "./common/playlistItem";
 
-import albumCover from "../media/listAlbumCover.svg";
 import customCover from "../media/customCover.svg";
 
-const song = {
-  id: "2",
-  title: "Essence (ft Tems) - Wizkid",
-  addedBy: "smoothice",
-  duration: 4.05,
-  liked: false,
-  albumCover,
-  likes: 340,
-};
+import getSongs from "../mock-data/songs";
 
 const custom = {
-  id: "3",
+  id: "3kfkfk",
   title: "Team Pythagoras (ft Imhade) - Vincent",
   addedBy: "Justice",
-  duration: 3.05,
+  duration: "3:05",
   liked: true,
   albumCover: customCover,
   likes: 300,
@@ -33,7 +24,7 @@ const custom = {
 
 function Playlist() {
   const [player, setPlayer] = useState(false);
-  const [songs, setSongs] = useState([custom, song, { ...song, id: "1" }]);
+  const [songs, setSongs] = useState([custom, ...getSongs()]);
 
   const handleLike = (song) => {
     const index = songs.indexOf(song);
@@ -56,8 +47,18 @@ function Playlist() {
 }
 
 const Wrapper = styled.div`
+  overflow-y: scroll;
   background: #fff;
   padding: 20px;
+  height: 540px;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #00b87c;
+  }
 
   .playlist-item-group {
     background-color: rgb(240, 240, 240);
