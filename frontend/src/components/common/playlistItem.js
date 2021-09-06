@@ -7,15 +7,9 @@ import Like from "./like";
 
 import option from "../../media/option.svg";
 
-function PlaylistItem({
-  title,
-  addedBy,
-  duration,
-  liked,
-  albumCover,
-  onLike,
-  likes,
-}) {
+function PlaylistItem(props) {
+  const { title, addedBy, duration, liked, albumCover, onLike, likes } = props;
+
   return (
     <Wrapper>
       <img src={albumCover} alt="album cover" className="item-albumCover" />
