@@ -14,7 +14,7 @@ from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from .serializers import PlaylistSerializer
-from models import Playlist
+from .models import Playlist
 
 #A dictionary created for the sake of passing dummy data
 # actual data would be gotten from the database when connected
