@@ -4,10 +4,12 @@ import chatsReducer from './chatsSlice';
 import likedSongsReducer from './likedSongsSlice';
 import uiReducer from './uiSlice';
 
-export default reducer = {
+const reducer = {
   users: usersReducer,
   chats: chatsReducer,
   songs: songsReducer,
   likedSongs: likedSongsReducer,
   ui: uiReducer,
 }
+
+export default reducer

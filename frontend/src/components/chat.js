@@ -9,7 +9,7 @@ import ChatInput from "./common/chatInput";
 
 import getChats from "../mock-data/chats";
 
-import { selectAllChats } from '../features/chatsSlice';
+import { selectAllChats } from '../store/chatsSlice';
 
 function Chat({ onChat }) {
   const allChats = useSelector(selectAllChats);
