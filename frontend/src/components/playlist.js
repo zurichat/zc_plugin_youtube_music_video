@@ -22,7 +22,7 @@ const custom = {
   likes: 300,
 };
 
-function Playlist() {
+function Playlist({ onPlay }) {
   const [player, setPlayer] = useState(false);
   const [songs, setSongs] = useState([custom, ...getSongs()]);
 

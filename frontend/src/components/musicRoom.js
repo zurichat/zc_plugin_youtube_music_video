@@ -6,15 +6,18 @@ import styled from "styled-components";
 import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
 import Chat from "./chat";
+import Player from "./player";
 
 function MusicRoom() {
   const [chat, setChat] = useState(false);
+  const [player, setPlayer] = useState(false);
 
   return (
     <Wrapper chat={chat}>
       <div className="room-main">
         <RoomHeader onChat={() => setChat(!chat)} />
-        <Playlist />
+        {player && <Player />}
+        <Playlist onPlay={() => setPlayer(!player)} />
       </div>
       <div className="room-chat-container" id={chat ? "show" : ""}>
         <Chat onChat={() => setChat(!chat)} />
