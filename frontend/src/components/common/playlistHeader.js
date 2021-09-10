@@ -6,7 +6,7 @@ import Button from "./button";
 
 import Headset from "../../media/playlistIcon.svg";
 
-const PlaylistHeader = () => {
+const PlaylistHeader = ({ onPlay }) => {
   return (
     <Wrapper>
       <div className="playlist-img-div">
@@ -24,12 +24,14 @@ const PlaylistHeader = () => {
         <div className="playlist-summary">10 songs, 38 min 33 sec</div>
         <div className="playlist-button-group">
           <Button className="playlist-button md" color="secondary">
-            Add a song to the playlist
+            <span className="playlist-button-desktop-text">
+              Add a song to the playlist
+            </span>
+            <span className="playlist-button-mobile-text">Add song</span>
           </Button>
-          <Button className="playlist-button hide" color="secondary">
-            Add a song
+          <Button className="playlist-button" onClick={onPlay}>
+            Play
           </Button>
-          <Button className="playlist-button ">Play</Button>
         </div>
       </div>
     </Wrapper>
@@ -73,7 +75,7 @@ const Wrapper = styled.div`
     margin-right: 15px !important;
   }
 
-  .playlist-button.hide {
+  .playlist-button-mobile-text {
     display: none;
   }
 
@@ -85,11 +87,11 @@ const Wrapper = styled.div`
       width: 100% !important;
     }
 
-    .playlist-button.hide {
-      display: block;
-    }
-    .playlist-button.md {
+    .playlist-button-mobile-text {
       display: none;
+    }
+    .playlist-button-mobile-text {
+      display: inline;
     }
   }
 

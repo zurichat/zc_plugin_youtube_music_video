@@ -22,9 +22,9 @@ const custom = {
   likes: 300,
 };
 
-function Playlist({ onPlay }) {
-  const [player, setPlayer] = useState(false);
+function Playlist() {
   const [songs, setSongs] = useState([custom, ...getSongs()]);
+  const [player, setPlayer] = useState(false);
 
   const handleLike = (song) => {
     const index = songs.indexOf(song);
@@ -35,7 +35,7 @@ function Playlist({ onPlay }) {
 
   return (
     <Wrapper>
-      <PlaylistHeader />
+      <PlaylistHeader onPlay={() => setPlayer(!player)} />
       {player && <Player />}
       <div className="playlist-item-group">
         {songs.map((song, index) => (

@@ -11,7 +11,7 @@ function Player() {
     <Wrapper>
       <div className="player-now">Now Playing</div>
       <div className="player-player">
-        <ReactPlayer url={url} />
+        <ReactPlayer url={url} width="100%" />
       </div>
       <div className="player-title">Title</div>
     </Wrapper>
