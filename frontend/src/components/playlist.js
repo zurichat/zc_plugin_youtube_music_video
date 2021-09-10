@@ -13,7 +13,7 @@ import customCover from '../media/customCover.svg';
 
 import getSongs from '../mock-data/songs';
 
-import { selectAllSongs } from '../store/songsSlice';
+import { selectAllSongs } from '../features/songsSlice';
 
 
 const custom = {
