@@ -32,3 +32,9 @@ class SidebarView(APIView):
             },
         }
         return Response(static_info)
+
+
+class Comment(object):
+    def __init__(self, **kwargs):
+        for field in ('id', 'username','created_at', 'message'):
+            setattr(self, field, kwargs.get(field, None))
