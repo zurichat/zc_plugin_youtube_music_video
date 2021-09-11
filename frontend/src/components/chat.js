@@ -1,14 +1,17 @@
 // @ts-nocheck
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
 import ChatInput from "./common/chatInput";
 
 import getChats from "../mock-data/chats";
+import { selectAllChats } from '../store/chatsSlice';
 
 function Chat({ onChat }) {
+  const getAllChats = useSelector(selectAllChats);
   return (
     <Wrapper>
       <ChatHeader onChat={onChat} />

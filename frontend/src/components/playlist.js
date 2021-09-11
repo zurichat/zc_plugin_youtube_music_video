@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { selectAllSongs } from '../store/songsSlice';
 
 import Player from './player';
 
@@ -25,7 +27,8 @@ const custom = {
 function Playlist() {
   const [player, setPlayer] = useState(false);
   const [songs, setSongs] = useState([custom, ...getSongs()]);
-
+  const getAllSongs = useSelector(selectAllSongs);
+  
   const handleLike = (song) => {
     const index = songs.indexOf(song);
     const list = [...songs];
