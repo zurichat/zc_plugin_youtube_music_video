@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
 import Chat from "./chat";
 
@@ -9,7 +8,6 @@ function MusicRoom() {
   return (
     <Wrapper>
       <div className="room-main">
-        <RoomHeader />
         <Playlist />
       </div>
       <div className="room-chat-container">

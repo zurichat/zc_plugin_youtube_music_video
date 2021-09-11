@@ -23,18 +23,23 @@ function Player() {
     store.dispatch({ type: playing.type, payload: { playing: false } });
   };
 
-  const url = "https://www.youtube.com/embed/vbYB4rddM-8";
+  const urls = ["https://www.youtube.com/embed/vbYB4rddM-8"];
 
   return (
     <Wrapper>
       <div className="player-now">Now Playing</div>
-      <div className="player-player">
+      <div className="player-wrapper">
         <ReactPlayer
-          url={url}
+          url={urls}
+          className="react-player"
           width="100%"
+          height="100%"
           playing={player.playing}
           onPlay={handlePlay}
           onPause={handlePause}
+          pip={true}
+          stopOnUnmount={false}
+          config={{ playerVars: { showinfo: 1 } }}
         />
       </div>
       <div className="player-title">Title of song</div>
@@ -47,12 +52,15 @@ function Player() {
 const Wrapper = styled.div`
   height: 100%;
 
-  .player-player {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: black;
+  .player-wrapper {
+    position: relative;
+    padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+  }
+
+  .react-player {
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   .player-now,
