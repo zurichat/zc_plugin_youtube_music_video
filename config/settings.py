@@ -125,7 +125,7 @@ USE_TZ = True
 
 STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [str(BASE_DIR.joinpath("frontend/static"))]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/static/frontend/main.js')]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_ROOT = "./media"
 MEDIA_URL = "/media/"
@@ -172,6 +172,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # if you have seprate react app
     "http://127.0.0.1:9000",
     "http://159.65.123.65",
+    "https://www.youtube.com"
 ]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
