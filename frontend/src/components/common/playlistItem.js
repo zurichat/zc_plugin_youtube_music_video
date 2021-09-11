@@ -1,35 +1,36 @@
-// @ts-nocheck
+import React from "react";
+import styled from "styled-components";
 
-import React from 'react';
-import styled from 'styled-components';
+import Like from "./like";
 
-import Like from './like';
-
-import option from '../../media/option.svg';
+// @ts-ignore
+import option from "../../media/option.svg";
 
 function PlaylistItem(props) {
-  const { title, addedBy, duration, liked, albumCover, onLike, likes } = props;
+  const { title, addedBy, duration, liked, albumCover } = props;
+
+  const handleLike = () => {};
 
   return (
     <Wrapper>
-      <img src={albumCover} alt='album cover' className='item-albumCover' />
+      <img src={albumCover} alt="album cover" className="item-albumCover" />
 
-      <div className='item-info'>
-        <div className='item-title'>{title}</div>
-        <div className='item-addedBy'>
+      <div className="item-info">
+        <div className="item-title">{title}</div>
+        <div className="item-addedBy">
           Added by <span>{addedBy}</span>
         </div>
       </div>
 
-      <div className='item-group'>
-        <div className='item-duration'>{duration} mins</div>
-        <div className='item-like'>{likes} likes</div>
-        <div className='item-icons'>
-          <Like liked={liked} onLike={onLike} />
+      <div className="item-group">
+        <div className="item-duration">{duration} mins</div>
+        <div className="item-like">{235} likes</div>
+        <div className="item-icons">
+          <Like liked={liked} onLike={handleLike} />
           <img
             src={option}
-            alt='option img'
-            style={{ cursor: 'pointer', width: '20px', height: '20px' }}
+            alt="option img"
+            style={{ cursor: "pointer", width: "20px", height: "20px" }}
           />
         </div>
       </div>
@@ -41,7 +42,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   background: #fff;
-  font-family: 'Lato', sans-serif;
+  font-family: "Lato", sans-serif;
   transition: all 200ms ease-in-out;
   margin-bottom: 8px;
   box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04);

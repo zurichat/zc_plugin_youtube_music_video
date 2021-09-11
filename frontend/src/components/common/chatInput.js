@@ -30,6 +30,7 @@ const Wrapper = styled.div`
   border: 1px solid #08ffae;
   background-color: #fff;
   padding: 0 12px;
+  z-index: 111;
 
   .chat-input {
     flex-grow: 1;
