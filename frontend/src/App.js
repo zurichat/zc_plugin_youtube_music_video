@@ -1,16 +1,18 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 import MusicRoom from "./components/musicRoom";
 
-class App extends Component {
-  render() {
-    return (
-      <Wrapper>
-        <MusicRoom />
-      </Wrapper>
-    );
-  }
+import chatMediaQuery from "./utils/chatMedia";
+
+function App() {
+  chatMediaQuery(); // toggle chat display based on screen size.
+
+  return (
+    <Wrapper>
+      <MusicRoom />
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`
