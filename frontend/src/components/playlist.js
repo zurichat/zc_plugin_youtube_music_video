@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   overflow-y: scroll;
   background: #fff;
   padding: 20px;
-  height: 540px;
+  height: 83vh;
 
   &::-webkit-scrollbar {
     width: 3px;
@@ -42,10 +42,10 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 500px) {
-    height: 1500px;
+    height: 100%;
   }
 
-  @media (max-width: 370px) {
+  @media (max-width: 400px) {
     padding: 5px;
   }
 `;

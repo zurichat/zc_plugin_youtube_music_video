@@ -57,8 +57,8 @@ const roomHeader = () => {
 };
 
 const Wrapper = styled.div`
-  position: static;
-  top: 1px;
+  position: sticky;
+  top: -1px;
   display: flex;
   justify-content: space-between;
   background: #ffffff;
@@ -67,6 +67,7 @@ const Wrapper = styled.div`
   color: #27ae60;
   padding: 20px;
   margin-bottom: 10px;
+  z-index: 1111;
 
   .header-icon {
     display: block;
