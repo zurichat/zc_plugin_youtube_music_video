@@ -87,7 +87,7 @@ const Wrapper = styled.div`
       width: 100% !important;
     }
 
-    .playlist-button-mobile-text {
+    .playlist-button-desktop-text {
       display: none;
     }
     .playlist-button-mobile-text {

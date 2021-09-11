@@ -24,11 +24,13 @@ function MusicRoom() {
 }
 
 const Wrapper = styled.div`
-  position: relative;
+  overflow: hidden;
   display: flex;
   margin: 0;
 
   .room-main {
+    overflow: hidden;
+    position: relative;
     flex-grow: 1;
     margin-right: 10px;
   }

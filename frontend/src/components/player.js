@@ -1,10 +1,10 @@
-// @ts-nocheck
-
 import React from "react";
 import ReactPlayer from "react-player";
 import styled from "styled-components";
 
-function Player() {
+function Player({ play }) {
+  if (!play) return null;
+
   const url = "https://www.youtube.com/watch?v=nBtDsQ4fhXY";
 
   return (
@@ -13,7 +13,7 @@ function Player() {
       <div className="player-player">
         <ReactPlayer url={url} width="100%" />
       </div>
-      <div className="player-title">Title</div>
+      <div className="player-title">Title of song</div>
     </Wrapper>
   );
 }
