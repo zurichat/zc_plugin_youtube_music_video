@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
 import Player from './player';
 
@@ -12,9 +11,6 @@ import PlaylistItem from './common/playlistItem';
 import customCover from '../media/customCover.svg';
 
 import getSongs from '../mock-data/songs';
-
-import { selectAllSongs } from '../store/songsSlice';
-
 
 const custom = {
   id: '3kfkfk',
@@ -29,14 +25,12 @@ const custom = {
 function Playlist() {
   const [player, setPlayer] = useState(false);
   const [songs, setSongs] = useState([custom, ...getSongs()]);
-  const allSongs = useSelector(selectAllSongs);
 
   const handleLike = (song) => {
     const index = songs.indexOf(song);
     const list = [...songs];
     list[index] = { ...song, liked: !song.liked };
     setSongs(list);
-    dispatch(addSong(list))
   };
 
   return (
