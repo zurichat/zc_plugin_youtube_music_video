@@ -1,11 +1,14 @@
-// @ts-nocheck
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+// @ts-ignore
 import avatarSvg from "../media/header-avatar.svg";
+// @ts-ignore
 import groupIconSvg from "../media/header-group-icon.svg";
+// @ts-ignore
 import menu from "../media/menu.svg";
+// @ts-ignore
 import message from "../media/message.svg";
 
 const roomHeader = ({ onChat }) => {

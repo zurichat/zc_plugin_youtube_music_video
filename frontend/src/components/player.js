@@ -1,32 +1,38 @@
-// @ts-nocheck
-
 import React from "react";
-import YouTube from "react-youtube";
+import ReactPlayer from "react-player";
 import styled from "styled-components";
 
-function Player() {
-  const handleReady = (event) => {
-    event.target.playVideo();
-  };
+function Player({ play }) {
+  if (!play) return null;
 
   const url = "https://www.youtube.com/watch?v=nBtDsQ4fhXY";
 
   return (
     <Wrapper>
       <div className="player-now">Now Playing</div>
-      <YouTube videoId="nBtDsQ4fhXY" onReady={handleReady} />
-      <div className="player-title">Title</div>
+      <div className="player-player">
+        <ReactPlayer url={url} width="100%" />
+      </div>
+      <div className="player-title">Title of song</div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 18px;
-  font-weight: 500;
+  .player-player {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: black;
+  }
+
+  .player-now,
+  .player-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 10px 0;
+  }
 `;
 
 export default Player;
