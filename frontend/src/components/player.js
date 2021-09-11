@@ -1,26 +1,37 @@
 import React from "react";
-import ReactPlayer from "react-player/youtube";
+import ReactPlayer from "react-player";
 import styled from "styled-components";
 
-const url = "https://www.youtube.com/watch?v=NmugSMBh_iI";
+function Player({ play }) {
+  if (!play) return null;
 
-function Player() {
+  const url = "https://www.youtube.com/watch?v=nBtDsQ4fhXY";
+
   return (
     <Wrapper>
       <div className="player-now">Now Playing</div>
-      <div className="player-container">{/* <ReactPlayer url={url} /> */}</div>
-      <div className="player-title">Title</div>
+      <div className="player-player">
+        <ReactPlayer url={url} width="100%" />
+      </div>
+      <div className="player-title">Title of song</div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  font-size: 18px;
-  font-weight: 500;
+  .player-player {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: black;
+  }
 
-  .player-container {
-    width: 100%;
-    margin: 15px 0;
+  .player-now,
+  .player-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 10px 0;
   }
 `;
 

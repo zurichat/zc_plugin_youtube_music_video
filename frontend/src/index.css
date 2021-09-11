@@ -1,6 +1,8 @@
 body {
-  overflow-y: scroll;
+  overflow: hidden;
   background-color: rgb(240, 240, 240);
+  min-width: 390px;
+  padding: 0;
 }
 
 body::-webkit-scrollbar {

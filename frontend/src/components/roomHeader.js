@@ -1,63 +1,86 @@
-// @ts-nocheck
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+// @ts-ignore
 import avatarSvg from "../media/header-avatar.svg";
+// @ts-ignore
 import groupIconSvg from "../media/header-group-icon.svg";
+// @ts-ignore
+import menu from "../media/menu.svg";
+// @ts-ignore
+import message from "../media/message.svg";
 
-
-const roomHeader = () => {
+const roomHeader = ({ onChat }) => {
   return (
     <Wrapper className="header">
       <div className="header-left">
         <img
-          src={groupIconSvg}
-          alt="header-group-icon"
-          className="header-group-icon"
+          src={menu}
+          alt="icon"
+          className="header-icon menu"
+          onClick={onChat}
         />
+
+        <img src={groupIconSvg} alt="icon" className="header-icon hide-2" />
+
         <Link to="/" className="header-link">
           Music Room
         </Link>
       </div>
 
       <div className="header-right">
-        <div>
-          <img src={avatarSvg} alt="header-avatar" />
+        <div className="header-avatar">
+          <img
+            src={avatarSvg}
+            alt="avatars"
+            style={{ width: "100%", height: "100%" }}
+          />
         </div>
-        <div className="header-count">12</div>
+        <div className="header-user-count">12</div>
+        <div>
+          <img
+            src={message}
+            alt="message count"
+            className="header-message-count"
+          />
+        </div>
       </div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  position: static;
+  top: 1px;
   display: flex;
   justify-content: space-between;
   background: #ffffff;
-  border-radius: 1px 1px 0px 0px;
+  border-radius: 1px 0px;
   height: 60px;
   color: #27ae60;
   padding: 20px;
   margin-bottom: 10px;
 
-  .header-group-icon {
+  .header-icon {
     display: block;
+    margin-right: 10px;
+  }
+
+  .header-icon.menu {
+    display: none;
+    cursor: pointer;
   }
 
   .header-link {
     display: block;
-    margin-left: 10px;
-    font-family: Lato;
-    font-style: normal;
     font-weight: 700;
     line-height: 8px;
-    letter-spacing: 0px;
     padding: 12px;
     border-radius: 4px;
-    color: inherit;
-    text-decoration: none;
     font-size: 20px;
+    text-decoration: none;
+    color: inherit;
   }
 
   .header-right,
@@ -67,9 +90,43 @@ const Wrapper = styled.div`
     align-items: center;
   }
 
-  .header-count {
+  .header-avatar-div {
+    background-color: #ffffff;
+    width: 50px;
+    height: 50px;
+  }
+
+  .header-user-count {
     font-size: 18px;
     margin-right: 8px;
+  }
+
+  .header-message-count {
+    display: none;
+  }
+
+  @media screen and (max-width: 1000px) {
+    background-color: #27ae60;
+    color: #ffffff;
+
+    .header-icon.menu {
+      display: block;
+      margin-right: 20px;
+      fill: white;
+    }
+
+    .header-icon.hide-2 {
+      display: none;
+    }
+
+    .header-link {
+      color: white;
+      font-size: 18px;
+    }
+
+    .header-message-count {
+      display: block;
+    }
   }
 `;
 
