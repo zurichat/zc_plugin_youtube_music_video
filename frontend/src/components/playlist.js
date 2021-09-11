@@ -1,22 +1,25 @@
 // @ts-nocheck
 
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useSelector } from "react-redux";
 
-import Player from './player';
+import Player from "./player";
 
-import PlaylistHeader from './common/playlistHeader';
-import PlaylistItem from './common/playlistItem';
+import PlaylistHeader from "./common/playlistHeader";
+import PlaylistItem from "./common/playlistItem";
 
-import customCover from '../media/customCover.svg';
+import customCover from "../media/customCover.svg";
 
-import getSongs from '../mock-data/songs';
+import getSongs from "../mock-data/songs";
+
+import { selectAllSongs } from "../features/songsSlice";
 
 const custom = {
-  id: '3kfkfk',
-  title: 'Team Pythagoras (ft Imhade) - Vincent',
-  addedBy: 'Justice',
-  duration: '3:05',
+  id: "3kfkfk",
+  title: "Team Pythagoras (ft Imhade) - Vincent",
+  addedBy: "Justice",
+  duration: "3:05",
   liked: true,
   albumCover: customCover,
   likes: 300,
@@ -24,20 +27,21 @@ const custom = {
 
 function Playlist() {
   const [songs, setSongs] = useState([custom, ...getSongs()]);
-  const [player, setPlayer] = useState(false);
+  const allSongs = useSelector(selectAllSongs);
 
   const handleLike = (song) => {
     const index = songs.indexOf(song);
     const list = [...songs];
     list[index] = { ...song, liked: !song.liked };
     setSongs(list);
+    dispatch(addSong(list));
   };
 
   return (
     <Wrapper>
       <PlaylistHeader onPlay={() => setPlayer(!player)} />
       {player && <Player />}
-      <div className='playlist-item-group'>
+      <div className="playlist-item-group">
         {songs.map((song, index) => (
           <PlaylistItem key={index} {...song} onLike={() => handleLike(song)} />
         ))}

@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> dfcb3d56535a1c18dda17bd6be6a6f2a76d5b4fa
 
                                  Apache License
                            Version 2.0, January 2004
@@ -201,6 +204,7 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+<<<<<<< HEAD
 =======
 
                                  Apache License
@@ -405,3 +409,6 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 >>>>>>> 60826300bf4342bb3ab295f10a55b93b0e36fde7
+=======
+>>>>>>> 06bc8a90db1b2ec57ec526152b491e7ddd1fdbc2
+>>>>>>> dfcb3d56535a1c18dda17bd6be6a6f2a76d5b4fa
