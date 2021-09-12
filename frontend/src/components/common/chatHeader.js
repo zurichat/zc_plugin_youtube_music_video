@@ -1,12 +1,15 @@
-// @ts-nocheck
-
 import React from "react";
 import styled from "styled-components";
 
+import store from "../../store";
+import { toggleChat } from "../../store/uiSlice";
+
+// @ts-ignore
 import chatIcon from "../../media/chat.svg";
+// @ts-ignore
 import chatClose from "../../media/close.svg";
 
-function ChatHeader({ onChat }) {
+function ChatHeader() {
   return (
     <Wrapper>
       <div className="chatHeader__left">
@@ -18,7 +21,9 @@ function ChatHeader({ onChat }) {
         src={chatClose}
         alt="chat"
         className="chatHeader__close"
-        onClick={onChat}
+        onClick={() =>
+          store.dispatch({ type: toggleChat.type, payload: { chat: false } })
+        }
       />
     </Wrapper>
   );
@@ -52,9 +57,16 @@ const Wrapper = styled.div`
   }
 
   .chatHeader__close {
+    display: none;
     width: 30px;
     height: 30px;
     cursor: pointer;
+  }
+
+  @media (max-width: 1000px) {
+    .chatHeader__close {
+      display: inline;
+    }
   }
 `;
 

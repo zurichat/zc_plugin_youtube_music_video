@@ -1,47 +1,28 @@
-// @ts-nocheck
-
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+
+import { selectAllSongs } from "../store/songsSlice";
+import { getPlayerState } from "../store/playerSlice";
 
 import Player from "./player";
-
 import PlaylistHeader from "./common/playlistHeader";
-import PlaylistItem from "./common/playlistItem";
-
-import customCover from "../media/customCover.svg";
-
-import getSongs from "../mock-data/songs";
-
-const custom = {
-  id: "3kfkfk",
-  title: "Team Pythagoras (ft Imhade) - Vincent",
-  addedBy: "Justice",
-  duration: "3:05",
-  liked: true,
-  albumCover: customCover,
-  likes: 300,
-};
+import PlaylistItems from "./common/playlistItems";
+import EmptyScreen from "./common/emptyScreen";
 
 function Playlist() {
-  const [player, setPlayer] = useState(false);
-  const [songs, setSongs] = useState([custom, ...getSongs()]);
+  const songs = useSelector(selectAllSongs);
+  const { show } = useSelector(getPlayerState);
 
-  const handleLike = (song) => {
-    const index = songs.indexOf(song);
-    const list = [...songs];
-    list[index] = { ...song, liked: !song.liked };
-    setSongs(list);
-  };
+  if (songs.length === 0) return <EmptyScreen />;
 
   return (
     <Wrapper>
       <PlaylistHeader />
-      {player && <Player />}
-      <div className="playlist-item-group">
-        {songs.map((song, index) => (
-          <PlaylistItem key={index} {...song} onLike={() => handleLike(song)} />
-        ))}
-      </div>
+
+      <Player />
+
+      {!show && <PlaylistItems songs={songs} />}
     </Wrapper>
   );
 }
@@ -50,7 +31,7 @@ const Wrapper = styled.div`
   overflow-y: scroll;
   background: #fff;
   padding: 20px;
-  height: 540px;
+  height: 83vh;
 
   &::-webkit-scrollbar {
     width: 3px;
@@ -60,11 +41,11 @@ const Wrapper = styled.div`
     background-color: #00b87c;
   }
 
-  .playlist-item-group {
-    background-color: rgb(240, 240, 240);
+  @media (max-width: 500px) {
+    height: 100%;
   }
 
-  @media (max-width: 370px) {
+  @media (max-width: 400px) {
     padding: 5px;
   }
 `;
