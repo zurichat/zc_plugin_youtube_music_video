@@ -41,15 +41,24 @@ class SidebarView(APIView):
 class PluginInfoView(APIView):
     def get(self, request, *args, **kwargs):
         data = {
-            "plugin_name": "Youtube Music Video Plugin",
-            "description": "This is a plugin that allows individuals in an organization to add music and video links "
-                           "from YouTube. These links are added to a shared playlist so that anyone in that "
-                           "organization can listen to or watch any of the shared videos or songs.",
-            "plugin_structure": "Monolith",
-            "team name": "Team Pythagoras",
-            "plugin_url": "music.zuri.chat",
-            "information_url": "music.zuri.chat/info",
-            "sidebar_url": "music.zuri.chat/sidebar",
+            "message": "Plugin Information Retrieved",
+            "data": {
+                "type": "Plugin Information",
+                "plugin_info": {
+                    "name": "Youtube Music Video Plugin",
+                    "description": [
+                        "Zuri.chat plugin",
+                        "This plugin allows individuals in an organization to add music and video links "
+                        "from YouTube. These links are added to a shared playlist so that anyone in that "
+                        "organization can listen to or watch any of the shared videos or songs.",
+                    ],
+                },
+                "scaffold_structure": "Monolith",
+                "team": "HNG 8.0/Team Pythagoras",
+                "sidebar_url": "https://music.zuri.chat/api/v1/sideBar",
+                "ping_url": "https://music.zuri.chat/api/v1/ping",
+                "homepage_url": "https://music.zuri.chat/"
+            },
         }
         return Response(data)
 
