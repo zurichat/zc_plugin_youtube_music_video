@@ -5,6 +5,8 @@ const slice = createSlice({
   initialState: {
     isLoading: false,
     congrats: false,
+    chatMobile: false,
+    showChat: false,
   },
   reducers: {
     loaded: (state, action) => {
@@ -13,9 +15,14 @@ const slice = createSlice({
     congratsToggled: (state, action) => {
       state.congrats = action.payload.congrats;
     },
+    toggleChat: (state, action) => {
+      state.showChat = action.payload.chat;
+    },
   },
 });
 
-export const { loaded, congratsToggled } = slice.actions;
-export default slice.reducer;
+export const { loaded, congratsToggled, toggleChat } = slice.actions;
 
+export const getChatState = (state) => state.ui.showChat;
+
+export default slice.reducer;

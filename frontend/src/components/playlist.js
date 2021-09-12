@@ -3,28 +3,26 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import { selectAllSongs } from "../store/songsSlice";
+import { getPlayerState } from "../store/playerSlice";
 
 import Player from "./player";
 import PlaylistHeader from "./common/playlistHeader";
-import PlaylistItem from "./common/playlistItem";
+import PlaylistItems from "./common/playlistItems";
 import EmptyScreen from "./common/emptyScreen";
 
 function Playlist() {
-  const [player, setPlayer] = useState(false);
   const songs = useSelector(selectAllSongs);
+  const { show } = useSelector(getPlayerState);
 
-  const handleLike = (song) => {};
+  if (songs.length === 0) return <EmptyScreen />;
 
   return (
     <Wrapper>
-      <PlaylistHeader onPlay={() => setPlayer(!player)} />
-      <Player play={player} />
-      <div className="playlist-item-group">
-        {songs.length === 0 && <EmptyScreen />}
-        {songs.map((song, index) => (
-          <PlaylistItem key={index} {...song} onLike={() => handleLike(song)} />
-        ))}
-      </div>
+      <PlaylistHeader />
+
+      <Player />
+
+      {!show && <PlaylistItems songs={songs} />}
     </Wrapper>
   );
 }
@@ -33,7 +31,7 @@ const Wrapper = styled.div`
   overflow-y: scroll;
   background: #fff;
   padding: 20px;
-  height: 540px;
+  height: 83vh;
 
   &::-webkit-scrollbar {
     width: 3px;
@@ -44,10 +42,10 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 500px) {
-    height: 1600px;
+    height: 100%;
   }
 
-  @media (max-width: 370px) {
+  @media (max-width: 400px) {
     padding: 5px;
   }
 `;

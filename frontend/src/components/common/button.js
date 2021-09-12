@@ -1,15 +1,16 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-function Button({ color, children, className, onClick }) {
-  const Component = color === 'secondary' ? Secondary : Primary;
+function Button(props) {
+  const { color, children, className, onClick } = props;
+  const Component = color === "secondary" ? Secondary : Primary;
 
   // General styles for both buttons
   const styles = {
-    margin: '5px 0',
-    fontSize: '14px',
-    padding: '5px 10px',
-    fontFamily: 'Lato, sans-serif',
+    margin: "5px 0",
+    fontSize: "14px",
+    padding: "5px 10px",
+    fontFamily: "Lato, sans-serif",
   };
 
   return (

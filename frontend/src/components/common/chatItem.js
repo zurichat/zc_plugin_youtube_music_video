@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import React from "react";
 import styled from "styled-components";
 
@@ -23,7 +21,7 @@ function ChatItem({ name, avatar, time, message }) {
 export default ChatItem;
 
 export const Chat = styled.div`
-  width: 347px;
+  width: 100%;
   background: #ffffff;
   align-items: flex-start;
   padding: 10px;

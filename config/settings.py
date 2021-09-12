@@ -172,7 +172,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # if you have seprate react app
     "http://127.0.0.1:9000",
     "http://159.65.123.65",
-    "https://www.youtube.com"
+    # "https://www.youtube.com"
 ]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
