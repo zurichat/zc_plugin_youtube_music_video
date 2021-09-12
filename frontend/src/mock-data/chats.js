@@ -5,7 +5,7 @@ import chatItem from "../media/chatItem.svg";
 export default function chats() {
   return [
     {
-      name: "Amara",
+      name: "Mr._Primal",
       time: 23,
       message: "If you ask me, I would say it is so overrated, but...",
       avatar: chatItem,
@@ -46,6 +46,6 @@ export default function chats() {
       message: "This jam is maaaad",
       avatar: chatItem,
     },
-    
+
   ];
 }
