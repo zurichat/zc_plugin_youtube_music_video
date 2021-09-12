@@ -1,14 +1,15 @@
-// @ts-nocheck
-
 import React from "react";
 import styled from "styled-components";
 
 import Like from "./like";
 
+// @ts-ignore
 import option from "../../media/option.svg";
 
 function PlaylistItem(props) {
-  const { title, addedBy, duration, liked, albumCover, onLike, likes } = props;
+  const { title, addedBy, duration, liked, albumCover } = props;
+
+  const handleLike = () => {};
 
   return (
     <Wrapper>
@@ -16,14 +17,16 @@ function PlaylistItem(props) {
 
       <div className="item-info">
         <div className="item-title">{title}</div>
-        <div className="item-addedBy">Added by {addedBy}</div>
+        <div className="item-addedBy">
+          Added by <span>{addedBy}</span>
+        </div>
       </div>
 
       <div className="item-group">
         <div className="item-duration">{duration} mins</div>
-        <div className="item-like">{likes} likes</div>
+        <div className="item-like">{235} likes</div>
         <div className="item-icons">
-          <Like liked={liked} onLike={onLike} />
+          <Like liked={liked} onLike={handleLike} />
           <img
             src={option}
             alt="option img"
@@ -39,19 +42,25 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   background: #fff;
-
-  transition: all 150ms ease-in-out;
-  margin-bottom: 3px;
+  font-family: "Lato", sans-serif;
+  transition: all 200ms ease-in-out;
+  margin-bottom: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04);
+  height: 66px;
 
   &:hover {
-    box-shadow: 0 4px 6px rgba(0, 184, 124, 0.3);
+    box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);
+    /* transform: translateX(2px); */
   }
 
   .item-albumCover {
     display: block;
     margin-right: 20px;
-    width: 70px;
-    height: 100%;
+    margin-left: 10px;
+    width: 100%;
+    max-width: 50px;
+    flex-grow: 0;
+    height: 50px;
   }
 
   .item-info {
@@ -74,6 +83,10 @@ const Wrapper = styled.div`
 
   .item-addedBy {
     font-size: 13px;
+    span {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
 
   .item-group {
@@ -89,6 +102,10 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 60px;
+  }
+
+  .item-like {
+    color: rgba(153, 153, 153, 1);
   }
 
   @media screen and (max-width: 780px) {

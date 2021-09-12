@@ -21,3 +21,14 @@ class Songs(models.Model):
     def __str__(self):
         return f"{self.title} by {self.artiste}"
 
+
+
+class Playlist(models.Model):
+    title = models.CharField(max_length=100)
+    songs = models.ForeignKey('Songs',related_name="Songs",on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name="created date")
+    updated_date = models.DateTimeField(auto_now_add=True, verbose_name="updated date")
+    # slug = models.SlugField(blank=True, unique=True)
+
+    def __str__(self):
+        return self.title 

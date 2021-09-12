@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Songs
+from .models import Playlist
 
 from .api import Comment
 
@@ -23,3 +24,9 @@ class SongsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Songs
         fields = '__all__'
+
+
+class PlaylistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playlist
+        fields = ['title', 'songs', 'created_date', 'updated_date']
