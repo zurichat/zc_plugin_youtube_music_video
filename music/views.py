@@ -1,9 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.http import JsonResponse
+
 from music.serializers import MediaSerializer
 from music.utils.request_client import RequestClient
-
-
 
 
 class SidebarView(APIView):
@@ -42,7 +42,7 @@ class SidebarView(APIView):
             },
             "success": "true"
         }
-        return Response(data)
+        return JsonResponse(data, safe=False)
 
 
 class PluginInfoView(APIView):
@@ -69,7 +69,7 @@ class PluginInfoView(APIView):
             },
             "success": "true"
         }
-        return Response(data)
+        return JsonResponse(data, safe=False)
 
 
 class PluginPingView(APIView):
@@ -79,7 +79,7 @@ class PluginPingView(APIView):
             {'status': 'Success',
             'Report': ['The music.zuri.chat server is working']}
         ]
-        return Response({'server': server})
+        return JsonResponse({'server': server})
 
 
 class MediaView(APIView):
