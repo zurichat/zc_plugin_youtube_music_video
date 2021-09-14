@@ -1,12 +1,29 @@
-// @ts-nocheck
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+
+import store from "../../store";
+import { showPlayer, playing, getPlayerState } from "../../store/playerSlice";
 
 import Button from "./button";
 
+// @ts-ignore
 import Headset from "../../media/playlistIcon.svg";
 
 const PlaylistHeader = () => {
+  const player = useSelector(getPlayerState);
+
+  const [text, setText] = useState("Play");
+
+  useEffect(() => setText(player.playing ? "Pause" : "Play"), [player.playing]);
+
+  const handleShowPlayer = () => {
+    if (text === "Play") {
+      store.dispatch({ type: showPlayer.type, payload: { show: true } });
+      store.dispatch({ type: playing.type, payload: { playing: true } });
+    } else store.dispatch({ type: playing.type, payload: { playing: false } });
+  };
+
   return (
     <Wrapper>
       <div className="playlist-img-div">
@@ -24,12 +41,14 @@ const PlaylistHeader = () => {
         <div className="playlist-summary">10 songs, 38 min 33 sec</div>
         <div className="playlist-button-group">
           <Button className="playlist-button md" color="secondary">
-            Add a song to the playlist
+            <span className="playlist-button-desktop-text">
+              Add a song to the playlist
+            </span>
+            <span className="playlist-button-mobile-text">Add song</span>
           </Button>
-          <Button className="playlist-button hide" color="secondary">
-            Add a song
+          <Button className="playlist-button" onClick={handleShowPlayer}>
+            {text}
           </Button>
-          <Button className="playlist-button ">Play</Button>
         </div>
       </div>
     </Wrapper>
@@ -73,7 +92,7 @@ const Wrapper = styled.div`
     margin-right: 15px !important;
   }
 
-  .playlist-button.hide {
+  .playlist-button-mobile-text {
     display: none;
   }
 
@@ -85,11 +104,11 @@ const Wrapper = styled.div`
       width: 100% !important;
     }
 
-    .playlist-button.hide {
-      display: block;
-    }
-    .playlist-button.md {
+    .playlist-button-desktop-text {
       display: none;
+    }
+    .playlist-button-mobile-text {
+      display: inline;
     }
   }
 

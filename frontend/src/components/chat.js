@@ -1,19 +1,25 @@
-// @ts-nocheck
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
 import ChatInput from "./common/chatInput";
 
-import getChats from "../mock-data/chats";
+import { selectAllChats } from "../store/chatsSlice";
+import { getChatState } from "../store/uiSlice";
 
-function Chat({ onChat }) {
+function Chat() {
+  const chats = useSelector(selectAllChats);
+  const showChat = useSelector(getChatState);
+
+  if (!showChat) return null;
+
   return (
     <Wrapper>
-      <ChatHeader onChat={onChat} />
+      <ChatHeader />
       <div className="chat-item-group">
-        {getChats().map((chat, index) => (
+        {chats.map((chat, index) => (
           <ChatItem key={index} {...chat} />
         ))}
       </div>
@@ -23,10 +29,13 @@ function Chat({ onChat }) {
 }
 
 const Wrapper = styled.div`
+  height: 100%;
+  width: 100%;
+
   .chat-item-group {
     overflow-y: scroll;
     margin-top: 10px;
-    height: 400px;
+    height: 350px;
   }
   .chat-item-group::-webkit-scrollbar {
     width: 3px;
@@ -37,7 +46,9 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 1000px) {
-    max-height: 600px;
+    .chat-item-group {
+      max-height: 450px;
+    }
   }
 `;
 
