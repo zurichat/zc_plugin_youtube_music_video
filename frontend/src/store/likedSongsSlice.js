@@ -1,35 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+// import LikedSong from '../types/likedSong';
 
-// const initialState = {};
+// Note: state: LikedSong[] = [];
 
 const likedSongsSlice = createSlice({
-  name: 'likedSongs',
+  name: "likedSongs",
   initialState: [],
   reducers: {
     likeSong: (state, { payload }) => {
-      const { id, userId } = payload;
-      const checkIfIdExists = state.find((like) => like.id === id)
-      if (checkIfIdExists === undefined) {
-        state.push({ id })
-        const getId = state.find((like) => like.id === id);
-        getId['userIds'] = [];
-        if (getId) {
-          getId['userIds'].push(userId)
-        }
-      }
-      else if (checkIfIdExists) {
-        getId['userIds'].push(userId)
-      }
+      const { songId, userId } = payload;
+      const index = state.findIndex((liked) => liked.id === songId);
+
+      if (index === -1) state.push({ id: songId, usersId: [userId] });
+      else state[index].usersId.push(userId);
     },
     unlikeSong: (state, action) => {
-      const { id, userId } = action.payload;
-      const findSongId = state.find((song) => song.id === id);
-      findSongId['userIds'].filter((user) => user !== userId)
+      const { songId, userId } = action.payload;
+      const index = state.findIndex((liked) => liked.id === songId);
+      state[index].usersId = state[index].usersId.filter((id) => id !== userId);
     },
   },
 });
 
-export const { likeSong, unlikeSong, } = likedSongsSlice.actions;
+export const { likeSong, unlikeSong } = likedSongsSlice.actions;
 
 export const selectAllLikedSongs = (state) => state.songs;
 export const selectLikedSongById = (state, likedSongId) => {

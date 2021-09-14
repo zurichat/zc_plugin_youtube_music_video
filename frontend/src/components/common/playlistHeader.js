@@ -1,12 +1,29 @@
-// @ts-nocheck
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+
+import store from "../../store";
+import { showPlayer, playing, getPlayerState } from "../../store/playerSlice";
 
 import Button from "./button";
 
+// @ts-ignore
 import Headset from "../../media/playlistIcon.svg";
 
-const PlaylistHeader = ({ onPlay }) => {
+const PlaylistHeader = () => {
+  const player = useSelector(getPlayerState);
+
+  const [text, setText] = useState("Play");
+
+  useEffect(() => setText(player.playing ? "Pause" : "Play"), [player.playing]);
+
+  const handleShowPlayer = () => {
+    if (text === "Play") {
+      store.dispatch({ type: showPlayer.type, payload: { show: true } });
+      store.dispatch({ type: playing.type, payload: { playing: true } });
+    } else store.dispatch({ type: playing.type, payload: { playing: false } });
+  };
+
   return (
     <Wrapper>
       <div className="playlist-img-div">
@@ -29,8 +46,8 @@ const PlaylistHeader = ({ onPlay }) => {
             </span>
             <span className="playlist-button-mobile-text">Add song</span>
           </Button>
-          <Button className="playlist-button" onClick={onPlay}>
-            Play
+          <Button className="playlist-button" onClick={handleShowPlayer}>
+            {text}
           </Button>
         </div>
       </div>

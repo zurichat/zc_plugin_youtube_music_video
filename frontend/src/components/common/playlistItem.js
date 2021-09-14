@@ -1,14 +1,23 @@
-// @ts-nocheck
+import React from "react";
+import styled from "styled-components";
 
+<<<<<<< HEAD
 import React from "react";
 import styled from "styled-components";
 
 import Like from "./like";
 
+=======
+import Like from "./like";
+
+// @ts-ignore
+>>>>>>> 69ccb40856e88602cb2152fb41a3f80c58cd92b0
 import option from "../../media/option.svg";
 
 function PlaylistItem(props) {
-  const { title, addedBy, duration, liked, albumCover, onLike, likes } = props;
+  const { title, addedBy, duration, liked, albumCover } = props;
+
+  const handleLike = () => {};
 
   return (
     <Wrapper>
@@ -23,9 +32,15 @@ function PlaylistItem(props) {
 
       <div className="item-group">
         <div className="item-duration">{duration} mins</div>
+<<<<<<< HEAD
         <div className="item-like">{likes} likes</div>
         <div className="item-icons">
           <Like liked={liked} onLike={onLike} />
+=======
+        <div className="item-like">{235} likes</div>
+        <div className="item-icons">
+          <Like liked={liked} onLike={handleLike} />
+>>>>>>> 69ccb40856e88602cb2152fb41a3f80c58cd92b0
           <img
             src={option}
             alt="option img"

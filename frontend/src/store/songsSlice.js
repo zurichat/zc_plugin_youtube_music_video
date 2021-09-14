@@ -1,23 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [];
+import getSongs from "../mock-data/songs";
+
+const initialState = getSongs();
 
 const songsSlice = createSlice({
-  name: 'songs',
+  name: "songs",
   initialState,
   reducers: {
     addSong: (state, { payload }) => {
-      const { id, title, albumCover, duration, userId, } = payload;
-      state.push({ id, title, albumCover, duration, userId, });
+      state.push(payload.song);
     },
     removeSong: (state, { payload }) => {
-      const { id } = payload;
-      const existingSong = state.find((song) => song.id === id) 
-      if (existingSong) state.filter((song) => song.id !== id);
+      state.filter((song) => song.id !== payload.id);
     },
     updateSong: (state, { payload }) => {
-      const { id, title, albumCover, duration, } = payload;
-      const existingSong = state.find((song) => song.id === id)
+      const { id, title, albumCover, duration } = payload;
+      const existingSong = state.find((song) => song.id === id);
       if (existingSong) {
         existingSong.title = title;
         existingSong.duration = duration;
@@ -27,11 +26,12 @@ const songsSlice = createSlice({
   },
 });
 
-export const { addSong, removeSong, updateSong} = songsSlice.actions;
+export const { addSong, removeSong, updateSong } = songsSlice.actions;
 
 export const selectAllSongs = (state) => state.songs;
+
 export const selectSongById = (state, songId) => {
-  return state.songs.find((song) => song.id === songId)
+  return state.songs.find((song) => song.id === songId);
 };
 
 export default songsSlice.reducer;
