@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1"]
 
@@ -66,9 +66,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [
-            os.path.join(BASE_DIR, 'frontend/build'),
-        ],  # Django look for templates folder in root directory
+        "DIRS": ["templates"],  # Django look for templates folder in root directory
         "APP_DIRS": True,  # Django look for templates folder in app directory
         "OPTIONS": {
             "context_processors": [
@@ -125,7 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_ROOT = str(BASE_DIR.joinpath("frontend/build/staticfiles"))
+STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     # os.path.join(BASE_DIR, 'frontend/build/static'),
