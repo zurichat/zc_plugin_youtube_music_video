@@ -19,6 +19,9 @@ from .models import Playlist
 import os
 
 
+import pymongo
+from pymongo import MongoClient
+
 #A dictionary created for the sake of passing dummy data
 # actual data would be gotten from the database when connected
 
@@ -150,6 +153,16 @@ class SongsView(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelM
 
     def delete(self,request, id=None):
         return self.destroy(request, id)
+
+
+
+cluster = MongoClient(mongodb://127.0.0.1:27017)
+db = cluster["mfondb"]
+collection = db["Songs"]
+
+#creating a POST
+post = {"_id": 1, "Artist": "Wizkid", }
+collection.insert_one
 
 
 
