@@ -167,5 +167,5 @@ def api_playlist_views(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = PlaylistSerializer(playlist)
+        serializer = PlaylistSerializer(Playlist)
         return JsonResponse(data)
