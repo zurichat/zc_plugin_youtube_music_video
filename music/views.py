@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from django.http import JsonResponse
 
 from music.serializers import MediaSerializer
+from music.utils.data_access import user_login
 from music.utils.request_client import RequestClient
 
 
@@ -98,3 +99,13 @@ class MediaView(APIView):
         yourdata = response.response_data
         # results = MediaSerializer(yourdata).data
         return Response(yourdata)
+
+
+class UserCountView(APIView):
+    def get(self, request):
+        user_login()
+        user_login.counter += 1
+        header_user_count = user_login.counter
+        return Response(header_user_count)
+
+    user_login.counter = 0
