@@ -10,6 +10,7 @@ function App() {
 
   return (
     <Wrapper>
+      <h1>This is the new setup</h1>
       <RoomHeader />
       <MusicRoom />
     </Wrapper>
