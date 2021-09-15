@@ -36,7 +36,7 @@ function ChatInput() {
         <img src={chatGif} alt="gif" className="chat-icon" />
         <img src={chatSend} alt="send" className="chat-icon" />
         {showPicker && (
-          <Picker pickerStyle={{ width: "100%" }} onEmojiClick={onEmojiClick} />
+          <Picker pickerStyle={{ width: "90%" }} onEmojiClick={onEmojiClick} />
         )}
       </div>
       
