@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "accounts",
+    "music",
     "frontend",
     "rest_framework",  # https://www.django-rest-framework.org/
     "rest_framework.authtoken",
@@ -144,12 +144,12 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
-    "DEFAULT_RENDERER_CLASSES": [
-        "rest_framework.renderers.JSONRenderer",
-    ],
-    "DEFAULT_PARSER_CLASSES": [
-        "rest_framework.parsers.JSONParser",
-    ],
+    # "DEFAULT_RENDERER_CLASSES": [
+    #     "rest_framework.renderers.JSONRenderer",
+    # ],
+    # "DEFAULT_PARSER_CLASSES": [
+    #     "rest_framework.parsers.JSONParser",
+    # ],
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
 
@@ -172,9 +172,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # if you have seprate react app
     "http://127.0.0.1:9000",
     "http://159.65.123.65",
-    "https://www.youtube.com"
+    # "https://www.youtube.com"
 ]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
-    
+
+PLUGIN_ID = "61360ab5e2358b02686503ad"
+ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
+CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
