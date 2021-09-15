@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+
+import Picker from "emoji-picker-react";
 
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
 
 function ChatInput() {
+  const [inputStr, setInputStr] = useState("");
+  const [showPicker, setShowPicker] = useState(false);
+
+  const onEmojiClick = (event, emojiObject) => {
+    setInputStr((prevInput) => prevInput + emojiObject.emoji);
+    setShowPicker(false);
+    
+  };
   return (
     <Wrapper>
       <input
         type="text"
         className="chat-input"
         placeholder="Type a message..."
+        value={inputStr}
+        onChange={(e) => setInputStr(e.target.value)}
       />
       <div className="chat-icon-group">
-        <img src={chatEmoji} alt="emoji" className="chat-icon" />
+        <img src={chatEmoji} alt="emoji" className="chat-icon" onClick={() => setShowPicker((val) => !val)}/>
+        {showPicker && (
+          <Picker pickerStyle={{ width: "100%" }} onEmojiClick={onEmojiClick} />
+        )}
         <img src={chatGif} alt="gif" className="chat-icon" />
         <img src={chatSend} alt="send" className="chat-icon" />
+       
       </div>
     </Wrapper>
   );
