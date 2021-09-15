@@ -16,8 +16,8 @@ const usersSlice = createSlice({
       if (existingUser) state.filter((user) => user.id !== id);
     },
     updateUser: (state, { payload }) => {
-      const { id, userName, photo } = payload;
-      const existingUser = state.find((user) => user.id === id);
+      // const { id, userName, photo } = payload;
+      // const existingUser = state.find((user) => user.id === id);
       // if (existingUser) {
       //   existingUser.userName = userName;
       //   existingUser.photo = photo;
