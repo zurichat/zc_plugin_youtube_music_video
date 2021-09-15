@@ -29,7 +29,8 @@ function Chat() {
 
 const Wrapper = styled.div`
   height: 100%;
-  width: 100%;
+  width: 400px;
+  background-color: white;
 
   .chat-item-group {
     overflow-y: scroll;
@@ -40,7 +41,7 @@ const Wrapper = styled.div`
     width: 3px;
   }
   .chat-item-group::-webkit-scrollbar-thumb {
-    background-color: #08ffae;
+    background-color: hsla(160, 100%, 36%, 1);
     width: 3px;
   }
 
