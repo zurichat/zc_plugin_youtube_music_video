@@ -22,7 +22,7 @@
 
     - Create .env file in config and put variables for Secret Key and Database (PostgreSQL) as created in sample.env file
 
-
+<!-- sqlite -->
         $ python manage.py makemigrations
         $ python manage.py migrate
 
