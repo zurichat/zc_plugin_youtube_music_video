@@ -2,7 +2,7 @@ name: Youtube Music Deployment
 
 on:
   push:
-    branches: [dev]
+    branches: [dev, Deploy]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,4 +35,4 @@ jobs:
             yarn build
             cd /var/www/music.zuri.chat
             python3 manage.py collectstatic --noinput
-            fuser -k -HUP 8000/tcp
+            fuser -k -HUP 8050/tcp

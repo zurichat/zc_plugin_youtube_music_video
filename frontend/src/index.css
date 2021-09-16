@@ -1,7 +1,13 @@
 body {
-  overflow-y: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  margin: 0;
   background-color: rgb(240, 240, 240);
-  min-width: 352px;
+  min-width: 390px;
   padding: 0;
 }
 
