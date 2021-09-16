@@ -1,7 +1,9 @@
 # By Justice
 
-static
-staticfiles
+/node_modules
+/static
+/staticfiles
+/pythagorasenv
 DBName
 
 ### JetBrains template
@@ -404,4 +406,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-node_modules

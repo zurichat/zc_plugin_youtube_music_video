@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "accounts",
+    "music",
     "frontend",
     "rest_framework",  # https://www.django-rest-framework.org/
     "rest_framework.authtoken",
@@ -66,7 +66,9 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["templates"],  # Django look for templates folder in root directory
+        'DIRS': [
+            os.path.join(BASE_DIR, 'frontend/build'),
+        ],# Django look for templates folder in root directory
         "APP_DIRS": True,  # Django look for templates folder in app directory
         "OPTIONS": {
             "context_processors": [
@@ -125,7 +127,9 @@ USE_TZ = True
 
 STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'frontend/static/frontend/main.js')]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'frontend/build/static'),
+]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_ROOT = "./media"
 MEDIA_URL = "/media/"
@@ -144,12 +148,12 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
-    "DEFAULT_RENDERER_CLASSES": [
-        "rest_framework.renderers.JSONRenderer",
-    ],
-    "DEFAULT_PARSER_CLASSES": [
-        "rest_framework.parsers.JSONParser",
-    ],
+    # "DEFAULT_RENDERER_CLASSES": [
+    #     "rest_framework.renderers.JSONRenderer",
+    # ],
+    # "DEFAULT_PARSER_CLASSES": [
+    #     "rest_framework.parsers.JSONParser",
+    # ],
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
 
@@ -177,4 +181,7 @@ CORS_ALLOWED_ORIGINS = [
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
-    
+
+PLUGIN_ID = "61360ab5e2358b02686503ad"
+ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
+CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
