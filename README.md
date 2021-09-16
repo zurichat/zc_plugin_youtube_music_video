@@ -1,42 +1,41 @@
-<h1 align="center">YouTube Music Player Plugin using Django and React</h1>
+<h1 align="center">YouTube Music Player Plugin</h1>
 
-- Integration of Django and React
+# Stack: Django and React + Typescript
 
-### Backend
+## Backend
 
 - Django REST framework for a powerful API✔
 - Django ORM for interacting with the database✔
 - PostgreSQL✔
 
+## Frontend: Core Libraries
+
+- Redux (ReduxToolkit)
+- Styled-components
+- React-Player
+
 ## How to Run locally 🚀
 
-    - Install Dependencies after creating and activating virtual environement
+### Note: You do not need to start the backend server to work on the frontend.
 
-### To create python virtual environment
+### For Frontend
 
-        python -m venv <name_of_virtualenv>
+    cd frontend
+    yarn - to install dependencies if you've not installed them before
+    yarn start
 
-        <name_of_virtualenv>\scripts\activate
+### For Backend
 
-        $ pip install -r requirements/local.txt
+    python -m venv venv - to create a virtual environment
+    venv\scripts\activate
+    pip install -r requirements/local.txt
 
     - Create .env file in config and put variables for Secret Key and Database (PostgreSQL) as created in sample.env file
 
 
-        $ python manage.py makemigrations
-        $ python manage.py migrate
+    $ python manage.py makemigrations
+    $ python manage.py migrate
 
-    - Install dependencies in frontend app using following commands in separate terminal
-    - First make sure you have installed Node.js, I used v15.10.0 while developing this setup. For More info https://nodejs.org/en/
-    - In another terminal CD into frontend directory
-    - Then run following commands in the frontend directory where the package.json file is located
-
-        $ yarn
-        $ yarn dev
-
-    - After that you should keep running this terminal as this is automatically compiling the react.js code in single file main.js
-    - Then Run the following command in previous terminal to load frontend react app on django server
-
-        $ python manage.py runserver
+    $ python manage.py runserver
 
 - React app available at `http://localhost:8000/`
