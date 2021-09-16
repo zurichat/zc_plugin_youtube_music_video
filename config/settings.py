@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "django_extensions",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -147,14 +148,15 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
-    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    # "TEST_REQUEST_DEFAULT_FORMAT": "json",
     # "DEFAULT_RENDERER_CLASSES": [
     #     "rest_framework.renderers.JSONRenderer",
     # ],
     # "DEFAULT_PARSER_CLASSES": [
     #     "rest_framework.parsers.JSONParser",
     # ],
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    # "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 
