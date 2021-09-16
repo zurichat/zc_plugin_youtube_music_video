@@ -1,10 +1,10 @@
 import React from "react";
-import configureStore from "../store/index";
+import store from "../store/index";
 
 function getLikeCount(userId) {
-  const likeSong = configureStore.getState().likedSongs.find((e) => {
-    if (e.songId === !userId) return;
-    if (e.songId === userId) return e.userId.length;
+  const likeSong = store.getState().likedSongs.find((e) => {
+    if (e.id === !userId) return;
+    if (e.id === userId) return e.usersId.length;
   });
 
   return likeSong;
