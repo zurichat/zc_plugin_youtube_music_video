@@ -4,7 +4,7 @@ from django.http import JsonResponse
 
 from music.serializers import MediaSerializer
 from music.utils.request_client import RequestClient
-
+import requests
 
 class SidebarView(APIView):
 
@@ -98,3 +98,87 @@ class MediaView(APIView):
         yourdata = response.response_data
         # results = MediaSerializer(yourdata).data
         return Response(yourdata)
+
+
+
+'''
+Require user authentication for all your endpoints.
+For this, each plugin should have a single function 
+that checks zc_core to see that the token provided is valid
+'''
+class User_Auth(APIView):
+
+    def post(self, req):
+
+        email = req.data.get('email')
+        password = req.data.get("password")
+
+        data = {"email":email, "password":password}
+   
+        res = requests.post("https://api.zuri.chat/auth/login", json=data)
+        json_data = res.json()
+     
+        
+        data = json_data["data"]
+        user = data["user"]
+        user_token = user["token"]
+     
+        return Response(verify_token(user_token))
+      
+
+def verify_token(token):
+
+    url  = "https://api.zuri.chat/auth/verify-token"
+
+    token = 'Bearer ' + token
+
+    headers = {'Authorization': token}
+
+    res = requests.post(url, headers=headers)
+
+    data = res.json()
+
+    verified = data['data']['is_verified']
+
+    if not verified:
+
+        return ({"message":"Token not verified"}, status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
+
+    else:
+
+        return ({"message":"Token verified"}, status.HTTP_200_OK)
+    
+   
+
+'''
+UserProfile. This returns the user profile information of this user,
+as is relevant to this plugin! This info will be merged with other 
+info from zc_core, so you do not return things like photo.
+'''
+class User_Info(APIView):
+
+    def post(self, req):
+        email = req.data.get('email')
+        password = req.data.get("password")
+        if email == "" or None:
+
+            return Response({"message":"Email field is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if password == "" or None:
+
+            return Response({"message":"Password field is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        data = {"email":email, "password":password}
+       
+        res = requests.post("https://api.zuri.chat/auth/login", json=data)
+        
+        json_data = res.json()
+        print(json_data)
+        data = json_data["data"]
+        user = data["user"]
+
+        user_profile = {"email":user['email'], "first name":user['first_name'], "username":user['display_name'], "status":user['status']}
+      
+        return Response(user_profile, status=200)
+      
