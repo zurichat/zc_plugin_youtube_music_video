@@ -155,7 +155,15 @@ REST_FRAMEWORK = {
     # "DEFAULT_PARSER_CLASSES": [
     #     "rest_framework.parsers.JSONParser",
     # ],
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    # "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'YouTube Music Plugin API',
+    'DESCRIPTION': 'YouTube Music Plugin for Zuri.Chat',
+    'VERSION': '1.0.0',
+    # OTHER SETTINGS
 }
 
 

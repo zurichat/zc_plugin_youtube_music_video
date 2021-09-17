@@ -1,13 +1,13 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from django.http import JsonResponse
 from music.utils.data_access import read_data, write_data
 
 from music.serializers import MediaSerializer
+from music.utils.request_client import RequestClient
 
 
-class SidebarView(APIView):
+class SidebarView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -48,7 +48,7 @@ class SidebarView(APIView):
         return JsonResponse(data, safe=False)
 
 
-class PluginInfoView(APIView):
+class PluginInfoView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -76,7 +76,7 @@ class PluginInfoView(APIView):
         return JsonResponse(data, safe=False)
 
 
-class PluginPingView(APIView):
+class PluginPingView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         server = [
