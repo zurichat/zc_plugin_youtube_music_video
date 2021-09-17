@@ -9,17 +9,19 @@
 
 # To Run Client (standalone)
 
-    $ cd server
-    $ cd client
+    $ cd server/client
     $ yarn - to install dependencies if you haven't
     $ yarn start:standalone
+
+## To the Backend devs and to the DevOps
+
+    Please build first before starting django server
 
 # To Build
 
 ### Build the Client
 
-    $ cd server
-    $ cd client
+    $ cd server/client
     $ yarn
     $ yarn build
 
@@ -29,7 +31,7 @@
     $ yarn
     $ yarn build
 
-### Run your python runserver
+# To Run Django Server
 
     $ cd server
 
