@@ -1,13 +1,11 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from django.http import JsonResponse
-from music.utils.data_access import read_data, write_data
 
-from music.serializers import MediaSerializer
+from music.utils.request_client import RequestClient
 
 
-class SidebarView(APIView):
+class SidebarView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -46,7 +44,7 @@ class SidebarView(APIView):
         return JsonResponse(data, safe=False)
 
 
-class PluginInfoView(APIView):
+class PluginInfoView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -74,7 +72,7 @@ class PluginInfoView(APIView):
         return JsonResponse(data, safe=False)
 
 
-class PluginPingView(APIView):
+class PluginPingView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         server = [
@@ -86,22 +84,17 @@ class PluginPingView(APIView):
 
 class MediaView(GenericAPIView):
     def get(self, request):
-        payload = {"name": "hng.user01@gmail.com", "track_url": "password"}
+        payload = {"email": "hng.user01@gmail.com", "password": "password"}
 
-        data = read_data('test_collection')
-        # data = write_data('test_collection', object_id=id, payload=payload)
-        data = data['data']
+        request_client = RequestClient()
 
-        return Response(data)
+        response = request_client.request(
+            method="GET",
+            url=f"https://httpbin.org/anything",
+            headers={"Content-Type": "application/json"},
+            post_data=payload,
+        )
 
-    def post(self, request):
-        data = request.user
-        return Response(data)
-
-
-# class AddToRoomView(APIView):
-#     def post(self, request):
-#         data = {
-#             "name": "kingsway"
-#         }
-#         return Response(data)
+        yourdata = response.response_data
+        # results = MediaSerializer(yourdata).data
+        return Response(yourdata)

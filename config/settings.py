@@ -148,7 +148,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
-    # "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
     # "DEFAULT_RENDERER_CLASSES": [
     #     "rest_framework.renderers.JSONRenderer",
     # ],
@@ -157,6 +157,13 @@ REST_FRAMEWORK = {
     # ],
     # "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'YouTube Music Plugin API',
+    'DESCRIPTION': 'YouTube Music Plugin for Zuri.Chat',
+    'VERSION': '1.0.0',
+    # OTHER SETTINGS
 }
 
 
