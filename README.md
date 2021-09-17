@@ -1,3 +1,19 @@
+# YouTube Music-Video Plugin
+
+![music image](./server/readme-image.jpg)
+
+# Tech Stack
+
+- Django
+- React
+
+# To Run Client (standalone)
+
+    $ cd server
+    $ cd client
+    $ yarn - to install dependencies if you haven't
+    $ yarn start:standalone
+
 # To Build
 
 ### Build the Client
