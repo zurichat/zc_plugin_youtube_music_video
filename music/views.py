@@ -1,9 +1,10 @@
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import JsonResponse
+from music.utils.data_access import read_data, write_data
 
 from music.serializers import MediaSerializer
-from music.utils.request_client import RequestClient
 
 
 class SidebarView(APIView):
@@ -32,11 +33,13 @@ class SidebarView(APIView):
                     "action": "open",
                 },
                 "joined_rooms": {
-                    "title": "general",
-                    "id": "DFGHH-EDDDDS-DFDDF",
-                    "unread": 0,
-                    "members": 100,
-                    "icon": "shovel",
+                    "room_name": "music room",
+                    "object_id": "613e906115fb2424261b6652",
+                    "collection_name": "room",
+                    "type": "public_rooms",
+                    "unread": 2,
+                    "members": 23,
+                    "icon": "headphones",
                     "action": "open",
                 },
             },
@@ -53,9 +56,10 @@ class PluginInfoView(APIView):
             "data": {
                 "type": "Plugin Information",
                 "plugin_info": {"name": "Music room",
-                                "description": ["This is a plugin that allows individuals in an organization to add music and video links from YouTube to a  shared playlist. This allows anyone in that organization to listen to or watch any of the shared videos/songs. Users also have the option to chat with other users in the music room and the option to like a song or video that is in the music room library."]
+                                "description": [
+                                    "This is a plugin that allows individuals in an organization to add music and video links from YouTube to a  shared playlist. This allows anyone in that organization to listen to or watch any of the shared videos/songs. Users also have the option to chat with other users in the music room and the option to like a song or video that is in the music room library."]
                                 },
-                "version": "v1",                            
+                "version": "v1",
                 "scaffold_structure": "Monolith",
                 "team": "HNG 8.0/Team Music Plugin",
                 "developer_name": "Zurichat Music Plugin",
@@ -64,7 +68,7 @@ class PluginInfoView(APIView):
                 "photos": "https://drive.google.com/file/d/1KB9uSWqg0rM21ohsPxGnG8_1xbcdReio/view?usp=drivesdk",
                 "homepage_url": "https://music.zuri.chat/",
                 "sidebar_url": "https://music.zuri.chat/api/v1/sidebar/",
-                "install_url":  "https://music.zuri.chat/",
+                "install_url": "https://music.zuri.chat/",
                 'ping_url': 'http://music.zuri.chat/api/v1/ping'
             },
             "success": "true"
@@ -77,24 +81,29 @@ class PluginPingView(APIView):
     def get(self, request, *args, **kwargs):
         server = [
             {'status': 'Success',
-            'Report': ['The music.zuri.chat server is working']}
+             'Report': ['The music.zuri.chat server is working']}
         ]
         return JsonResponse({'server': server})
 
 
-class MediaView(APIView):
+class MediaView(GenericAPIView):
     def get(self, request):
-        payload = {"email": "hng.user01@gmail.com", "password": "password"}
+        payload = {"name": "hng.user01@gmail.com", "track_url": "password"}
 
-        request_client = RequestClient()
+        data = read_data('test_collection')
+        # data = write_data('test_collection', object_id=id, payload=payload)
+        data = data['data']
 
-        response = request_client.request(
-            method="GET",
-            url=f"https://httpbin.org/anything",
-            headers={"Content-Type": "application/json"},
-            post_data=payload,
-        )
+        return Response(data)
 
-        yourdata = response.response_data
-        # results = MediaSerializer(yourdata).data
-        return Response(yourdata)
+    def post(self, request):
+        data = request.user
+        return Response(data)
+
+
+# class AddToRoomView(APIView):
+#     def post(self, request):
+#         data = {
+#             "name": "kingsway"
+#         }
+#         return Response(data)
