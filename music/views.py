@@ -1,12 +1,11 @@
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from django.http import JsonResponse
 
-from music.serializers import MediaSerializer
 from music.utils.request_client import RequestClient
 
 
-class SidebarView(APIView):
+class SidebarView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -45,7 +44,7 @@ class SidebarView(APIView):
         return JsonResponse(data, safe=False)
 
 
-class PluginInfoView(APIView):
+class PluginInfoView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -53,9 +52,10 @@ class PluginInfoView(APIView):
             "data": {
                 "type": "Plugin Information",
                 "plugin_info": {"name": "Music room",
-                                "description": ["This is a plugin that allows individuals in an organization to add music and video links from YouTube to a  shared playlist. This allows anyone in that organization to listen to or watch any of the shared videos/songs. Users also have the option to chat with other users in the music room and the option to like a song or video that is in the music room library."]
+                                "description": [
+                                    "This is a plugin that allows individuals in an organization to add music and video links from YouTube to a  shared playlist. This allows anyone in that organization to listen to or watch any of the shared videos/songs. Users also have the option to chat with other users in the music room and the option to like a song or video that is in the music room library."]
                                 },
-                "version": "v1",                            
+                "version": "v1",
                 "scaffold_structure": "Monolith",
                 "team": "HNG 8.0/Team Music Plugin",
                 "developer_name": "Zurichat Music Plugin",
@@ -64,7 +64,7 @@ class PluginInfoView(APIView):
                 "photos": "https://drive.google.com/file/d/1KB9uSWqg0rM21ohsPxGnG8_1xbcdReio/view?usp=drivesdk",
                 "homepage_url": "https://music.zuri.chat/",
                 "sidebar_url": "https://music.zuri.chat/api/v1/sidebar/",
-                "install_url":  "https://music.zuri.chat/",
+                "install_url": "https://music.zuri.chat/",
                 'ping_url': 'http://music.zuri.chat/api/v1/ping'
             },
             "success": "true"
@@ -72,17 +72,17 @@ class PluginInfoView(APIView):
         return JsonResponse(data, safe=False)
 
 
-class PluginPingView(APIView):
+class PluginPingView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         server = [
             {'status': 'Success',
-            'Report': ['The music.zuri.chat server is working']}
+             'Report': ['The music.zuri.chat server is working']}
         ]
         return JsonResponse({'server': server})
 
 
-class MediaView(APIView):
+class MediaView(GenericAPIView):
     def get(self, request):
         payload = {"email": "hng.user01@gmail.com", "password": "password"}
 
