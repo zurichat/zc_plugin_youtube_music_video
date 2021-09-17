@@ -1,8 +1,8 @@
 from music.utils.request_client import RequestClient
 from django.conf import settings
 
-plugin_id = '6136040ce2358b02686503ab'
-org_id = '6134fd770366b6816a0b75ed'
+plugin_id = settings.PLUGIN_ID
+org_id = settings.ORGANIZATON_ID
 centrifugo = settings.CENTRIFUGO_TOKEN
 
 headers = {"Authorization": "headers"}
@@ -50,11 +50,11 @@ def read_data(collection=None, filter_data=None):
 
     response = request_client.request(
         method="GET",
-        url=f"https://api.zuri.chat/data/read/6136040ce2358b02686503ab/{collection}/6134fd770366b6816a0b75ed",
-        headers=headers,
+        url=f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}",
+        headers={"Authorization": headers},
         post_data=filter_data
     )
-    return response.response_data
+    return response
 
 
 def write_data(collection, object_id, filter_data, payload, bulk_write=False, ):
