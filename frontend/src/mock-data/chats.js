@@ -9,8 +9,7 @@ export default function chats() {
       userId: Date.now() + "",
       name: "Amara",
       time: 23,
-      message:
-        "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sint sapiente unde amet blanditiis pariatur corporis illo quibusdam voluptates obcaecati reprehenderit?",
+      message: "If you ask me, I would say it is so overrated, but...",
       avatar: chatItem,
     },
     {
