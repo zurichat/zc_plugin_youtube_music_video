@@ -8,7 +8,7 @@ const chatsSlice = createSlice({
   initialState,
   reducers: {
     addChat: (state, { payload }) => {
-      state.push(payload.chat);
+      state.push(payload);
     },
     removeChat: (state, { payload }) => {
       const { id } = payload;

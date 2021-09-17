@@ -1,24 +1,36 @@
 // @ts-nocheck
 
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
+import { useDispatch } from 'react-redux'
 
-function ChatInput() {
+function ChatInput(props) {
+  //const [message, setMessage] = useState();
+  const dispatch = useDispatch();
+ /* const handleMessage = (event) => {
+    setMessage(event.target.value);
+  }*/
+
   return (
     <Wrapper>
       <input
         type="text"
         className="chat-input"
         placeholder="Type a message..."
+        //onBlur={handleMessage}
       />
       <div className="chat-icon-group">
         <img src={chatEmoji} alt="emoji" className="chat-icon" />
         <img src={chatGif} alt="gif" className="chat-icon" />
-        <img src={chatSend} alt="send" className="chat-icon" />
+        <img src={chatSend}
+          alt="send"
+          className="chat-icon"
+          onClick={event => props.onClick(dispatch, message)}
+        />
       </div>
     </Wrapper>
   );

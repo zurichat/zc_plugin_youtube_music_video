@@ -7,7 +7,7 @@ export default function chats() {
     {
       id: Date.now() + "",
       userId: Date.now() + "",
-      name: "Amara",
+      name: "Amarachi",
       time: 23,
       message: "If you ask me, I would say it is so overrated, but...",
       avatar: chatItem,
@@ -61,9 +61,5 @@ export default function chats() {
       message: "This jam is maaaad",
       avatar: chatItem,
     },
-<<<<<<< HEAD
-
-=======
->>>>>>> 45fb26928053532dc583dabe414fd317dfdf9182
   ];
 }

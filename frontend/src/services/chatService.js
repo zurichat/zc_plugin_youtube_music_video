@@ -1,18 +1,19 @@
 import { addChat, removeChat, updateChat, } from '../store/chatsSlice';
+import chatItem from "../media/chatItem.svg";
 
-let lastID = 0;
 
 export const getChat = () => {
 
 };
 
-export const createChat = async (dispatch, payload) => {
-    const chatItem = {
-        id: ++lastID,
-        userID: ++lastID * 10,
-        time: null,
-        message: payload.message
+export const createChat = (dispatch, message) => {
+    const newitem = {
+        id: Date.now() + "",
+        userId: Date.now() + "",
+        name: "Mr._Primal",
+        time: 23,
+        message: message,
+        avatar: chatItem,
     };
-
-    dispatch(addChat(chatItem));
-}
+    dispatch(addChat(newitem));
+};
