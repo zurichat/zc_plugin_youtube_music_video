@@ -17,7 +17,8 @@ import { registerApplication, start } from "single-spa";
 
 registerApplication({
   name: "@zuri/music-plugin",
-  app: () => System.import("//localhost:8000/static/zuri-music-plugin.js"),
+  app: () =>
+    System.import("https://music.zuri.chat/static/zuri-music-plugin.js"),
   activeWhen: ["/"],
 });
 
