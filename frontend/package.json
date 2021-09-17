@@ -23,7 +23,6 @@
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@coreui/chartjs": "^2.0.0",
     "@coreui/coreui": "^3.4.0",
     "@coreui/icons": "^2.0.1",
@@ -50,7 +49,6 @@
     "core-js": "^2.6.12",
     "enzyme": "^3.11.0",
     "prop-types": "^15.7.2",
-=======
     "@reduxjs/toolkit": "^1.6.1",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -60,7 +58,6 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "emoji-picker-react": "^3.4.8",
->>>>>>> cf33042c76cd4f5d3fd02fdfb5ec8ad4c77930df
     "react": "^17.0.2",
     "react-alert": "^7.0.3",
     "react-alert-template-basic": "^1.0.0",
