@@ -1,6 +1,9 @@
+from music.utils.data_access import read_data, write_data
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from django.http import JsonResponse
+from music.utils.data_access import get_video_info
 
 from music.serializers import MediaSerializer
 from music.utils.request_client import RequestClient
@@ -98,3 +101,22 @@ class MediaView(APIView):
         yourdata = response.response_data
         # results = MediaSerializer(yourdata).data
         return Response(yourdata)
+
+
+
+
+class AddMediaView(GenericAPIView):
+    def get(self, request):
+
+        data = read_data('New Collection')
+        data = data['data']
+
+        return Response(data)
+
+    def post(self, request):
+        payload = get_video_info("https://www.youtube.com/watch?v=3A3MiNlX6II")
+
+        data = write_data('New Collection', payload=payload)
+        data=data['data']
+
+        return Response(data)

@@ -1,5 +1,7 @@
 from music.utils.request_client import RequestClient
 from django.conf import settings
+from requests_html import HTMLSession
+from bs4 import BeautifulSoup as bs
 
 plugin_id = settings.PLUGIN_ID
 org_id = settings.ORGANIZATON_ID
@@ -105,3 +107,34 @@ def centrifugo_post(room, data):
         post_data=post_data
     )
     return response
+
+
+# init session
+session = HTMLSession()
+
+def get_video_info(url):
+    # download HTML code
+    response = session.get(url)
+    # execute Javascript
+    response.html.render(timeout=0)
+    # create beautiful soup object to parse HTML
+    soup = bs(response.html.html, "html.parser")
+    # open("index.html", "w").write(response.html.html)
+    # initialize the result
+    result = {}
+
+    # video title
+    result["title"] = soup.find("meta", itemprop="name")['content']
+    
+    # get the duration of the video
+    result["duration"] = soup.find("span", {"class": "ytp-time-duration"}).text
+
+    # thumbnail url
+    result["thumbnail_url"] = soup.find("meta", property="og:image") ['content']
+
+    # video url
+    result["track_url"] = soup.find("meta", property="og:url")['content']
+
+    return result
+    
+
