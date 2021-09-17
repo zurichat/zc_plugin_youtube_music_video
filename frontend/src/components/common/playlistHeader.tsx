@@ -11,6 +11,7 @@ import { addSongToggle } from "../../store/uiSlice";
 import PasteUrl from "./pasteUrl";
 import Button from "./button";
 
+// @ts-ignore
 import Headset from "../../media/playlistIcon.svg";
 
 const PlaylistHeader = () => {
@@ -36,7 +37,11 @@ const PlaylistHeader = () => {
       <PasteUrl />
 
       <div className="playlist-img-div">
-        <img src={Headset} alt="Playlist Header" className="playlist-img" />
+        <img
+          src={Headset}
+          alt="Playlist Header Image"
+          className="playlist-img"
+        />
       </div>
 
       <div className="playlist-content">

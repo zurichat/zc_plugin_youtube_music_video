@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 import store from "../../store";
@@ -30,10 +31,10 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 347px;
   height: 20px;
   padding: 16px;
-  background: hsla(160, 100%, 36%, 1);
-  color: white;
+  background: #fff;
 
   .chatHeader__left {
     display: flex;
@@ -50,6 +51,7 @@ const Wrapper = styled.div`
   .chatHeader__title {
     font-size: 18px;
     font-weight: 500;
+    color: #00b87c;
   }
 
   .chatHeader__close {
