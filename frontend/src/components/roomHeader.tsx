@@ -63,7 +63,7 @@ const Wrapper = styled.div`
   color: #27ae60;
   padding: 20px;
   margin-bottom: 10px;
-  z-index: 1111;
+  z-index: 100;
 
   .header-icon {
     display: block;
