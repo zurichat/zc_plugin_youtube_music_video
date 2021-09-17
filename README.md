@@ -13,7 +13,9 @@
     $ yarn - to install dependencies if you haven't
     $ yarn start:standalone
 
-## To the Backend devs and to the DevOps
+server running on <a href='http://localhost:8080'>http://localhost:8080</a>
+
+## Note to the Backend devs and to the DevOps
 
     Please build first before starting django server
 
@@ -46,3 +48,9 @@
     $ python manage.py migrate
 
     $ python manage.py runserver
+
+Server running on <a href='http://localhost:8000'>http://localhost:8000</a>
+
+API root available on <a href='http://localhost:8000/api/'>http://localhost:8000/api/</a>
+
+Admin root available on <a href='http://localhost:8000/admin/'>http://localhost:8000/admin/</a>
