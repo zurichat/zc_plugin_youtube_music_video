@@ -9,5 +9,4 @@ urlpatterns = [
       path("test/", MediaView.as_view(), name="test"),
       path("info/", PluginInfoView.as_view(), name="info"),
       path("ping/", PluginPingView.as_view(), name="ping"),
-      # path("add-to-room/", AddToRoomView.as_view(), name="add_to_room"),
 ]
