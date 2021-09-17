@@ -3,18 +3,28 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+import Picker from "emoji-picker-react";
+
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
 import { useDispatch } from 'react-redux'
 
-function ChatInput(props) {
   //const [message, setMessage] = useState();
-  const dispatch = useDispatch();
+  
  /* const handleMessage = (event) => {
     setMessage(event.target.value);
   }*/
 
+function ChatInput(props) {
+  const [inputStr, setInputStr] = useState("");
+  const [showPicker, setShowPicker] = useState(false);
+  const dispatch = useDispatch();
+
+  const onEmojiClick = (event, emojiObject) => {
+    setInputStr((prevInput) => prevInput + emojiObject.emoji);
+    setShowPicker(false);
+  };
   return (
     <Wrapper>
       <input
@@ -22,9 +32,14 @@ function ChatInput(props) {
         className="chat-input"
         placeholder="Type a message..."
         //onBlur={handleMessage}
+        value={inputStr}
+        onChange={(e) => setInputStr(e.target.value)}
       />
       <div className="chat-icon-group">
-        <img src={chatEmoji} alt="emoji" className="chat-icon" />
+        <img src={chatEmoji} alt="emoji" className="chat-icon" onClick={() => setShowPicker((val) => !val)}/>
+        {showPicker && (
+          <Picker pickerStyle={{ width: "100%" }} onEmojiClick={onEmojiClick} />
+        )}
         <img src={chatGif} alt="gif" className="chat-icon" />
         <img src={chatSend}
           alt="send"
@@ -34,8 +49,7 @@ function ChatInput(props) {
       </div>
     </Wrapper>
   );
-}
-
+};
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
