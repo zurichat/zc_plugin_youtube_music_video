@@ -35,4 +35,5 @@ jobs:
             yarn build
             cd /var/www/music.zuri.chat
             python3 manage.py collectstatic --noinput
-            fuser -k -HUP 8050/tcp
+            pkill -u ${{secrets.USERNAME}} gunicorn 
+            gunicorn --bind 0.0.0.0:8000 config.wsgi --daemon
