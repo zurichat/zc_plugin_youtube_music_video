@@ -40,12 +40,11 @@ const Wrapper = styled.div`
 
     .room-chat-container {
       position: fixed;
-      top: 70px;
+      top: 31px;
       background: rgb(240, 240, 240);
       flex-basis: 40%;
       display: flex;
       justify-content: center;
-      z-index: 111;
     }
   }
 `;
