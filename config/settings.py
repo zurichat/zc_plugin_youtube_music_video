@@ -83,16 +83,16 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Create a file named .env and Declare your environment variables for database in .env
 # Make sure you don’t use quotations around strings.
-DATABASES = {
-    "default": {
-        "ENGINE": env("DATABASE_ENGINE"),
-        "NAME": env("DATABASE_NAME"),
-        "USER": env("DATABASE_USER"),
-        "PASSWORD": env("DATABASE_PASS"),
-        "HOST": env("DATABASE_HOST"),
-        "PORT": env("DATABASE_PORT"),
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": env("DATABASE_ENGINE"),
+#         "NAME": env("DATABASE_NAME"),
+#         "USER": env("DATABASE_USER"),
+#         "PASSWORD": env("DATABASE_PASS"),
+#         "HOST": env("DATABASE_HOST"),
+#         "PORT": env("DATABASE_PORT"),
+#     }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
