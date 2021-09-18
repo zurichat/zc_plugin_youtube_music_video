@@ -65,10 +65,10 @@
     "react-player": "^2.9.0",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
+    "react-toastify": "^8.0.2",
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1",
-    "styled-components": "^5.3.1",
-    "youtube-metadata-from-url": "^1.0.3"
+    "styled-components": "^5.3.1"
   },
   "types": "dist/zuri-music-plugin.d.ts"
 }

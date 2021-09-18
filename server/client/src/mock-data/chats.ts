@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import chatItem from "../media/chatItem.svg";
 
 export default function chats() {

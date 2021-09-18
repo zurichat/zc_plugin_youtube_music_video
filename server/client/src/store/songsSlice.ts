@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from ".";
+import store, { RootState } from ".";
 
 import getSongs from "../mock-data/songs";
+import Song from "../types/song";
 
 const initialState = getSongs();
 
@@ -12,9 +13,11 @@ const songsSlice = createSlice({
     addSong: (state, { payload }) => {
       state.push(payload.song);
     },
+
     removeSong: (state, { payload }) => {
       state.filter((song) => song.id !== payload.id);
     },
+
     updateSong: (state, { payload }) => {
       const { id, title, albumCover, duration } = payload;
       const existingSong = state.find((song) => song.id === id);
@@ -28,6 +31,20 @@ const songsSlice = createSlice({
 });
 
 export const { addSong, removeSong, updateSong } = songsSlice.actions;
+
+export const songAction = {
+  dispatchAddSong: (payload: Song) => {
+    store.dispatch({ type: addSong.type, payload: { song: payload } });
+  },
+
+  dispatchRemoveSong: (payload: Song) => {
+    store.dispatch({ type: removeSong.type, payload: { id: payload.id } });
+  },
+
+  dispatchUpdateSong: (payload: Song) => {
+    store.dispatch({ type: updateSong.type, payload });
+  },
+};
 
 export const selectAllSongs = (state: RootState) => state.songs;
 
