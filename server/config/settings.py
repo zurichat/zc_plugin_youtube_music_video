@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "django_extensions",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -156,9 +157,16 @@ REST_FRAMEWORK = {
     # "DEFAULT_PARSER_CLASSES": [
     #     "rest_framework.parsers.JSONParser",
     # ],
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    # "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'YouTube Music Plugin API',
+    'DESCRIPTION': 'YouTube Music Plugin for Zuri.Chat',
+    'VERSION': '1.0.0',
+    # OTHER SETTINGS
+}
 
 # For django.contrib.sites
 SITE_ID = 1
@@ -189,4 +197,5 @@ if bool(os.environ.get("PRODUCTION_SERVER", default="")):
 
 PLUGIN_ID = "61360ab5e2358b02686503ad"
 ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
-CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
+# CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
+CENTRIFUGO_TOKEN = "2829fc49-3e6b-4a55-bf02-3b1be88cfc24"
