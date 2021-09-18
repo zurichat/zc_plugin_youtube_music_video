@@ -1,5 +1,5 @@
 # By Justice
-
+/venv
 /node_modules
 /static
 /staticfiles
@@ -127,7 +127,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 downloads/
 eggs/
