@@ -1,5 +1,11 @@
 import { registerApplication, start } from "single-spa";
 
+declare global {
+  interface Window {
+    isLocal: boolean;
+  }
+}
+
 // registerApplication({
 //   name: "@single-spa/welcome",
 //   app: () =>
@@ -15,9 +21,12 @@ import { registerApplication, start } from "single-spa";
 //   activeWhen: ["/"],
 // });
 
-customRegister("dev"); // change argument to dev for development and back to prod before you push
+// change argument to dev for development and back to prod before you push
+customRegister(window.isLocal ? "dev" : "prod");
 
 function customRegister(env: "dev" | "prod") {
+  console.log({ isLocal: window.isLocal, env });
+
   if (env === "dev") {
     registerApplication({
       name: "@zuri/music-plugin",
