@@ -128,8 +128,8 @@ USE_TZ = True
 STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'client/dist'),
     os.path.join(BASE_DIR, '../root/dist'),
+    os.path.join(BASE_DIR, 'client/dist'),
 ]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_ROOT = "./media"
@@ -170,9 +170,7 @@ ACCOUNT_UNIQUE_EMAIL = True
 # Allow entering as a guest
 ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""))
 
-# CORS_ALLOWED_ORIGINS = "*"
-
-#  [
+# CORS_ALLOWED_ORIGINS = [
 #     # "https://example.com",
 #     # "https://sub.example.com",
 #     # "http://localhost:8080",
