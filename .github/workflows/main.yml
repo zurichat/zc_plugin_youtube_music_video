@@ -2,19 +2,48 @@ name: Youtube Music Deployment
 
 on:
   push:
-    branches: [dev, Deploy]
+    branches: [ dev ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
-  
-  deploy:
+  build:
     runs-on: ubuntu-latest
+    name: yarn build
     steps:
-      
-      - uses: actions/checkout@v2   
-
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+        
+        # This job is to cache the node modules in order to reduce the time it would take to run
+      - name: Use cached node_modules
+        uses: c-hive/gha-yarn-cache@v2
+        with:
+         directory: server/client         
+         
+         #this job installs intalls yarn dependencies on the github runner
+         #and also to build the static files that would be transferred to server later
+      - name: install Dependencies
+        run: |
+          yarn install
+          cd server/client
+          yarn
+          yarn build          
+          
+      - name: Use cached node_modules for root dir
+        uses: c-hive/gha-yarn-cache@v2
+        with:
+         directory: root
+     
+      - name: install Dependencies
+        run: |
+          yarn install
+          cd root
+          yarn
+          yarn build
+         
+       # in the server your normal workflow except omitting yarn build
       - name: Git Pull on Server
         uses: appleboy/ssh-action@master
         with:
@@ -24,16 +53,46 @@ jobs:
          # key: ${{ secrets.SSHKEY }}
           script: |
             cd /var/www/music.zuri.chat
-            source pythagorasenv/bin/activate
+            source .venv/bin/activate
             git stash
-            git pull origin dev
+            git pull origin test-spa
             git branch -r
-            pip install -r requirements/local.txt --upgrade
+            cd /var/www/music.zuri.chat/server
+            pip3 install -r requirements/local.txt --upgrade
+            pip3 install -r requirements/base.txt --upgrade
+            cd /var/www/music.zuri.chat/server
             python3 manage.py migrate
-            cd /var/www/music.zuri.chat/frontend
+            cd /var/www/music.zuri.chat/server/client
             yarn
-            yarn build
-            cd /var/www/music.zuri.chat
+            
+      - name: copy build to server
+        uses: Creepios/sftp-action@v1.0.1
+        with:
+          host: ${{ secrets.ZURI_HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}          
+          localPath: './server/client/dist'
+          remotePath: '/var/www/music.zuri.chat/server/client/dist'
+                    
+      - name: copy build to server
+        uses: Creepios/sftp-action@v1.0.1
+        with:
+          host: ${{ secrets.ZURI_HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          localPath: './root/dist'
+          remotePath: '/var/www/music.zuri.chat/root/dist'
+          
+        # this job ensures your processes are restarted after the process to serve your app
+      - name: collect static and restart gunicorn
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.ZURI_HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /var/www/music.zuri.chat/server
             python3 manage.py collectstatic --noinput
-            pkill -u ${{secrets.USERNAME}} gunicorn 
+            cd /var/www/music.zuri.chat
+            source .venv/bin/activate
             gunicorn --bind 0.0.0.0:8000 config.wsgi --daemon
