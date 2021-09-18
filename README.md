@@ -49,8 +49,8 @@ Client server running @ <a href='http://localhost:8080'>http://localhost:8080</a
 
     $ python manage.py runserver
 
-Django server running @ <a href='http://localhost:8000'>http://localhost:8000</a>
+Server running on <a href='http://localhost:8000'>http://localhost:8000/music</a>
 
-API root available @ <a href='http://localhost:8000/api/'>http://localhost:8000/api/</a>
+API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
 
-Admin root available @ <a href='http://localhost:8000/admin/'>http://localhost:8000/admin/</a>
+Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a>

@@ -50,7 +50,6 @@ class RequestClient:
     ):
         """
         Perform request to third party endpoints.
-
         :param verify:
         :param params:
         :param method:

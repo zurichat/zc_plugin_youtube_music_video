@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ToastContainer } from "react-toastify";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
@@ -6,12 +7,14 @@ import MusicRoom from "./components/musicRoom";
 import chatMediaQuery from "./utils/chatMedia";
 
 import "./App.css";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
 
   return (
     <Wrapper>
+      <ToastContainer />
       <RoomHeader />
       <MusicRoom />
     </Wrapper>
