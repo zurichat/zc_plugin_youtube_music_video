@@ -20,7 +20,7 @@ jobs:
       - name: Use cached node_modules
         uses: c-hive/gha-yarn-cache@v2
         with:
-         directory: client
+         directory: server/client
          
          #this job installs intalls yarn dependencies on the github runner
          #and also to build the static files that would be transferred to server later
