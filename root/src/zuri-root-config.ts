@@ -15,19 +15,25 @@ import { registerApplication, start } from "single-spa";
 //   activeWhen: ["/"],
 // });
 
-registerApplication({
-  name: "@zuri/music-plugin",
-  app: () =>
-    System.import("https://music.zuri.chat/static/zuri-music-plugin.js"),
-  activeWhen: ["/"],
-});
+customRegister("dev"); // change argument to dev for development and back to prod before you push
 
-// registerApplication({
-//   name: "@zuri/music-plugin",
-//   app: () => System.import("//localhost:8000/static/zuri-music-plugin.js"),
-//   activeWhen: ["/"],
-// });
+function customRegister(env: "dev" | "prod") {
+  if (env === "dev") {
+    registerApplication({
+      name: "@zuri/music-plugin",
+      app: () => System.import("//localhost:8000/static/zuri-music-plugin.js"),
+      activeWhen: ["/"],
+    });
+  } else {
+    registerApplication({
+      name: "@zuri/music-plugin",
+      app: () =>
+        System.import("https://music.zuri.chat/static/zuri-music-plugin.js"),
+      activeWhen: ["/"],
+    });
+  }
 
-start({
-  urlRerouteOnly: true,
-});
+  start({
+    urlRerouteOnly: true,
+  });
+}

@@ -38,11 +38,11 @@
           "single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js",
           "react": "https://cdn.jsdelivr.net/npm/react@16.13.1/umd/react.production.min.js",
           "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.13.1/umd/react-dom.production.min.js",
-          "@zuri/root-config": "https://music.zuri.chat/static/zuri-root-config.js",
-          "@zuri/music-plugin": "https://music.zuri.chat/static/zuri-music-plugin.js"
+          "@zuri/root-config": "//localhost:8000/static/zuri-root-config.js"
         }
       }
     </script>
+
     <link
       rel="preload"
       href="https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js"
@@ -56,13 +56,19 @@
     <script type="systemjs-importmap">
       {
         "imports": {
-          "@zuri/root-config": "https://music.zuri.chat/static/zuri-root-config.js",
+          "@zuri/music-plugin": "//localhost:8000/static/zuri-music-plugin.js"
+        }
+      }
+    </script>
+    <% } %> <% if (!isLocal) { %>
+    <script type="systemjs-importmap">
+      {
+        "imports": {
           "@zuri/music-plugin": "https://music.zuri.chat/static/zuri-music-plugin.js"
         }
       }
     </script>
     <% } %>
-
     <!--
     If you need to support Angular applications, uncomment the script tag below to ensure only one instance of ZoneJS is loaded
     Learn more about why at https://single-spa.js.org/docs/ecosystem-angular/#zonejs
