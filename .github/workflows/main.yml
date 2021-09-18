@@ -54,7 +54,6 @@ jobs:
           script: |
             cd /var/www/music.zuri.chat
             source .venv/bin/activate
-            pkill -u ${{secrets.USERNAME}} gunicorn
             git stash
             git pull origin test-spa
             git branch -r
@@ -97,3 +96,7 @@ jobs:
             cd /var/www/music.zuri.chat
             source .venv/bin/activate
             gunicorn --bind 0.0.0.0:8000 config.wsgi --daemon
+            cd /var/www/music.zuri.chat/server/client/dist
+            sudo chmod 644 zuri-music-plugin.js
+            sudo chmod 644 zuri-music-plugin.js.map
+            
