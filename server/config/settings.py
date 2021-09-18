@@ -61,6 +61,7 @@ INTERNAL_IPS = [
     "159.65.123.65",
     # ...
 ]
+
 ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
