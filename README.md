@@ -13,7 +13,7 @@
     $ yarn - to install dependencies if you haven't
     $ yarn start:standalone
 
-server running on <a href='http://localhost:8080'>http://localhost:8080</a>
+Client server running @ <a href='http://localhost:8080'>http://localhost:8080</a>
 
 ## Note to the Backend devs and to the DevOps
 
@@ -49,8 +49,8 @@ server running on <a href='http://localhost:8080'>http://localhost:8080</a>
 
     $ python manage.py runserver
 
-Server running on <a href='http://localhost:8000'>http://localhost:8000</a>
+Django server running @ <a href='http://localhost:8000'>http://localhost:8000</a>
 
-API root available on <a href='http://localhost:8000/api/'>http://localhost:8000/api/</a>
+API root available @ <a href='http://localhost:8000/api/'>http://localhost:8000/api/</a>
 
-Admin root available on <a href='http://localhost:8000/admin/'>http://localhost:8000/admin/</a>
+Admin root available @ <a href='http://localhost:8000/admin/'>http://localhost:8000/admin/</a>
