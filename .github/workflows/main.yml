@@ -67,8 +67,8 @@ jobs:
       - name: copy build to server
         uses: Creepios/sftp-action@v1.0.1
         with:
-          username: ${{ secrets.ZURI_HOST }}
-          host: ${{ secrets.USERNAME }}
+          host: ${{ secrets.ZURI_HOST }}
+          username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}          
           localPath: './server/client/dist'
           remotePath: '/var/www/music.zuri.chat/server/client/dist'
@@ -76,8 +76,8 @@ jobs:
       - name: copy build to server
         uses: Creepios/sftp-action@v1.0.1
         with:
-          username: ${{ secrets.ZURI_HOST }}
-          host: ${{ secrets.USERNAME }}
+          host: ${{ secrets.ZURI_HOST }}
+          username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           localPath: './root/dist'
           remotePath: '/var/www/music.zuri.chat/root/dist'
