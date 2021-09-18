@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import getChats from "../mock-data/chats";
-import { RootState } from ".";
+import store, { RootState } from ".";
 
 const initialState = getChats();
 

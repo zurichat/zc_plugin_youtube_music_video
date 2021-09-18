@@ -5,6 +5,8 @@ import MusicRoom from "./components/musicRoom";
 
 import chatMediaQuery from "./utils/chatMedia";
 
+import "./App.css";
+
 function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
 

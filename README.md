@@ -13,7 +13,7 @@
     $ yarn - to install dependencies if you haven't
     $ yarn start:standalone
 
-server running on <a href='http://localhost:8080'>http://localhost:8080</a>
+Client server running @ <a href='http://localhost:8080'>http://localhost:8080</a>
 
 ## Note to the Backend devs and to the DevOps
 

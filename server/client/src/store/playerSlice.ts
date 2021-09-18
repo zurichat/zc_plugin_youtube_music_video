@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from ".";
+import store, { RootState } from ".";
 
 const slice = createSlice({
   name: "player",
@@ -18,6 +18,16 @@ const slice = createSlice({
 });
 
 export const { playing, showPlayer } = slice.actions;
+
+export const playerAction = {
+  dispatchShowPlayer: (payload: boolean) => {
+    store.dispatch({ type: showPlayer.type, payload: { show: payload } });
+  },
+
+  dispatchPlaying: (payload: boolean) => {
+    store.dispatch({ type: playing.type, payload: { playing: payload } });
+  },
+};
 
 export const getPlayerState = (state: RootState) => state.player;
 

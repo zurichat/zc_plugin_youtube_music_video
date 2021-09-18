@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 // Store
-import store from "../../store";
-import { showPlayer, playing, getPlayerState } from "../../store/playerSlice";
-import { addSongToggle } from "../../store/uiSlice";
+import { playerAction, getPlayerState } from "../../store/playerSlice";
+import { uiAction } from "../../store/uiSlice";
 
 // Components
 import PasteUrl from "./pasteUrl";
@@ -22,13 +21,13 @@ const PlaylistHeader = () => {
 
   const handleShowPlayer = () => {
     if (text === "Play") {
-      store.dispatch({ type: showPlayer.type, payload: { show: true } });
-      store.dispatch({ type: playing.type, payload: { playing: true } });
-    } else store.dispatch({ type: playing.type, payload: { playing: false } });
+      playerAction.dispatchPlaying(true);
+      playerAction.dispatchShowPlayer(true);
+    } else playerAction.dispatchPlaying(false);
   };
 
   const handleAddSongToggle = () => {
-    store.dispatch({ type: addSongToggle.type, payload: { addSong: true } });
+    uiAction.dispatchAddSongToggle({ addSong: true });
   };
 
   return (
@@ -43,7 +42,9 @@ const PlaylistHeader = () => {
         <div className="playlist-caption">
           Music <span className="playlist-caption-hide">Room</span> Playlist
         </div>
+
         <div className="playlist-summary">10 songs, 38 min 33 sec</div>
+
         <div className="playlist-button-group">
           <Button
             className="playlist-button md"
@@ -55,6 +56,7 @@ const PlaylistHeader = () => {
             </span>
             <span className="playlist-button-mobile-text">Add a song</span>
           </Button>
+
           <Button className="playlist-button" onClick={handleShowPlayer}>
             {text}
           </Button>
