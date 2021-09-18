@@ -54,6 +54,7 @@ jobs:
           script: |
             cd /var/www/music.zuri.chat
             source .venv/bin/activate
+            pkill -u ${{secrets.USERNAME}} gunicorn
             git stash
             git pull origin test-spa
             git branch -r
@@ -92,4 +93,6 @@ jobs:
           script: |
             cd /var/www/music.zuri.chat/server
             python3 manage.py collectstatic --noinput
+            cd /var/www/music.zuri.chat
+            source .venv/bin/activate
             gunicorn --bind 0.0.0.0:8000 config.wsgi --daemon
