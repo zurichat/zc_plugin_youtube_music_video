@@ -185,7 +185,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # if you have seprate react app
     "http://127.0.0.1:9000",
     "http://159.65.123.65",
-    # "https://www.youtube.com"
 ]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
@@ -193,4 +192,5 @@ if bool(os.environ.get("PRODUCTION_SERVER", default="")):
 
 PLUGIN_ID = "61360ab5e2358b02686503ad"
 ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
-CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
+# CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
+CENTRIFUGO_TOKEN = "2829fc49-3e6b-4a55-bf02-3b1be88cfc24"

@@ -10,8 +10,45 @@ import groupIconSvg from "../media/header-group-icon.svg";
 import menu from "../media/menu.svg";
 import message from "../media/message.svg";
 
+// centrifugo client setup
+import Centrifuge from "centrifuge";
+
+var centrifuge = new Centrifuge('ws://localhost:8000/connection/websocket');
+
+centrifuge.on("connect", function (ctx) {
+    console.log("connected", ctx);
+    centrifuge.subscribe("channel_name", (ctx) => {
+        var event = ctx.data.event;
+        switch (event) {
+            case "join_room":
+                console.log("display join room event");
+                break;
+            case "leave_room":
+                console.log("display leave room event");
+                break;
+            default:
+                console.log("nothing");
+                break;
+        }
+        console.log(ctx);
+    });
+});
+
+centrifuge.on("disconnect", function (ctx) {
+    console.log("disconnected", ctx);
+});
+
+centrifuge.connect();
+
+
+
 const roomHeader = () => {
-  return (
+    // useEffect(() => {
+    //     centrifuge.connect();
+    // }, []);
+
+
+    return (
     <Wrapper className="header">
       <div className="header-left">
         <img
