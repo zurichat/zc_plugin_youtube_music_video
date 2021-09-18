@@ -15,7 +15,7 @@ import { registerApplication, start } from "single-spa";
 //   activeWhen: ["/"],
 // });
 
-customRegister("dev"); // change argument to dev for development and back to prod before you push
+customRegister("prod"); // change argument to dev for development and back to prod before you push
 
 function customRegister(env: "dev" | "prod") {
   if (env === "dev") {
