@@ -1,10 +1,18 @@
-// React component
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { FiX } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
-import { selectPasteUrl } from "../../store/uiSlice";
+import Song from "../../types/song";
+
+import { selectPasteUrl, uiAction } from "../../store/uiSlice";
+
+import { getSongMetadat } from "../../utils/metadata";
+import { getUUID } from "../../utils/idGenerator";
+
+import songService from "../../services/songService";
+import authService from "../../services/authService";
 
 const PasteUrl = () => {
   const [url, setUrl] = useState("");
@@ -15,9 +23,21 @@ const PasteUrl = () => {
 
   const handleChange = (event: any) => setUrl(event.target.value);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    alert("Song added to the queue");
+
+    try {
+      const metadata = await getSongMetadat(url);
+      const song: Song = {
+        id: getUUID(),
+        addedBy: authService.getCurrentUser().name,
+        ...metadata,
+      };
+
+      songService.addSong(song);
+    } catch (e) {
+      toast.error(e.message);
+    }
   };
 
   return (
@@ -32,6 +52,7 @@ const PasteUrl = () => {
               width: "1rem",
               height: "1rem",
             }}
+            onClick={() => uiAction.dispatchAddSongToggle({ addSong: false })}
           />
         </label>
         <div className="inputs">
