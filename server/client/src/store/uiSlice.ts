@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from ".";
+import store, { RootState } from ".";
 
 const slice = createSlice({
   name: "UI",
@@ -27,6 +27,16 @@ const slice = createSlice({
 
 export const { loaded, congratsToggled, toggleChat, addSongToggle } =
   slice.actions;
+
+const dispatchAddSongToggle = (payload: { addSong: boolean }) => {
+  store.dispatch({ type: addSongToggle.type, payload });
+};
+
+const dispatchToggleChat = (payload: { chat: boolean }) => {
+  store.dispatch({ type: toggleChat.type, payload });
+};
+
+export const uiAction = { dispatchAddSongToggle, dispatchToggleChat };
 
 export const selectChat = (state: RootState) => state.ui.showChat;
 export const selectPasteUrl = (state: RootState) => state.ui.addSong;

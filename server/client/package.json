@@ -66,7 +66,8 @@
     "react-router-dom": "^5.3.0",
     "single-spa": "^5.9.3",
     "single-spa-react": "^4.3.1",
-    "styled-components": "^5.3.1"
+    "styled-components": "^5.3.1",
+    "youtube-metadata-from-url": "^1.0.3"
   },
   "types": "dist/zuri-music-plugin.d.ts"
 }
