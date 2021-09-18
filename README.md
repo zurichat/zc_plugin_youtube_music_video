@@ -1,41 +1,56 @@
-<h1 align="center">YouTube Music Player Plugin</h1>
+# YouTube Music-Video Plugin
 
-# Stack: Django and React + Typescript
+![music image](./server/readme-image.jpg)
 
-## Backend
+# Tech Stack
 
-- Django REST framework for a powerful API✔
-- Django ORM for interacting with the database✔
-- PostgreSQL✔
+- Django
+- React
 
-## Frontend: Core Libraries
+# To Run Client (standalone)
 
-- Redux (ReduxToolkit)
-- Styled-components
-- React-Player
+    $ cd server/client
+    $ yarn - to install dependencies if you haven't
+    $ yarn start:standalone
 
-## How to Run locally 🚀
+Client server running @ <a href='http://localhost:8080'>http://localhost:8080</a>
 
-### Note: You do not need to start the backend server to work on the frontend.
+## Note to the Backend devs and to the DevOps
 
-### For Frontend
+    Please build first before starting django server
 
-    cd frontend
-    yarn - to install dependencies if you've not installed them before
-    yarn start
+# To Build
 
-### For Backend
+### Build the Client
 
-    python -m venv venv - to create a virtual environment
-    venv\scripts\activate
-    pip install -r requirements/local.txt
+    $ cd server/client
+    $ yarn
+    $ yarn build
+
+### Build the single-spa root
+
+    $ cd root
+    $ yarn
+    $ yarn build
+
+# To Run Django Server
+
+    $ cd server
+
+    $ python -m venv venv - to create a virtual environment
+    $ venv\scripts\activate
+
+    $ pip install -r requirements/local.txt
 
     - Create .env file in config and put variables for Secret Key and Database (PostgreSQL) as created in sample.env file
-
 
     $ python manage.py makemigrations
     $ python manage.py migrate
 
     $ python manage.py runserver
 
-- React app available at `http://localhost:8000/`
+Server running on <a href='http://localhost:8000'>http://localhost:8000/music</a>
+
+API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
+
+Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a>
