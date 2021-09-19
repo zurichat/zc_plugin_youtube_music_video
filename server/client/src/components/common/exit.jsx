@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import search from '../../media/search.svg'
 
 const Exit = ({drop}) => {
     const [change, setChange] = useState('about');
@@ -46,7 +47,12 @@ const Exit = ({drop}) => {
                 </div>) :null }
                 {change === "member" ? ( <div className="room-member" >
                     <div className="search">
-                        <p>X</p>
+                        <img
+                        src={search}
+                        alt="icon"
+                        className="header-icon menu"
+                        onClick={undefined}
+                        />
                         <input placeholder="Find People"/>
                     </div>
                     <div className="member">member 13</div>

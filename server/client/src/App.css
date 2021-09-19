@@ -22,7 +22,7 @@ body::-webkit-scrollbar-thumb {
 
 /* leave room */
 .leave-container {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
   left: 0;
@@ -35,7 +35,7 @@ body::-webkit-scrollbar-thumb {
   padding: 10px;
   background: white;
   max-width: 350px;
-  margin: 5% auto;
+  margin: 20% auto;
 }
 
 .leave h1 {
@@ -128,11 +128,8 @@ nav button {
 .search {
   display: flex;
   border: 1px solid #00b87c;
+  align-items: center;
   padding: 5px;
-}
-
-.search p {
-  padding: 0px 10px 0px 10px;
 }
 
 .search input {
@@ -144,6 +141,7 @@ nav button {
 
 .member {
   padding: 10px;
+  color: black;
 }
 
 .room-active {
