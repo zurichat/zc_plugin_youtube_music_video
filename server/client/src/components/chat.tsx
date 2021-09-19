@@ -17,6 +17,22 @@ function Chat(props) {
 
   if (!showChat) return null;
 
+  function handleFocus() {
+    const chatItemGroup = document.querySelector<HTMLElement>('.chat-item-group');
+    const mediaQuery = window.matchMedia('(max-width: 1000px)');
+    if (mediaQuery.matches) {
+      chatItemGroup.style.maxHeight = '250px';
+    } 
+  }
+
+  function handleBlur() {
+    const chatItemGroup = document.querySelector<HTMLElement>('.chat-item-group');
+    const mediaQuery = window.matchMedia('(max-width: 1000px)');
+    if (mediaQuery.matches) {
+      chatItemGroup.style.maxHeight = '450px';
+    } 
+  }
+
   return (
     <Wrapper>
       <ChatHeader />
@@ -25,7 +41,7 @@ function Chat(props) {
           <ChatItem key={index} {...chat} />
         ))}
       </div>
-      <ChatInput onClick={chatCreate} />
+      <ChatInput onClick={chatCreate} handleFocus = {handleFocus} handleBlur = {handleBlur} />
     </Wrapper>
   );
 }
