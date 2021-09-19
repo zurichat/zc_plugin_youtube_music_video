@@ -6,7 +6,9 @@ import avatar from "../media/chatItem.svg";
 
 const chatsSlice = createSlice({
   name: "chats",
-  initialState: getMockChat(),
+  // initialState: getMockChat(),
+  initialState: [] as Chat[],
+
   reducers: {
     addChat: (state, { payload }) => {
       state.push(payload);

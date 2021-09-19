@@ -1,6 +1,14 @@
 import { toast } from "react-toastify";
-type LogType = "error" | "";
 
-export default function log(type: LogType, message: string) {
-  toast.error("");
-}
+const log = {
+  success: (message: string) =>
+    toast.success(message, {
+      style: {
+        background: "hsla(160, 100%, 36%, 1)",
+      },
+    }),
+
+  error: (message: string) => toast.error(message),
+};
+
+export default log;

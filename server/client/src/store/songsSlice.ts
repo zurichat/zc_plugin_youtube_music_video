@@ -5,7 +5,8 @@ import Song from "../types/song";
 
 const songsSlice = createSlice({
   name: "songs",
-  initialState: getMockData(),
+  // initialState: getMockData(),
+  initialState: [] as Song[],
   reducers: {
     addSong: (state, { payload }) => {
       state.unshift(payload.song);

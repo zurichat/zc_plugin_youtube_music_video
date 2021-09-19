@@ -2,17 +2,17 @@ import { useState } from "react";
 import styled from "styled-components";
 import { FiX } from "react-icons/fi";
 import { useSelector, connect } from "react-redux";
-import { toast } from "react-toastify";
 
 import Song from "../../types/song";
 
+import { RootState } from "../../store";
 import { selectPasteUrl, uiAction } from "../../store/uiSlice";
 
 import { getSongMetadat } from "../../utils/metadata";
 
 import songService from "../../services/songService";
 import authService from "../../services/authService";
-import { RootState } from "../../store";
+import log from "../../services/logService";
 
 interface Props {
   getSongById: (id: string) => Song;
@@ -47,7 +47,7 @@ const PasteUrl = (props: Props) => {
       songService.addSong(song);
       uiAction.dispatchAddSongToggle(false);
     } catch (e) {
-      toast.error(e.message);
+      log.error(e.message);
     }
   };
 
