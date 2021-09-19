@@ -35,8 +35,11 @@ function PlaylistItem(props: Props) {
     likedSongDisptach.toggleLike({ songId, userId });
   };
 
-  const handlePlay = () => {
-    playerAction.dispatchChangeCurrentSong(props.song);
+  const handlePlay = (e) => {
+    if (e.target.dataset.like) return;
+    if (e.target.dataset.option) return;
+
+    playerAction.changeSong(props.song);
     playerAction.dispatchShowPlayer(true);
     playerAction.dispatchPlaying(true);
   };
@@ -62,6 +65,7 @@ function PlaylistItem(props: Props) {
           <Like liked={liked} onLike={handleLike} />
 
           <img
+            data-option="option"
             src={option}
             alt="option img"
             style={{ cursor: "pointer", width: "20px", height: "20px" }}

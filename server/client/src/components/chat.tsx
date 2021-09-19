@@ -6,12 +6,12 @@ import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
 import ChatInput from "./common/chatInput";
 
-import { selectAllChats } from "../store/chatsSlice";
+import { chatSelect } from "../store/chatsSlice";
 import { selectChat } from "../store/uiSlice";
-import { createChat } from "../services/chatService"
+import { createChat } from "../services/chatService";
 
 function Chat(props) {
-  const chats = useSelector(selectAllChats);
+  const chats = useSelector(chatSelect.allChat);
   const showChat = useSelector(selectChat);
   const chatCreate = createChat;
 

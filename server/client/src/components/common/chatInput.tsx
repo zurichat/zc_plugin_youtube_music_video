@@ -1,16 +1,20 @@
-import React, {useState} from "react";
+import { useState } from "react";
 import styled from "styled-components";
-
-// import the emoji-react-picker package
 import Picker from "emoji-picker-react";
+import { useDispatch } from "react-redux";
+
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
 
-import { useDispatch } from 'react-redux'
+import Chat from "../../types/chat";
+
+import { getUUID } from "../../utils/idGenerator";
+
+import authService from "../../services/authService";
+import chatService from "../../services/chatService";
 
 function ChatInput(props) {
-
   // states to manage the input text and also the showcasing of the emoji
   const [inputStr, setInputStr] = useState("");
   const [showPicker, setShowPicker] = useState(false);
@@ -20,13 +24,28 @@ function ChatInput(props) {
   const onEmojiClick = (event, emojiObject) => {
     setInputStr((prevInput) => prevInput + emojiObject.emoji);
     setShowPicker(false);
-
   };
 
   const clearInput = () => {
     setInputStr("");
-  }
-  
+  };
+
+  const handleSend = () => {
+    const { name, avatar, id: userId } = authService.getCurrentUser();
+
+    const chat: Chat = {
+      message: inputStr,
+      name,
+      avatar,
+      userId,
+      id: getUUID(),
+      time: Date.now(),
+    };
+
+    chatService.createChat(chat);
+    clearInput();
+  };
+
   return (
     <Wrapper>
       <input
@@ -37,18 +56,24 @@ function ChatInput(props) {
         onChange={(e) => setInputStr(e.target.value)}
       />
       <div className="chat-icon-group">
-        <img src={chatEmoji} alt="emoji" className="chat-icon" onClick={() => setShowPicker((val) => !val)} />
+        <img
+          src={chatEmoji}
+          alt="emoji"
+          className="chat-icon"
+          onClick={() => setShowPicker((val) => !val)}
+        />
         {showPicker && (
-          <Picker pickerStyle={{ width: "18vw", marginLeft:"-10rem" }} onEmojiClick={onEmojiClick} />
+          <Picker
+            pickerStyle={{ width: "18vw", marginLeft: "-10rem" }}
+            onEmojiClick={onEmojiClick}
+          />
         )}
         <img src={chatGif} alt="gif" className="chat-icon" />
-        <img src={chatSend} 
-        alt="send" 
-        className="chat-icon" 
-        onClick={() => {
-          props.onClick(dispatch, inputStr);
-          clearInput();
-        }}
+        <img
+          src={chatSend}
+          alt="send"
+          className="chat-icon"
+          onClick={handleSend}
         />
       </div>
     </Wrapper>

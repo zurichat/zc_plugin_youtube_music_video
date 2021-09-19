@@ -43,7 +43,7 @@ export const playerAction = {
     store.dispatch({ type: playing.type, payload: { playing: payload } });
   },
 
-  dispatchChangeCurrentSong: (payload: Song) => {
+  changeSong: (payload: Song) => {
     store.dispatch({ type: changeCurrentSong.type, payload });
   },
 };

@@ -8,6 +8,7 @@ import chatMediaQuery from "./utils/chatMedia";
 
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
+import "moment-timezone";
 
 function App() {
   chatMediaQuery(); // toggle chat display based on screen size.

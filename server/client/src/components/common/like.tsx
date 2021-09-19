@@ -11,6 +11,7 @@ interface Props {
 function Like({ liked, onLike }: Props) {
   return (
     <img
+      data-like="like" // do not remove this.
       src={liked ? like_filled : like}
       alt="liked"
       onClick={onLike}
