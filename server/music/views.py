@@ -1,6 +1,10 @@
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
+from music.utils.data_access import get_video
+from music.utils.data_access import data_read, data_write
+from rest_framework.views import APIView
+import requests
 
 from music.utils.data_access import centrifugo_post
 from music.utils.request_client import RequestClient
@@ -102,7 +106,7 @@ class MediaView(GenericAPIView):
         # results = MediaSerializer(yourdata).data
         return Response(yourdata)
 
-
+      
 class UserCountView(GenericAPIView):
     def get(self, request):
         centrifugo_post("channel_name", {"event": "join_room"})
@@ -111,3 +115,38 @@ class UserCountView(GenericAPIView):
         return Response(header_user_count)
 
     centrifugo_post.counter = 0
+
+
+class Songs(APIView):
+
+    def post(self, req):
+    
+        collection = "Songs"
+
+        url = req.data['url']
+        payload = get_video(url)
+        print()
+        res = data_write(collection, payload)
+
+        return Response(res.json(), status=200)
+
+    def put(self, req):
+
+        collection = "Songs"
+
+        url = req.data['url']
+        
+        obj_id = req.data['object_id']
+
+        payload = get_video(url)
+
+        res = data_write(collection, payload, object_id=obj_id)
+
+        return Response(res, status=200)
+
+    def get(self,req):
+
+        res = data_read("Songs")
+        
+        return Response(res, status=200)
+
