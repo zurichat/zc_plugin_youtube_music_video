@@ -15,6 +15,8 @@ function ChatInput(props) {
   const [inputStr, setInputStr] = useState("");
   const [showPicker, setShowPicker] = useState(false);
   const dispatch = useDispatch();
+  const handleFocus = props.handleFocus;
+  const handleBlur = props.handleBlur;
 
   // function to display the emoji once clicked and remove once the user select their preferred emoji
   const onEmojiClick = (event, emojiObject) => {
@@ -35,6 +37,8 @@ function ChatInput(props) {
         placeholder="Type a message..."
         value={inputStr}
         onChange={(e) => setInputStr(e.target.value)}
+        onFocus = {handleFocus}
+        onBlur = {handleBlur}
       />
       <div className="chat-icon-group">
         <img src={chatEmoji} alt="emoji" className="chat-icon" onClick={() => setShowPicker((val) => !val)} />
