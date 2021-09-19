@@ -33,7 +33,7 @@
     More information about shared dependencies can be found at https://single-spa.js.org/docs/recommended-setup#sharing-with-import-maps.
   -->
 
-    <% if (!isLocal) { %>
+    <% if (isLocal) { %>
     <script type="systemjs-importmap">
       {
         "imports": {
@@ -49,9 +49,7 @@
     <script type="text/javascript">
       window.local = true;
     </script>
-    <% } %>
-
-    <!-- <% if (isLocal) { %>
+    <% } %> <% if (!isLocal) { %>
     <script type="systemjs-importmap">
       {
         "imports": {
@@ -67,7 +65,7 @@
     <script type="text/javascript">
       window.local = false;
     </script>
-    <% } %> -->
+    <% } %>
 
     <link
       rel="preload"
