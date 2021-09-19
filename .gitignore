@@ -7,7 +7,20 @@ node_modules/
 DBName
 dist/
 
-### JetBrains template
+### VirtualEnv template
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
@@ -128,7 +141,10 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+
+build/
 develop-eggs/
+
 downloads/
 eggs/
 .eggs/
@@ -587,3 +603,6 @@ _.njsproj
 _.sln
 \*.sw?
 .DS_Store
+=======
+.idea/
+
