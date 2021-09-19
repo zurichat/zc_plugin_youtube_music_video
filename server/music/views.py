@@ -109,13 +109,9 @@ class UserCountView(GenericAPIView):
 class addSongs(APIView):
 
     def post(self, req):
-<<<<<<< HEAD
     
         collection = "Music"
         user_id = {"user_id":"Mark"}
-=======
-        collection = "Songs"
->>>>>>> 07f99faa2697630a8a67fa35a38f3e7aded03467
 
         url = req.data['url']
         payload = get_video(url)
@@ -126,12 +122,8 @@ class addSongs(APIView):
 class updateSongs(APIView):
 
     def put(self, req):
-<<<<<<< HEAD
 
         collection = "Music"
-=======
-        collection = "Songs"
->>>>>>> 07f99faa2697630a8a67fa35a38f3e7aded03467
 
         url = req.data['url']
 
@@ -143,7 +135,6 @@ class updateSongs(APIView):
 
         return Response(res, status=200)
 
-<<<<<<< HEAD
 
 class getSongs(APIView):
 
@@ -152,55 +143,3 @@ class getSongs(APIView):
         res = data_read("Music")
         
         return Response(res, status=200)
-=======
-    def get(self, req):
-        res = data_read("Songs")
-
-        return Response(res, status=200)
-
-        return Response(data["data"])
-
-    def post(self, request):
-        payload = {
-            "age": 233,
-            "fan": "Carbom",
-            "name": "Oxide"
-        }
-        data = write_data("test_collection", payload=payload)
-        return Response(data)
-
-
-class AddToRoomView(APIView):
-    @staticmethod
-    def get_obj_id_and_append_user_id(request):
-        room_data = read_data(settings.ROOM_COLLECTION)
-        user_ids = room_data["data"][0]["room_user_ids"]
-        _id = room_data["data"][0]["_id"]
-        user_ids.append(request.data)
-        return _id, user_ids
-
-    def get(self, request):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data)
-
-    def post(self, request):
-        _id, user_ids = self.get_obj_id_and_append_user_id(request)
-
-        payload = {
-            "room_user_ids": user_ids
-        }
-
-        data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
-        return Response(data, status=status.HTTP_202_ACCEPTED)
-
-
-class CreateRoomView(APIView):
-    def post(self, request):
-        payload = {
-            "age": 233,
-            "fan": "Carbom",
-            "name": "Oxide"
-        }
-        data = write_data(settings.ROOM_COLLECTION, payload=payload)
-        return Response(data)
->>>>>>> 07f99faa2697630a8a67fa35a38f3e7aded03467

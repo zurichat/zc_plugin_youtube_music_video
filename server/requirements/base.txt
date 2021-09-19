@@ -17,10 +17,6 @@ PyYAML==5.4.1
 whitenoise==5.3.0
 gunicorn==20.1.0
 drf-spectacular==0.18.2
-<<<<<<< HEAD
-bs4==0.0.1
-
-=======
 requests-html==0.10.0
 beautifulsoup4==4.10.0
->>>>>>> 07f99faa2697630a8a67fa35a38f3e7aded03467
+bs4==0.0.1
