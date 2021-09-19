@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework.schemas import get_schema_view
-from music.views import PluginPingView, SidebarView, MediaView, PluginInfoView
+from music.views import PluginPingView, SidebarView, MediaView, PluginInfoView,CommentView
 
 schema_view = get_schema_view(title="Rest API")
 

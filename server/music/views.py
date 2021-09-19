@@ -106,3 +106,24 @@ class MediaView(GenericAPIView):
         # results = MediaSerializer(yourdata).data
         return Response(yourdata)
 
+class CommentView(APIView):
+
+    def get(self, request):
+        collection = 'Comments'
+        response = comment_read(collection)
+
+        return Response(response, status=200)
+
+
+    def post(self, request):
+
+        collection = 'Comments'
+        serializer = CommentSerializer(data=request.data)
+
+        if serializer.is_valid():
+            payload = serializer.data
+            response = comment_write(collection,payload)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
