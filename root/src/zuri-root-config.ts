@@ -2,7 +2,7 @@ import { registerApplication, start } from "single-spa";
 
 declare global {
   interface Window {
-    isLocal: boolean;
+    local: boolean;
   }
 }
 
@@ -22,10 +22,10 @@ declare global {
 // });
 
 // change argument to dev for development and back to prod before you push
-customRegister(window.isLocal ? "dev" : "prod");
+customRegister(window.local ? "dev" : "prod");
 
 function customRegister(env: "dev" | "prod") {
-  console.log({ isLocal: window.isLocal, env });
+  console.log({ local: window.local, env });
 
   if (env === "dev") {
     registerApplication({

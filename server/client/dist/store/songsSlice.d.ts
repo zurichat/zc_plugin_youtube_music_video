@@ -6,6 +6,10 @@ export declare const songAction: {
     dispatchRemoveSong: (payload: Song) => void;
     dispatchUpdateSong: (payload: Song) => void;
 };
+export declare const songSelector: {
+    selectAllSongs: (state: RootState) => Song[];
+    selectSongById: (songId: string) => (state: RootState) => Song;
+};
 export declare const selectAllSongs: (state: RootState) => Song[];
 export declare const selectSongById: (state: RootState, songId: string) => Song;
 declare const _default: import("redux").Reducer<Song[], import("redux").AnyAction>;

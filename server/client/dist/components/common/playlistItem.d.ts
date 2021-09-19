@@ -1,3 +1,4 @@
 /// <reference types="react" />
-declare function PlaylistItem(props: any): JSX.Element;
+import Song from "../../types/song";
+declare function PlaylistItem(props: Song): JSX.Element;
 export default PlaylistItem;

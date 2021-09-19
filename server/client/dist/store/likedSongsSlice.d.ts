@@ -1,7 +1,16 @@
 import { RootState } from ".";
 import LikedSong from "../types/likedSong";
-export declare const likeSong: import("@reduxjs/toolkit").ActionCreatorWithPayload<any, string>, unlikeSong: import("@reduxjs/toolkit").ActionCreatorWithPayload<any, string>;
-export declare const selectAllLikedSongs: (state: RootState) => import("../types/song").default[];
-export declare const selectLikedSongById: (state: RootState, likedSongId: string) => import("../types/song").default;
+import LikeSong from "../types/likeSong";
+export declare const likedSongDisptach: {
+    toggleLike: (payload: LikeSong) => void;
+};
+export declare const likedSongSelect: {
+    allLikedSongs: (state: RootState) => LikedSong[];
+    likedSongById: (songId: string) => (state: RootState) => LikedSong;
+    selectCount: ({ songId, userId }: LikeSong) => (state: RootState) => {
+        count: number;
+        liked: boolean;
+    };
+};
 declare const _default: import("redux").Reducer<LikedSong[], import("redux").AnyAction>;
 export default _default;

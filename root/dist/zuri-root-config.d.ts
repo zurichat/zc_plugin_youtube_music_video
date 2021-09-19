@@ -1,6 +1,6 @@
 declare global {
     interface Window {
-        isLocal: boolean;
+        local: boolean;
     }
 }
 export {};

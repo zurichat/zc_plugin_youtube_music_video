@@ -1,4 +1,3 @@
-import React from "react";
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
@@ -23,7 +22,11 @@ function Player() {
     store.dispatch({ type: playing.type, payload: { playing: false } });
   };
 
-  const urls = ["https://www.youtube.com/embed/vbYB4rddM-8"];
+  const handedEnded = () => {
+    console.log("stopped");
+  };
+
+  const urls = songs.map((song) => "https://www.youtube.com/embed/" + song.id);
 
   return (
     <Wrapper>
@@ -37,6 +40,8 @@ function Player() {
           playing={player.playing}
           onPlay={handlePlay}
           onPause={handlePause}
+          onStop={handedEnded}
+          onEnded={handedEnded}
           pip={true}
           stopOnUnmount={false}
           config={{ playerVars: { showinfo: 1 } }}

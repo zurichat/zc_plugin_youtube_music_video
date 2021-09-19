@@ -32,6 +32,8 @@ const PasteUrl = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
+    console.log("Adding song......");
+
     try {
       const metadata = await getSongMetadat(url);
 
