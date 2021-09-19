@@ -1,13 +1,7 @@
 import styled from "styled-components";
+import Chat from "../../types/chat";
 
-interface Props {
-  name: string;
-  avatar: string;
-  time: number;
-  message: string;
-}
-
-function ChatItem({ name, avatar, time, message }: Props) {
+function ChatItem({ name, avatar, time, message }: Chat) {
   return (
     <Wrapper>
       <div className="item-avatar">

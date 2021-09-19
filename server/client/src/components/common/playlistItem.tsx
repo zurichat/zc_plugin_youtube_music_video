@@ -10,12 +10,17 @@ import {
   likedSongDisptach,
   likedSongSelect,
 } from "../../store/likedSongsSlice";
+import { playerAction } from "../../store/playerSlice";
 
 import Song from "../../types/song";
 import { useSelector } from "react-redux";
 
-function PlaylistItem(props: Song) {
-  const { title, addedBy, duration, albumCover, id: songId } = props;
+interface Props {
+  song: Song;
+}
+
+function PlaylistItem(props: Props) {
+  const { title, addedBy, duration, albumCover, id: songId } = props.song;
 
   const { id: userId } = authService.getCurrentUser();
 
@@ -30,8 +35,14 @@ function PlaylistItem(props: Song) {
     likedSongDisptach.toggleLike({ songId, userId });
   };
 
+  const handlePlay = () => {
+    playerAction.dispatchChangeCurrentSong(props.song);
+    playerAction.dispatchShowPlayer(true);
+    playerAction.dispatchPlaying(true);
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onClick={handlePlay}>
       <img src={albumCover} alt="album cover" className="item-albumCover" />
 
       <div className="item-info">
@@ -70,6 +81,7 @@ const Wrapper = styled.div`
   margin-bottom: 8px;
   box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04);
   height: 66px;
+  cursor: pointer;
 
   &:hover {
     box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);

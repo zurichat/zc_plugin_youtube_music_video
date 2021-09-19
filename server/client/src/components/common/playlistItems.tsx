@@ -11,7 +11,7 @@ function PlaylistItems({ songs }: Props) {
   return (
     <div className="playlist-item-group">
       {songs.map((song, index) => (
-        <PlaylistItem key={index} {...song} />
+        <PlaylistItem key={index} song={song} />
       ))}
     </div>
   );

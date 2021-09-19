@@ -32,8 +32,6 @@ const PasteUrl = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    console.log("Adding song......");
-
     try {
       const metadata = await getSongMetadat(url);
 
@@ -47,6 +45,7 @@ const PasteUrl = (props: Props) => {
       };
 
       songService.addSong(song);
+      uiAction.dispatchAddSongToggle(false);
     } catch (e) {
       toast.error(e.message);
     }

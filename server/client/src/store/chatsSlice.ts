@@ -1,12 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import getChats from "../mock-data/chats";
 import store, { RootState } from ".";
-
-const initialState = getChats();
+import Chat from "../types/chat";
 
 const chatsSlice = createSlice({
   name: "chats",
-  initialState,
+  initialState: [] as Chat[],
   reducers: {
     addChat: (state, { payload }) => {
       state.push(payload);

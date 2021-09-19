@@ -11,9 +11,11 @@ import PasteUrl from "./pasteUrl";
 import Button from "./button";
 
 import Headset from "../../media/playlistIcon.svg";
+import { songSelector } from "../../store/songsSlice";
 
 const PlaylistHeader = () => {
   const player = useSelector(getPlayerState);
+  const firstSong = useSelector(songSelector.selectFirstSong);
 
   const [text, setText] = useState("Play");
 
@@ -24,6 +26,9 @@ const PlaylistHeader = () => {
       playerAction.dispatchPlaying(true);
       playerAction.dispatchShowPlayer(true);
     } else playerAction.dispatchPlaying(false);
+
+    if (!player.currentSong.id)
+      playerAction.dispatchChangeCurrentSong(firstSong);
   };
 
   const handleAddSongToggle = () => {
