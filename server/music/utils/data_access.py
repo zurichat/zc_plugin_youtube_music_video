@@ -109,6 +109,45 @@ def centrifugo_post(room, data):
     return response
 
 
+def comment_read(collection, filter={}):
+
+    plugin_id = settings.PLUGIN_ID
+
+    org_id = settings.ORGANIZATON_ID
+
+    url=f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
+
+    response = requests.get(url)
+
+    print(response.status_code)
+
+    data = response.json()
+
+    return data['data']
+
+
+def comment_write(collection, payload, filter_data={}, object_id ="", bulk_write=False):
+
+    plugin_id = settings.PLUGIN_ID
+
+    org_id = settings.ORGANIZATON_ID
+
+    data = {
+        "plugin_id": plugin_id,
+        "organization_id": org_id,
+        "collection_name": collection,
+        "bulk_write": bulk_write,
+        "object_id": object_id,
+        "filter": filter_data,
+        "payload": payload
+    }
+
+    url= "https://api.zuri.chat/data/write/"
+
+    response = requests.post(url, json=data)
+
+    print(response.status_code)
+
 
 
 

@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework.schemas import get_schema_view
-from music.views import PluginPingView, SidebarView, MediaView, PluginInfoView
+from music.views import PluginPingView, SidebarView, MediaView, PluginInfoView, CommentView
 
 schema_view = get_schema_view(title="Rest API")
 
@@ -9,5 +9,6 @@ urlpatterns = [
       path("test/", MediaView.as_view(), name="test"),
       path("info/", PluginInfoView.as_view(), name="info"),
       path("ping/", PluginPingView.as_view(), name="ping"),
+      path("comments/", CommentView.as_view(), name="comments"),
 
 ]
