@@ -12,7 +12,7 @@ export async function getSongMetadat(url): Promise<SongMetadata> {
       id,
       title: value.data.title,
       albumCover: value.data.thumbnail_url,
-      duration: "---",
+      duration: "--:--",
     }),
     (error) => {
       throw Error(error);
