@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
+import React, { useState } from 'react'
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
+import EnterRoom from "./components/Modals/EnterRoom";
 
 import chatMediaQuery from "./utils/chatMedia";
 
@@ -12,12 +14,28 @@ import "moment-timezone";
 
 function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
+  const [showModal, setShowModal] = useState(true)
+
+ 
 
   return (
     <Wrapper>
-      <ToastContainer />
-      <RoomHeader />
-      <MusicRoom />
+      
+      {showModal?
+      <>
+        
+        <RoomHeader />
+        <MusicRoom />
+        <EnterRoom setShowModal={setShowModal}/>
+      </>
+      :
+      <>
+        <ToastContainer />
+        <RoomHeader />
+        <MusicRoom />
+      </>
+       }
+       
     </Wrapper>
   );
 }
