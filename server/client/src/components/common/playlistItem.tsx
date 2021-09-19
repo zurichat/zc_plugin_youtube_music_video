@@ -1,15 +1,34 @@
-import React from "react";
 import styled from "styled-components";
 
 import Like from "./like";
 
-// @ts-ignore
 import option from "../../media/option.svg";
 
-function PlaylistItem(props) {
-  const { title, addedBy, duration, liked, albumCover } = props;
+import authService from "../../services/authService";
 
-  const handleLike = () => {};
+import {
+  likedSongDisptach,
+  likedSongSelect,
+} from "../../store/likedSongsSlice";
+
+import Song from "../../types/song";
+import { useSelector } from "react-redux";
+
+function PlaylistItem(props: Song) {
+  const { title, addedBy, duration, albumCover, id: songId } = props;
+
+  const { id: userId } = authService.getCurrentUser();
+
+  const { count, liked } = useSelector(
+    likedSongSelect.selectCount({ songId, userId })
+  );
+
+  const countText = (count) =>
+    count === 0 ? "" : count === 1 ? `${count} like` : `${count} likes`;
+
+  const handleLike = () => {
+    likedSongDisptach.toggleLike({ songId, userId });
+  };
 
   return (
     <Wrapper>
@@ -17,6 +36,7 @@ function PlaylistItem(props) {
 
       <div className="item-info">
         <div className="item-title">{title}</div>
+
         <div className="item-addedBy">
           Added by <span>{addedBy}</span>
         </div>
@@ -24,9 +44,12 @@ function PlaylistItem(props) {
 
       <div className="item-group">
         <div className="item-duration">{duration} mins</div>
-        <div className="item-like">{235} likes</div>
+
+        <div className="item-like">{countText(count)}</div>
+
         <div className="item-icons">
           <Like liked={liked} onLike={handleLike} />
+
           <img
             src={option}
             alt="option img"
