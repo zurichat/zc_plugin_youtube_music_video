@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.utils import timezone
 
 
 class MediaSerializer(serializers.Serializer):
@@ -7,18 +8,9 @@ class MediaSerializer(serializers.Serializer):
     url = serializers.CharField()
 
 
-# class SongSerializer(serializers.Serializer):
-    
-#     _id = serializers.ReadOnlyField()
-#     name = serializers.CharField(required=True)
-#     images = serializers.ImageField(required=False)
-#     added_by = serializers.CharField(required=True)
-#     date = serializers.DateField(required=False)
-#     time = serializers.TimeField(required=False)
-
-#     def __str__(self):
-#         return {self.name}
-
-
+class CommentSerializer(serializers.Serializer):
+    user_id = serializers.UUIDField()
+    created_datetime = serializers.DateTimeField(default=timezone.now())
+    message_content = serializers.CharField(max_length=256)
     
     

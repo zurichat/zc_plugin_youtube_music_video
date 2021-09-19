@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
-from music.utils.data_access import data_read, data_write, get_video, read_data, write_data
+from music.utils.data_access import data_read, data_write, get_video, read_data, write_data, centrifugo_post
 from rest_framework.views import APIView
 
 
@@ -103,7 +103,7 @@ class UserCountView(GenericAPIView):
         header_user_count = centrifugo_post.counter
         return Response(header_user_count)
 
-        centrifugo_post.counter = 0
+    centrifugo_post.counter = 0
 
 
 class Songs(APIView):
@@ -116,7 +116,6 @@ class Songs(APIView):
         res = data_write(collection, payload)
 
         return Response(res.json(), status=200)
-
 
     def put(self, req):
         collection = "Songs"
@@ -135,6 +134,7 @@ class Songs(APIView):
         res = data_read("Songs")
 
         return Response(res, status=200)
+
         return Response(data["data"])
 
     def post(self, request):
@@ -181,48 +181,25 @@ class CreateRoomView(APIView):
         data = write_data(settings.ROOM_COLLECTION, payload=payload)
         return Response(data)
 
-# from django.shortcuts import HttpResponse, render
-# from django.http import JsonResponse
-# from rest_framework import generics, status
-# # from rest_framework import response
-# # from rest_framework.decorators import api_view
-# import requests
-# from requests import exceptions
-# # from .serializers import RoomSerializer
-# # from .serializers import *
-# from calendar_backend.settings import PLUGIN_ID, ORGANIZATION_ID
+
+class CommentView(APIView):
+
+    def get(self, request):
+        collection = 'Comments'
+        response = data_read(collection)
+
+        return Response(response, status=200)
 
 
-# class RoomCreateView(generics.CreateAPIView):
-    
-#     serializer_class = RoomSerializer
+    def post(self, request):
 
-#     def post(self, request):
-#         serializer = self.serializer_class(data=request.data)
-#         serializer.is_valid(raise_exception=True)
+        collection = 'Comments'
+        serializer = CommentSerializer(data=request.data)
 
-#         room = serializer.data
-#         plugin_id = PLUGIN_ID
-#         org_id = ORGANIZATION_ID
-#         col_name = "musicroom"
-#         payload = {
-#             "plugin_id": plugin_id,
-#             "organization_id": org_id,
-#             "collection_name": col_name,
-#             "bulk_write": False,
-#             "object_id": "",
-#             "filter": {},
-#             "payload": room
-#         }
-#         url = "https://api.zuri.chat/data/write"
+        if serializer.is_valid():
+            payload = serializer.data
+            response = data_write(collection,payload)
 
-#         try:
-#             response = requests.post(url=url, json=payload)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-#             if response.status_code == 200:
-#                 return Response({"message": "room created successfully"}, status=status.HTTP_200_CREATED)
-#             else:
-#                 return Response({"error": response.json()['message']}, status=response.status_code)
-#                 print()
-#         except exceptions.ConnectionError as error:
-#             return Response(str(error), status=status.HTTP_502_BAD_GATEWAY)
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
