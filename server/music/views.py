@@ -106,6 +106,15 @@ class MediaView(GenericAPIView):
         # results = MediaSerializer(yourdata).data
         return Response(yourdata)
 
+      
+class UserCountView(GenericAPIView):
+    def get(self, request):
+        centrifugo_post("channel_name", {"event": "join_room"})
+        centrifugo_post.counter += 1
+        header_user_count = centrifugo_post.counter
+        return Response(header_user_count)
+
+    centrifugo_post.counter = 0
 
 
 class Songs(APIView):
@@ -140,3 +149,4 @@ class Songs(APIView):
         res = data_read("Songs")
         
         return Response(res, status=200)
+
