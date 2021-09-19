@@ -181,6 +181,7 @@ class CreateRoomView(APIView):
         data = write_data(settings.ROOM_COLLECTION, payload=payload)
         return Response(data)
 
+
 class CommentView(APIView):
 
     def get(self, request):
