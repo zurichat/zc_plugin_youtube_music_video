@@ -195,8 +195,12 @@ ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
 
+
+USER_ID = env("USER_ID")
 PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
 ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
 CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
-# CENTRIFUGO_TOKEN = "2829fc49-3e6b-4a55-bf02-3b1be88cfc24"
-USER_ID = env("USER_ID")
+
+ROOM_COLLECTION = "test_music_room"
+SONG_COLLECTION = "test_collection"
+comments_COLLECTION = "test_collection"
