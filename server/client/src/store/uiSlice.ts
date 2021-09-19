@@ -7,7 +7,7 @@ const slice = createSlice({
     isLoading: false,
     congrats: false,
     showChat: false,
-    addSong: false,
+    addSong: true,
   },
   reducers: {
     loaded: (state, action) => {
