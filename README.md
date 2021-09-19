@@ -1,6 +1,6 @@
 # YouTube Music-Video Plugin
 
-![music image](./server/readme-image.jpg)
+![music image](https://scontent.fabb1-1.fna.fbcdn.net/v/t1.6435-9/p640x640/184205866_309950770525058_7072329262818108856_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=e3f864&_nc_ohc=KxNw0YAjzh8AX_67s2d&_nc_ht=scontent.fabb1-1.fna&oh=e0bb8173d7cf9f75f82b00345dbbb987&oe=616AD4A8)
 
 # Tech Stack
 
