@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -7,10 +8,12 @@ import ChatInput from "./common/chatInput";
 
 import { selectAllChats } from "../store/chatsSlice";
 import { selectChat } from "../store/uiSlice";
+import { createChat } from "../services/chatService"
 
-function Chat() {
+function Chat(props) {
   const chats = useSelector(selectAllChats);
   const showChat = useSelector(selectChat);
+  const chatCreate = createChat;
 
   if (!showChat) return null;
 
@@ -22,7 +25,7 @@ function Chat() {
           <ChatItem key={index} {...chat} />
         ))}
       </div>
-      <ChatInput />
+      <ChatInput onClick={chatCreate} />
     </Wrapper>
   );
 }

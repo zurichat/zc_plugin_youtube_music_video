@@ -5,6 +5,6 @@ function getCurrentUser() {
   };
 }
 
-const authObject = { getCurrentUser };
+const authService = { getCurrentUser };
 
-export default authObject;
+export default authService;
