@@ -1,9 +1,23 @@
 from rest_framework.generics import GenericAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
+from .serializers import RoomSerializer
 from django.http import JsonResponse
 
 from music.utils.data_access import centrifugo_post
 from music.utils.request_client import RequestClient
+import config.settings as settings
+import requests
+import json
+
+
+# TODO: remove logging after testing
+import logging
+logging.basicConfig(
+    level=logging.DEBUG, format="Line %(lineno)d - %(message)s",
+)
+
+
 
 
 class SidebarView(GenericAPIView):
@@ -101,3 +115,127 @@ class MediaView(GenericAPIView):
         centrifugo_post("channel_name", {"event": "join_room"})
         # results = MediaSerializer(yourdata).data
         return Response(yourdata)
+
+
+
+class CreateRoom(APIView):
+
+    def post(self, requests):
+        """
+         This function is used to create a room
+        """
+
+
+        collection = "test_collection"
+        serializer = RoomSerializer(data=requests.data)
+
+        if serializer.is_valid():
+            res = data_write(collection, payload=serializer.data)
+
+        return Response(res )
+
+
+class RoomInfo(APIView):
+    def get(self, request):
+
+
+        data = data_read('test_collection')
+        # TODO write exception code for invalid collection
+
+        # this returns the whole collection
+        # return Response(data)
+
+        # TODO the for below is not needed, you need the filter for that
+        for col in (data['data']):
+            # music_room  = data['data'].get('room_name')
+            if col.get('room_name'):
+                # logging.debug('found room')
+                # logging.debug(col)
+                collection = (col)
+
+
+
+        return Response(collection)
+
+
+
+class UpdateRoom(APIView):
+
+
+    def put(self, request):
+        # TODO write exception code for invalid collection
+        data = data_read('test_collection')
+        for col in (data['data']):
+            if col.get('room_name'):
+                # logging.debug('found room')
+                # logging.debug(col)
+                collection = (col)
+
+        payload = json.load(request)
+        collection_id  = (collection['_id'])
+        response = data_edit('test_collection', payload,
+                              object_id=collection_id)
+        return Response(response)
+
+# data read and write
+def data_write(collection,  payload,filter={}, bulk=False, object_id=""):
+
+    plugin_id = settings.PLUGIN_ID
+    org_id = settings.ORGANIZATON_ID
+
+
+    data = {
+
+            "plugin_id": plugin_id,
+            "organization_id": org_id,
+            "collection_name": collection,
+            "bulk_write": bulk,
+            "object_id":object_id,
+            "filter": filter,
+            "payload": payload
+    }
+    url = "https://api.zuri.chat/data/write"
+
+    res = requests.post(url, json=data)
+
+    print(res.status_code)
+
+    return res
+
+def data_read(coll):
+
+    plugin_id = settings.PLUGIN_ID
+    org_id = settings.ORGANIZATON_ID
+
+    url = "https://api.zuri.chat/data/read/" + plugin_id+"/"+coll+"/"+org_id
+
+    res = requests.get(url)
+
+    print(res.status_code)
+    data = res.json()
+    # return data['data']
+    return data
+
+
+def data_edit(collection,  payload,filter={}, bulk=False,object_id="" ):
+
+    plugin_id = settings.PLUGIN_ID
+    org_id = settings.ORGANIZATON_ID
+
+
+    data = {
+
+            "plugin_id": plugin_id,
+            "organization_id": org_id,
+            "collection_name": collection,
+            "bulk_write": bulk,
+            "object_id":object_id,
+            "filter": filter,
+            "payload": payload
+    }
+    url = "https://api.zuri.chat/data/write"
+
+    res = requests.put(url=url, json=data)
+    return res
+
+
