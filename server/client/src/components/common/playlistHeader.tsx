@@ -27,7 +27,8 @@ const PlaylistHeader = () => {
   };
 
   const handleAddSongToggle = () => {
-    uiAction.dispatchAddSongToggle({ addSong: true });
+    console.log("calling ");
+    uiAction.dispatchAddSongToggle(true);
   };
 
   return (
