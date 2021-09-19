@@ -1,13 +1,10 @@
+from django.conf import settings
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
-from rest_framework import status
-
+from music.utils.data_access import data_read, data_write, get_video, read_data, write_data
 from rest_framework.views import APIView
-
-from music.utils.data_access import centrifugo_post
-from music.utils.request_client import RequestClient
-from music.serializers import CommentSerializer
 
 
 class SidebarView(GenericAPIView):
@@ -59,9 +56,10 @@ class PluginInfoView(GenericAPIView):
             "data": {
                 "type": "Plugin Information",
                 "plugin_info": {"name": "Music room",
-                                "description": ["This is a plugin that allows individuals in an organization to add music and video links from YouTube to a  shared playlist. Users also have the option to chat with other users in the music room and the option to like a song or video that is in the music room library."]
+                                "description": [
+                                    "This is a plugin that allows individuals in an organization to add music and video links from YouTube to a  shared playlist. Users also have the option to chat with other users in the music room and the option to like a song or video that is in the music room library."]
                                 },
-                "version": "v1",                            
+                "version": "v1",
                 "scaffold_structure": "Monolith",
                 "team": "HNG 8.0/Team Music Plugin",
                 "developer_name": "Zurichat Music Plugin",
@@ -70,7 +68,7 @@ class PluginInfoView(GenericAPIView):
                 "photos": "https://drive.google.com/file/d/1KB9uSWqg0rM21ohsPxGnG8_1xbcdReio/view?usp=drivesdk",
                 "homepage_url": "https://music.zuri.chat/music/",
                 "sidebar_url": "https://music.zuri.chat/music/api/v1/sidebar/",
-                "install_url":  "https://music.zuri.chat/music/",
+                "install_url": "https://music.zuri.chat/music/",
                 'ping_url': 'http://music.zuri.chat/music/api/v1/ping'
             },
             "success": "true"
@@ -88,42 +86,97 @@ class PluginPingView(GenericAPIView):
         return JsonResponse({'server': server})
 
 
-class MediaView(GenericAPIView):
+class MediaView(APIView):
     def get(self, request):
         payload = {"email": "hng.user01@gmail.com", "password": "password"}
 
-        request_client = RequestClient()
+        data = read_data("test_collection")
 
-        response = request_client.request(
-            method="GET",
-            url=f"https://httpbin.org/anything",
-            headers={"Content-Type": "application/json"},
-            post_data=payload,
-        )
+        # centrifugo_post("channel_name", {"event": "join_room"})
+        return Response(data)
 
-        yourdata = response.response_data
-        centrifugo_post("channel_name", {"event": "join_room"})
-        # results = MediaSerializer(yourdata).data
-        return Response(yourdata)
 
-class CommentView(APIView):
-
+class UserCountView(GenericAPIView):
     def get(self, request):
-        collection = 'Comments'
-        response = comment_read(collection)
+        centrifugo_post("channel_name", {"event": "join_room"})
+        centrifugo_post.counter += 1
+        header_user_count = centrifugo_post.counter
+        return Response(header_user_count)
 
-        return Response(response, status=200)
+        centrifugo_post.counter = 0
 
+
+class Songs(APIView):
+
+    def post(self, req):
+        collection = "Songs"
+
+        url = req.data['url']
+        payload = get_video(url)
+        res = data_write(collection, payload)
+
+        return Response(res.json(), status=200)
+
+    def put(self, req):
+        collection = "Songs"
+
+        url = req.data['url']
+
+        obj_id = req.data['object_id']
+
+        payload = get_video(url)
+
+        res = data_write(collection, payload, object_id=obj_id)
+
+        return Response(res, status=200)
+
+    def get(self, req):
+        res = data_read("Songs")
+
+        return Response(res, status=200)
+
+        return Response(data["data"])
 
     def post(self, request):
+        payload = {
+            "age": 233,
+            "fan": "Carbom",
+            "name": "Oxide"
+        }
+        data = write_data("test_collection", payload=payload)
+        return Response(data)
 
-        collection = 'Comments'
-        serializer = CommentSerializer(data=request.data)
 
-        if serializer.is_valid():
-            payload = serializer.data
-            response = comment_write(collection,payload)
+class AddToRoomView(APIView):
+    @staticmethod
+    def get_obj_id_and_append_user_id(request):
+        room_data = read_data(settings.ROOM_COLLECTION)
+        user_ids = room_data["data"][0]["room_user_ids"]
+        _id = room_data["data"][0]["_id"]
+        user_ids.append(request.data)
+        return _id, user_ids
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def get(self, request):
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(data)
 
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request):
+        _id, user_ids = self.get_obj_id_and_append_user_id(request)
+
+        payload = {
+            "room_user_ids": user_ids
+        }
+
+        data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
+        return Response(data, status=status.HTTP_202_ACCEPTED)
+
+
+class CreateRoomView(APIView):
+    def post(self, request):
+        payload = {
+            "age": 233,
+            "fan": "Carbom",
+            "name": "Oxide"
+        }
+        data = write_data(settings.ROOM_COLLECTION, payload=payload)
+        return Response(data)

@@ -1,6 +1,7 @@
 from music.utils.request_client import RequestClient
 from django.conf import settings
-from django.http import JsonResponse
+from requests_html import HTMLSession
+from bs4 import BeautifulSoup as bs
 import requests
 
 plugin_id = settings.PLUGIN_ID
@@ -24,24 +25,20 @@ def user_login():
     return response
 
 
-def verify_token():
-    headers = {
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
-        "eyJhdXRob3JpemVkIjp0cnVlLCJVc2VyIjp7ImlkIjoiN"
-        "jEzNTkwZmQwMzY2YjY4MTZhMGI3NWVlIiwiZW1haWwiOiJ"
-        "obmcudXNlcjAxQGdtYWlsLmNvbSJ9LCJleHAiOjE2MzEyND"
-        "E1OTIsImlzcyI6ImFwaS56dXJpLmNoYXQifQ.XZPFXTTdIBL"
-        "GlMSRi_3nziOXYFOidCWFiPsMIxdy2Y0"
-    }
+def verify_token(token):
+    if token is None:
+        headers = {"Authorization": f"Bearer {token}"}
+    else:
+        headers = {"Cookie": token}
 
     request_client = RequestClient()
 
     response = request_client.request(
         method="GET",
         url="https://api.zuri.chat/auth/verify-token",
-        headers={"Authorization": headers},
+        headers=headers,
     )
-    return response
+    return response.response_data
 
 
 def read_data(collection=None, filter_data=None):
@@ -53,13 +50,13 @@ def read_data(collection=None, filter_data=None):
     response = request_client.request(
         method="GET",
         url=f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}",
-        headers={"Authorization": headers},
+        headers={"Authorization": "headers"},
         post_data=filter_data
     )
-    return response
+    return response.response_data
 
 
-def write_data(collection, object_id, filter_data, payload, bulk_write=False, ):
+def write_data(collection, object_id=None, filter_data=None, payload=None, bulk_write=False, method="POST"):
     if filter_data is None:
         filter_data = {}
 
@@ -67,7 +64,7 @@ def write_data(collection, object_id, filter_data, payload, bulk_write=False, ):
         payload = {}
 
     if object_id is None:
-        object_id = {}
+        object_id = ""
 
     post_data = {
         "plugin_id": plugin_id,
@@ -81,12 +78,12 @@ def write_data(collection, object_id, filter_data, payload, bulk_write=False, ):
     request_client = RequestClient()
 
     response = request_client.request(
-        method="GET",
-        url=f"https://api.zuri.chat/data/write/",
-        headers=headers,
+        method=method,
+        url="https://api.zuri.chat/data/write",
+        headers={"Authorization": "headers"},
         post_data=post_data
     )
-    return response
+    return response.response_data
 
 
 def centrifugo_post(room, data):
@@ -108,43 +105,58 @@ def centrifugo_post(room, data):
     )
     return response
 
-def comment_read(collection, filter={}):
 
-    plugin_id = settings.PLUGIN_ID
-
-    org_id = settings.ORGANIZATON_ID
-
-    url=f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
-
-    response = requests.get(url)
-
-    print(response.status_code)
-
-    data = response.json()
-
-    return data['data']
-
-
-def comment_write(collection, payload, filter_data={}, object_id ="", bulk_write=False):
-
+def data_write(collection, payload, filter={}, bulk=False, object_id=""):
     plugin_id = settings.PLUGIN_ID
 
     org_id = settings.ORGANIZATON_ID
 
     data = {
+
         "plugin_id": plugin_id,
         "organization_id": org_id,
         "collection_name": collection,
-        "bulk_write": bulk_write,
+        "bulk_write": bulk,
         "object_id": object_id,
-        "filter": filter_data,
+        "filter": filter,
         "payload": payload
+
     }
+    url = "https://api.zuri.chat/data/write"
 
-    url= "https://api.zuri.chat/data/write/"
+    res = requests.post(url, json=data)
 
-    response = requests.post(url, json=data)
+    print(res.status_code)
 
-    print(response.status_code)
+    return res
 
-    return response
+
+def data_read(coll):
+    plugin_id = settings.PLUGIN_ID
+
+    org_id = settings.ORGANIZATON_ID
+
+    url = "https://api.zuri.chat/data/read/" + plugin_id + "/" + coll + "/" + org_id
+
+    res = requests.get(url)
+
+    print(res.status_code)
+    data = res.json()
+    return data['data']
+
+
+def get_video(url):
+    res = requests.get(url)
+
+    res_text = res.text
+
+    soup = bs(res_text, "html.parser")
+
+    result = {}
+
+    result["title"] = soup.find("meta", itemprop="name")['content']
+
+    result["thumbnail_url"] = soup.find("meta", property="og:image")['content']
+
+    result["track_url"] = soup.find("meta", property="og:url")['content']
+    return result
