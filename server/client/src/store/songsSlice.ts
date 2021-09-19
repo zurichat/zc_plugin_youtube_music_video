@@ -4,11 +4,9 @@ import store, { RootState } from ".";
 import getSongs from "../mock-data/songs";
 import Song from "../types/song";
 
-const initialState = getSongs();
-
 const songsSlice = createSlice({
   name: "songs",
-  initialState,
+  initialState: [] as Song[],
   reducers: {
     addSong: (state, { payload }) => {
       state.push(payload.song);

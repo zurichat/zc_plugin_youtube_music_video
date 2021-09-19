@@ -22,6 +22,10 @@ function ChatInput(props) {
     setShowPicker(false);
 
   };
+
+  const clearInput = () => {
+    setInputStr("");
+  }
   
   return (
     <Wrapper>
@@ -41,6 +45,10 @@ function ChatInput(props) {
         <img src={chatSend} 
         alt="send" 
         className="chat-icon" 
+        onClick={() => {
+          props.onClick(dispatch, inputStr);
+          clearInput();
+        }}
         />
       </div>
     </Wrapper>
