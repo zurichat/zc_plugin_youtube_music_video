@@ -35,7 +35,7 @@ body::-webkit-scrollbar-thumb {
   padding: 10px;
   background: white;
   max-width: 350px;
-  margin: 20% auto;
+  margin: 5% auto;
 }
 
 .leave h1 {
