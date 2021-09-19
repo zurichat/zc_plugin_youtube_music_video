@@ -1,5 +1,9 @@
 import { RootState } from ".";
 export declare const playing: import("@reduxjs/toolkit").ActionCreatorWithPayload<any, string>, showPlayer: import("@reduxjs/toolkit").ActionCreatorWithPayload<any, string>;
+export declare const playerAction: {
+    dispatchShowPlayer: (payload: boolean) => void;
+    dispatchPlaying: (payload: boolean) => void;
+};
 export declare const getPlayerState: (state: RootState) => {
     playing: boolean;
     show: boolean;
