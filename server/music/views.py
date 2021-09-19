@@ -1,14 +1,10 @@
-<<<<<<< HEAD
-from music.utils.data_access import read_data, write_data
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
-=======
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
->>>>>>> bec0d7e39fa76e7324b8fe77438e4b4d4be7733f
 from django.http import JsonResponse
-from music.utils.data_access import get_video_info
+from music.utils.data_access import get_video
+from music.utils.data_access import data_read, data_write
+from rest_framework.views import APIView
+import requests
 
 from music.utils.data_access import centrifugo_post
 from music.utils.request_client import RequestClient
@@ -108,27 +104,39 @@ class MediaView(GenericAPIView):
         yourdata = response.response_data
         centrifugo_post("channel_name", {"event": "join_room"})
         # results = MediaSerializer(yourdata).data
-<<<<<<< HEAD:music/views.py
         return Response(yourdata)
 
 
 
+class Songs(APIView):
 
-class AddMediaView(GenericAPIView):
-    def get(self, request):
+    def post(self, req):
+    
+        collection = "Songs"
 
-        data = read_data('New Collection')
-        data = data['data']
+        url = req.data['url']
+        payload = get_video(url)
+        print()
+        res = data_write(collection, payload)
 
-        return Response(data)
+        return Response(res.json(), status=200)
 
-    def post(self, request):
-        payload = get_video_info("https://www.youtube.com/watch?v=3A3MiNlX6II")
+    def put(self, req):
 
-        data = write_data('New Collection', payload=payload)
-        data=data['data']
+        collection = "Songs"
 
-        return Response(data)
-=======
-        return Response(yourdata)
->>>>>>> e75c89e5f2714b26ae3f3925df677a761e68b9fe:server/music/views.py
+        url = req.data['url']
+        
+        obj_id = req.data['object_id']
+
+        payload = get_video(url)
+
+        res = data_write(collection, payload, object_id=obj_id)
+
+        return Response(res, status=200)
+
+    def get(self,req):
+
+        res = data_read("Songs")
+        
+        return Response(res, status=200)

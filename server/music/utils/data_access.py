@@ -2,6 +2,7 @@ from music.utils.request_client import RequestClient
 from django.conf import settings
 from requests_html import HTMLSession
 from bs4 import BeautifulSoup as bs
+import requests
 
 plugin_id = settings.PLUGIN_ID
 org_id = settings.ORGANIZATON_ID
@@ -106,39 +107,64 @@ def centrifugo_post(room, data):
         headers=headers,
         post_data=post_data
     )
-<<<<<<< HEAD:music/utils/data_access.py
     return response
 
 
-# init session
-session = HTMLSession()
 
-def get_video_info(url):
-    # download HTML code
-    response = session.get(url)
-    # execute Javascript
-    response.html.render(timeout=0)
-    # create beautiful soup object to parse HTML
-    soup = bs(response.html.html, "html.parser")
-    # open("index.html", "w").write(response.html.html)
-    # initialize the result
+
+def data_write(collection,  payload,filter={}, bulk=False, object_id=""):
+
+    plugin_id = settings.PLUGIN_ID
+
+    org_id = settings.ORGANIZATON_ID
+
+    data = {
+
+            "plugin_id": plugin_id,
+            "organization_id": org_id,
+            "collection_name": collection,
+            "bulk_write": bulk,
+            "object_id":object_id,
+            "filter": filter,
+            "payload": payload
+             
+    }
+    url = "https://api.zuri.chat/data/write"
+
+    res = requests.post(url, json=data)
+
+    print(res.status_code)
+
+    return res
+
+def data_read(coll):
+
+    plugin_id = settings.PLUGIN_ID
+
+    org_id = settings.ORGANIZATON_ID
+
+    url = "https://api.zuri.chat/data/read/" + plugin_id+"/"+coll+"/"+org_id
+
+    res = requests.get(url)
+
+    print(res.status_code)
+    data = res.json()
+    return data['data']
+
+
+def get_video(url):
+
+    res = requests.get(url)
+    
+    res_text = res.text
+    
+    soup = bs(res_text, "html.parser")
+
     result = {}
 
-    # video title
     result["title"] = soup.find("meta", itemprop="name")['content']
-    
-    # get the duration of the video
-    result["duration"] = soup.find("span", {"class": "ytp-time-duration"}).text
 
-    # thumbnail url
     result["thumbnail_url"] = soup.find("meta", property="og:image") ['content']
 
-    # video url
     result["track_url"] = soup.find("meta", property="og:url")['content']
-
     return result
-    
-
-=======
-    return response
->>>>>>> e75c89e5f2714b26ae3f3925df677a761e68b9fe:server/music/utils/data_access.py

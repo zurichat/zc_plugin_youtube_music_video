@@ -1,7 +1,14 @@
 declare const store: import("@reduxjs/toolkit").EnhancedStore<{
     users: import("../types/user").default[];
-    chats: any;
-    songs: any;
+    chats: {
+        id: string;
+        userId: string;
+        name: string;
+        time: number;
+        message: string;
+        avatar: string;
+    }[];
+    songs: import("../types/song").default[];
     likedSongs: import("../types/likedSong").default[];
     ui: {
         isLoading: boolean;
@@ -15,8 +22,15 @@ declare const store: import("@reduxjs/toolkit").EnhancedStore<{
     };
 }, import("redux").AnyAction, [import("redux-thunk").ThunkMiddleware<{
     users: import("../types/user").default[];
-    chats: any;
-    songs: any;
+    chats: {
+        id: string;
+        userId: string;
+        name: string;
+        time: number;
+        message: string;
+        avatar: string;
+    }[];
+    songs: import("../types/song").default[];
     likedSongs: import("../types/likedSong").default[];
     ui: {
         isLoading: boolean;
@@ -30,8 +44,15 @@ declare const store: import("@reduxjs/toolkit").EnhancedStore<{
     };
 }, import("redux").AnyAction, null> | import("redux-thunk").ThunkMiddleware<{
     users: import("../types/user").default[];
-    chats: any;
-    songs: any;
+    chats: {
+        id: string;
+        userId: string;
+        name: string;
+        time: number;
+        message: string;
+        avatar: string;
+    }[];
+    songs: import("../types/song").default[];
     likedSongs: import("../types/likedSong").default[];
     ui: {
         isLoading: boolean;
