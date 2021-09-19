@@ -180,3 +180,25 @@ class CreateRoomView(APIView):
         }
         data = write_data(settings.ROOM_COLLECTION, payload=payload)
         return Response(data)
+
+class CommentView(APIView):
+
+    def get(self, request):
+        collection = 'Comments'
+        response = data_read(collection)
+
+        return Response(response, status=200)
+
+
+    def post(self, request):
+
+        collection = 'Comments'
+        serializer = CommentSerializer(data=request.data)
+
+        if serializer.is_valid():
+            payload = serializer.data
+            response = data_write(collection,payload)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
