@@ -1,6 +1,5 @@
 from music.utils.request_client import RequestClient
 from django.conf import settings
-from requests_html import HTMLSession
 from bs4 import BeautifulSoup as bs
 import requests
 
@@ -126,7 +125,7 @@ def data_write(collection,  payload,filter={}, bulk=False, object_id=""):
             "bulk_write": bulk,
             "object_id":object_id,
             "filter": filter,
-            "payload": payload
+            "payload": payload,
              
     }
     url = "https://api.zuri.chat/data/write"

@@ -108,11 +108,12 @@ class MediaView(GenericAPIView):
 
 
 
-class Songs(APIView):
+class addSongs(APIView):
 
     def post(self, req):
     
-        collection = "Songs"
+        collection = "Music"
+        user_id = {"user_id":"Mark"}
 
         url = req.data['url']
         payload = get_video(url)
@@ -121,9 +122,11 @@ class Songs(APIView):
 
         return Response(res.json(), status=200)
 
+class updateSongs(APIView):
+
     def put(self, req):
 
-        collection = "Songs"
+        collection = "Music"
 
         url = req.data['url']
         
@@ -135,8 +138,11 @@ class Songs(APIView):
 
         return Response(res, status=200)
 
+
+class getSongs(APIView):
+
     def get(self,req):
 
-        res = data_read("Songs")
+        res = data_read("Music")
         
         return Response(res, status=200)
