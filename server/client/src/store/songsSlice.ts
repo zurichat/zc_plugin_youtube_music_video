@@ -46,6 +46,14 @@ export const songAction = {
   },
 };
 
+export const songSelector = {
+  selectAllSongs: (state: RootState) => state.songs,
+
+  selectSongById: (songId: string) => (state: RootState) => {
+    return state.songs.find((song) => song.id === songId);
+  },
+};
+
 export const selectAllSongs = (state: RootState) => state.songs;
 
 export const selectSongById = (state: RootState, songId: string) => {

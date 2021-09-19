@@ -1,12 +1,12 @@
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from django.http import JsonResponse
 
-from music.serializers import MediaSerializer
+from music.utils.data_access import centrifugo_post
 from music.utils.request_client import RequestClient
 
 
-class SidebarView(APIView):
+class SidebarView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -23,7 +23,7 @@ class SidebarView(APIView):
                 "show_group": False,
                 "public_rooms": {
                     "room_name": "music room",
-                    "object_id": "613e906115fb2424261b6652",
+                    "room_id": "613e906115fb2424261b6652",
                     "collection_name": "room",
                     "type": "public_rooms",
                     "unread": 2,
@@ -33,10 +33,12 @@ class SidebarView(APIView):
                 },
                 "joined_rooms": {
                     "title": "general",
-                    "id": "DFGHH-EDDDDS-DFDDF",
-                    "unread": 0,
-                    "members": 100,
-                    "icon": "shovel",
+                    "room_id": "613e906115fb2424261b6652",
+                    "collection_name": "room",
+                    "type": "public_rooms",
+                    "unread": 2,
+                    "members": 23,
+                    "icon": "headphones",
                     "action": "open",
                 },
             },
@@ -45,7 +47,7 @@ class SidebarView(APIView):
         return JsonResponse(data, safe=False)
 
 
-class PluginInfoView(APIView):
+class PluginInfoView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -53,7 +55,7 @@ class PluginInfoView(APIView):
             "data": {
                 "type": "Plugin Information",
                 "plugin_info": {"name": "Music room",
-                                "description": ["This is a plugin that allows individuals in an organization to add music and video links from YouTube to a  shared playlist. This allows anyone in that organization to listen to or watch any of the shared videos/songs. Users also have the option to chat with other users in the music room and the option to like a song or video that is in the music room library."]
+                                "description": ["This is a plugin that allows individuals in an organization to add music and video links from YouTube to a  shared playlist. Users also have the option to chat with other users in the music room and the option to like a song or video that is in the music room library."]
                                 },
                 "version": "v1",                            
                 "scaffold_structure": "Monolith",
@@ -62,27 +64,27 @@ class PluginInfoView(APIView):
                 "developer_email": "musicplugin@zurichat.com",
                 "icon_url": "https://drive.google.com/file/d/1KB9uSWqg0rM21ohsPxGnG8_1xbcdReio/view?usp=drivesdk",
                 "photos": "https://drive.google.com/file/d/1KB9uSWqg0rM21ohsPxGnG8_1xbcdReio/view?usp=drivesdk",
-                "homepage_url": "https://music.zuri.chat/",
-                "sidebar_url": "https://music.zuri.chat/api/v1/sidebar/",
-                "install_url":  "https://music.zuri.chat/",
-                'ping_url': 'http://music.zuri.chat/api/v1/ping'
+                "homepage_url": "https://music.zuri.chat/music/",
+                "sidebar_url": "https://music.zuri.chat/music/api/v1/sidebar/",
+                "install_url":  "https://music.zuri.chat/music/",
+                'ping_url': 'http://music.zuri.chat/music/api/v1/ping'
             },
             "success": "true"
         }
         return JsonResponse(data, safe=False)
 
 
-class PluginPingView(APIView):
+class PluginPingView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         server = [
             {'status': 'Success',
-            'Report': ['The music.zuri.chat server is working']}
+             'Report': ['The music.zuri.chat server is working']}
         ]
         return JsonResponse({'server': server})
 
 
-class MediaView(APIView):
+class MediaView(GenericAPIView):
     def get(self, request):
         payload = {"email": "hng.user01@gmail.com", "password": "password"}
 
@@ -96,5 +98,6 @@ class MediaView(APIView):
         )
 
         yourdata = response.response_data
+        centrifugo_post("channel_name", {"event": "join_room"})
         # results = MediaSerializer(yourdata).data
         return Response(yourdata)

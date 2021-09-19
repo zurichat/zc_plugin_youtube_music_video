@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { FiX } from "react-icons/fi";
-import { useSelector } from "react-redux";
+import { useSelector, connect } from "react-redux";
 import { toast } from "react-toastify";
 
 import Song from "../../types/song";
@@ -9,12 +9,18 @@ import Song from "../../types/song";
 import { selectPasteUrl, uiAction } from "../../store/uiSlice";
 
 import { getSongMetadat } from "../../utils/metadata";
-import { getUUID } from "../../utils/idGenerator";
 
 import songService from "../../services/songService";
 import authService from "../../services/authService";
+import { RootState } from "../../store";
 
-const PasteUrl = () => {
+interface Props {
+  getSongById: (id: string) => Song;
+}
+
+const PasteUrl = (props: Props) => {
+  const { getSongById } = props;
+
   const [url, setUrl] = useState("");
 
   const pasteUrl = useSelector(selectPasteUrl);
@@ -28,10 +34,14 @@ const PasteUrl = () => {
 
     try {
       const metadata = await getSongMetadat(url);
+
+      const isExist = getSongById(metadata.id);
+
+      if (isExist) throw Error("Song already in the library");
+
       const song: Song = {
-        id: getUUID(),
-        addedBy: authService.getCurrentUser().name,
         ...metadata,
+        addedBy: authService.getCurrentUser().name,
       };
 
       songService.addSong(song);
@@ -43,31 +53,32 @@ const PasteUrl = () => {
   return (
     <Wrapper>
       <form onSubmit={handleSubmit} className="submit-form">
-        <label htmlFor="" className="form-label">
-          Paste Youtube URL here
-          <FiX
-            style={{
-              color: "#00bb7c",
-              background: "#e5fff6",
-              width: "1rem",
-              height: "1rem",
-            }}
-            onClick={() => uiAction.dispatchAddSongToggle({ addSong: false })}
-          />
-        </label>
-        <div className="inputs">
-          <div className="input-text">
-            <input
-              type="text"
-              name=""
-              id=""
-              value={url}
-              onChange={handleChange}
+        <div>
+          <label htmlFor="" className="form-label">
+            Paste Youtube URL here
+            <FiX
+              style={{
+                color: "#00bb7c",
+                background: "#e5fff6",
+                width: "1rem",
+                height: "1rem",
+                cursor: "pointer",
+              }}
+              onClick={() => uiAction.dispatchAddSongToggle({ addSong: false })}
             />
-          </div>
-          <div className="input-submit">
-            <input type="submit" value="Add" />
-          </div>
+          </label>
+        </div>
+        <div className="inputs">
+          <input
+            className="input-text"
+            type="text"
+            name=""
+            id=""
+            value={url}
+            onChange={handleChange}
+          />
+
+          <input className="input-submit" type="submit" value="Add" />
         </div>
       </form>
     </Wrapper>
@@ -75,47 +86,70 @@ const PasteUrl = () => {
 };
 
 const Wrapper = styled.div`
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+  position: fixed;
+  top: 180px;
+  left: 10%;
+  width: 400px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+
   .submit-form {
     display: flex;
-    justify-content: center;
     flex-direction: column;
+    justify-content: space-evenly;
     background: #fff;
-    width: 400px;
-    height: 80px;
-    border: 2px solid #fff;
-    position: absolute;
-    top: 160px;
-    left: 180px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #00bb7c;
     padding: 1rem;
   }
   .form-label {
-    font-weight: 700;
     display: flex;
     justify-content: space-between;
+    font-weight: 700;
   }
   .inputs {
-    padding-top: 0.5rem;
     display: flex;
     justify-content: space-between;
+    height: 20px;
   }
   .input-text {
-    width: 76%;
+    flex-grow: 1;
     border: 1.5px solid #00bb7c;
     outline: none;
     padding: 0.5rem;
+    height: 100%;
+    font-size: 17px;
+  }
+  .input-text::selection {
+    background-color: #00bb7c;
+    color: white;
   }
   .input-submit {
+    flex-basis: 25%;
+    height: 195%;
     padding: 0.5rem 1.2rem;
-    margin-right: 0.9rem;
+    font-size: 17px;
     color: #fff;
     background: #00bb7c;
     border: none;
     outline: none;
     cursor: pointer;
   }
+
+  @media (max-width: 453px) {
+    width: 100%;
+    left: 1px;
+
+    .submit-form {
+      width: 80%;
+    }
+  }
 `;
 
-export default PasteUrl;
+const mapStateToProps = (state: RootState) => ({
+  getSongById: (songId) => state.songs.find((song) => song.id === songId),
+});
+
+export default connect(mapStateToProps)(PasteUrl);
