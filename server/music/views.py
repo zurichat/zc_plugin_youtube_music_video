@@ -2,8 +2,12 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
 
+
+from rest_framework.views import APIView
+
 from music.utils.data_access import centrifugo_post
 from music.utils.request_client import RequestClient
+
 
 
 class SidebarView(GenericAPIView):
@@ -101,3 +105,4 @@ class MediaView(GenericAPIView):
         centrifugo_post("channel_name", {"event": "join_room"})
         # results = MediaSerializer(yourdata).data
         return Response(yourdata)
+
