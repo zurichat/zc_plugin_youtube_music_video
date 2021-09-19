@@ -7,11 +7,14 @@ import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
 
-function ChatInput() {
+import { useDispatch } from 'react-redux'
+
+function ChatInput(props) {
 
   // states to manage the input text and also the showcasing of the emoji
   const [inputStr, setInputStr] = useState("");
   const [showPicker, setShowPicker] = useState(false);
+  const dispatch = useDispatch();
 
   // function to display the emoji once clicked and remove once the user select their preferred emoji
   const onEmojiClick = (event, emojiObject) => {
@@ -19,6 +22,11 @@ function ChatInput() {
     setShowPicker(false);
 
   };
+
+  const clearInput = () => {
+    setInputStr("");
+  }
+  
   return (
     <Wrapper>
       <input
@@ -34,7 +42,14 @@ function ChatInput() {
           <Picker pickerStyle={{ width: "18vw", marginLeft:"-10rem" }} onEmojiClick={onEmojiClick} />
         )}
         <img src={chatGif} alt="gif" className="chat-icon" />
-        <img src={chatSend} alt="send" className="chat-icon" />
+        <img src={chatSend} 
+        alt="send" 
+        className="chat-icon" 
+        onClick={() => {
+          props.onClick(dispatch, inputStr);
+          clearInput();
+        }}
+        />
       </div>
     </Wrapper>
   );
