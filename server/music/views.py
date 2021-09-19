@@ -4,10 +4,9 @@ from rest_framework.response import Response
 from .serializers import RoomSerializer
 from django.http import JsonResponse
 
-from music.utils.data_access import centrifugo_post
+from music.utils.access_ops import *
 from music.utils.request_client import RequestClient
-import config.settings as settings
-import requests
+from django.conf import settings
 import json
 
 
@@ -126,31 +125,41 @@ class CreateRoom(APIView):
         """
 
 
-        collection = "test_collection"
-        serializer = RoomSerializer(data=requests.data)
+        collection_name = "test_collection"
+        data = data_read(collection_name)
+        # return Response(data)
+        for col in (data['data']):
+            if col.get('room_name'):
+                collection = (col)
+        # Makes sure that only one music room is created
+        if (collection['room_name']) == 'music room':
+            logging.debug('Room already exists')
+            return Response(collection)
 
-        if serializer.is_valid():
-            res = data_write(collection, payload=serializer.data)
+        else:
+            serializer = RoomSerializer(data=requests.data)
 
-        return Response(res )
+            if serializer.is_valid():
+                res = data_write(collection, payload=serializer.data)
+
+            return Response(res )
 
 
 class RoomInfo(APIView):
+    """
+     This function is used to retrieve properties of a room
+    """
     def get(self, request):
 
 
         data = data_read('test_collection')
         # TODO write exception code for invalid collection
 
-        # this returns the whole collection
-        # return Response(data)
 
-        # TODO the for below is not needed, you need the filter for that
+        # TODO the for loop below is not needed, you need the filter for that
+        # zc core github filter docs not clear
         for col in (data['data']):
-            # music_room  = data['data'].get('room_name')
             if col.get('room_name'):
-                # logging.debug('found room')
-                # logging.debug(col)
                 collection = (col)
 
 
@@ -161,81 +170,21 @@ class RoomInfo(APIView):
 
 class UpdateRoom(APIView):
 
+    """
+     This function is used to update the properties of a room
+    """
 
     def put(self, request):
         # TODO write exception code for invalid collection
         data = data_read('test_collection')
         for col in (data['data']):
             if col.get('room_name'):
-                # logging.debug('found room')
-                # logging.debug(col)
-                collection = (col)
+                # gets the music room collection
+                collection = col
 
         payload = json.load(request)
         collection_id  = (collection['_id'])
         response = data_edit('test_collection', payload,
                               object_id=collection_id)
         return Response(response)
-
-# data read and write
-def data_write(collection,  payload,filter={}, bulk=False, object_id=""):
-
-    plugin_id = settings.PLUGIN_ID
-    org_id = settings.ORGANIZATON_ID
-
-
-    data = {
-
-            "plugin_id": plugin_id,
-            "organization_id": org_id,
-            "collection_name": collection,
-            "bulk_write": bulk,
-            "object_id":object_id,
-            "filter": filter,
-            "payload": payload
-    }
-    url = "https://api.zuri.chat/data/write"
-
-    res = requests.post(url, json=data)
-
-    print(res.status_code)
-
-    return res
-
-def data_read(coll):
-
-    plugin_id = settings.PLUGIN_ID
-    org_id = settings.ORGANIZATON_ID
-
-    url = "https://api.zuri.chat/data/read/" + plugin_id+"/"+coll+"/"+org_id
-
-    res = requests.get(url)
-
-    print(res.status_code)
-    data = res.json()
-    # return data['data']
-    return data
-
-
-def data_edit(collection,  payload,filter={}, bulk=False,object_id="" ):
-
-    plugin_id = settings.PLUGIN_ID
-    org_id = settings.ORGANIZATON_ID
-
-
-    data = {
-
-            "plugin_id": plugin_id,
-            "organization_id": org_id,
-            "collection_name": collection,
-            "bulk_write": bulk,
-            "object_id":object_id,
-            "filter": filter,
-            "payload": payload
-    }
-    url = "https://api.zuri.chat/data/write"
-
-    res = requests.put(url=url, json=data)
-    return res
-
 

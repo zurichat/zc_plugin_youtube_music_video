@@ -195,12 +195,8 @@ ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
 
-# TODO: uncomment the next two lines when done testing
-# PLUGIN_ID = "61360ab5e2358b02686503ad"
-# ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
+PLUGIN_ID = "61360ab5e2358b02686503ad"
+ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
 # CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
 CENTRIFUGO_TOKEN = "2829fc49-3e6b-4a55-bf02-3b1be88cfc24"
 
-# TODO: delete this when done testing
-PLUGIN_ID = env("PLUGIN_ID")
-ORGANIZATON_ID = env("ORGANIZATON_ID")

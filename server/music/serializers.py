@@ -33,7 +33,6 @@ class RoomSerializer(serializers.Serializer):
     room_user_ids = serializers.ListField(child=serializers.CharField(max_length=128),
                                            allow_empty=True, required=True)
     
-    # TODO : add room_description and other info
 
 
 
