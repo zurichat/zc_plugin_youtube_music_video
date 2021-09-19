@@ -137,6 +137,7 @@ def data_write(collection,  payload,filter={}, bulk=False, object_id=""):
 
     return res
 
+
 def data_read(coll):
 
     plugin_id = settings.PLUGIN_ID

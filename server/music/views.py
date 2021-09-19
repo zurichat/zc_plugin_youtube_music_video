@@ -130,6 +130,7 @@ class Songs(APIView):
 
         return Response(res.json(), status=200)
 
+
     def put(self, req):
 
         collection = "Songs"
@@ -144,9 +145,55 @@ class Songs(APIView):
 
         return Response(res, status=200)
 
+
     def get(self,req):
 
         res = data_read("Songs")
         
         return Response(res, status=200)
 
+# from django.shortcuts import HttpResponse, render
+# from django.http import JsonResponse
+# from rest_framework import generics, status
+# # from rest_framework import response
+# # from rest_framework.decorators import api_view
+# import requests
+# from requests import exceptions
+# # from .serializers import RoomSerializer
+# # from .serializers import *
+# from calendar_backend.settings import PLUGIN_ID, ORGANIZATION_ID
+
+
+# class RoomCreateView(generics.CreateAPIView):
+    
+#     serializer_class = RoomSerializer
+
+#     def post(self, request):
+#         serializer = self.serializer_class(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+
+#         room = serializer.data
+#         plugin_id = PLUGIN_ID
+#         org_id = ORGANIZATION_ID
+#         col_name = "musicroom"
+#         payload = {
+#             "plugin_id": plugin_id,
+#             "organization_id": org_id,
+#             "collection_name": col_name,
+#             "bulk_write": False,
+#             "object_id": "",
+#             "filter": {},
+#             "payload": room
+#         }
+#         url = "https://api.zuri.chat/data/write"
+
+#         try:
+#             response = requests.post(url=url, json=payload)
+
+#             if response.status_code == 200:
+#                 return Response({"message": "room created successfully"}, status=status.HTTP_200_CREATED)
+#             else:
+#                 return Response({"error": response.json()['message']}, status=response.status_code)
+#                 print()
+#         except exceptions.ConnectionError as error:
+#             return Response(str(error), status=status.HTTP_502_BAD_GATEWAY)
