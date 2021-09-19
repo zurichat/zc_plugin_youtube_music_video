@@ -23,7 +23,7 @@ body::-webkit-scrollbar-thumb {
 /* leave room */
 .leave-container {
   background: rgba(0, 0, 0, 0.5);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -34,7 +34,7 @@ body::-webkit-scrollbar-thumb {
 .leave {
   padding: 10px;
   background: white;
-  max-width: 400px;
+  max-width: 350px;
   margin: 5% auto;
 }
 
@@ -91,7 +91,9 @@ nav button {
   font-size: 14px;
 }
 
-.room p {
+.room p,
+.room h3,
+.room-desc {
   color: #616061;
   font-size: 14px;
 }
