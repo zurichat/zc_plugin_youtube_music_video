@@ -1,16 +1,25 @@
-import React from "react";
 import styled from "styled-components";
 import Illustration from "../../media/emptyScreen.svg";
+
+import { uiAction } from "../../store/uiSlice";
+
+import PasteUrl from "./pasteUrl";
 
 const EmptyScreen = () => {
   return (
     <Wrapper>
+      <PasteUrl />
+
       <div className="empty_container">
         <img src={Illustration} alt="add songs illustraat" />
-        {/* <Illustration /> */}
         <h3 className="heading_3">There are no songs here!</h3>
         <p className="text">Start adding your songs</p>
-        <button className="btn">Add songs</button>
+        <button
+          className="btn"
+          onClick={() => uiAction.dispatchAddSongToggle(true)}
+        >
+          Add songs
+        </button>
       </div>
     </Wrapper>
   );
