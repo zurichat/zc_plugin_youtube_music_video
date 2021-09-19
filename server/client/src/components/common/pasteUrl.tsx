@@ -32,6 +32,8 @@ const PasteUrl = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
+    console.log("Adding song......");
+
     try {
       const metadata = await getSongMetadat(url);
 
@@ -64,7 +66,7 @@ const PasteUrl = (props: Props) => {
                 height: "1rem",
                 cursor: "pointer",
               }}
-              onClick={() => uiAction.dispatchAddSongToggle({ addSong: false })}
+              onClick={() => uiAction.dispatchAddSongToggle(false)}
             />
           </label>
         </div>
@@ -88,7 +90,7 @@ const PasteUrl = (props: Props) => {
 const Wrapper = styled.div`
   position: fixed;
   top: 180px;
-  left: 10%;
+  left: 20%;
   width: 400px;
   height: 80px;
   display: flex;
