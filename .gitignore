@@ -1,6 +1,6 @@
 # By Justice
 /venv
-/node_modules
+node_modules/
 /static
 /staticfiles
 /pythagorasenv
