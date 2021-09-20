@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from music.utils.data_access import data_read, data_write, get_video, read_data, write_data
 from rest_framework.views import APIView
+from .serializers import CommentSerializer
 
 
 class SidebarView(GenericAPIView):
@@ -178,6 +179,6 @@ class CommentView(APIView):
             payload = serializer.data
             response = data_write(collection,payload)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(response, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
