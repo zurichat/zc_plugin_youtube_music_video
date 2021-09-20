@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useState } from "react";
 
-import store from "../store";
-import { uiDispatch } from "../store/uiSlice";
+import { uiDispatch, uiSelect } from "../store/uiSlice";
 
 import Exit from "../components/common/exit";
 
@@ -14,13 +12,15 @@ import arrow from "../media/arrow-down.svg";
 import message from "../media/message.svg";
 
 import "../App.css";
+import { useSelector } from "react-redux";
 
-const roomHeader = ({userCount}) => {
-  const [drop, setDrop] = useState("");
+const roomHeader = ({ userCount }) => {
+  const showExitModal = useSelector(uiSelect.showExitModal);
+
   return (
     <Wrapper className="header">
       <div className="header-left">
-        {drop === "drop" ? <Exit drop={setDrop} /> : null}
+        {showExitModal && <Exit />}
 
         <img
           src={menu}
@@ -33,9 +33,7 @@ const roomHeader = ({userCount}) => {
 
         <Link
           to="/"
-          onClick={() => {
-            setDrop("drop");
-          }}
+          onClick={() => uiDispatch.showExitModal(true)}
           className="header-link"
         >
           Music Room

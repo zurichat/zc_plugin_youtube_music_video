@@ -10,7 +10,7 @@ const slice = createSlice({
     showChat: false,
     addSong: false,
     showModal: true,
-    showExitModal: false,
+    exitModal: false,
   },
 
   reducers: {
@@ -32,10 +32,15 @@ const slice = createSlice({
     showModal: (state, action) => {
       state.showModal = action.payload;
     },
+
+    exitedModal: (state, action) => {
+      state.exitModal = action.payload;
+    },
   },
 });
 
-const { loaded, showChat, showPasteUrl, showModal } = slice.actions;
+const { loaded, showChat, showPasteUrl, showModal, exitedModal } =
+  slice.actions;
 
 export const uiDispatch = {
   showPasteUrl: (payload: boolean) => {
@@ -46,7 +51,12 @@ export const uiDispatch = {
     store.dispatch({ type: showChat.type, payload }),
 
   loading: (payload: boolean) => store.dispatch({ type: loaded.type, payload }),
-  showModal: (payload: boolean) => store.dispatch({ type: showModal.type, payload }),
+
+  showModal: (payload: boolean) =>
+    store.dispatch({ type: showModal.type, payload }),
+
+  showExitModal: (payload: boolean) =>
+    store.dispatch({ type: exitedModal.type, payload }),
 };
 
 export const uiSelect = {
@@ -55,7 +65,10 @@ export const uiSelect = {
   showPasteUrl: (state: RootState) => state.ui.addSong,
 
   isLoading: (state: RootState) => state.ui.isLoading,
+
   showModal: (state: RootState) => state.ui.showModal,
+
+  showExitModal: (state: RootState) => state.ui.exitModal,
 };
 
 export default slice.reducer;
