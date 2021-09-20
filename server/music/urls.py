@@ -11,6 +11,6 @@ urlpatterns = [
     path("info/", PluginInfoView.as_view(), name="info"),
     path("ping/", PluginPingView.as_view(), name="ping"),
     path("add_to_room/", AddToRoomView.as_view(), name="add_to_room"),
-    path("create_room/", CreateRoomView.as_view(), name="create_room"),
+    path("createroom/", CreateRoomView.as_view(), name="create_room"),
     path("comments/", CommentView.as_view(), name="comments"),
 ]
