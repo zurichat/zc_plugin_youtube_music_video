@@ -36,11 +36,6 @@ const Primary = styled.button`
   &:hover {
     box-shadow: 0 2px 5px rgba(0, 184, 124, 0.3);
   }
-
-  @media (max-width: 388px) {
-    font-size: 12px !important;
-    padding: 3px 5px;
-  }
 `;
 
 const Secondary = styled.button`
@@ -58,11 +53,11 @@ const Secondary = styled.button`
     border-color: rgba(0, 184, 124, 0.8);
   }
 
-  @media (max-width: 388px) {
+  /* @media (max-width: 388px) {
     font-size: 12px !important;
     padding: 3px 5px;
     margin: 3px 0 !important;
-  }
+  } */
 `;
 
 export default Button;
