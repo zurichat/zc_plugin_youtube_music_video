@@ -2,6 +2,20 @@ import requests
 from rest_framework import status
 
 
+def user_auth(email, password):
+
+
+    data = {"email":email, "password":password}
+   
+    res = requests.post("https://api.zuri.chat/auth/login", json=data)
+    json_data = res.json()
+        
+    data = json_data["data"]
+    user = data["user"]
+    user_token = user["token"]
+     
+    return user_token
+
 
 def verify_token(token):
 
