@@ -1,13 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import  axios from  'axios'
 
 function EnterRoom({setShowModal}) {
     const handleClick =() =>{
         setShowModal(prev => !prev)
     }
-    
-
+    const id_user = {user_id:1 , user_name:"johns"}
+    const BASE_URL = 'http://127.0.0.1:8000/music/api/v1/add_to_room';
+    axios.put( BASE_URL, id_user)
+    .then(response => console.log(response.status));
     return (
         <div className="overlay">
             <Overlay>
