@@ -2,20 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import store, { RootState } from ".";
 import Song from "../types/song";
 
-interface InitialState {
-  playing: boolean;
-  show: boolean;
-  currentSong: Song;
-}
-
 const slice = createSlice({
   name: "player",
 
   initialState: {
     playing: false,
     show: false,
-    currentSong: {},
-  } as InitialState,
+    currentSong: {} as Song,
+  },
 
   reducers: {
     playing: (state, action) => {

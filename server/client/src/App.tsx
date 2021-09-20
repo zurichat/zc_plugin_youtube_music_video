@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
-import Loader from "react-loader-spinner";
 import { useSelector } from "react-redux";
+import Loader from "react-loader-spinner";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
@@ -19,8 +19,8 @@ import "./App.css";
 
 function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
-  const [userCount, setUserCount ] = useState(0);
-  const [showModal, setShowModal] = useState(true);
+  const [userCount, setUserCount] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   const isLoading = useSelector(uiSelect.isLoading);
 
   return (
@@ -50,12 +50,12 @@ function App() {
 }
 
 const Wrapper = styled.div`
-  /* overflow-y: scroll; */
   position: relative;
   display: flex;
   justify-content: center;
-  padding: 10px;
   height: 100vh;
+  margin: 0;
+  padding: 0;
 
   & > * {
     flex-grow: 1;
@@ -74,11 +74,6 @@ const Wrapper = styled.div`
     position: absolute;
     top: 100px;
     z-index: 111111;
-  }
-
-  @media (max-width: 600px) {
-    padding: 0;
-    margin: 0;
   }
 `;
 

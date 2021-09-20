@@ -21,6 +21,7 @@ const roomHeader = ({userCount}) => {
     <Wrapper className="header">
       <div className="header-left">
         {drop === "drop" ? <Exit drop={setDrop} /> : null}
+
         <img
           src={menu}
           alt="icon"

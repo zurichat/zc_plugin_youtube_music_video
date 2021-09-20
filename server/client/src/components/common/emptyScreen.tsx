@@ -23,9 +23,13 @@ const EmptyScreen = () => {
 };
 
 const Wrapper = styled.div`
+  position: relative;
   background-color: white;
   padding: 80px 0 131px;
-  width: -webkit-fill-available;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .empty_container {
     display: flex;

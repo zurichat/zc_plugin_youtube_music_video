@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import search from '../../media/search.svg'
 import beat from "../../media/beat.svg";
+import close from "../../media/close-popup.svg";
 
 const Exit = ({drop}) => {
     const [change, setChange] = useState('about');
@@ -17,7 +18,12 @@ const Exit = ({drop}) => {
                         />
                         Music room
                     </h1>
-                    <button onClick={() => drop('')}>x</button>
+                    <img
+                        src={close}
+                        alt="icon"
+                        onClick={() => drop('')}
+                        className="close"
+                        />
                 </div>
                 <nav>
                     <button 
@@ -44,7 +50,7 @@ const Exit = ({drop}) => {
                             Description
                             <p>Edit</p>
                         </div>
-                        <h3>Add a description...</h3>
+                        <input type="text" placeholder="Add a description..."/>
                     </div>
                     <div className="leave-room">
                         Leave room
@@ -55,12 +61,12 @@ const Exit = ({drop}) => {
                         <img
                         src={search}
                         alt="icon"
-                        className="header-icon menu"
-                        onClick={undefined}
                         />
                         <input placeholder="Find People"/>
                     </div>
-                    <div className="member">member 13</div>
+                    <div className="member">
+                        <p>memeber</p>
+                    </div>
                 </div>) : null}
 
             </div>
