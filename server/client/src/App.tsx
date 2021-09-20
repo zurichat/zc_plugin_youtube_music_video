@@ -10,7 +10,7 @@ import EnterRoom from "./components/Modals/EnterRoom";
 
 import chatMediaQuery from "./utils/chatMedia";
 
-import { uiDispatch, uiSelect } from "./store/uiSlice";
+import { uiSelect } from "./store/uiSlice";
 
 import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
@@ -40,14 +40,7 @@ function App() {
       <div>
         <ToastContainer theme="colored" />
 
-        {showModal && (
-          <EnterRoom
-            setShowModal={() => {
-              uiDispatch.showModal(false);
-            }}
-            setUserCount={setUserCount}
-          />
-        )}
+        {showModal && <EnterRoom setUserCount={setUserCount} />}
 
         <RoomHeader userCount={userCount} />
         <MusicRoom />
