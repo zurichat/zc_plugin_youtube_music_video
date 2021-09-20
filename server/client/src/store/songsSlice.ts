@@ -56,33 +56,33 @@ export const songSelector = {
 
 export default songsSlice.reducer;
 
-function getMockData() {
-  const mock: Song[] = [
-    {
-      title: "Came to My Rescue - Emmy Rose",
-      id: "mC-5AyfwMoI",
-      url: "https://youtu.be/mC-5AyfwMoI",
-      albumCover: "https://i.ytimg.com/vi/mC-5AyfwMoI/hqdefault.jpg",
-      addedBy: "Justiz",
-      duration: "--:--",
-    },
-    {
-      title: "When You Were A Child (Live) - Jason Upton",
-      id: "rbWBYs_7kCA",
-      url: "https://www.youtube.com/watch?v=rbWBYs_7kCA",
-      albumCover: "https://i.ytimg.com/vi/rbWBYs_7kCA/hqdefault.jpg",
-      addedBy: "Justiz",
-      duration: "--:--",
-    },
-    {
-      id: "VFmQEqDLP2k",
-      title: "Jason Upton - Freedom Reigns",
-      url: "https://youtu.be/VFmQEqDLP2k",
-      albumCover: "https://i.ytimg.com/vi/VFmQEqDLP2k/hqdefault.jpg",
-      addedBy: "Justiz",
-      duration: "--:--",
-    },
-  ];
+// function getMockData() {
+//   const mock: Song[] = [
+//     {
+//       title: "Came to My Rescue - Emmy Rose",
+//       id: "mC-5AyfwMoI",
+//       url: "https://youtu.be/mC-5AyfwMoI",
+//       albumCover: "https://i.ytimg.com/vi/mC-5AyfwMoI/hqdefault.jpg",
+//       addedBy: "Justiz",
+//       duration: "--:--",
+//     },
+//     {
+//       title: "When You Were A Child (Live) - Jason Upton",
+//       id: "rbWBYs_7kCA",
+//       url: "https://www.youtube.com/watch?v=rbWBYs_7kCA",
+//       albumCover: "https://i.ytimg.com/vi/rbWBYs_7kCA/hqdefault.jpg",
+//       addedBy: "Justiz",
+//       duration: "--:--",
+//     },
+//     {
+//       id: "VFmQEqDLP2k",
+//       title: "Jason Upton - Freedom Reigns",
+//       url: "https://youtu.be/VFmQEqDLP2k",
+//       albumCover: "https://i.ytimg.com/vi/VFmQEqDLP2k/hqdefault.jpg",
+//       addedBy: "Justiz",
+//       duration: "--:--",
+//     },
+//   ];
 
-  return mock;
-}
+//   return mock;
+// }

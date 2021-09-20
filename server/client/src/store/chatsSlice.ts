@@ -47,18 +47,18 @@ export const chatSelect = {
   },
 };
 
-function getMockChat() {
-  const chat: Chat = {
-    id: "default",
-    time: Date.now(),
-    userId: "Justiz...",
-    name: "Justiz",
-    avatar,
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque quidem adipisci veritatis eligendi dolore ratione facilis harum excepturi, ipsum officia qui architecto nobis neque illo aliquid numquam corporis vero sed.",
-  };
+// function getMockChat() {
+//   const chat: Chat = {
+//     id: "default",
+//     time: Date.now(),
+//     userId: "Justiz...",
+//     name: "Justiz",
+//     avatar,
+//     message:
+//       "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque quidem adipisci veritatis eligendi dolore ratione facilis harum excepturi, ipsum officia qui architecto nobis neque illo aliquid numquam corporis vero sed.",
+//   };
 
-  return [chat];
-}
+//   return [chat];
+// }
 
 export default chatsSlice.reducer;

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
-import Loader from "react-loader-spinner";
 import { useSelector } from "react-redux";
+import Loader from "react-loader-spinner";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
