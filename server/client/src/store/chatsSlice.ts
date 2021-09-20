@@ -7,7 +7,15 @@ import avatar from "../media/chatItem.svg";
 const chatsSlice = createSlice({
   name: "chats",
   // initialState: getMockChat(),
-  initialState: [] as Chat[],
+  initialState: [
+        {id: Date.now() + "",
+        userId: Date.now() + "",
+        name: "Mr._Primal",
+        time: 23,
+        message: "Hello there",
+        avatar: avatar,
+       }
+  ],
 
   reducers: {
     addChat: (state, { payload }) => {
@@ -31,7 +39,7 @@ const chatsSlice = createSlice({
   },
 });
 
-const { addChat } = chatsSlice.actions;
+export const { addChat } = chatsSlice.actions;
 
 export const chatDispatch = {
   addChat: (payload: Chat) => {

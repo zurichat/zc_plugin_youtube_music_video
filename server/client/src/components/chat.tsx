@@ -18,15 +18,14 @@ function Chat(props) {
 
   if (!showChat) return null;
 
-<<<<<<< HEAD
   const scrollToBottom = () =>{
     scroller.current.scrollIntoView(false);
   }
 
   useEffect(() => {
     scrollToBottom();
-  })
-=======
+  });
+  
   function handleFocus() {
     const mediaQuery = window.matchMedia("(max-width: 1000px)");
     const chatItemGroup =
@@ -52,7 +51,6 @@ function Chat(props) {
       chatWrapper.style.top = "70px";
     }
   }
->>>>>>> 25710fb0fb068e919f7a35e944c3b8584aef29d4
 
   return (
     <Wrapper className="chat-wrapper">

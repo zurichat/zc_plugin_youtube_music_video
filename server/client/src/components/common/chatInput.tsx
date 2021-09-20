@@ -77,7 +77,6 @@ function ChatInput(props) {
             onGiphyClick={onGiphyClick}
           />
         )}
-        <img src={chatGif} alt="gif" className="chat-icon" />
         <img 
         src={chatSend} 
         alt="send" 
