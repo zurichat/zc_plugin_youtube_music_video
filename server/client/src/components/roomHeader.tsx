@@ -32,7 +32,7 @@ const roomHeader = ({ userCount }) => {
         <img src={groupIconSvg} alt="icon" className="header-icon hide-2" />
 
         <Link
-          to="/"
+          to="#"
           onClick={() => uiDispatch.showExitModal(true)}
           className="header-link"
         >

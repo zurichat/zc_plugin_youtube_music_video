@@ -20,11 +20,11 @@ const Exit = () => {
     setTimeout(() => {
       toast.dismiss();
       uiDispatch.loading(false);
-    }, 1500);
+    }, 1800);
 
     setTimeout(() => {
       uiDispatch.showModal(true);
-    }, 2200);
+    }, 2500);
   };
 
   return (
