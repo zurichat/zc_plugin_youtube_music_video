@@ -17,12 +17,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
-async function d() {
-  const d = await fetch("");
-
-  const { data } = await d.json();
-}
-
 function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
   const [userCount, setUserCount] = useState(0);
