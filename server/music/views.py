@@ -106,45 +106,28 @@ class UserCountView(GenericAPIView):
         centrifugo_post.counter = 0
 
 
-class Songs(APIView):
+class SongView(APIView):
+    def get(self, request):
+        data = read_data(settings.SONG_COLLECTION)
 
-    def post(self, req):
-        collection = "Songs"
-
-        url = req.data['url']
-        payload = get_video(url)
-        res = data_write(collection, payload)
-
-        return Response(res.json(), status=200)
-
-    def put(self, req):
-        collection = "Songs"
-
-        url = req.data['url']
-
-        obj_id = req.data['object_id']
-
-        payload = get_video(url)
-
-        res = data_write(collection, payload, object_id=obj_id)
-
-        return Response(res, status=200)
-
-    def get(self, req):
-        res = data_read("Songs")
-
-        return Response(res, status=200)
-
-        return Response(data["data"])
+        return Response(data, status=status.HTTP_200_OK)
 
     def post(self, request):
+        media_info = get_video(request.data['url'])
+
         payload = {
-            "age": 233,
-            "fan": "Carbom",
-            "name": "Oxide"
+            "title": media_info["title"],
+            "track_url": media_info["track_url"],
+            "thumbnail_url": media_info["thumbnail_url"],
+            "duration": media_info["duration"],
+            "added_by_id": "1",
+            "song_like_ids": [
+                "1"
+            ]
         }
-        data = write_data("test_collection", payload=payload)
-        return Response(data)
+
+        data = write_data(settings.SONG_COLLECTION, payload=payload)
+        return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
 class AddToRoomView(APIView):
@@ -173,11 +156,7 @@ class AddToRoomView(APIView):
 
 class CreateRoomView(APIView):
     def post(self, request):
-        payload = {
-            "age": 233,
-            "fan": "Carbom",
-            "name": "Oxide"
-        }
+        payload = {}
         data = write_data(settings.ROOM_COLLECTION, payload=payload)
         return Response(data)
 

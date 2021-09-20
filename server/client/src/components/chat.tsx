@@ -17,15 +17,39 @@ function Chat(props) {
 
   if (!showChat) return null;
 
+  function handleFocus() {
+    const mediaQuery = window.matchMedia('(max-width: 1000px)');
+    const chatItemGroup = document.querySelector<HTMLElement>('.chat-item-group');
+    const chatWrapper = document.querySelector<HTMLElement>('.chat-wrapper');
+
+    if (mediaQuery.matches) {
+      chatItemGroup.style.maxHeight = '200px';
+      chatWrapper.style.position = 'fixed';
+      chatWrapper.style.top = '60px';
+    } 
+  }
+
+  function handleBlur() {
+    const mediaQuery = window.matchMedia('(max-width: 1000px)');
+    const chatItemGroup = document.querySelector<HTMLElement>('.chat-item-group');
+    const chatWrapper = document.querySelector<HTMLElement>('.chat-wrapper');
+
+    if (mediaQuery.matches) {
+      chatItemGroup.style.maxHeight = '450px';
+      chatWrapper.style.position = 'fixed';
+      chatWrapper.style.top = '70px';
+    } 
+  }
+
   return (
-    <Wrapper>
+    <Wrapper className = "chat-wrapper">
       <ChatHeader />
       <div className="chat-item-group">
         {chats.map((chat, index) => (
           <ChatItem key={index} {...chat} />
         ))}
       </div>
-      <ChatInput onClick={chatCreate} />
+      <ChatInput onClick={chatCreate} handleFocus = {handleFocus} handleBlur = {handleBlur} />
     </Wrapper>
   );
 }
