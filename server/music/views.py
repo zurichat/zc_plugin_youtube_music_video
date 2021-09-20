@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from music.utils.data_access import data_read, data_write, get_video, read_data, write_data, centrifugo_post, del_data
 from rest_framework.views import APIView
 from datetime import datetime
+from music.serializers import CommentSerializer
 
 
 class SidebarView(GenericAPIView):
