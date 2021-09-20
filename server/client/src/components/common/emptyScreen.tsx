@@ -23,9 +23,13 @@ const EmptyScreen = () => {
 };
 
 const Wrapper = styled.div`
+  position: relative;
   background-color: white;
   padding: 80px 0 131px;
-  width: -webkit-fill-available;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .empty_container {
     display: flex;
@@ -34,7 +38,7 @@ const Wrapper = styled.div`
     align-items: center;
   }
 
-  .svg {
+  img {
     width: 100%;
     max-width: 309px;
     height: fit-content;
@@ -81,7 +85,7 @@ const Wrapper = styled.div`
       margin: 7px 0 10px;
     }
 
-    .svg {
+    img {
       max-width: 179px;
     }
 
