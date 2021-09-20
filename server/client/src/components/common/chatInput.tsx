@@ -1,23 +1,19 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Picker from "emoji-picker-react";
-import { useDispatch } from "react-redux";
-
+// import the react-giphy-picker package
+import GiphyPicker from "react-giphy-picker";
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
 
-import Chat from "../../types/chat";
-
-import { getUUID } from "../../utils/idGenerator";
-
-import authService from "../../services/authService";
-import chatService from "../../services/chatService";
+import { useDispatch } from "react-redux";
 
 function ChatInput(props) {
   // states to manage the input text and also the showcasing of the emoji
   const [inputStr, setInputStr] = useState("");
   const [showPicker, setShowPicker] = useState(false);
+  const [showGiphy, setShowGiphy] = useState(false);
   const dispatch = useDispatch();
   const handleFocus = props.handleFocus;
   const handleBlur = props.handleBlur;
@@ -28,24 +24,14 @@ function ChatInput(props) {
     setShowPicker(false);
   };
 
-  const clearInput = () => {
-    setInputStr("");
+  // function to display a gif once clicked
+  const onGiphyClick = (event, gifObject) => {
+    setInputStr((prevInput) => prevInput + gifObject.gif);
+    setShowGiphy(false);
   };
 
-  const handleSend = () => {
-    const { name, avatar, id: userId } = authService.getCurrentUser();
-
-    const chat: Chat = {
-      message: inputStr,
-      name,
-      avatar,
-      userId,
-      id: getUUID(),
-      time: Date.now(),
-    };
-
-    chatService.createChat(chat);
-    clearInput();
+  const clearInput = () => {
+    setInputStr("");
   };
 
   return (
@@ -56,8 +42,8 @@ function ChatInput(props) {
         placeholder="Type a message..."
         value={inputStr}
         onChange={(e) => setInputStr(e.target.value)}
-        onFocus = {handleFocus}
-        onBlur = {handleBlur}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
       <div className="chat-icon-group">
         <img
@@ -72,12 +58,26 @@ function ChatInput(props) {
             onEmojiClick={onEmojiClick}
           />
         )}
-        <img src={chatGif} alt="gif" className="chat-icon" />
+        <img
+          src={chatGif}
+          alt="gif"
+          className="chat-icon"
+          onClick={() => setShowGiphy((val) => !val)}
+        />
+        {showGiphy && (
+          <GiphyPicker
+            pickerStyle={{ width: "100%" }}
+            onGiphyClick={onGiphyClick}
+          />
+        )}
         <img
           src={chatSend}
           alt="send"
           className="chat-icon"
-          onClick={handleSend}
+          onClick={() => {
+            props.onClick(dispatch, inputStr);
+            clearInput();
+          }}
         />
       </div>
     </Wrapper>

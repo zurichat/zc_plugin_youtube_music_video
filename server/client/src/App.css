@@ -45,6 +45,10 @@ body::-webkit-scrollbar-thumb {
   font-size: 28px;
 }
 
+.leave h1 img {
+  padding-right: 10px;
+}
+
 .title {
   display: flex;
   justify-content: space-between;
