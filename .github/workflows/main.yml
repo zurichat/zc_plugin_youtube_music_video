@@ -55,7 +55,7 @@ jobs:
             cd /var/www/music.zuri.chat
             source .venv/bin/activate
             git stash
-            git pull origin test-spa
+            git pull origin
             git branch -r
             cd /var/www/music.zuri.chat/server
             pip3 install -r requirements/local.txt --upgrade
