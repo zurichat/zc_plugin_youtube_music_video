@@ -9,6 +9,8 @@ const slice = createSlice({
     congrats: false,
     showChat: false,
     addSong: false,
+    showModal: true,
+    showExitModal: false,
   },
 
   reducers: {
@@ -27,10 +29,13 @@ const slice = createSlice({
     showPasteUrl: (state, action) => {
       state.addSong = action.payload;
     },
+    showModal: (state, action) => {
+      state.showModal = action.payload;
+    },
   },
 });
 
-const { loaded, showChat, showPasteUrl } = slice.actions;
+const { loaded, showChat, showPasteUrl, showModal } = slice.actions;
 
 export const uiDispatch = {
   showPasteUrl: (payload: boolean) => {
@@ -41,6 +46,7 @@ export const uiDispatch = {
     store.dispatch({ type: showChat.type, payload }),
 
   loading: (payload: boolean) => store.dispatch({ type: loaded.type, payload }),
+  showModal: (payload: boolean) => store.dispatch({ type: showModal.type, payload }),
 };
 
 export const uiSelect = {
@@ -49,6 +55,7 @@ export const uiSelect = {
   showPasteUrl: (state: RootState) => state.ui.addSong,
 
   isLoading: (state: RootState) => state.ui.isLoading,
+  showModal: (state: RootState) => state.ui.showModal,
 };
 
 export default slice.reducer;
