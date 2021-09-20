@@ -10,7 +10,7 @@ import EnterRoom from "./components/Modals/EnterRoom";
 
 import chatMediaQuery from "./utils/chatMedia";
 
-import { uiSelect } from "./store/uiSlice";
+import { uiDispatch, uiSelect } from "./store/uiSlice";
 
 import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,8 +25,9 @@ async function d() {
 
 function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
-  const [showModal, setShowModal] = useState(false);
+  const [userCount, setUserCount] = useState(0);
   const isLoading = useSelector(uiSelect.isLoading);
+  const showModal = useSelector(uiSelect.showModal);
 
   return (
     <Wrapper>
@@ -45,9 +46,16 @@ function App() {
       <div>
         <ToastContainer theme="colored" />
 
-        {showModal && <EnterRoom setShowModal={setShowModal} />}
+        {showModal && (
+          <EnterRoom
+            setShowModal={() => {
+              uiDispatch.showModal(false);
+            }}
+            setUserCount={setUserCount}
+          />
+        )}
 
-        <RoomHeader />
+        <RoomHeader userCount={userCount} />
         <MusicRoom />
       </div>
     </Wrapper>

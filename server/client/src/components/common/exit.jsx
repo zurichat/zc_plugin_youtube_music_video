@@ -3,10 +3,15 @@ import { useState } from 'react';
 import search from '../../media/search.svg'
 import beat from "../../media/beat.svg";
 import close from "../../media/close-popup.svg";
+import { uiDispatch } from "../../store/uiSlice";
 
 const Exit = ({drop}) => {
     const [change, setChange] = useState('about');
 
+    const handleLeaveRoom = ()=> {
+        uiDispatch.showModal(true);
+    }
+    
     return(
         <div className="leave-container">
             <div className="leave">

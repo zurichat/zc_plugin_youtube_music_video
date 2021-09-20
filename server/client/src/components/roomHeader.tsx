@@ -15,7 +15,7 @@ import message from "../media/message.svg";
 
 import "../App.css";
 
-const roomHeader = () => {
+const roomHeader = ({userCount}) => {
   const [drop, setDrop] = useState("");
   return (
     <Wrapper className="header">
@@ -51,7 +51,7 @@ const roomHeader = () => {
             style={{ width: "100%", height: "100%" }}
           />
         </div>
-        <div className="header-user-count">1</div>
+        <div className="header-user-count">{userCount}</div>
         <div>
           <img
             src={message}
