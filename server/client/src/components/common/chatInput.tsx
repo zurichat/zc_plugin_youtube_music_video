@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
-// import the emoji-react-picker package
 import Picker from "emoji-picker-react";
-// import the react-giphy-picker package
+
 import GiphyPicker from "react-giphy-picker";
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
@@ -44,8 +42,8 @@ function ChatInput(props) {
         placeholder="Type a message..."
         value={inputStr}
         onChange={(e) => setInputStr(e.target.value)}
-        onFocus = {handleFocus}
-        onBlur = {handleBlur}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
       <div className="chat-icon-group">
         <img
