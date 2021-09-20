@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap');
+*{
+    font-family: Lato;
+}
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -18,4 +22,136 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-thumb {
   width: 6px;
   background-color: #00b87c;
+}
+
+/* leave room */
+.leave-container {
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+}
+
+.leave {
+  padding: 10px;
+  background: white;
+  max-width: 350px;
+  margin: 5% auto;
+}
+
+.leave h1 {
+  color: #1d1c1d;
+  font-size: 28px;
+}
+
+.leave h1 img {
+  padding-right: 10px;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title button {
+  background: none;
+  border: 2px solid #00b87c;
+  cursor: pointer;
+  padding: 0 5px;
+  color: #00b87c;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+nav {
+  display: flex;
+  border-bottom: 1px solid #f6f6f6;
+}
+
+nav button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding-left: 0;
+  margin-right: 30px;
+  padding-right: 3px;
+  font-weight: bold;
+  padding-bottom: 10px;
+}
+
+.main {
+  margin: 30px 0;
+  border: 1px solid #f6f6f6;
+}
+
+.room,
+.room-desc {
+  border-bottom: 1px solid #f6f6f6;
+  padding: 0 10px;
+}
+
+.room-desc p {
+  color: #00b87c;
+  font-size: 14px;
+}
+
+.room p,
+.room h3,
+.room-desc {
+  color: #616061;
+  font-size: 14px;
+}
+
+.room-desc h3 {
+  font-size: 15px;
+}
+
+.room-desc div {
+  display: flex;
+  justify-content: space-between;
+  color: #616061;
+}
+
+.room-desc input {
+  border: none;
+  outline: none;
+  color: #1d1c1d;
+  font-weight: bold;
+}
+
+.leave-room {
+  padding: 20px 5px;
+  color: #f40101;
+  cursor: pointer;
+}
+
+.room-member {
+  padding: 10px 0;
+}
+
+.search {
+  display: flex;
+  border: 1px solid #00b87c;
+  align-items: center;
+  padding: 5px;
+}
+
+.search input {
+  background: none;
+  border: none;
+  outline: none;
+  width: 90%;
+}
+
+.member {
+  padding: 10px;
+  color: black;
+}
+
+.room-active {
+  border-bottom: 2px solid #f40101;
 }

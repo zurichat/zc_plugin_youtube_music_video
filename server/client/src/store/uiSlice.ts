@@ -28,8 +28,8 @@ const slice = createSlice({
 export const { loaded, congratsToggled, toggleChat, addSongToggle } =
   slice.actions;
 
-const dispatchAddSongToggle = (payload: { addSong: boolean }) => {
-  store.dispatch({ type: addSongToggle.type, payload });
+const dispatchAddSongToggle = (payload: boolean) => {
+  store.dispatch({ type: addSongToggle.type, payload: { addSong: payload } });
 };
 
 const dispatchToggleChat = (payload: { chat: boolean }) => {
