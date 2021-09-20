@@ -6,50 +6,56 @@ import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
 import ChatInput from "./common/chatInput";
 
-import { selectAllChats } from "../store/chatsSlice";
-import { selectChat } from "../store/uiSlice";
-import { createChat } from "../services/chatService"
+import { chatSelect } from "../store/chatsSlice";
+import { uiSelect } from "../store/uiSlice";
+import { createChat } from "../services/chatService";
 
 function Chat(props) {
-  const chats = useSelector(selectAllChats);
-  const showChat = useSelector(selectChat);
+  const chats = useSelector(chatSelect.allChat);
+  const showChat = useSelector(uiSelect.showChat);
   const chatCreate = createChat;
 
   if (!showChat) return null;
 
   function handleFocus() {
-    const mediaQuery = window.matchMedia('(max-width: 1000px)');
-    const chatItemGroup = document.querySelector<HTMLElement>('.chat-item-group');
-    const chatWrapper = document.querySelector<HTMLElement>('.chat-wrapper');
+    const mediaQuery = window.matchMedia("(max-width: 1000px)");
+    const chatItemGroup =
+      document.querySelector<HTMLElement>(".chat-item-group");
+    const chatWrapper = document.querySelector<HTMLElement>(".chat-wrapper");
 
     if (mediaQuery.matches) {
-      chatItemGroup.style.maxHeight = '200px';
-      chatWrapper.style.position = 'fixed';
-      chatWrapper.style.top = '60px';
-    } 
+      chatItemGroup.style.maxHeight = "200px";
+      chatWrapper.style.position = "fixed";
+      chatWrapper.style.top = "60px";
+    }
   }
 
   function handleBlur() {
-    const mediaQuery = window.matchMedia('(max-width: 1000px)');
-    const chatItemGroup = document.querySelector<HTMLElement>('.chat-item-group');
-    const chatWrapper = document.querySelector<HTMLElement>('.chat-wrapper');
+    const mediaQuery = window.matchMedia("(max-width: 1000px)");
+    const chatItemGroup =
+      document.querySelector<HTMLElement>(".chat-item-group");
+    const chatWrapper = document.querySelector<HTMLElement>(".chat-wrapper");
 
     if (mediaQuery.matches) {
-      chatItemGroup.style.maxHeight = '450px';
-      chatWrapper.style.position = 'fixed';
-      chatWrapper.style.top = '70px';
-    } 
+      chatItemGroup.style.maxHeight = "450px";
+      chatWrapper.style.position = "fixed";
+      chatWrapper.style.top = "70px";
+    }
   }
 
   return (
-    <Wrapper className = "chat-wrapper">
+    <Wrapper className="chat-wrapper">
       <ChatHeader />
       <div className="chat-item-group">
         {chats.map((chat, index) => (
           <ChatItem key={index} {...chat} />
         ))}
       </div>
-      <ChatInput onClick={chatCreate} handleFocus = {handleFocus} handleBlur = {handleBlur} />
+      <ChatInput
+        onClick={chatCreate}
+        handleFocus={handleFocus}
+        handleBlur={handleBlur}
+      />
     </Wrapper>
   );
 }
