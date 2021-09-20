@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import search from '../../media/search.svg'
+import beat from "../../media/beat.svg";
 
 const Exit = ({drop}) => {
     const [change, setChange] = useState('about');
@@ -10,6 +11,10 @@ const Exit = ({drop}) => {
             <div className="leave">
                 <div className="title">
                     <h1>
+                        <img
+                        src={beat}
+                        alt="icon"
+                        />
                         Music room
                     </h1>
                     <button onClick={() => drop('')}>x</button>
