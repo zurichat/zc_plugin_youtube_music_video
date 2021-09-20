@@ -3,8 +3,10 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
-from music.utils.data_access import data_read, data_write, get_video, read_data, write_data, centrifugo_post
+from music.utils.data_access import data_read, data_write, get_video, read_data, write_data, centrifugo_post, del_data
 from rest_framework.views import APIView
+from datetime import datetime
+from music.serializers import CommentSerializer
 
 
 class SidebarView(GenericAPIView):
@@ -203,3 +205,45 @@ class CommentView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+class EventDisplay(APIView):
+
+    def get(self, req):
+
+        collection = "Music_Room"
+        evt = req.GET['event'].strip()
+        user="Guest"
+        if evt == "join":
+
+            #Update room numbers
+            payload = {
+                 
+            "user": "Guest",
+            "timestamp": str(datetime.now()),
+
+            }
+            data_write(collection, payload)
+
+            room_det = data_read(collection)
+            
+            total_user = len(room_det)
+            
+            data = {
+                "user":user,
+                "total_user":total_user
+
+            }
+        elif evt=="leave":
+            room_det = data_read(collection)
+            rm_len = len(room_det)
+            obj_id = room_det[rm_len - 1].get('object_id')
+            res = del_data(collection, obj_id)
+            room_det = data_read(collection)
+            rm_len = len(room_det) - 1
+            data = {
+                "user":user,
+                "total_user":rm_len
+            }
+
+
+        return Response(data, status=200)
