@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
-from music.utils.data_access import data_read, data_write, get_video, read_data, write_data
+from music.utils.data_access import data_read, data_write, get_video, read_data, write_data, centrifugo_post
 from rest_framework.views import APIView
 from .serializers import CommentSerializer
 
@@ -104,7 +104,7 @@ class UserCountView(GenericAPIView):
         header_user_count = centrifugo_post.counter
         return Response(header_user_count)
 
-        centrifugo_post.counter = 0
+    centrifugo_post.counter = 0
 
 
 class SongView(APIView):
@@ -160,6 +160,7 @@ class CreateRoomView(APIView):
         payload = {}
         data = write_data(settings.ROOM_COLLECTION, payload=payload)
         return Response(data)
+
 
 class CommentView(APIView):
 
