@@ -2,9 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 
-function EnterRoom({setShowModal}) {
+function EnterRoom({setShowModal, setUserCount,}) {
     const handleClick =() =>{
         setShowModal(prev => !prev)
+        setUserCount(prev=> prev +1)
     }
     
 

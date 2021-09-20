@@ -34,7 +34,7 @@ const Wrapper = styled.div`
     align-items: center;
   }
 
-  .svg {
+  img {
     width: 100%;
     max-width: 309px;
     height: fit-content;
@@ -81,7 +81,7 @@ const Wrapper = styled.div`
       margin: 7px 0 10px;
     }
 
-    .svg {
+    img {
       max-width: 179px;
     }
 
