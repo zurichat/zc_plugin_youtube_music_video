@@ -1,6 +1,9 @@
+from .views import EventDisplay
 from django.urls import path
 
 from music.views import PluginPingView, SidebarView, MediaView, PluginInfoView, AddToRoomView, CreateRoomView, UserCountView, Songs, CommentView
+
+app_name = "music"
 
 urlpatterns = [
     path("song/", Songs.as_view(), name="song"),
@@ -12,4 +15,5 @@ urlpatterns = [
     path("add_to_room/", AddToRoomView.as_view(), name="add_to_room"),
     path("createroom/", CreateRoomView.as_view(), name="createroom"),
     path("comments/", CommentView.as_view(), name="comments"),
+    path("roomdetails/", EventDisplay.as_view(), name="evtdis"),
 ]
