@@ -19,7 +19,7 @@ import "./App.css";
 
 function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const isLoading = useSelector(uiSelect.isLoading);
 
   return (
