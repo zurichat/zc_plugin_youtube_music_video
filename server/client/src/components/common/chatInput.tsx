@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Picker from "emoji-picker-react";
-// import the react-giphy-picker package
+
 import GiphyPicker from "react-giphy-picker";
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";

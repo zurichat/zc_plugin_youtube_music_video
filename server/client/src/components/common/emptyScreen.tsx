@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Illustration from "../../media/emptyScreen.svg";
 
-import { uiAction } from "../../store/uiSlice";
+import { uiDispatch } from "../../store/uiSlice";
 
 import PasteUrl from "./pasteUrl";
 
@@ -14,10 +14,7 @@ const EmptyScreen = () => {
         <img src={Illustration} alt="add songs illustraat" />
         <h3 className="heading_3">There are no songs here!</h3>
         <p className="text">Start adding your songs</p>
-        <button
-          className="btn"
-          onClick={() => uiAction.dispatchAddSongToggle(true)}
-        >
+        <button className="btn" onClick={() => uiDispatch.showPasteUrl(true)}>
           Add songs
         </button>
       </div>

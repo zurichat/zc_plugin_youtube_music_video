@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 // Store
 import { playerAction, getPlayerState } from "../../store/playerSlice";
-import { uiAction } from "../../store/uiSlice";
+import { uiDispatch } from "../../store/uiSlice";
 
 // Components
 import PasteUrl from "./pasteUrl";
@@ -32,7 +32,7 @@ const PlaylistHeader = () => {
 
   const handleAddSongToggle = () => {
     console.log("calling ");
-    uiAction.dispatchAddSongToggle(true);
+    uiDispatch.showPasteUrl(true);
   };
 
   return (

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useState } from "react";
 
 import store from "../store";
-import { toggleChat } from "../store/uiSlice";
+import { uiDispatch } from "../store/uiSlice";
 
 import Exit from "../components/common/exit";
 
@@ -56,9 +56,7 @@ const roomHeader = () => {
             src={message}
             alt="message count"
             className="header-message-count"
-            onClick={() =>
-              store.dispatch({ type: toggleChat.type, payload: { chat: true } })
-            }
+            onClick={() => uiDispatch.showChat(true)}
           />
         </div>
       </div>

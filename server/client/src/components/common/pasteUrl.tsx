@@ -6,7 +6,7 @@ import { useSelector, connect } from "react-redux";
 import Song from "../../types/song";
 
 import { RootState } from "../../store";
-import { selectPasteUrl, uiAction } from "../../store/uiSlice";
+import { uiDispatch, uiSelect } from "../../store/uiSlice";
 
 import { getSongMetadat } from "../../utils/metadata";
 
@@ -23,7 +23,7 @@ const PasteUrl = (props: Props) => {
 
   const [url, setUrl] = useState("");
 
-  const pasteUrl = useSelector(selectPasteUrl);
+  const pasteUrl = useSelector(uiSelect.showPasteUrl);
 
   if (!pasteUrl) return null;
 
@@ -31,6 +31,7 @@ const PasteUrl = (props: Props) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    uiDispatch.loading(true);
 
     try {
       const metadata = await getSongMetadat(url);
@@ -45,10 +46,12 @@ const PasteUrl = (props: Props) => {
       };
 
       songService.addSong(song);
-      uiAction.dispatchAddSongToggle(false);
+      uiDispatch.showPasteUrl(false);
     } catch (e) {
       log.error(e.message);
     }
+
+    uiDispatch.loading(false);
   };
 
   return (
@@ -65,7 +68,7 @@ const PasteUrl = (props: Props) => {
                 height: "1rem",
                 cursor: "pointer",
               }}
-              onClick={() => uiAction.dispatchAddSongToggle(false)}
+              onClick={() => uiDispatch.showPasteUrl(false)}
             />
           </label>
         </div>
@@ -77,6 +80,7 @@ const PasteUrl = (props: Props) => {
             id=""
             value={url}
             onChange={handleChange}
+            autoFocus
           />
 
           <input className="input-submit" type="submit" value="Add" />
