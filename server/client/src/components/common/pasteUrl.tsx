@@ -2,17 +2,17 @@ import { useState } from "react";
 import styled from "styled-components";
 import { FiX } from "react-icons/fi";
 import { useSelector, connect } from "react-redux";
-import { toast } from "react-toastify";
 
 import Song from "../../types/song";
 
-import { selectPasteUrl, uiAction } from "../../store/uiSlice";
+import { RootState } from "../../store";
+import { uiDispatch, uiSelect } from "../../store/uiSlice";
 
 import { getSongMetadat } from "../../utils/metadata";
 
 import songService from "../../services/songService";
 import authService from "../../services/authService";
-import { RootState } from "../../store";
+import log from "../../services/logService";
 
 interface Props {
   getSongById: (id: string) => Song;
@@ -23,7 +23,7 @@ const PasteUrl = (props: Props) => {
 
   const [url, setUrl] = useState("");
 
-  const pasteUrl = useSelector(selectPasteUrl);
+  const pasteUrl = useSelector(uiSelect.showPasteUrl);
 
   if (!pasteUrl) return null;
 
@@ -31,6 +31,7 @@ const PasteUrl = (props: Props) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+    uiDispatch.loading(true);
 
     try {
       const metadata = await getSongMetadat(url);
@@ -45,9 +46,12 @@ const PasteUrl = (props: Props) => {
       };
 
       songService.addSong(song);
+      uiDispatch.showPasteUrl(false);
     } catch (e) {
-      toast.error(e.message);
+      log.error(e.message);
     }
+
+    uiDispatch.loading(false);
   };
 
   return (
@@ -64,7 +68,7 @@ const PasteUrl = (props: Props) => {
                 height: "1rem",
                 cursor: "pointer",
               }}
-              onClick={() => uiAction.dispatchAddSongToggle({ addSong: false })}
+              onClick={() => uiDispatch.showPasteUrl(false)}
             />
           </label>
         </div>
@@ -76,6 +80,7 @@ const PasteUrl = (props: Props) => {
             id=""
             value={url}
             onChange={handleChange}
+            autoFocus
           />
 
           <input className="input-submit" type="submit" value="Add" />
@@ -88,7 +93,7 @@ const PasteUrl = (props: Props) => {
 const Wrapper = styled.div`
   position: fixed;
   top: 180px;
-  left: 10%;
+  left: 20%;
   width: 400px;
   height: 80px;
   display: flex;

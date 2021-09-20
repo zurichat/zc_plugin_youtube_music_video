@@ -1,19 +1,34 @@
-import React from "react";
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import store from "../store";
-import { getPlayerState, playing } from "../store/playerSlice";
-import { selectAllSongs } from "../store/songsSlice";
+import {
+  getPlayerState,
+  playerAction,
+  playerSelector,
+  playing,
+} from "../store/playerSlice";
+import { songSelector } from "../store/songsSlice";
 
 import PlaylistItems from "./common/playlistItems";
+import { useState } from "react";
 
 function Player() {
   const player = useSelector(getPlayerState);
-  const songs = useSelector(selectAllSongs);
+  const songs = useSelector(songSelector.selectAllSongs);
+  const song = useSelector(playerSelector.selectCurrentSong);
+  const upnext = getUpnext();
 
   if (!player.show) return null;
+
+  const url = "https://www.youtube.com/embed/" + song.id;
+
+  function getUpnext() {
+    const index = songs.indexOf(song);
+
+    return [...songs.slice(index + 1), ...songs.slice(0, index)];
+  }
 
   const handlePlay = () => {
     store.dispatch({ type: playing.type, payload: { playing: true } });
@@ -23,28 +38,39 @@ function Player() {
     store.dispatch({ type: playing.type, payload: { playing: false } });
   };
 
-  const urls = ["https://www.youtube.com/embed/vbYB4rddM-8"];
+  const handedEnded = () => {
+    const index = songs.findIndex((s) => s.id === song.id);
+
+    if (index === -1) return;
+
+    const indexNext = index + 1 > songs.length - 1 ? 0 : index + 1;
+    playerAction.changeSong(songs[indexNext]);
+  };
 
   return (
     <Wrapper>
       <div className="player-now">Now Playing</div>
+
       <div className="player-wrapper">
         <ReactPlayer
-          url={urls}
+          url={url}
           className="react-player"
           width="100%"
           height="100%"
+          controls
           playing={player.playing}
           onPlay={handlePlay}
           onPause={handlePause}
+          onEnded={handedEnded}
           pip={true}
           stopOnUnmount={false}
-          config={{ playerVars: { showinfo: 1 } }}
+          // config={{ playerVars: { showinfo: 1 } }}
         />
       </div>
-      <div className="player-title">Title of song</div>
-      <div className="player-next">Up next</div>
-      <PlaylistItems songs={songs} />
+
+      <div className="player-title">{song.title}</div>
+      {upnext.length > 0 && <div className="player-next">Up next</div>}
+      <PlaylistItems songs={upnext} />
     </Wrapper>
   );
 }

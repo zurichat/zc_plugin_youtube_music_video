@@ -3,42 +3,52 @@ import store, { RootState } from ".";
 
 const slice = createSlice({
   name: "UI",
+
   initialState: {
     isLoading: false,
     congrats: false,
     showChat: false,
     addSong: false,
   },
+
   reducers: {
     loaded: (state, action) => {
-      state.isLoading = false;
+      state.isLoading = action.payload;
     },
+
     congratsToggled: (state, action) => {
-      state.congrats = action.payload.congrats;
+      state.congrats = action.payload;
     },
-    toggleChat: (state, action) => {
-      state.showChat = action.payload.chat;
+
+    showChat: (state, action) => {
+      state.showChat = action.payload;
     },
-    addSongToggle: (state, action) => {
-      state.addSong = action.payload.addSong;
+
+    showPasteUrl: (state, action) => {
+      state.addSong = action.payload;
     },
   },
 });
 
-export const { loaded, congratsToggled, toggleChat, addSongToggle } =
-  slice.actions;
+const { loaded, showChat, showPasteUrl } = slice.actions;
 
-const dispatchAddSongToggle = (payload: { addSong: boolean }) => {
-  store.dispatch({ type: addSongToggle.type, payload });
+export const uiDispatch = {
+  showPasteUrl: (payload: boolean) => {
+    store.dispatch({ type: showPasteUrl.type, payload });
+  },
+
+  showChat: (payload: boolean) =>
+    store.dispatch({ type: showChat.type, payload }),
+
+  loading: (payload: boolean) => store.dispatch({ type: loaded.type, payload }),
 };
 
-const dispatchToggleChat = (payload: { chat: boolean }) => {
-  store.dispatch({ type: toggleChat.type, payload });
+export const uiSelect = {
+  showChat: (state: RootState) => state.ui.showChat,
+
+  showPasteUrl: (state: RootState) => state.ui.addSong,
+
+  isLoading: (state: RootState) => state.ui.isLoading,
 };
-
-export const uiAction = { dispatchAddSongToggle, dispatchToggleChat };
-
-export const selectChat = (state: RootState) => state.ui.showChat;
-export const selectPasteUrl = (state: RootState) => state.ui.addSong;
 
 export default slice.reducer;

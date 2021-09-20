@@ -4,16 +4,18 @@ import { useSelector } from "react-redux";
 
 // Store
 import { playerAction, getPlayerState } from "../../store/playerSlice";
-import { uiAction } from "../../store/uiSlice";
+import { uiDispatch } from "../../store/uiSlice";
 
 // Components
 import PasteUrl from "./pasteUrl";
 import Button from "./button";
 
 import Headset from "../../media/playlistIcon.svg";
+import { songSelector } from "../../store/songsSlice";
 
 const PlaylistHeader = () => {
   const player = useSelector(getPlayerState);
+  const firstSong = useSelector(songSelector.selectFirstSong);
 
   const [text, setText] = useState("Play");
 
@@ -24,10 +26,13 @@ const PlaylistHeader = () => {
       playerAction.dispatchPlaying(true);
       playerAction.dispatchShowPlayer(true);
     } else playerAction.dispatchPlaying(false);
+
+    if (!player.currentSong.id) playerAction.changeSong(firstSong);
   };
 
   const handleAddSongToggle = () => {
-    uiAction.dispatchAddSongToggle({ addSong: true });
+    console.log("calling ");
+    uiDispatch.showPasteUrl(true);
   };
 
   return (

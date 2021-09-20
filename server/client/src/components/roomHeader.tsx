@@ -1,12 +1,11 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 
 import store from "../store";
-import { toggleChat } from "../store/uiSlice";
-import Exit from '../components/common/exit'
-import '../App.css'
+import { uiDispatch } from "../store/uiSlice";
+
+import Exit from "../components/common/exit";
 
 import avatarSvg from "../media/header-avatar.svg";
 import groupIconSvg from "../media/header-group-icon.svg";
@@ -14,14 +13,14 @@ import menu from "../media/menu.svg";
 import arrow from "../media/arrow-down.svg";
 import message from "../media/message.svg";
 
-const roomHeader = () => {
+import "../App.css";
 
-  const [drop, setDrop] = useState('');
+const roomHeader = () => {
+  const [drop, setDrop] = useState("");
   return (
-    
     <Wrapper className="header">
       <div className="header-left">
-        {drop === 'drop' ? (<Exit drop={setDrop}/>) : null}
+        {drop === "drop" ? <Exit drop={setDrop} /> : null}
         <img
           src={menu}
           alt="icon"
@@ -31,18 +30,16 @@ const roomHeader = () => {
 
         <img src={groupIconSvg} alt="icon" className="header-icon hide-2" />
 
-        <Link to="/" onClick={()=> {
-            setDrop('drop')
-          }} className="header-link">
+        <Link
+          to="/"
+          onClick={() => {
+            setDrop("drop");
+          }}
+          className="header-link"
+        >
           Music Room
-          <img
-          src={arrow}
-          alt="icon"
-          className="arrow"
-        />
+          <img src={arrow} alt="icon" className="arrow" />
         </Link>
-
-
       </div>
 
       <div className="header-right">
@@ -59,9 +56,7 @@ const roomHeader = () => {
             src={message}
             alt="message count"
             className="header-message-count"
-            onClick={() =>
-              store.dispatch({ type: toggleChat.type, payload: { chat: true } })
-            }
+            onClick={() => uiDispatch.showChat(true)}
           />
         </div>
       </div>
@@ -80,7 +75,7 @@ const Wrapper = styled.div`
   color: #27ae60;
   padding: 20px;
   margin-bottom: 10px;
-  z-index: 100;
+  z-index: 1;
 
   .header-icon {
     display: block;
