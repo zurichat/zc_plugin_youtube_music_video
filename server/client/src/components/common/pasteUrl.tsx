@@ -91,23 +91,20 @@ const PasteUrl = (props: Props) => {
 };
 
 const Wrapper = styled.div`
-  position: fixed;
-  top: 180px;
-  left: 20%;
-  width: 400px;
-  height: 80px;
+  position: absolute;
+  height: 110px;
   display: flex;
   justify-content: center;
+  width: min(90%, 400px);
 
   .submit-form {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     background: #fff;
-    width: 100%;
-    height: 100%;
     border: 2px solid #00bb7c;
     padding: 1rem;
+    width: 100%;
   }
   .form-label {
     display: flex;
@@ -116,15 +113,13 @@ const Wrapper = styled.div`
   }
   .inputs {
     display: flex;
-    justify-content: space-between;
-    height: 20px;
+    height: 40px;
   }
   .input-text {
     flex-grow: 1;
     border: 1.5px solid #00bb7c;
     outline: none;
     padding: 0.5rem;
-    height: 100%;
     font-size: 17px;
   }
   .input-text::selection {
@@ -132,24 +127,14 @@ const Wrapper = styled.div`
     color: white;
   }
   .input-submit {
-    flex-basis: 25%;
-    height: 195%;
-    padding: 0.5rem 1.2rem;
+    flex-basis: 70px;
+    padding: 5px 10px;
     font-size: 17px;
     color: #fff;
     background: #00bb7c;
     border: none;
     outline: none;
     cursor: pointer;
-  }
-
-  @media (max-width: 453px) {
-    width: 100%;
-    left: 1px;
-
-    .submit-form {
-      width: 80%;
-    }
   }
 `;
 

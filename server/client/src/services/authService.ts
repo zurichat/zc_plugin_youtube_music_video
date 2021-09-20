@@ -1,3 +1,6 @@
+// @ts-ignore
+// import { GetUserInfo } from "@zuri/zuri-control";
+
 import avatar from "../media/chatItem.svg";
 
 function getCurrentUser() {
