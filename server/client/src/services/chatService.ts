@@ -12,7 +12,7 @@ export const createChat = (dispatch, message) => {
     const newitem = {
         id: Date.now() + "",
         userId: Date.now() + "",
-        name: "Mr._Primal",
+        name: "Chioma",
         time: 23,
         message: message,
         avatar: chatItem,
