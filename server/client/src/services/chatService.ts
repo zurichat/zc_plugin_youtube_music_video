@@ -1,12 +1,23 @@
-import { chatDispatch } from "../store/chatsSlice";
-import Chat from "../types/chat";
+import { addChat } from '../store/chatsSlice';
+import chatItem from "../media/chatItem.svg";
+function getCurrentUser() {}
 
-export const getChat = () => {};
+const authObject = { getCurrentUser };
 
-export const createChat = (chat: Chat) => {
-  chatDispatch.addChat(chat);
+export const getChat = () => {
+
 };
 
-const chatObject = { createChat, getChat };
+export const createChat = (dispatch, message) => {
+    const newitem = {
+        id: Date.now() + "",
+        userId: Date.now() + "",
+        name: "Chioma",
+        time: 23,
+        message: message,
+        avatar: chatItem,
+    };
+    dispatch(addChat(newitem));
+};
 
-export default chatObject;
+export default authObject;
