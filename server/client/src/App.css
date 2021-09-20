@@ -37,7 +37,7 @@ body::-webkit-scrollbar-thumb {
   padding: 0 10px;
   background: white;
   max-width: 500px;
-  margin: 100px auto;
+  margin: 80px auto;
   min-height: 300px;
 }
 
