@@ -26,6 +26,13 @@ function ChatInput(props) {
   const clearInput = () => {
     setInputStr("");
   }
+
+  /*const handleKeyPress = (event) => {
+    if(event.charCode === 13){
+      props.onClick(dispatch, inputStr);
+      clearInput();
+    }
+  }*/
   
   return (
     <Wrapper>
@@ -49,6 +56,9 @@ function ChatInput(props) {
           props.onClick(dispatch, inputStr);
           clearInput();
         }}
+        /*onKeyDown={() => {
+          
+        }}*/
         />
       </div>
     </Wrapper>
