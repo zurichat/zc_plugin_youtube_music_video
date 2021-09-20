@@ -15,9 +15,13 @@ function getCurrentUser() {
 
 function addToRoom() {
   const endpoint = "http://localhost:8000/music/api/v1/add_to_room";
-  axios.post(endpoint, getCurrentUser().id);
+
+  return axios.post(endpoint, { userId: getCurrentUser().id }).then(
+    (r) => r,
+    (e) => e
+  );
 }
 
-const authService = { getCurrentUser };
+const authService = { getCurrentUser, addToRoom };
 
 export default authService;
