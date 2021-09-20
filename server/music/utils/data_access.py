@@ -1,7 +1,7 @@
 from music.utils.request_client import RequestClient
 from django.conf import settings
-from requests_html import HTMLSession
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup
+from isodate import parse_duration
 import requests
 
 plugin_id = settings.PLUGIN_ID
@@ -148,15 +148,15 @@ def data_read(coll):
 def get_video(url):
     res = requests.get(url)
 
-    res_text = res.text
+    content = res.content
 
-    soup = bs(res_text, "html.parser")
+    soup = BeautifulSoup(content, "html.parser")
 
-    result = {}
+    result = {
+        "title": soup.select_one('meta[itemprop="name"][content]')['content'],
+        "track_url": soup.select_one('link[itemprop="url"]')['href'],
+        "thumbnail_url": soup.select_one('link[itemprop="thumbnailUrl"]')['href'],
+        "duration": str(parse_duration(soup.select_one('meta[itemprop="duration"][content]')['content']))
+    }
 
-    result["title"] = soup.find("meta", itemprop="name")['content']
-
-    result["thumbnail_url"] = soup.find("meta", property="og:image")['content']
-
-    result["track_url"] = soup.find("meta", property="og:url")['content']
     return result

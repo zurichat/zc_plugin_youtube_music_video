@@ -201,5 +201,5 @@ ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
 CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
 
 ROOM_COLLECTION = "test_music_room"
-SONG_COLLECTION = "test_collection"
-comments_COLLECTION = "test_collection"
+SONG_COLLECTION = "test_song"
+COMMENTS_COLLECTION = "test_comments"
