@@ -43,7 +43,7 @@ function Player() {
 
     if (index === -1) return;
 
-    const indexNext = index + 1 > songs.length - 1 ? 0 : index + 1;
+    const indexNext = index < songs.length - 1 ? index + 1 : 0;
     playerAction.changeSong(songs[indexNext]);
   };
 

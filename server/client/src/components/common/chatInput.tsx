@@ -34,6 +34,13 @@ function ChatInput(props) {
     setInputStr("");
   };
 
+  /*const handleKeyPress = (event) => {
+    if(event.charCode === 13){
+      props.onClick(dispatch, inputStr);
+      clearInput();
+    }
+  }*/
+
   return (
     <Wrapper>
       <input
@@ -66,18 +73,21 @@ function ChatInput(props) {
         />
         {showGiphy && (
           <GiphyPicker
-            pickerStyle={{ width: "100%" }}
+            pickerStyle={{ width: "18vw", marginLeft: "-10rem" }}
             onGiphyClick={onGiphyClick}
           />
         )}
-        <img
-          src={chatSend}
-          alt="send"
-          className="chat-icon"
-          onClick={() => {
-            props.onClick(dispatch, inputStr);
-            clearInput();
-          }}
+        <img 
+        src={chatSend} 
+        alt="send" 
+        className="chat-icon" 
+        onClick={() => {
+          props.onClick(dispatch, inputStr);
+          clearInput();
+        }}
+        /*onKeyDown={() => {
+          
+        }}*/
         />
       </div>
     </Wrapper>

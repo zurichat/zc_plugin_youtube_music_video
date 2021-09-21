@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from django.utils import timezone
+from rest_framework import serializers
+
 
 class MediaSerializer(serializers.Serializer):
     media_id = serializers.CharField()
@@ -8,6 +9,6 @@ class MediaSerializer(serializers.Serializer):
 
 
 class CommentSerializer(serializers.Serializer):
-    user_id = serializers.UUIDField()
-    created_datetime = serializers.DateTimeField(default=timezone.now())
+    user_id = serializers.CharField(max_length=256)
+    created_datetime = serializers.CharField(max_length=256)
     message_content = serializers.CharField(max_length=256)
