@@ -19,8 +19,9 @@ import "./App.css";
 
 function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
-  const [showModal, setShowModal] = useState(true);
+  const [userCount, setUserCount] = useState(0);
   const isLoading = useSelector(uiSelect.isLoading);
+  const showModal = useSelector(uiSelect.showModal);
 
   return (
     <Wrapper>
@@ -39,9 +40,9 @@ function App() {
       <div>
         <ToastContainer theme="colored" />
 
-        {showModal && <EnterRoom setShowModal={setShowModal} />}
+        {showModal && <EnterRoom setUserCount={setUserCount} />}
 
-        <RoomHeader />
+        <RoomHeader userCount={userCount} />
         <MusicRoom />
       </div>
     </Wrapper>
@@ -49,12 +50,12 @@ function App() {
 }
 
 const Wrapper = styled.div`
-  /* overflow-y: scroll; */
   position: relative;
   display: flex;
   justify-content: center;
-  padding: 10px;
   height: 100vh;
+  margin: 0;
+  padding: 0;
 
   & > * {
     flex-grow: 1;
@@ -73,11 +74,6 @@ const Wrapper = styled.div`
     position: absolute;
     top: 100px;
     z-index: 111111;
-  }
-
-  @media (max-width: 600px) {
-    padding: 0;
-    margin: 0;
   }
 `;
 

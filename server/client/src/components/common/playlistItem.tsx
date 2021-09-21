@@ -117,7 +117,7 @@ const Wrapper = styled.div`
     font-weight: 700;
     font-size: 15px;
     margin-bottom: 6px;
-    width: 200px;
+    min-width: 150px;
   }
 
   .item-addedBy {

@@ -73,7 +73,7 @@ function ChatInput(props) {
         />
         {showGiphy && (
           <GiphyPicker
-            pickerStyle={{ width: "100%" }}
+            pickerStyle={{ width: "18vw", marginLeft: "-10rem" }}
             onGiphyClick={onGiphyClick}
           />
         )}

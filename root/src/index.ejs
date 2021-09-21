@@ -49,7 +49,7 @@
     <script type="text/javascript">
       window.local = true;
     </script>
-    <% } %> <% if (!isLocal) { %>
+    <% } else { %>
     <script type="systemjs-importmap">
       {
         "imports": {
@@ -63,6 +63,7 @@
       }
     </script>
     <script type="text/javascript">
+      window.local = false;
       window.local = false;
     </script>
     <% } %>
