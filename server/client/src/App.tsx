@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import Loader from "react-loader-spinner";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
@@ -10,7 +11,8 @@ import EnterRoom from "./components/Modals/EnterRoom";
 
 import chatMediaQuery from "./utils/chatMedia";
 
-import { uiDispatch, uiSelect } from "./store/uiSlice";
+import { uiSelect } from "./store/uiSlice";
+import authService from "./services/authService";
 
 import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,6 +20,10 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
 function App() {
+  useEffect(() => {
+    authService.signin();
+  }, []);
+
   chatMediaQuery(); // toggle chat display based on screen size.
   const [userCount, setUserCount] = useState(0);
   const isLoading = useSelector(uiSelect.isLoading);
@@ -40,17 +46,14 @@ function App() {
       <div>
         <ToastContainer theme="colored" />
 
-        {showModal && (
-          <EnterRoom
-            setShowModal={() => {
-              uiDispatch.showModal(false);
-            }}
-            setUserCount={setUserCount}
-          />
-        )}
+        {showModal && <EnterRoom setUserCount={setUserCount} />}
 
         <RoomHeader userCount={userCount} />
-        <MusicRoom />
+
+        <Switch>
+          <Route path="/music" component={MusicRoom} />
+          <Redirect from="/" to="/music" />
+        </Switch>
       </div>
     </Wrapper>
   );
@@ -80,7 +83,7 @@ const Wrapper = styled.div`
   .loader-wrapper {
     position: absolute;
     top: 100px;
-    z-index: 111111;
+    z-index: 111;
   }
 `;
 

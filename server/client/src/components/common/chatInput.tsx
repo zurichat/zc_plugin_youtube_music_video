@@ -1,20 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import Picker from "emoji-picker-react";
-
 import GiphyPicker from "react-giphy-picker";
+
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
 
-import { useDispatch } from "react-redux";
+import authService from "../../services/authService";
+import chatService from "../../services/chatService";
 
 function ChatInput(props) {
   // states to manage the input text and also the showcasing of the emoji
   const [inputStr, setInputStr] = useState("");
   const [showPicker, setShowPicker] = useState(false);
   const [showGiphy, setShowGiphy] = useState(false);
-  const dispatch = useDispatch();
   const handleFocus = props.handleFocus;
   const handleBlur = props.handleBlur;
 
@@ -32,6 +32,21 @@ function ChatInput(props) {
 
   const clearInput = () => {
     setInputStr("");
+  };
+
+  const handleSend = () => {
+    const { name, id: userId, avatar } = authService.getCurrentUser();
+
+    chatService.addChat({
+      id: Date.now() + "",
+      userId,
+      name,
+      avatar,
+      message: inputStr,
+      time: Date.now(),
+    });
+
+    clearInput();
   };
 
   /*const handleKeyPress = (event) => {
@@ -73,19 +88,16 @@ function ChatInput(props) {
         />
         {showGiphy && (
           <GiphyPicker
-            pickerStyle={{ width: "100%" }}
+            pickerStyle={{ width: "18vw", marginLeft: "-10rem" }}
             onGiphyClick={onGiphyClick}
           />
         )}
-        <img 
-        src={chatSend} 
-        alt="send" 
-        className="chat-icon" 
-        onClick={() => {
-          props.onClick(dispatch, inputStr);
-          clearInput();
-        }}
-        /*onKeyDown={() => {
+        <img
+          src={chatSend}
+          alt="send"
+          className="chat-icon"
+          onClick={handleSend}
+          /*onKeyDown={() => {
           
         }}*/
         />
