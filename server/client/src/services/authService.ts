@@ -1,11 +1,11 @@
 // @ts-ignore
-import { GetUserInfo } from "@zuri/zuri-control";
+//import { GetUserInfo } from "@zuri/zuri-control";
 import axios from "axios";
 
 import avatar from "../media/chatItem.svg";
 
 function getCurrentUser() {
-  console.log(GetUserInfo());
+  //console.log(GetUserInfo());
   return {
     name: "user",
     id: "userId",

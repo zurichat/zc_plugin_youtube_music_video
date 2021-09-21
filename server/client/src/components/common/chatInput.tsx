@@ -82,8 +82,11 @@ function ChatInput(props) {
         alt="send" 
         className="chat-icon" 
         onClick={() => {
+          if(inputStr !== ""){
           props.onClick(dispatch, inputStr);
           clearInput();
+          }
+          else return ;
         }}
         /*onKeyDown={() => {
           
