@@ -1,16 +1,27 @@
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
 import authService from "../../services/authService";
-import { uiDispatch } from "../../store/uiSlice";
+import log from "../../services/logService";
+import { uiDispatch, uiSelect } from "../../store/uiSlice";
+import Button from "../common/button";
 
 function EnterRoom({ setUserCount }) {
+  const isLoading = useSelector(uiSelect.isLoading);
+
   const handleClick = async () => {
     uiDispatch.loading(true);
 
     try {
       await authService.addToRoom();
+
+      toast.dismiss();
+
       uiDispatch.showModal(false);
       setUserCount((prev) => 1);
+
+      log.success("Welcome!");
     } catch (e) {
       console.log(e);
     }
@@ -30,9 +41,13 @@ function EnterRoom({ setUserCount }) {
             music bants.
           </p>
 
-          <button className="btn" onClick={handleClick}>
+          <Button
+            color={isLoading ? "disabled" : "secondary"}
+            className="btn"
+            onClick={handleClick}
+          >
             Join room
-          </button>
+          </Button>
         </Container>
       </Overlay>
     </div>
@@ -49,25 +64,26 @@ const Overlay = styled.div`
   z-index: 3;
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
+
 const Container = styled.div`
   position: relative;
+  flex-basis: min(80%, 600px);
 
   background: #ffffff;
   box-shadow: 1px 1px 44px rgba(64, 64, 64, 0.5);
   border-radius: 4px;
   z-index: 3;
-  max-width: 648px;
-  margin: 80px auto;
   min-height: 207px;
 
-  h2 {
-    position: absolute;
-    width: 203px;
-    height: 32px;
-    left: 24px;
-    top: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
 
+  h2 {
     font-family: Lato;
     font-style: normal;
     font-weight: bold;
@@ -78,12 +94,6 @@ const Container = styled.div`
     color: #1d1c1d;
   }
   .pragraph {
-    position: absolute;
-    max-width: 600px;
-    height: 48px;
-    left: 24px;
-    top: 64px;
-
     font-family: Lato;
     font-style: normal;
     font-weight: normal;
@@ -94,47 +104,9 @@ const Container = styled.div`
     color: #616061;
   }
   .btn {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 13px 40px;
-    outline: none;
-    border: none;
-    border-radius: 4px;
-    position: relative;
-    width: 151px;
-    height: 47px;
-    margin: auto;
-    top: 136px;
-    color: #ffffff;
-    font-size: 16px;
-    line-height: 21px;
-    background: #00b87c;
-    box-shadow: 2px 2px 2px rgba(0, 36, 24, 0.04);
-    cursor: pointer;
-  }
-  @media (max-width: 480px) {
-    max-width: 335px;
-    margin: 150px auto;
-    h2 {
-      font-size: 16px;
-      left: 16px;
-    }
-    .pragraph {
-      width: 303px;
-      height: 72px;
-      left: 16px;
-      top: 35px;
-
-      font-family: Lato;
-      font-style: normal;
-      font-weight: normal;
-      font-size: 13px;
-      line-height: 24px;
-      /* or 185% */
-
-      color: #616061;
-    }
+    align-self: center;
+    padding: 10px 20px !important;
+    font-size: 17px !important;
   }
 `;
 

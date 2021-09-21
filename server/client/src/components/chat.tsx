@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -8,24 +8,27 @@ import ChatInput from "./common/chatInput";
 
 import { chatSelect } from "../store/chatsSlice";
 import { uiSelect } from "../store/uiSlice";
-import { createChat } from "../services/chatService";
+import chatService from "../services/chatService";
 
 function Chat(props) {
   const chats = useSelector(chatSelect.allChat);
   const showChat = useSelector(uiSelect.showChat);
-  const chatCreate = createChat;
   const scroller = useRef(null);
+
+  useEffect(() => {
+    chatService.getChats();
+  }, []);
 
   if (!showChat) return null;
 
-  const scrollToBottom = () =>{
+  const scrollToBottom = () => {
     scroller.current.scrollIntoView(false);
-  }
+  };
 
-  useEffect(() => {
-    scrollToBottom();
-  });
-  
+  // useEffect(() => {
+  //   scrollToBottom();
+  // });
+
   function handleFocus() {
     const mediaQuery = window.matchMedia("(max-width: 1000px)");
     const chatItemGroup =
@@ -61,11 +64,7 @@ function Chat(props) {
         ))}
         <div className="scroller" ref={scroller}></div>
       </div>
-      <ChatInput
-        onClick={chatCreate}
-        handleFocus={handleFocus}
-        handleBlur={handleBlur}
-      />
+      <ChatInput handleFocus={handleFocus} handleBlur={handleBlur} />
     </Wrapper>
   );
 }
