@@ -144,6 +144,28 @@ def data_read(coll):
     data = res.json()
     return data['data']
 
+def del_data(collection, object_id, bulk=False, filter={}):
+
+    plugin_id = settings.PLUGIN_ID
+
+    org_id = settings.ORGANIZATON_ID
+
+    data = {
+
+        "plugin_id": plugin_id,
+        "organization_id": org_id,
+        "collection_name": collection,
+        "bulk_delete": bulk,
+        "object_id": object_id,
+        "filter": filter
+       
+
+    }
+    url = "https://api.zuri.chat//data/delete"
+    res = requests.post(url, json=data)
+
+    return res
+
 
 def get_video(url):
     res = requests.get(url)
