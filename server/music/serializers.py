@@ -10,6 +10,5 @@ class MediaSerializer(serializers.Serializer):
 
 class CommentSerializer(serializers.Serializer):
     user_id = serializers.CharField(max_length=256)
-    avatar = serializers.CharField(max_length=256)
-    created_datetime = serializers.IntegerField(max_value=None, min_value=None)
+    created_datetime = serializers.CharField(max_length=256)
     message_content = serializers.CharField(max_length=256)
