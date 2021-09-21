@@ -13,3 +13,5 @@ class CommentSerializer(serializers.Serializer):
     avatar = serializers.CharField(max_length=256)
     created_datetime = serializers.IntergerField(max_value=None, min_value=None)
     message_content = serializers.CharField(max_length=256)
+    
+    
