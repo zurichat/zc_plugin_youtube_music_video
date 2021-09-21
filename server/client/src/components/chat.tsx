@@ -16,15 +16,17 @@ function Chat(props) {
   const chatCreate = createChat;
   const scroller = useRef(null);
 
-  if (!showChat) return null;
-
   const scrollToBottom = () =>{
     scroller.current.scrollIntoView(false);
   }
 
   useEffect(() => {
+    if(showChat){
     scrollToBottom();
+    };
   });
+
+  if (!showChat) return null;
   
   function handleFocus() {
     const mediaQuery = window.matchMedia("(max-width: 1000px)");

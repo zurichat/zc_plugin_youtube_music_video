@@ -1,5 +1,6 @@
 import { addChat } from '../store/chatsSlice';
 import chatItem from "../media/chatItem.svg";
+
 function getCurrentUser() {}
 
 const authObject = { getCurrentUser };

@@ -7,15 +7,14 @@ import avatar from "../media/chatItem.svg";
 const chatsSlice = createSlice({
   name: "chats",
   // initialState: getMockChat(),
-  initialState: [
-        {id: Date.now() + "",
+  initialState: [{
+        id: Date.now() + "",
         userId: Date.now() + "",
-        name: "Mr._Primal",
+        name: "Mr. Primal",
         time: 23,
         message: "Hello there",
         avatar: avatar,
-       }
-  ],
+  }],
 
   reducers: {
     addChat: (state, { payload }) => {
