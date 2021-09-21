@@ -13,4 +13,5 @@ urlpatterns = [
     path("add_to_room/", AddToRoomView.as_view(), name="add_to_room"),
     path("createroom/", CreateRoomView.as_view(), name="createroom"),
     path("comments/", CommentView.as_view(), name="comments"),
+    
 ]

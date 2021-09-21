@@ -5,8 +5,11 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 
 from music.serializers import CommentSerializer
-from music.utils.data_access import get_video, read_data, write_data, centrifugo_post
+from music.utils.data_access import get_video, read_data, write_data, centrifugo_post, delete_data
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+import requests
+from requests import exceptions
 
 
 class SidebarView(GenericAPIView):
@@ -179,3 +182,57 @@ class CommentView(APIView):
             return Response(data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RemoveUser(APIView):
+    
+    def get(self, request):
+        data = delete_data(settings.ROOM_COLLECTION)
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
+    def post(self, request):
+        media_info = get_video(request.data['url'])
+
+        payload = {
+            "title": media_info["title"],
+            "track_url": media_info["track_url"],
+            "thumbnail_url": media_info["thumbnail_url"],
+            "duration": media_info["duration"],
+            "added_by_id": "1",
+            "song_like_ids": [
+                "1"
+            ]
+        }
+
+        data = write_data(settings.SONG_COLLECTION, payload=payload)
+        return Response(data, status=status.HTTP_202_ACCEPTED)
+    
+    # @api_view(['DELETE'])
+    def remove(request, id):
+        plugin_id = settings.PLUGIN_ID
+        organization_id = settings.ORGANIZATION_ID
+        collection_name = settings.ROOM_COLLECTION
+
+        if request.method == "POST":
+            url = "https://api.zuri.chat/data/delete"
+            payload = {
+                "plugin_id": plugin_id,
+                "organization_id": organization_id,
+                "collection_name": collection_name,
+                "bulk_delete": False,
+                "object_id": id,
+                "filter": {},
+            }
+
+            try:
+                response = requests.requests(url=url, json=payload)
+
+                if response.status_code == 200:
+                    return Response({"message": "User left room"}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"error": response.json()["message"]}, status=response.status_code)
+
+            except exceptions.ConnectionError as error:
+                return Response(str(error), status=status.HTTP_502_BAD_GATEWAY)

@@ -6,6 +6,7 @@ class MediaSerializer(serializers.Serializer):
     media_id = serializers.CharField()
     name = serializers.CharField()
     url = serializers.CharField()
+    added_by = serializers.CharField()
 
 
 class CommentSerializer(serializers.Serializer):
