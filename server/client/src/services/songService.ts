@@ -2,7 +2,7 @@ import Song from "../types/song";
 import LikeSong from "../types/likeSong";
 
 import log from "./logService";
-import { songAction } from "../store/songsSlice";
+import { songDispatch } from "../store/songsSlice";
 import httpService from "./httpService";
 
 const addSong = async (song: Song) => {
@@ -12,20 +12,22 @@ const addSong = async (song: Song) => {
     });
 
     log.success("Song added");
-    songAction.dispatchAddSong(song);
   } catch (error) {
-    log.error(error.message);
+    // log.error(error.message);
     console.log(error.message);
   }
+  songDispatch.addSong(song);
 };
 
 const likeSong = async (like: LikeSong) => {
-  try {
-    await httpService.post("/song", like);
+  songDispatch.likeSong(like);
 
-    log.success("Song added");
+  try {
+    await httpService.post("/like", like);
+
+    log.success("User liked a song");
   } catch (error) {
-    log.error(error.message);
+    // log.error(error.message);
     console.log(error.message);
   }
 };
