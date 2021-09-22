@@ -1,44 +1,56 @@
-<h1 align="center">YouTube Music Player Plugin using Django and React</h1>
+# YouTube Music-Video Plugin
 
-- Integration of Django and React
+![music image](https://scontent.fabb1-1.fna.fbcdn.net/v/t1.6435-9/p640x640/184205866_309950770525058_7072329262818108856_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=e3f864&_nc_ohc=KxNw0YAjzh8AX_67s2d&_nc_ht=scontent.fabb1-1.fna&oh=e0bb8173d7cf9f75f82b00345dbbb987&oe=616AD4A8)
 
-### Backend
+# Tech Stack
 
-- Django REST framework for a powerful API✔
-- Django ORM for interacting with the database✔
-- PostgreSQL✔
+- Django
+- React
 
-## How to Run locally 🚀
+# To Run Client (standalone)
 
-    - Install Dependencies after creating and activating virtual environement
+    $ cd server/client
+    $ yarn - to install dependencies if you haven't
+    $ yarn start:standalone
 
-### To create python virtual environment
+Client server running @ <a href='http://localhost:8080'>http://localhost:8080</a>
 
-        python -m venv <name_of_virtualenv>
+## Note to the Backend devs and to the DevOps
 
-        <name_of_virtualenv>\scripts\activate
+    Please build first before starting django server
 
-        $ pip install -r requirements/local.txt
+# To Build
+
+### Build the Client
+
+    $ cd server/client
+    $ yarn
+    $ yarn build
+
+### Build the single-spa root
+
+    $ cd root
+    $ yarn
+    $ yarn build
+
+# To Run Django Server
+
+    $ cd server
+
+    $ python -m venv venv - to create a virtual environment
+    $ venv\scripts\activate
+
+    $ pip install -r requirements/local.txt
 
     - Create .env file in config and put variables for Secret Key and Database (PostgreSQL) as created in sample.env file
 
+    $ python manage.py makemigrations
+    $ python manage.py migrate
 
-        $ python manage.py makemigrations
-        $ python manage.py migrate
+    $ python manage.py runserver
 
-    - Install dependencies in frontend app using following commands in separate terminal
-    - First make sure you have installed Node.js, I used v15.10.0 while developing this setup. For More info https://nodejs.org/en/
-    - In another terminal CD into frontend directory
-    - Then run following commands in the frontend directory where the package.json file is located
+Server running on <a href='http://localhost:8000'>http://localhost:8000/music</a>
 
-        $ yarn
-        $ yarn dev
+API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
 
-    - After that you should keep running this terminal as this is automatically compiling the react.js code in single file main.js
-    - Then Run the following command in previous terminal to load frontend react app on django server
-
-        $ python manage.py runserver
-
-- React app available at `http://localhost:8000/`
-- API root available at `http://localhost:8000/api/`
-- Admin available at `http://localhost:8000/admin/`
+Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a>
