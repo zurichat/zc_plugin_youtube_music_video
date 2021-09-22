@@ -12,5 +12,6 @@ urlpatterns = [
     path("createroom/", CreateRoomView.as_view(), name="createroom"),
     path("comments/", CommentView.as_view(), name="comments"),
     path("removeuser/", remove_user, name="remove_user"),
+    # path("removeuser/", RemoveView.as_view(), name="remove_user"),
     
 ]

@@ -5,10 +5,11 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 
 from music.serializers import CommentSerializer
-from music.utils.data_access import get_video, read_data, write_data, centrifugo_post
+from music.utils.data_access import get_video, read_data, write_data, centrifugo_post, delete_data
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 import requests
+import json
 from requests import exceptions
 
 
@@ -133,7 +134,7 @@ class SongView(APIView):
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
         return Response(data, status=status.HTTP_202_ACCEPTED)
-        #Note: only "track_url": "" should be inputted
+        #Note: use only {"url": ""} in the payload
 
 
 class AddToRoomView(APIView):
@@ -187,31 +188,35 @@ class CommentView(APIView):
 
 @api_view(['GET', 'POST'])
 def remove_user(request):
-    plugin_id = settings.PLUGIN_ID
-    organization_id = settings.ORGANIZATON_ID
-    collection_name = settings.ROOM_COLLECTION
+    # collection_name = settings.SONG_COLLECTION
+    # collection_name = settings.ROOM_COLLECTION
     
-    room_data = read_data(settings.ROOM_COLLECTION)
-    user_ids = room_data["data"][0]["room_user_ids"]
-    _id = room_data["data"][0]["_id"]
+    song_data = read_data(settings.SONG_COLLECTION)
+    user_ids = song_data["data"][0]["added_by_id"]
+    _id = song_data["data"][0]["_id"]
+
+    # room_data = read_data(settings.ROOM_COLLECTION)
+    # user_ids = room_data["data"][0]["room_user_ids"]    
+    # _id = room_data["data"][0]["_id"]
+   
 
     if request.method == 'GET':
-        data = read_data(collection_name)
+        data = song_data
         return Response(data)
 
     elif request.method == 'POST':
         url = 'https://api.zuri.chat/data/delete'
 
-        data = {
-            "plugin_id": plugin_id,
-            "organization_id": organization_id,
-            "collection_name": collection_name,
+        payload = {
+            "plugin_id": settings.PLUGIN_ID,
+            "organization_id": settings.ORGANIZATON_ID,
+            "collection_name": settings.SONG_COLLECTION,
             "bulk_delete": False,
-            "object_id": user_ids,
+            "object_ids": _id,
             "filter": {}
         }
         try:
-            response = requests.post(url=url, json=data)
+            response = requests.post(url=url, data=json.dumps(payload))
 
             if response.status_code == 200:
                 return Response({"message": "User left room"},
@@ -221,3 +226,28 @@ def remove_user(request):
 
         except exceptions.ConnectionError as e:
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
+
+
+# class RemoveView(APIView):
+#     def get(self, request):
+#         data = read_data(settings.SONG_COLLECTION)
+
+#         return Response(data, status=status.HTTP_200_OK)
+
+
+#     def post(self, request):
+#         data = {
+#             "plugin_id": settings.PLUGIN_ID,
+#             "organization_id": settings.ORGANIZATON_ID,
+#             "collection_name": settings.SONG_COLLECTION,
+#             "bulk_delete": False,
+#             "object_ids": "",
+#             "filter": {}
+#         }
+
+#         data = delete_data(settings.SONG_COLLECTION, payload=data)
+#         return Response(data, status=status.HTTP_202_ACCEPTED)
+#         #Note: use only {"url": ""} in the payload
+
+
+
