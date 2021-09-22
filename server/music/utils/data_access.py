@@ -162,49 +162,16 @@ def get_video(url):
     return result
 
 
-# def delete_data(collection, filter={}, bulk=False, object_id=""):
-#     plugin_id = settings.PLUGIN_ID
-
-#     org_id = settings.ORGANIZATON_ID
-
-#     data = {
-
-#         "plugin_id": plugin_id,
-#         "organization_id": org_id,
-#         "collection_name": collection,
-#         "bulk_delete": bulk,
-#         "object_id": object_id,
-#         "filter": filter,
-
-#     }
-#     url = "https://api.zuri.chat/data/delete"
-
-#     # res = requests.post(url, json=data)
-#     response = requests.delete(url, json=data)
-#     return response
-
-
-def delete_data(collection, object_id=None, filter_data=None, bulk_delete=False, method="POST"):
+def delete_user(collection=None, filter_data=None):
     if filter_data is None:
         filter_data = {}
 
-    if object_id is None:
-        object_id = ""
-
-    post_data = {
-        "plugin_id": plugin_id,
-        "organization_id": org_id,
-        "collection_name": collection,
-        "bulk_delete": bulk_delete,
-        "object_id": object_id,
-        "filter": filter_data,
-    }
     request_client = RequestClient()
 
     response = request_client.request(
-        method=method,
-        url="https://api.zuri.chat/data/delete",
+        method="POST",
+        url=f"https://api.zuri.chat/data/delete/{plugin_id}/{collection}/{org_id}",
         headers={"Authorization": "headers"},
-        post_data=post_data
+        post_data=filter_data
     )
     return response.response_data
