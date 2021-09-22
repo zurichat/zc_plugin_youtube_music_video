@@ -18,6 +18,7 @@
 ## [_Tab_Active_Description]
 ## [_Tab_Review]
 ## [_Tab_FAQ]
+## [_Accordion_Drop_Down]
 ## [_Footer]
 ==========================================
 ---------- [CSS_INDEXING_END] -------------
@@ -122,7 +123,7 @@ button{
 
 
 .btn__small{
-    width: 8rem;
+    width: 6.75rem;
     height: 1.875rem;
     border: 1px solid var(--text-secondary-color);
     background: var(--white-color);
@@ -457,7 +458,10 @@ i{
 
 .side__txts i{
  font-size: var(--font-size-reg);
- padding: 0 var(--mb-10) 0 0;
+}
+
+.side__bar a{
+    color: var(--blue-color);
 }
 
 @media screen and (min-width:320px) and (max-width:900px) {
@@ -470,20 +474,19 @@ i{
 /*--------------- [_TAB ITEMS] -------------*/
 /*========================================*/
 .tabs{
-    width: 50vw;
+    width: 63vw;
 }
 
 .tab-header{
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
     align-items: center;
     padding: 0;
-    margin-top: var(--mb-32);
+    margin-top: var(--mb-16);
 }
 
 .tab{
-    width:  auto;
+    width: auto;
     font-size: var(--font-size-midi);
     font-weight: var(--font-bold);
     color: var(--text-secondary-color);
@@ -494,7 +497,11 @@ i{
 }
 
 .tab.active{
-    color: var(--text-primary-color);
+    color: var(--white-color);
+    border: solid var(--green-color);
+    background: var(--green-color);
+    padding: 0 var(--mb-10);
+    border-radius: 3px;
 }
 
 [data-tab-content]{
@@ -521,10 +528,10 @@ i{
 
 .tab-indicator {
     position:relative;
-    width:calc(100% / 3);
+    width:calc(100% / 6);
     height:2px;
     background:var(--green-color);
-    left:0px;
+    left:1px;
     border-radius:5px;
     transition:all 500ms ease-in-out;
     z-index: 2;
@@ -532,15 +539,22 @@ i{
 
 
 @media screen and (min-width:320px) and (max-width:900px) {
-    .tab-header{
-        justify-content: space-between;
+    .tab{
+        font-size: var(--mfont-size-reg);
     }
 
     .tab__items li{
-        font-size: var(--mfont-size-midi);
+        font-size: var(--mfont-size-mini);
         font-weight: var(--font-bold);
     }
 
+    .tab-indicator, .slide_bar{
+        display: none;
+    }
+
+    .tab-header{
+        justify-content: center;
+    }
 }
 
 /*========================================*/
@@ -558,13 +572,12 @@ i{
 }
 
 .display{
-    width: 48.875rem;
+    width: 70vw;
     height: 30rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: var(--mb-32);
 }
 
 .bx1{
@@ -639,13 +652,13 @@ i{
     background: #a5a5a58e;
 }
   
-  /* Position the "next button" to the right */
+
 .next {
     right: 0;
     border-radius: 3px 0 0 3px;
 }
   
-/* On hover, add a black background color with a little bit see-through */
+
 .prev:hover, .next:hover {
     background-color: rgba(255, 255, 255, 0.514);
     color: var(--white-color);
@@ -671,6 +684,7 @@ i{
 
 
 /*--------------- [_GRID TWO__Review Box] -------------*/
+
 .review__bx{
     width: 50vw;
     height: 9.625rem;
@@ -720,7 +734,7 @@ i{
     font-size: var(--font-size-mini);
 }
 
-.large{
+.large p{
     font-size: var(--font-size-reg);
 }
 
@@ -738,10 +752,11 @@ i{
 }
 
 .faq__bx p{
+    width: auto;
     margin-bottom: var(--mb-32)
 }
 
-@media screen and (min-width:320px) and (max-width:425px) {
+@media screen and (min-width:320px) and (max-width:400px) {
     .main__wrapper{
         display: flex;
         flex-direction: column;
@@ -756,12 +771,18 @@ i{
         display: none;
     }
 
-    .display, .review__bx, .faq__bx{
-        width: 17.875rem;
+    .display, .faq__bx{
+        width: 17rem;
+
     }
 
-    .img__display{
-        width: 12rem;
+    .display__txt{
+        width: auto;
+    }
+
+    .img__display {
+        width: 10rem;
+        margin: 0 auto;
     }
 
     .display{
@@ -771,8 +792,9 @@ i{
 
     .display h1{
         display: block;
-        width: 12rem;
+        width: 10rem;
         font-size: var(--mfont-size-midi);
+        margin: 0 auto;
     }
 
     .display__list li{
@@ -784,16 +806,40 @@ i{
     }
 
     .review__bx{
-        height: 13rem;
+        width: 13rem;
+        height: 20rem;
+        text-align: justify;
+    }
+
+    .faq__bx{
+        width: 13rem;
+        padding: 1.5rem;
     }
 
     .review__dets{
-        margin-bottom: var(--mb-16);
+        margin-bottom: 0;
+    }
+
+    .prev, .next {
+        padding: 5px;
+    }
+
+    .profile__img{
+        margin: 0;
+    }
+
+    .user__profile{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .star__ratings, .user__name {
+        padding: .5rem 0;
     }
 }
 
 
-@media screen and (min-width:425px) and (max-width:900px) {
+@media screen and (min-width:401px) and (max-width:900px) {
 
     .tabs{
         width: 70vw;
@@ -897,8 +943,16 @@ i{
         padding: var(--mb-16) ;
         margin-bottom: var(--mb-16);
     }
+    .panel i{
+        font-size: var(--mfont-size-mini);
+        padding: 0;
+    }
 
     .panel p{
+        color: var(--text-primary-color);
+    }
+
+    .panel a{
         color: var(--blue-color);
     }
 
@@ -911,7 +965,7 @@ i{
 
 @media screen and (min-width: 425px) and (max-width:900px) {
     .drop__down{
-        margin: 0 auto;
+        margin: 0 auto 2em;
     }
 
     button.accordion {
@@ -1010,8 +1064,8 @@ i{
 
 .footer__col{
     display: flex;
-    justify-content: space-between;
-    margin: 1rem;
+    justify-content: space-evenly;
+    margin: 1rem 0;
     font-size: var(--font-size-mini);
     color: var(--text-secondary-color);
 }

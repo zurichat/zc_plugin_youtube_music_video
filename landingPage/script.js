@@ -19,7 +19,7 @@ tabs.forEach((tab, i) => { // added `i` the index variable to track the selected
 		target.classList.add("active");
 
         // shift the indicator based on the selected tab
-		tabIndicator.style.left = `calc(calc(100% / 3) * ${i})`;
+		tabIndicator.style.left = `calc(calc(50% / 4.5) * ${i})`;
 	});
 });
 
