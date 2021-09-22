@@ -1,5 +1,5 @@
 // @ts-ignore
-// import { GetUserInfo } from "@zuri/zuri-control";
+import { GetUserInfo } from "@zuri/zuri-control";
 import axios from "axios";
 import { uiDispatch } from "../store/uiSlice";
 
