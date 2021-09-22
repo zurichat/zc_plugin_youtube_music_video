@@ -75,10 +75,9 @@ function ChatInput(props) {
           onClick={() => setShowPicker((val) => !val)}
         />
         {showPicker && (
-          <Picker
-            pickerStyle={{ width: "18vw", marginLeft: "-10rem" }}
-            onEmojiClick={onEmojiClick}
-          />
+          <div className="emoji-picker">
+          <Picker pickerStyle={{ width: "20vw", marginLeft:"0rem" }} onEmojiClick={onEmojiClick} />
+        </div>
         )}
         <img
           src={chatGif}
@@ -134,6 +133,12 @@ const Wrapper = styled.div`
     color: #08ffae;
     width: 27px;
     cursor: pointer;
+  }
+
+  .emoji-picker {
+    position: absolute;
+    top: 5rem;
+    right: 2rem;
   }
 `;
 
