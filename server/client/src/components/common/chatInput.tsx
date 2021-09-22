@@ -90,8 +90,7 @@ function ChatInput(props) {
         className="chat-icon" 
         onClick={() => {
           if(inputStr !== ""){
-          //props.onClick(dispatch, inputStr);
-          clearInput();
+          handleSend();
           }
           else return ;
         }}
