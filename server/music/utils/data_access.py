@@ -160,3 +160,18 @@ def get_video(url):
     }
 
     return result
+
+
+def delete_user(collection=None, filter_data=None):
+    if filter_data is None:
+        filter_data = {}
+
+    request_client = RequestClient()
+
+    response = request_client.request(
+        method="POST",
+        url=f"https://api.zuri.chat/data/delete/{plugin_id}/{collection}/{org_id}",
+        headers={"Authorization": "headers"},
+        post_data=filter_data
+    )
+    return response.response_data
