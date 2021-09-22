@@ -43,6 +43,7 @@ const PasteUrl = (props: Props) => {
       const song: Song = {
         ...metadata,
         addedBy: authService.getCurrentUser().name,
+        likedBy: [],
       };
 
       songService.addSong(song);
