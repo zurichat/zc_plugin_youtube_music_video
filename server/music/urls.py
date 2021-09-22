@@ -1,7 +1,6 @@
 from django.urls import path
 
-from music.views import PluginPingView, SidebarView, MediaView, PluginInfoView, AddToRoomView, CreateRoomView, \
-    UserCountView, SongView, CommentView
+from music.views import PluginPingView, SidebarView, MediaView, PluginInfoView, AddToRoomView, CreateRoomView, UserCountView, SongView, CommentView, RemoveUser
 
 urlpatterns = [
     path("song/", SongView.as_view(), name="song"),
@@ -13,5 +12,6 @@ urlpatterns = [
     path("add_to_room/", AddToRoomView.as_view(), name="add_to_room"),
     path("createroom/", CreateRoomView.as_view(), name="createroom"),
     path("comments/", CommentView.as_view(), name="comments"),
+    path("remove_user/", RemoveUser.as_view(), name="remove_user"),
     
 ]
