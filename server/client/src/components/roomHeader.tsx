@@ -11,7 +11,6 @@ import menu from "../media/menu.svg";
 import arrow from "../media/arrow-down.svg";
 import message from "../media/message.svg";
 
-import "../App.css";
 import { useSelector } from "react-redux";
 
 const roomHeader = ({ userCount }) => {

@@ -13,6 +13,7 @@ import chatMediaQuery from "./utils/chatMedia";
 
 import { uiSelect } from "./store/uiSlice";
 import authService from "./services/authService";
+import eventService from "./services/eventService";
 
 import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,6 +23,7 @@ import "./App.css";
 function App() {
   useEffect(() => {
     authService.signin();
+    eventService.connect();
   }, []);
 
   chatMediaQuery(); // toggle chat display based on screen size.
