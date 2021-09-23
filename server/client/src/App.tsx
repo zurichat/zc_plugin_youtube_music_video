@@ -7,7 +7,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
-import EnterRoom from "./components/Modals/EnterRoom";
+import EnterRoom from "./components/modals/enterRoom";
 
 import chatMediaQuery from "./utils/chatMedia";
 
@@ -22,6 +22,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
 function App() {
+  console.log("enter room exists");
+
   useEffect(() => {
     authService.signin();
     eventService.connect();

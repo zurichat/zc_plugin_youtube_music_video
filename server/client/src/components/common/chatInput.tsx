@@ -35,7 +35,7 @@ function ChatInput(props) {
   };
 
   const handleSend = () => {
-    const { name, _id: userId, avatar } = authService.getCurrentUser();
+    const { name, id: userId, avatar } = authService.getCurrentUser();
 
     chatService.addChat({
       _id: Date.now() + "",
