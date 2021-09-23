@@ -7,7 +7,9 @@ import { uiDispatch } from "../../store/uiSlice";
 import search from "../../media/search.svg";
 import beat from "../../media/beat.svg";
 import close from "../../media/close-popup.svg";
+
 import log from "../../services/logService";
+import userService from "../../services/userService";
 
 const Exit = () => {
   const [change, setChange] = useState("about");
@@ -15,6 +17,7 @@ const Exit = () => {
   const handleLeaveRoom = () => {
     log.success("Goodbye user");
 
+    userService.leaveRoom();
     uiDispatch.showExitModal(false);
     uiDispatch.loading(true);
 
@@ -93,7 +96,6 @@ const Exit = () => {
 
 export default Exit;
 
-
 const Modal = styled.div`
   background: rgba(0, 0, 0, 0.3);
   position: fixed;
@@ -106,136 +108,135 @@ const Modal = styled.div`
   padding: 0;
 
   .leave {
-  padding: 0 10px;
-  background: white;
-  max-width: 500px;
-  margin: 80px auto;
-  min-height: 300px;
-}
+    padding: 0 10px;
+    background: white;
+    max-width: 500px;
+    margin: 80px auto;
+    min-height: 300px;
+  }
 
-.leave h1 {
-  color: #1d1c1d;
-  font-size: 28px;
-}
+  .leave h1 {
+    color: #1d1c1d;
+    font-size: 28px;
+  }
 
-.leave h1 img {
-  padding-right: 10px;
-}
+  .leave h1 img {
+    padding-right: 10px;
+  }
 
-.title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-}
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
 
-.close {
-  cursor: pointer;
-}
+  .close {
+    cursor: pointer;
+  }
 
-nav {
-  display: flex;
-  border-bottom: 1px solid #f6f6f6;
-  padding: 0;
-  margin: 0;
-}
+  nav {
+    display: flex;
+    border-bottom: 1px solid #f6f6f6;
+    padding: 0;
+    margin: 0;
+  }
 
-nav button {
-  border: none;
-  background: none;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  padding-left: 0;
-  margin-right: 30px;
-  padding-right: 3px;
-  font-weight: bold;
-  padding-bottom: 5px;
-}
+  nav button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    padding-left: 0;
+    margin-right: 30px;
+    padding-right: 3px;
+    font-weight: bold;
+    padding-bottom: 5px;
+  }
 
-.main {
-  margin: 10px 0;
-  border: 1px solid #f6f6f6;
-}
+  .main {
+    margin: 10px 0;
+    border: 1px solid #f6f6f6;
+  }
 
-.room,
-.room-desc {
-  border-bottom: 1px solid #f6f6f6;
-  padding: 0 10px;
-  margin: 0;
-}
+  .room,
+  .room-desc {
+    border-bottom: 1px solid #f6f6f6;
+    padding: 0 10px;
+    margin: 0;
+  }
 
-.room-desc p {
-  color: #00b87c;
-  font-size: 14px;
-}
+  .room-desc p {
+    color: #00b87c;
+    font-size: 14px;
+  }
 
-.room p,
-.room h3,
-.room-desc {
-  color: #616061;
-  font-size: 14px;
-  margin: 5px;
-}
+  .room p,
+  .room h3,
+  .room-desc {
+    color: #616061;
+    font-size: 14px;
+    margin: 5px;
+  }
 
-.room-desc input {
-  font-size: 15px;
-  padding: 0;
-  margin: 0;
-}
+  .room-desc input {
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+  }
 
-.room-desc div {
-  display: flex;
-  justify-content: space-between;
-  color: #616061;
-  align-items: center;
-}
+  .room-desc div {
+    display: flex;
+    justify-content: space-between;
+    color: #616061;
+    align-items: center;
+  }
 
-.room-desc input {
-  border: none;
-  outline: none;
-  color: #1d1c1d;
-  font-weight: bold;
-}
+  .room-desc input {
+    border: none;
+    outline: none;
+    color: #1d1c1d;
+    font-weight: bold;
+  }
 
-.leave-room {
-  padding: 15px;
-  color: #f40101;
-  cursor: pointer;
-  font-weight: bold;
-}
+  .leave-room {
+    padding: 15px;
+    color: #f40101;
+    cursor: pointer;
+    font-weight: bold;
+  }
 
-.room-member {
-  padding: 10px 0;
-}
+  .room-member {
+    padding: 10px 0;
+  }
 
-.search {
-  display: flex;
-  border: 1px solid #00b87c;
-  align-items: center;
-  padding: 5px;
-}
+  .search {
+    display: flex;
+    border: 1px solid #00b87c;
+    align-items: center;
+    padding: 5px;
+  }
 
-.search input {
-  background: none;
-  border: none;
-  outline: none;
-  width: 90%;
-}
+  .search input {
+    background: none;
+    border: none;
+    outline: none;
+    width: 90%;
+  }
 
-.member {
-  padding: 10px;
-  color: black;
-}
-.room-active {
-  border-bottom: 2px solid #f40101;
-}
+  .member {
+    padding: 10px;
+    color: black;
+  }
+  .room-active {
+    border-bottom: 2px solid #f40101;
+  }
 
-.arrow {
-  cursor: pointer;
-  padding: 0 5px;
-  transform: translateY(3px);
-}
-
-`
+  .arrow {
+    cursor: pointer;
+    padding: 0 5px;
+    transform: translateY(3px);
+  }
+`;

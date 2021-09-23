@@ -2,6 +2,7 @@
 // import { GetUserInfo } from "@zuri/zuri-control";
 import axios from "axios";
 import { uiDispatch } from "../store/uiSlice";
+import User from "../types/user";
 
 import avatar from "../media/chatItem.svg";
 import log from "./logService";
@@ -30,7 +31,7 @@ async function signin() {
   return;
 }
 
-function getCurrentUser() {
+function getCurrentUser(): User {
   return {
     name: currentUser.first_name,
     id: "userId",
@@ -39,19 +40,6 @@ function getCurrentUser() {
   };
 }
 
-async function addToRoom() {
-  const endpoint = "http://localhost:8000/music/api/v1/add_to_room";
-  const { id } = getCurrentUser();
-
-  // const res = GetUserInfo();
-  // console.log(res);
-
-  return axios.post(endpoint, { id }).then(
-    (r) => r,
-    (e) => e
-  );
-}
-
-const authService = { signin, getCurrentUser, addToRoom };
+const authService = { signin, getCurrentUser };
 
 export default authService;

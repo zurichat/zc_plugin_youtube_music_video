@@ -5,10 +5,11 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 
 from music.serializers import CommentSerializer
-from music.utils.data_access import get_video, read_data, write_data, centrifugo_post
+from music.utils.data_access import get_video, read_data, write_data, centrifugo_post, delete_data
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 import requests
+import json
 from requests import exceptions
 
 
@@ -133,7 +134,7 @@ class SongView(APIView):
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
         return Response(data, status=status.HTTP_202_ACCEPTED)
-        #Note: only "track_url": "" should be inputted
+        #Note: use only {"url": ""} in the payload
 
 
 class AddToRoomView(APIView):
@@ -142,7 +143,8 @@ class AddToRoomView(APIView):
         room_data = read_data(settings.ROOM_COLLECTION)
         user_ids = room_data["data"][0]["room_user_ids"]
         _id = room_data["data"][0]["_id"]
-        user_ids.append(request.data)
+        # TODO: <Emmanuel> Check if user_id is already in the list before appending
+        user_ids.append(request.data["id"])
         return _id, user_ids
 
     def get(self, request):
@@ -157,6 +159,7 @@ class AddToRoomView(APIView):
         }
 
         data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
+        centrifugo_post("channel_name", {"event": "entered_room"})
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
@@ -178,15 +181,21 @@ class CommentView(APIView):
 
         if serializer.is_valid():
             payload = serializer.data
+
             data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
 
             return Response(data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class RoomView(APIView):
+    def get(self, request):
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
+
 
 @api_view(['GET', 'POST'])
-def remove_user(request):
+def leave_room(request):
     plugin_id = settings.PLUGIN_ID
     organization_id = settings.ORGANIZATON_ID
     collection_name = settings.ROOM_COLLECTION
@@ -200,24 +209,68 @@ def remove_user(request):
         return Response(data)
 
     elif request.method == 'POST':
-        url = 'https://api.zuri.chat/data/delete'
 
-        data = {
+        url = 'https://api.zuri.chat/data/delete'
+        payload = {
             "plugin_id": plugin_id,
             "organization_id": organization_id,
             "collection_name": collection_name,
             "bulk_delete": False,
+            # "object_id": _id,
             "object_id": user_ids,
             "filter": {}
         }
+        
         try:
-            response = requests.post(url=url, json=data)
+            r = requests.post(url, data=json.dumps(payload))
+            #Note: use only {"_id": ""} in the payload
 
-            if response.status_code == 200:
+            if r.status_code == 200:
                 return Response({"message": "User left room"},
                                 status=status.HTTP_200_OK)
             else:
-                return Response({"error": response.json()['message']}, status=response.status_code)
+                return Response({"error": r.json()['message']}, status=r.status_code)
 
         except exceptions.ConnectionError as e:
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
+
+
+
+# @api_view(['GET', 'POST'])
+# def remove_song(request):
+#     plugin_id = settings.PLUGIN_ID
+#     organization_id = settings.ORGANIZATON_ID
+#     collection_name = settings.SONG_COLLECTION
+    
+#     song_data = read_data(settings.SONG_COLLECTION)
+#     user_ids = song_data["data"][0]["added_by_id"]
+#     _id = song_data["data"][0]["_id"]
+
+#     if request.method == 'GET':
+#         data = read_data(collection_name)
+#         return Response(data)
+
+#     elif request.method == 'POST':
+
+#         url = 'https://api.zuri.chat/data/delete'
+#         payload = {
+#             "plugin_id": plugin_id,
+#             "organization_id": organization_id,
+#             "collection_name": collection_name,
+#             "bulk_delete": False,
+#             "object_id": _id,
+#             "filter": {}
+#         }
+        
+#         try:
+#             r = requests.post(url, data=json.dumps(payload))
+#             #Note: use only {"_id": ""} in the payload
+
+#             if r.status_code == 200:
+#                 return Response({"message": "User left room"},
+#                                 status=status.HTTP_200_OK)
+#             else:
+#                 return Response({"error": r.json()['message']}, status=r.status_code)
+
+#         except exceptions.ConnectionError as e:
+#             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)    

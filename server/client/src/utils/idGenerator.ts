@@ -13,7 +13,7 @@ export function getSongIdFromYouTubeUrl(url: string) {
 
   const type = types.find((type) => url.includes(type));
 
-  if (type) return url.replace(type, "");
+  if (type) return url.replace(type, ""); // KUoPz0xYEoI
 
-  throw Error("Unsupported URL format");
+  throw Error("Unsupported URL type");
 }
