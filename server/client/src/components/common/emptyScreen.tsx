@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Illustration from "../../media/emptyScreen.svg";
 
-import { uiAction } from "../../store/uiSlice";
+import { uiDispatch } from "../../store/uiSlice";
 
 import PasteUrl from "./pasteUrl";
 
@@ -14,10 +14,7 @@ const EmptyScreen = () => {
         <img src={Illustration} alt="add songs illustraat" />
         <h3 className="heading_3">There are no songs here!</h3>
         <p className="text">Start adding your songs</p>
-        <button
-          className="btn"
-          onClick={() => uiAction.dispatchAddSongToggle(true)}
-        >
+        <button className="btn" onClick={() => uiDispatch.showPasteUrl(true)}>
           Add songs
         </button>
       </div>
@@ -26,9 +23,13 @@ const EmptyScreen = () => {
 };
 
 const Wrapper = styled.div`
+  position: relative;
   background-color: white;
   padding: 80px 0 131px;
-  width: -webkit-fill-available;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .empty_container {
     display: flex;
@@ -37,7 +38,7 @@ const Wrapper = styled.div`
     align-items: center;
   }
 
-  .svg {
+  img {
     width: 100%;
     max-width: 309px;
     height: fit-content;
@@ -84,7 +85,7 @@ const Wrapper = styled.div`
       margin: 7px 0 10px;
     }
 
-    .svg {
+    img {
       max-width: 179px;
     }
 

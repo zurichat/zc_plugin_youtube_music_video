@@ -1,12 +1,9 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useState } from "react";
 
-import store from "../store";
-import { toggleChat } from "../store/uiSlice";
-import Exit from '../components/common/exit'
-import '../App.css'
+import { uiDispatch, uiSelect } from "../store/uiSlice";
+
+import Exit from "../components/common/exit";
 
 import avatarSvg from "../media/header-avatar.svg";
 import groupIconSvg from "../media/header-group-icon.svg";
@@ -14,14 +11,30 @@ import menu from "../media/menu.svg";
 import arrow from "../media/arrow-down.svg";
 import message from "../media/message.svg";
 
-const roomHeader = () => {
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import httpService from "../services/httpService";
 
-  const [drop, setDrop] = useState('');
+const roomHeader = () => {
+  const userCountEndpoint = "/header-user-count";
+  const [userCount, setUserCount] = useState(0);
+
+  useEffect(() => {
+    httpService
+      .get(userCountEndpoint)
+      .then((res) => {
+        setUserCount(res.data);
+      })
+      .catch((err) => console.log(err.message));
+  }, []);
+
+  const showExitModal = useSelector(uiSelect.showExitModal);
+
   return (
-    
     <Wrapper className="header">
       <div className="header-left">
-        {drop === 'drop' ? (<Exit drop={setDrop}/>) : null}
+        {showExitModal && <Exit />}
+
         <img
           src={menu}
           alt="icon"
@@ -31,18 +44,14 @@ const roomHeader = () => {
 
         <img src={groupIconSvg} alt="icon" className="header-icon hide-2" />
 
-        <Link to="/" onClick={()=> {
-            setDrop('drop')
-          }} className="header-link">
+        <Link
+          to="#"
+          onClick={() => uiDispatch.showExitModal(true)}
+          className="header-link"
+        >
           Music Room
-          <img
-          src={arrow}
-          alt="icon"
-          className="arrow"
-        />
+          <img src={arrow} alt="icon" className="arrow" />
         </Link>
-
-
       </div>
 
       <div className="header-right">
@@ -53,15 +62,13 @@ const roomHeader = () => {
             style={{ width: "100%", height: "100%" }}
           />
         </div>
-        <div className="header-user-count">1</div>
+        <div className="header-user-count">{userCount}</div>
         <div>
           <img
             src={message}
             alt="message count"
             className="header-message-count"
-            onClick={() =>
-              store.dispatch({ type: toggleChat.type, payload: { chat: true } })
-            }
+            onClick={() => uiDispatch.showChat(true)}
           />
         </div>
       </div>

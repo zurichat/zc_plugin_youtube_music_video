@@ -4,16 +4,18 @@ import { useSelector } from "react-redux";
 
 // Store
 import { playerAction, getPlayerState } from "../../store/playerSlice";
-import { uiAction } from "../../store/uiSlice";
+import { uiDispatch } from "../../store/uiSlice";
 
 // Components
 import PasteUrl from "./pasteUrl";
 import Button from "./button";
 
 import Headset from "../../media/playlistIcon.svg";
+import { songSelect } from "../../store/songsSlice";
 
 const PlaylistHeader = () => {
   const player = useSelector(getPlayerState);
+  const firstSong = useSelector(songSelect.firstSong);
 
   const [text, setText] = useState("Play");
 
@@ -24,43 +26,46 @@ const PlaylistHeader = () => {
       playerAction.dispatchPlaying(true);
       playerAction.dispatchShowPlayer(true);
     } else playerAction.dispatchPlaying(false);
+
+    if (!player.currentSong.id) playerAction.changeSong(firstSong);
   };
 
   const handleAddSongToggle = () => {
-    console.log("calling ");
-    uiAction.dispatchAddSongToggle(true);
+    uiDispatch.showPasteUrl(true);
   };
 
   return (
     <Wrapper>
       <PasteUrl />
 
-      <div className="playlist-img-div">
-        <img src={Headset} alt="Playlist Header" className="playlist-img" />
-      </div>
-
-      <div className="playlist-content">
-        <div className="playlist-caption">
-          Music <span className="playlist-caption-hide">Room</span> Playlist
+      <div className="playlist-content-wrapper">
+        <div className="playlist-img-div">
+          <img src={Headset} alt="Playlist Header" className="playlist-img" />
         </div>
 
-        <div className="playlist-summary">10 songs, 38 min 33 sec</div>
+        <div className="playlist-content">
+          <div className="playlist-caption">
+            Music <span className="playlist-caption-hide">Room</span> Playlist
+          </div>
 
-        <div className="playlist-button-group">
-          <Button
-            className="playlist-button md"
-            color="secondary"
-            onClick={handleAddSongToggle}
-          >
-            <span className="playlist-button-desktop-text">
-              Add a song to the playlist
-            </span>
-            <span className="playlist-button-mobile-text">Add a song</span>
-          </Button>
+          <div className="playlist-summary">10 songs, 38 min 33 sec</div>
 
-          <Button className="playlist-button" onClick={handleShowPlayer}>
-            {text}
-          </Button>
+          <div className="playlist-button-group">
+            <Button
+              className="playlist-button md"
+              color="secondary"
+              onClick={handleAddSongToggle}
+            >
+              <span className="playlist-button-desktop-text">
+                Add a song to the playlist
+              </span>
+              <span className="playlist-button-mobile-text">Add a song</span>
+            </Button>
+
+            <Button className="playlist-button" onClick={handleShowPlayer}>
+              {text}
+            </Button>
+          </div>
         </div>
       </div>
     </Wrapper>
@@ -68,13 +73,20 @@ const PlaylistHeader = () => {
 };
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  justify-content: center;
+  width: 100%;
 
+  .playlist-content-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-grow: 1;
+  }
   .playlist-img-div {
-    width: 160px;
-    height: 160px;
+    width: 150px;
+    height: 150px;
   }
 
   .playlist-content {
@@ -121,6 +133,11 @@ const Wrapper = styled.div`
     }
     .playlist-button-mobile-text {
       display: inline;
+    }
+
+    .playlist-img-div {
+      width: 140px;
+      height: 140px;
     }
   }
 

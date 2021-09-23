@@ -2,36 +2,50 @@ import styled from "styled-components";
 
 import Like from "./like";
 
+import Song from "../../types/song";
 import option from "../../media/option.svg";
-
 import authService from "../../services/authService";
 
-import {
-  likedSongDisptach,
-  likedSongSelect,
-} from "../../store/likedSongsSlice";
+import { playerAction } from "../../store/playerSlice";
+import songService from "../../services/songService";
 
-import Song from "../../types/song";
-import { useSelector } from "react-redux";
+interface Props {
+  song: Song;
+}
 
-function PlaylistItem(props: Song) {
-  const { title, addedBy, duration, albumCover, id: songId } = props;
+function PlaylistItem(props: Props) {
+  const {
+    title,
+    addedBy,
+    duration,
+    albumCover,
+    id: songId,
+    likedBy,
+  } = props.song;
 
   const { id: userId } = authService.getCurrentUser();
 
-  const { count, liked } = useSelector(
-    likedSongSelect.selectCount({ songId, userId })
-  );
+  const { length: count } = likedBy;
+  const liked = likedBy.some((id) => id === userId);
 
-  const countText = (count) =>
-    count === 0 ? "" : count === 1 ? `${count} like` : `${count} likes`;
+  const countText = (count: number) =>
+    count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
 
   const handleLike = () => {
-    likedSongDisptach.toggleLike({ songId, userId });
+    songService.likeSong({ songId, userId, like: !liked });
+  };
+
+  const handlePlay = (e) => {
+    if (e.target.dataset.like) return;
+    if (e.target.dataset.option) return;
+
+    playerAction.changeSong(props.song);
+    playerAction.dispatchShowPlayer(true);
+    playerAction.dispatchPlaying(true);
   };
 
   return (
-    <Wrapper>
+    <Wrapper onClick={handlePlay}>
       <img src={albumCover} alt="album cover" className="item-albumCover" />
 
       <div className="item-info">
@@ -51,6 +65,7 @@ function PlaylistItem(props: Song) {
           <Like liked={liked} onLike={handleLike} />
 
           <img
+            data-option="option"
             src={option}
             alt="option img"
             style={{ cursor: "pointer", width: "20px", height: "20px" }}
@@ -70,6 +85,7 @@ const Wrapper = styled.div`
   margin-bottom: 8px;
   box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04);
   height: 66px;
+  cursor: pointer;
 
   &:hover {
     box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);
@@ -101,7 +117,7 @@ const Wrapper = styled.div`
     font-weight: 700;
     font-size: 15px;
     margin-bottom: 6px;
-    width: 200px;
+    min-width: 150px;
   }
 
   .item-addedBy {

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import store from "../../store";
-import { toggleChat } from "../../store/uiSlice";
+import { uiDispatch } from "../../store/uiSlice";
 
 import chatIcon from "../../media/chat.svg";
 import chatClose from "../../media/close.svg";
@@ -18,9 +18,7 @@ function ChatHeader() {
         src={chatClose}
         alt="chat"
         className="chatHeader__close"
-        onClick={() =>
-          store.dispatch({ type: toggleChat.type, payload: { chat: false } })
-        }
+        onClick={() => uiDispatch.showChat(false)}
       />
     </Wrapper>
   );

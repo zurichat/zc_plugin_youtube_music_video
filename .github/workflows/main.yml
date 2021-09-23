@@ -55,7 +55,7 @@ jobs:
             cd /var/www/music.zuri.chat
             source .venv/bin/activate
             git stash
-            git pull origin test-spa
+            git pull origin dev
             git branch -r
             cd /var/www/music.zuri.chat/server
             pip3 install -r requirements/local.txt --upgrade
@@ -90,9 +90,12 @@ jobs:
           host: ${{ secrets.ZURI_HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: |
-            cd /var/www/music.zuri.chat/server
-            python3 manage.py collectstatic --noinput
+          script: |         
             cd /var/www/music.zuri.chat
             source .venv/bin/activate
+            cd /var/www/music.zuri.chat/server            
+            pip3 install -r requirements/local.txt --upgrade
+            pip3 install -r requirements/base.txt --upgrade
+            python3 manage.py collectstatic --noinput
+            pkill -u ${{secrets.USERNAME}} gunicorn
             gunicorn --bind 0.0.0.0:8000 config.wsgi --daemon

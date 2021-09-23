@@ -1,22 +1,20 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
-
-// import the emoji-react-picker package
 import Picker from "emoji-picker-react";
-// import the react-giphy-picker package
 import GiphyPicker from "react-giphy-picker";
+
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
 
-import { useDispatch } from "react-redux";
+import authService from "../../services/authService";
+import chatService from "../../services/chatService";
 
 function ChatInput(props) {
   // states to manage the input text and also the showcasing of the emoji
   const [inputStr, setInputStr] = useState("");
   const [showPicker, setShowPicker] = useState(false);
   const [showGiphy, setShowGiphy] = useState(false);
-  const dispatch = useDispatch();
   const handleFocus = props.handleFocus;
   const handleBlur = props.handleBlur;
 
@@ -36,6 +34,28 @@ function ChatInput(props) {
     setInputStr("");
   };
 
+  const handleSend = () => {
+    const { name, id: userId, avatar } = authService.getCurrentUser();
+
+    chatService.addChat({
+      id: Date.now() + "",
+      userId,
+      name,
+      avatar,
+      message: inputStr,
+      time: Date.now(),
+    });
+
+    clearInput();
+  };
+
+  /*const handleKeyPress = (event) => {
+    if(event.charCode === 13){
+      props.onClick(dispatch, inputStr);
+      clearInput();
+    }
+  }*/
+
   return (
     <Wrapper>
       <input
@@ -44,8 +64,8 @@ function ChatInput(props) {
         placeholder="Type a message..."
         value={inputStr}
         onChange={(e) => setInputStr(e.target.value)}
-        onFocus = {handleFocus}
-        onBlur = {handleBlur}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
       <div className="chat-icon-group">
         <img
@@ -55,10 +75,9 @@ function ChatInput(props) {
           onClick={() => setShowPicker((val) => !val)}
         />
         {showPicker && (
-          <Picker
-            pickerStyle={{ width: "18vw", marginLeft: "-10rem" }}
-            onEmojiClick={onEmojiClick}
-          />
+          <div className="emoji-picker">
+          <Picker pickerStyle={{ width: "20vw", marginLeft:"0rem" }} onEmojiClick={onEmojiClick} />
+        </div>
         )}
         <img
           src={chatGif}
@@ -68,7 +87,7 @@ function ChatInput(props) {
         />
         {showGiphy && (
           <GiphyPicker
-            pickerStyle={{ width: "100%" }}
+            pickerStyle={{ width: "18vw", marginLeft: "-10rem" }}
             onGiphyClick={onGiphyClick}
           />
         )}
@@ -76,10 +95,10 @@ function ChatInput(props) {
           src={chatSend}
           alt="send"
           className="chat-icon"
-          onClick={() => {
-            props.onClick(dispatch, inputStr);
-            clearInput();
-          }}
+          onClick={handleSend}
+          /*onKeyDown={() => {
+          
+        }}*/
         />
       </div>
     </Wrapper>
@@ -114,6 +133,12 @@ const Wrapper = styled.div`
     color: #08ffae;
     width: 27px;
     cursor: pointer;
+  }
+
+  .emoji-picker {
+    position: absolute;
+    top: 5rem;
+    right: 2rem;
   }
 `;
 
