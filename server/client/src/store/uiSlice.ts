@@ -8,7 +8,7 @@ const slice = createSlice({
     isLoading: false,
     showChat: false,
     showPasteUrl: false,
-    showModal: true,
+    showModal: false,
     exitModal: false,
   },
 
@@ -25,7 +25,8 @@ const slice = createSlice({
       state.showPasteUrl = action.payload;
     },
     showModal: (state, action) => {
-      state.showModal = action.payload;
+      // state.showModal = action.payload;
+      return state;
     },
 
     exitedModal: (state, action) => {
