@@ -234,41 +234,41 @@ def leave_room(request):
 
 
 
-# @api_view(['GET', 'POST'])
-# def remove_song(request):
-#     plugin_id = settings.PLUGIN_ID
-#     organization_id = settings.ORGANIZATON_ID
-#     collection_name = settings.SONG_COLLECTION
+@api_view(['GET', 'POST'])
+def remove_song(request):
+    plugin_id = settings.PLUGIN_ID
+    organization_id = settings.ORGANIZATON_ID
+    collection_name = settings.SONG_COLLECTION
     
-#     song_data = read_data(settings.SONG_COLLECTION)
-#     user_ids = song_data["data"][0]["added_by_id"]
-#     _id = song_data["data"][0]["_id"]
+    song_data = read_data(settings.SONG_COLLECTION)
+    user_ids = song_data["data"][0]["added_by_id"]
+    _id = song_data["data"][0]["_id"]
 
-#     if request.method == 'GET':
-#         data = read_data(collection_name)
-#         return Response(data)
+    if request.method == 'GET':
+        data = read_data(collection_name)
+        return Response(data)
 
-#     elif request.method == 'POST':
+    elif request.method == 'POST':
 
-#         url = 'https://api.zuri.chat/data/delete'
-#         payload = {
-#             "plugin_id": plugin_id,
-#             "organization_id": organization_id,
-#             "collection_name": collection_name,
-#             "bulk_delete": False,
-#             "object_id": _id,
-#             "filter": {}
-#         }
+        url = 'https://api.zuri.chat/data/delete'
+        payload = {
+            "plugin_id": plugin_id,
+            "organization_id": organization_id,
+            "collection_name": collection_name,
+            "bulk_delete": False,
+            "object_id": _id,
+            "filter": {}
+        }
         
-#         try:
-#             r = requests.post(url, data=json.dumps(payload))
-#             #Note: use only {"_id": ""} in the payload
+        try:
+            r = requests.post(url, data=json.dumps(payload))
+            #Note: use only {"_id": ""} in the payload
 
-#             if r.status_code == 200:
-#                 return Response({"message": "User left room"},
-#                                 status=status.HTTP_200_OK)
-#             else:
-#                 return Response({"error": r.json()['message']}, status=r.status_code)
+            if r.status_code == 200:
+                return Response({"message": "Song deleted"},
+                                status=status.HTTP_200_OK)
+            else:
+                return Response({"error": r.json()['message']}, status=r.status_code)
 
-#         except exceptions.ConnectionError as e:
-#             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)    
+        except exceptions.ConnectionError as e:
+            return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)    

@@ -13,5 +13,6 @@ urlpatterns = [
     path("comments/", CommentView.as_view(), name="comments"),
     path("exit/", leave_room, name="exit"),
     path("room/", RoomView.as_view(), name="room"),
+    path("delete/", remove_song, name="delete"),
     
 ]
