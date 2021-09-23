@@ -7,7 +7,7 @@ import log from "../../services/logService";
 import { uiDispatch, uiSelect } from "../../store/uiSlice";
 import Button from "../common/button";
 
-function EnterRoom({ setUserCount }) {
+function EnterRoom() {
   const isLoading = useSelector(uiSelect.isLoading);
 
   const handleClick = async () => {
@@ -19,7 +19,6 @@ function EnterRoom({ setUserCount }) {
       toast.dismiss();
 
       uiDispatch.showModal(false);
-      setUserCount((prev) => 1);
 
       log.success("Welcome!");
     } catch (e) {
