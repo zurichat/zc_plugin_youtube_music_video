@@ -179,18 +179,12 @@ ACCOUNT_UNIQUE_EMAIL = True
 # Allow entering as a guest
 ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""))
 
-# CORS_ALLOWED_ORIGINS = [
-#     # "https://example.com",
-#     # "https://sub.example.com",
-#     # "http://localhost:8080",
-#     # "http://localhost:3000",  # if you have seprate react app
-#     # "http://localhost:9000",
-#     # "http://localhost:8000",
-#     # # "http://127.0.0.1:9000",
-#     # "http://159.65.123.65",
-#     # # "https://www.youtube.com"
-#     "*"
-# ]
+CORS_ALLOWED_ORIGINS = [
+    # "https://sub.example.com",
+    "http://localhost:8080",
+    "http://localhost:8000",
+    "http://localhost:3000",  # if you have seprate react app
+]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
@@ -204,3 +198,5 @@ CENTRIFUGO_TOKEN = "2829fc49-3e6b-4a55-bf02-3b1be88cfc24"
 ROOM_COLLECTION = "test_music_room"
 SONG_COLLECTION = "test_song"
 COMMENTS_COLLECTION = "test_comments"
+
+APPEND_SLASH = False
