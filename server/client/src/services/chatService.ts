@@ -6,15 +6,11 @@ const endpoint = "http://localhost:8000/music/api/v1/comments/";
 
 const getChats = async () => {
   try {
-    const result = await axios.get(endpoint);
-    /*let array = result.data.data;
-    3
-    let i = 0;
-    while (i !== result.data.data.lenght) {
-        chatDispatch.addChat(result.data.data[i])
+    let result = await (await axios.get(endpoint)).data.data;
+    result.splice(0,7);
+    for(let i = 0; i < result.length; i++) {
+      chatDispatch.addChat(result[i]);
     }
-    */
-   console.log(result);
   } catch (e) {
     console.log(e.message);
   }

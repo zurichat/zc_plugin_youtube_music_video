@@ -35,10 +35,10 @@ function ChatInput(props) {
   };
 
   const handleSend = () => {
-    const { name, id: userId, avatar } = authService.getCurrentUser();
+    const { name, _id: userId, avatar } = authService.getCurrentUser();
 
     chatService.addChat({
-      id: Date.now() + "",
+      _id: Date.now() + "",
       userId,
       name,
       avatar,

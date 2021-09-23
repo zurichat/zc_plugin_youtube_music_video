@@ -1,5 +1,5 @@
 export default interface Chat {
-  id: string;
+  _id: string;
   message: string;
   userId: string;
   avatar: string;

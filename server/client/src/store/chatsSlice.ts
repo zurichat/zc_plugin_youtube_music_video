@@ -5,7 +5,7 @@ import Chat from "../types/chat";
 import avatar from "../media/chatItem.svg";
 
 const mock: Chat = {
-  id: Date.now() + "",
+  _id: Date.now() + "",
   userId: Date.now() + "",
   name: "Mr._Primal",
   time: 1632221670207,
@@ -24,15 +24,15 @@ const chatsSlice = createSlice({
     },
 
     removeChat: (state, { payload }: PayloadAction<Chat>) => {
-      const { id } = payload;
-      const existingChat = state.find((chat) => chat.id === id);
-      if (existingChat) state.filter((chat) => chat.id !== id);
+      const { _id } = payload;
+      const existingChat = state.find((chat) => chat._id === _id);
+      if (existingChat) state.filter((chat) => chat._id !== _id);
     },
 
     updateChat: (state, { payload }: PayloadAction<Chat>) => {
-      const { id, message, time = Date.now() } = payload;
+      const { _id, message, time = Date.now() } = payload;
 
-      const existingChat = state.find((chat) => chat.id === id);
+      const existingChat = state.find((chat) => chat._id === _id);
 
       if (existingChat) {
         existingChat.message = message;
@@ -53,8 +53,8 @@ export const chatDispatch = {
 export const chatSelect = {
   allChat: (state: RootState) => state.chats,
 
-  chatById: (state: RootState, id: string) => {
-    return state.chats.find((chat) => chat.id === id);
+  chatBy_id: (state: RootState, _id: string) => {
+    return state.chats.find((chat) => chat._id === _id);
   },
 };
 
