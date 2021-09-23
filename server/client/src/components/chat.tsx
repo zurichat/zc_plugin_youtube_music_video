@@ -15,10 +15,6 @@ function Chat(props) {
   const showChat = useSelector(uiSelect.showChat);
   const scroller = useRef(null);
 
-  useEffect(() => {
-    chatService.getChats();
-  }, []);
-
   const scrollToBottom = () => {
     scroller.current.scrollIntoView(false);
   };
