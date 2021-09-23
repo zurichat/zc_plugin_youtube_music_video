@@ -21,6 +21,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
 function App() {
+  console.log("enter room exists");
+
   useEffect(() => {
     authService.signin();
     eventService.connect();
