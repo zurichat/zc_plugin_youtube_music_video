@@ -9,14 +9,14 @@ import {
   playerSelector,
   playing,
 } from "../store/playerSlice";
-import { songSelector } from "../store/songsSlice";
+import { songSelect } from "../store/songsSlice";
 
 import PlaylistItems from "./common/playlistItems";
 import { useState } from "react";
 
 function Player() {
   const player = useSelector(getPlayerState);
-  const songs = useSelector(songSelector.selectAllSongs);
+  const songs = useSelector(songSelect.allSongs);
   const song = useSelector(playerSelector.selectCurrentSong);
   const upnext = getUpnext();
 

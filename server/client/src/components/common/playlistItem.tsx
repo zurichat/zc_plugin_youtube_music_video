@@ -2,37 +2,37 @@ import styled from "styled-components";
 
 import Like from "./like";
 
+import Song from "../../types/song";
 import option from "../../media/option.svg";
-
 import authService from "../../services/authService";
 
-import {
-  likedSongDisptach,
-  likedSongSelect,
-} from "../../store/likedSongsSlice";
 import { playerAction } from "../../store/playerSlice";
-
-import Song from "../../types/song";
-import { useSelector } from "react-redux";
+import songService from "../../services/songService";
 
 interface Props {
   song: Song;
 }
 
 function PlaylistItem(props: Props) {
-  const { title, addedBy, duration, albumCover, id: songId } = props.song;
+  const {
+    title,
+    addedBy,
+    duration,
+    albumCover,
+    id: songId,
+    likedBy,
+  } = props.song;
 
   const { id: userId } = authService.getCurrentUser();
 
-  const { count, liked } = useSelector(
-    likedSongSelect.selectCount({ songId, userId })
-  );
+  const { length: count } = likedBy;
+  const liked = likedBy.some((id) => id === userId);
 
-  const countText = (count) =>
+  const countText = (count: number) =>
     count === 0 ? "" : count === 1 ? `${count} like` : `${count} likes`;
 
   const handleLike = () => {
-    likedSongDisptach.toggleLike({ songId, userId });
+    songService.likeSong({ songId, userId, like: !liked });
   };
 
   const handlePlay = (e) => {

@@ -11,11 +11,11 @@ import PasteUrl from "./pasteUrl";
 import Button from "./button";
 
 import Headset from "../../media/playlistIcon.svg";
-import { songSelector } from "../../store/songsSlice";
+import { songSelect } from "../../store/songsSlice";
 
 const PlaylistHeader = () => {
   const player = useSelector(getPlayerState);
-  const firstSong = useSelector(songSelector.selectFirstSong);
+  const firstSong = useSelector(songSelect.firstSong);
 
   const [text, setText] = useState("Play");
 
