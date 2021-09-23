@@ -179,12 +179,12 @@ class CommentView(APIView):
 
         if serializer.is_valid():
             payload = serializer.data
+
             data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
 
             return Response(data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class RoomView(APIView):
     def get(self, request):
