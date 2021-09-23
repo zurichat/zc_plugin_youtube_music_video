@@ -2,12 +2,12 @@ import httpService from "./httpService";
 import { chatDispatch } from "../store/chatsSlice";
 import Chat from "../types/chat";
 
-const endpoint = "/comments";
+const endpoint = "/comments/";
 
 const getChats = async () => {
   try {
     let result = await (await httpService.get(endpoint)).data.data;
-    result.splice(0,7);
+    result.splice(0,14);
     for(let i = 0; i < result.length; i++) {
       chatDispatch.addChat(result[i]);
     } 
