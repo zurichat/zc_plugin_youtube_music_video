@@ -7,7 +7,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
-import EnterRoom from "./components/modals/enterRoom";
+// import EnterRoom from "./components/modals/enterR";
 
 import chatMediaQuery from "./utils/chatMedia";
 
@@ -31,7 +31,7 @@ function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
   const [userCount, setUserCount] = useState(0);
   const isLoading = useSelector(uiSelect.isLoading);
-  const showModal = useSelector(uiSelect.showModal);
+  // const showModal = useSelector(uiSelect.showModal);
 
   return (
     <Wrapper>
@@ -50,7 +50,7 @@ function App() {
       <div>
         <ToastContainer theme="colored" />
 
-        {showModal && <EnterRoom setUserCount={setUserCount} />}
+        {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
 
         <RoomHeader userCount={userCount} />
 

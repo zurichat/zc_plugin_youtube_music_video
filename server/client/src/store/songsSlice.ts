@@ -7,8 +7,8 @@ import Song from "../types/song";
 const songsSlice = createSlice({
   name: "songs",
 
-  initialState: getMockData(),
-  // initialState: [] as Song[],
+  // initialState: getMockData(),
+  initialState: [] as Song[],
 
   reducers: {
     initialize: (state, action: PayloadAction<Song[]>) => {
