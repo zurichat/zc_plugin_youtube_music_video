@@ -104,12 +104,8 @@ class MediaView(APIView):
 
 class UserCountView(GenericAPIView):
     def get(self, request):
-        centrifugo_post("channel_name", {"event": "join_room"})
-        centrifugo_post.counter += 1
-        header_user_count = centrifugo_post.counter
-        return Response(header_user_count)
-
-    centrifugo_post.counter = 0
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(len(data))
 
 
 class SongView(APIView):
