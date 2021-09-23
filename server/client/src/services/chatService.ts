@@ -1,12 +1,12 @@
-import axios from "axios";
+import httpService from "./httpService";
 import { chatDispatch } from "../store/chatsSlice";
 import Chat from "../types/chat";
 
-const endpoint = "http://localhost:8000/music/api/v1/comments";
+const endpoint = "/comments";
 
 const getChats = async () => {
   try {
-    const result = await axios.get(endpoint);
+    const result = await httpService.get(endpoint);
     console.log(result);
   } catch (e) {
     console.log(e.message);
@@ -15,7 +15,7 @@ const getChats = async () => {
 
 const addChat = async (chat: Chat) => {
   try {
-    await axios.post(endpoint, chat);
+    await httpService.post(endpoint, chat);
   } catch (error) {
     console.log(error.message);
   }

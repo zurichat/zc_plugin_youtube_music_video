@@ -5,9 +5,38 @@ import log from "./logService";
 import { songDispatch } from "../store/songsSlice";
 import httpService from "./httpService";
 
+const sonEndpoint = "/song";
+const likeEndpoint = "/like";
+
+const getSongs = () => {
+  httpService.get(sonEndpoint).then(
+    (result) => {
+      songDispatch.initialize([]);
+
+      return result;
+    },
+
+    (error) => {
+      console.log(error.message);
+      return [];
+    }
+  );
+};
+
+const addSongbyUrl = async (url: string) => {
+  try {
+    const song = await httpService.post(sonEndpoint, {
+      url,
+    });
+  } catch (error) {
+    log.error(error.message);
+  }
+  return;
+};
+
 const addSong = async (song: Song) => {
   try {
-    await httpService.post("/song", {
+    await httpService.post(sonEndpoint, {
       url: song.url,
     });
 
@@ -16,14 +45,16 @@ const addSong = async (song: Song) => {
     // log.error(error.message);
     console.log(error.message);
   }
+
   songDispatch.addSong(song);
+  return;
 };
 
 const likeSong = async (like: LikeSong) => {
   songDispatch.likeSong(like);
 
   try {
-    await httpService.post("/like", like);
+    await httpService.post(likeEndpoint, like);
 
     log.success("User liked a song");
   } catch (error) {
@@ -32,6 +63,6 @@ const likeSong = async (like: LikeSong) => {
   }
 };
 
-const songService = { addSong, likeSong };
+const songService = { getSongs, addSong, likeSong, addSongbyUrl };
 
 export default songService;
