@@ -1,11 +1,10 @@
 // @ts-ignore
-// import { GetUserInfo } from "@zuri/zuri-control";
+import { GetUserInfo } from "@zuri/zuri-control";
 import axios from "axios";
 import { uiDispatch } from "../store/uiSlice";
 import User from "../types/user";
 
 import avatar from "../media/chatItem.svg";
-import log from "./logService";
 
 let currentUser = {} as any;
 
@@ -19,12 +18,11 @@ async function signin() {
       password: "pidoxy.com",
     });
 
-    currentUser = data.data.user;
+    GetUserInfo();
 
-    log.success("You may proceed.");
+    currentUser = data.data.user;
   } catch (error) {
     console.log(error);
-    log.error("User is not signed in. Please refresh the page");
   }
 
   uiDispatch.loading(false);

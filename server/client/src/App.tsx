@@ -7,7 +7,6 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
-// import EnterRoom from "./components/modals/enterR";
 
 import chatMediaQuery from "./utils/chatMedia";
 
@@ -21,8 +20,6 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
 function App() {
-  console.log("enter room exists");
-
   useEffect(() => {
     authService.signin();
     eventService.connect();
@@ -31,7 +28,6 @@ function App() {
   chatMediaQuery(); // toggle chat display based on screen size.
   const [userCount, setUserCount] = useState(0);
   const isLoading = useSelector(uiSelect.isLoading);
-  // const showModal = useSelector(uiSelect.showModal);
 
   return (
     <Wrapper>
@@ -49,8 +45,6 @@ function App() {
 
       <div>
         <ToastContainer theme="colored" />
-
-        {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
 
         <RoomHeader userCount={userCount} />
 
