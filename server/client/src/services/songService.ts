@@ -4,16 +4,14 @@ import LikeSong from "../types/likeSong";
 import log from "./logService";
 import { songDispatch } from "../store/songsSlice";
 import httpService from "./httpService";
+import { sanitize } from "../utils/sanitizer";
 
 const { songEndpoint, likeEndpoint } = httpService.endpoints;
 
 const getSongs = () => {
   httpService.get(songEndpoint).then(
     (result) => {
-      songDispatch.initialize([]);
-
-      console.log(result);
-
+      songDispatch.initialize(result.data.data.map(sanitize));
       return result;
     },
 
@@ -25,14 +23,14 @@ const getSongs = () => {
 };
 
 const addSongbyUrl = async (url: string) => {
-  try {
-    const song = await httpService.post(songEndpoint, {
+  return httpService
+    .post(songEndpoint, {
       url,
-    });
-  } catch (error) {
-    log.error(error.message);
-  }
-  return;
+    })
+    .then(
+      (result) => result,
+      (error) => console.log(error)
+    );
 };
 
 const addSong = async (song: Song) => {
