@@ -1,5 +1,3 @@
-// @ts-ignore
-import { GetUserInfo } from "@zuri/zuri-control";
 import axios from "axios";
 import { uiDispatch } from "../store/uiSlice";
 import User from "../types/user";
@@ -17,8 +15,6 @@ async function signin() {
       email: "pid@oxy.com",
       password: "pidoxy.com",
     });
-
-    GetUserInfo();
 
     currentUser = data.data.user;
   } catch (error) {

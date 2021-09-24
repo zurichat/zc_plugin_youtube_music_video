@@ -2,7 +2,7 @@ import httpService from "./httpService";
 import { chatDispatch } from "../store/chatsSlice";
 import Chat from "../types/chat";
 
-const endpoint = "/comments/";
+const { commentEndpoint } = httpService.endpoints;
 
 //A function for interchanging between id and _id as object key name
 const sanitizer = (chat) => {
@@ -24,7 +24,7 @@ const sanitizer = (chat) => {
 
 const getChats = async () => {
   try {
-    let result = await (await httpService.get(endpoint)).data.data;
+    let result = await (await httpService.get(commentEndpoint)).data.data;
     result.splice(0,14);
     for(let i = 0; i < result.length; i++) {
       result[i] = sanitizer(result[i]);
@@ -38,7 +38,7 @@ const getChats = async () => {
 const addChat = async (chat: Chat) => {
   const newChat = sanitizer(chat);
   try {
-    await httpService.post(endpoint, newChat);
+    await httpService.post(commentEndpoint, newChat);
   } catch (error) {
     console.log(error.message);
   }

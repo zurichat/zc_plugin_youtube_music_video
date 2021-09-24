@@ -1,8 +1,8 @@
 # By Justice
 /venv
 node_modules/
-/static
-/staticfiles
+static/
+staticfiles/
 /pythagorasenv
 DBName
 dist/
