@@ -99,7 +99,7 @@ def centrifugo_post(room, data):
 
     response = request_client.request(
         method="POST",
-        url="http://localhost:8000/api",
+        url="https://realtime.zuri.chat/api",
         headers=headers,
         post_data=post_data
     )
@@ -113,14 +113,14 @@ def data_write(collection, payload, filter={}, bulk=False, object_id=""):
 
     data = {
 
-        "plugin_id": plugin_id,
-        "organization_id": org_id,
-        "collection_name": collection,
-        "bulk_write": bulk,
-        "object_id": object_id,
-        "filter": filter,
-        "payload": payload
-
+            "plugin_id": plugin_id,
+            "organization_id": org_id,
+            "collection_name": collection,
+            "bulk_write": bulk,
+            "object_id":object_id,
+            "filter": filter,
+            "payload": payload,
+             
     }
     url = "https://api.zuri.chat/data/write"
 
@@ -162,16 +162,47 @@ def get_video(url):
     return result
 
 
-def delete_user(collection=None, filter_data=None):
+# def delete_user(collection=None, filter_data=None):
+#     if filter_data is None:
+#         filter_data = {}
+
+#     request_client = RequestClient()
+
+#     response = request_client.request(
+#         method="POST",
+#         # url=f"https://api.zuri.chat/data/delete/{plugin_id}/{collection}/{org_id}",
+#         url=f"https://api.zuri.chat/data/delete",
+#         headers={"Authorization": "headers"},
+#         post_data=filter_data
+#     )
+#     return response.response_data
+
+
+def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk_write=False, method="POST"):
     if filter_data is None:
         filter_data = {}
 
+    if payload is None:
+        payload = {}
+
+    if object_id is None:
+        object_id = ""
+
+    post_data = {
+        "plugin_id": plugin_id,
+        "organization_id": org_id,
+        "collection_name": collection,
+        "bulk_write": bulk_write,
+        "object_id": object_id,
+        "filter": filter_data,
+        "payload": payload
+    }
     request_client = RequestClient()
 
     response = request_client.request(
-        method="POST",
-        url=f"https://api.zuri.chat/data/delete/{plugin_id}/{collection}/{org_id}",
+        method=method,
+        url="https://api.zuri.chat/data/delete",
         headers={"Authorization": "headers"},
-        post_data=filter_data
+        post_data=post_data
     )
     return response.response_data
