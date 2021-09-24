@@ -8,7 +8,6 @@ import ChatInput from "./common/chatInput";
 
 import { chatSelect } from "../store/chatsSlice";
 import { uiSelect } from "../store/uiSlice";
-import chatService from "../services/chatService";
 
 function Chat(props) {
   const chats = useSelector(chatSelect.allChat);
