@@ -2,11 +2,11 @@ import httpService from "./httpService";
 import { chatDispatch } from "../store/chatsSlice";
 import Chat from "../types/chat";
 
-const endpoint = "/comments";
+const { commentEndpoint } = httpService.endpoints;
 
 const getChats = async () => {
   try {
-    const result = await httpService.get(endpoint);
+    const result = await httpService.get(commentEndpoint);
     console.log(result);
   } catch (e) {
     console.log(e.message);
@@ -14,8 +14,11 @@ const getChats = async () => {
 };
 
 const addChat = async (chat: Chat) => {
+  const newChat = { ...chat };
+  delete newChat.id;
+
   try {
-    await httpService.post(endpoint, chat);
+    await httpService.post(commentEndpoint, newChat);
   } catch (error) {
     console.log(error.message);
   }
