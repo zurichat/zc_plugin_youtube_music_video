@@ -26,6 +26,8 @@ function Player() {
   const url =
     "https://www.youtube.com/embed/" + getSongIdFromYouTubeUrl(song.url);
 
+  console.log({ url });
+
   function getUpnext() {
     const index = songs.indexOf(song);
     return [...songs.slice(index + 1), ...songs.slice(0, index)];
