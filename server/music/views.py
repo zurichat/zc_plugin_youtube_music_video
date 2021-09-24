@@ -123,18 +123,17 @@ class SongView(APIView):
 
         payload = {
             "title": media_info["title"],
-            "track_url": media_info["track_url"],
-            "thumbnail_url": media_info["thumbnail_url"],
             "duration": media_info["duration"],
-            "added_by_id": "1",
-            "song_like_ids": [
-                "1"
-            ]
+            "albumCover": media_info["thumbnail_url"],
+            "url": media_info["track_url"],
+            "addedBy": " ",
+            "likedBy": ["1"]
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
         return Response(data, status=status.HTTP_202_ACCEPTED)
         # Note: use only {"url": ""} in the payload
+
 
 
 class AddToRoomView(APIView):
@@ -147,6 +146,8 @@ class AddToRoomView(APIView):
         user_ids.append(request.data["id"])
         return _id, user_ids
 
+
+class getSongs(APIView):
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
