@@ -26,7 +26,6 @@ function App() {
   }, []);
 
   chatMediaQuery(); // toggle chat display based on screen size.
-  const [userCount, setUserCount] = useState(0);
   const isLoading = useSelector(uiSelect.isLoading);
 
   return (
@@ -46,7 +45,9 @@ function App() {
       <div>
         <ToastContainer theme="colored" />
 
-        <RoomHeader userCount={userCount} />
+        {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
+
+        <RoomHeader />
 
         <Switch>
           <Route path="/music" component={MusicRoom} />
