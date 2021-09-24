@@ -49,13 +49,6 @@ function ChatInput(props) {
     clearInput();
   };
 
-  /*const handleKeyPress = (event) => {
-    if(event.charCode === 13){
-      props.onClick(dispatch, inputStr);
-      clearInput();
-    }
-  }*/
-
   return (
     <Wrapper>
       <input
@@ -91,12 +84,17 @@ function ChatInput(props) {
             onGiphyClick={onGiphyClick}
           />
         )}
-        <img
-          src={chatSend}
-          alt="send"
-          className="chat-icon"
-          onClick={handleSend}
-          /*onKeyDown={() => {
+        <img 
+        src={chatSend} 
+        alt="send" 
+        className="chat-icon" 
+        onClick={() => {
+          if(inputStr !== ""){
+          handleSend();
+          }
+          else return ;
+        }}
+        /*onKeyDown={() => {
           
         }}*/
         />
