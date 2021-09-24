@@ -127,13 +127,16 @@ class SongView(APIView):
             "albumCover": media_info["thumbnail_url"],
             "url": media_info["track_url"],
             "addedBy": " ",
-            "likedBy": ["1"]
+            "likedBy": []
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
+
+        updated_data = read_data(settings.SONG_COLLECTION)
+
+        centrifugo_post("zuri-plugin-music", {"event": "added_song", "data": updated_data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
         # Note: use only {"url": ""} in the payload
-
 
 
 class AddToRoomView(APIView):
@@ -146,8 +149,6 @@ class AddToRoomView(APIView):
         user_ids.append(request.data["id"])
         return _id, user_ids
 
-
-class getSongs(APIView):
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
@@ -160,7 +161,7 @@ class getSongs(APIView):
         }
 
         data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
-        centrifugo_post("channel_name", {"event": "entered_room"})
+        centrifugo_post("channel_name", {"event": "entered_room", "data": "send something"})
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
@@ -184,6 +185,10 @@ class CommentView(APIView):
             payload = serializer.data
 
             data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
+
+            updated_data = read_data(settings.COMMENTS_COLLECTION)
+
+            centrifugo_post("zuri-plugin-music", {"event": "added_chat", "data": updated_data})
 
             return Response(data, status=status.HTTP_200_OK)
 
