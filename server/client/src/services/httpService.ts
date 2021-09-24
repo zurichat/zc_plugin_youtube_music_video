@@ -8,7 +8,7 @@ const endpoints = {
   commentEndpoint: "/comments/",
   likeEndpoint: "/like/",
   userCountEndpoint: "/header-user-count/",
-  addToRoom: "add_to_room",
+  addToRoom: "/add_to_room/",
   leaveEndpoint: "/exit/",
 };
 
