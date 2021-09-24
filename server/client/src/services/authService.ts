@@ -1,17 +1,18 @@
 import axios from "axios";
 import { uiDispatch } from "../store/uiSlice";
 import User from "../types/user";
+// @ts-ignore
+import { GetUserInfo } from "@zuri/zuri-control";
 
 import avatar from "../media/chatItem.svg";
 
 let currentUser = {} as any;
 
 async function signin() {
-  const endpoint = "https://api.zuri.chat/auth/login";
   uiDispatch.loading(true);
 
   try {
-    const { data } = await axios.post(endpoint, {
+    const { data } = await axios.post("https://api.zuri.chat/auth/login", {
       email: "pid@oxy.com",
       password: "pidoxy.com",
     });
