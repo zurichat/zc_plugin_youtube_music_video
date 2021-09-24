@@ -163,6 +163,38 @@ class getSongs(APIView):
         centrifugo_post("channel_name", {"event": "entered_room"})
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
+class LikedByView(APIView):
+
+    def get(self, request):
+        data = read_data(settings.SONG_COLLECTION)
+        return Response(data)
+        
+        if request.method == 'GET':
+        data = read_data(collection_name)
+        return Response(data)
+
+    elif request.method == 'POST':
+
+        url = 'https://music.zuri.chat/music/api/v1/song/'
+        payload = {
+            "_id": _id,
+            "addedBy": addedBy,
+            "albumCover": albumCover,
+            "duration": duration.
+            "likedBy": False,
+            "object_id": likedBy_ids,
+            "filter": {}
+        }
+    def post(self,request):
+        _id, likedBy_ids = self.get_obj_id_append_userid(request)
+
+        payload = {
+            "room_likedBy_ids": likedBy_ids
+        }
+        data = write_data(settings.SONG_COLLECTION, object_id=id, payload=payload, method="PUT")
+        return Response(data)
+
+
 
 class CreateRoomView(APIView):
     def post(self, request):
