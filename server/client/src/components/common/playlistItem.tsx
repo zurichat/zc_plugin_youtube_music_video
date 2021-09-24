@@ -150,7 +150,7 @@ const Wrapper = styled.div`
 
   @media screen and (max-width: 780px) {
     .item-group {
-      flex-basis: 60px;
+      justify-content: flex-end;
     }
     .item-duration,
     .item-like {
@@ -158,18 +158,24 @@ const Wrapper = styled.div`
     }
   }
 
+  @media screen and (max-width: 547px) {
+    .item-info {
+      width: 150px;
+    }
+  }
+
   @media screen and (max-width: 460px) {
     .item-title {
       font-weight: 600;
-      font-size: 14px;
+      /* font-size: 14px; */
       margin-bottom: 6px;
     }
 
     .item-albumCover {
       display: block;
       margin-right: 10px;
-      width: 50px;
-      height: 100%;
+      /* width: 50px;
+      height: 100%; */
     }
   }
 `;

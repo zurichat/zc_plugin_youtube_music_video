@@ -11,7 +11,8 @@ const { songEndpoint, likeEndpoint } = httpService.endpoints;
 const getSongs = () => {
   httpService.get(songEndpoint).then(
     (result) => {
-      songDispatch.initialize(result.data.data.map(sanitize));
+      const data = result.data.data ?? [];
+      songDispatch.initialize(data.map(sanitize));
       return result;
     },
 

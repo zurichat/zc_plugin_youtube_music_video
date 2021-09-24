@@ -7,8 +7,9 @@ const { commentEndpoint } = httpService.endpoints;
 
 const getChats = async () => {
   try {
-    const { data } = await httpService.get(commentEndpoint);
-    chatDispatch.set(data.data.map(sanitize));
+    const result = await httpService.get(commentEndpoint);
+    const data = result.data.data ?? [];
+    chatDispatch.set(data.map(sanitize));
   } catch (e) {
     console.log(e.message);
   }
