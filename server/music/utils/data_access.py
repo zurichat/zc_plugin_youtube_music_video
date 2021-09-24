@@ -113,14 +113,14 @@ def data_write(collection, payload, filter={}, bulk=False, object_id=""):
 
     data = {
 
-        "plugin_id": plugin_id,
-        "organization_id": org_id,
-        "collection_name": collection,
-        "bulk_write": bulk,
-        "object_id": object_id,
-        "filter": filter,
-        "payload": payload
-
+            "plugin_id": plugin_id,
+            "organization_id": org_id,
+            "collection_name": collection,
+            "bulk_write": bulk,
+            "object_id":object_id,
+            "filter": filter,
+            "payload": payload,
+             
     }
     url = "https://api.zuri.chat/data/write"
 
