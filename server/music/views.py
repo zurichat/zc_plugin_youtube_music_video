@@ -146,8 +146,6 @@ class AddToRoomView(APIView):
         user_ids.append(request.data["id"])
         return _id, user_ids
 
-
-class getSongs(APIView):
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)

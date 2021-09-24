@@ -106,45 +106,6 @@ def centrifugo_post(room, data):
     return response
 
 
-def data_write(collection, payload, filter={}, bulk=False, object_id=""):
-    plugin_id = settings.PLUGIN_ID
-
-    org_id = settings.ORGANIZATON_ID
-
-    data = {
-
-            "plugin_id": plugin_id,
-            "organization_id": org_id,
-            "collection_name": collection,
-            "bulk_write": bulk,
-            "object_id":object_id,
-            "filter": filter,
-            "payload": payload,
-             
-    }
-    url = "https://api.zuri.chat/data/write"
-
-    res = requests.post(url, json=data)
-
-    print(res.status_code)
-
-    return res
-
-
-def data_read(coll):
-    plugin_id = settings.PLUGIN_ID
-
-    org_id = settings.ORGANIZATON_ID
-
-    url = "https://api.zuri.chat/data/read/" + plugin_id + "/" + coll + "/" + org_id
-
-    res = requests.get(url)
-
-    print(res.status_code)
-    data = res.json()
-    return data['data']
-
-
 def get_video(url):
     res = requests.get(url)
 
