@@ -16,7 +16,7 @@ import { useState, useEffect } from "react";
 import httpService from "../services/httpService";
 
 const roomHeader = () => {
-  const userCountEndpoint = "/header-user-count";
+  const { userCountEndpoint } = httpService.endpoints;
   const [userCount, setUserCount] = useState(0);
 
   useEffect(() => {

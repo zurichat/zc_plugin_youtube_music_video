@@ -18,10 +18,11 @@ import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
+import userService from "./services/userService";
 
 function App() {
   useEffect(() => {
-    authService.signin();
+    authService.signin().then(() => userService.addToRoom());
     eventService.connect();
   }, []);
 

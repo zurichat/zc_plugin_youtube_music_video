@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Illustration from "../../media/emptyScreen.svg";
 
 // @ts-ignore
-import { GetUserInfo } from "@zuri/zuri-control";
+// import { GetUserInfo } from "@zuri/zuri-control";
 
 import { uiDispatch } from "../../store/uiSlice";
 
@@ -10,9 +10,10 @@ import PasteUrl from "./pasteUrl";
 
 const EmptyScreen = () => {
   const handleClick = () => {
-    GetUserInfo();
+    // GetUserInfo();
     uiDispatch.showPasteUrl(true);
   };
+
   return (
     <Wrapper>
       <PasteUrl />

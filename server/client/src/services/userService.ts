@@ -1,8 +1,7 @@
 import authService from "./authService";
 import httpService from "./httpService";
 
-const enterEndpoint = "/add_to_room";
-const leaveEndpoint = "/exit";
+const { addToRoom: enterEndpoint, leaveEndpoint } = httpService.endpoints;
 
 async function addToRoom() {
   const { id } = authService.getCurrentUser();
