@@ -9,6 +9,8 @@ import chatGif from "../../media/chatGif.svg";
 
 import authService from "../../services/authService";
 import chatService from "../../services/chatService";
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
 function ChatInput(props) {
   // states to manage the input text and also the showcasing of the emoji
@@ -17,6 +19,7 @@ function ChatInput(props) {
   const [showGiphy, setShowGiphy] = useState(false);
   const handleFocus = props.handleFocus;
   const handleBlur = props.handleBlur;
+  const currentUser = useSelector(userSelect.currentUser);
 
   // function to display the emoji once clicked and remove once the user select their preferred emoji
   const onEmojiClick = (event, emojiObject) => {
@@ -35,7 +38,7 @@ function ChatInput(props) {
   };
 
   const handleSend = () => {
-    const { name, id: userId, avatar } = authService.getCurrentUser();
+    const { name, id: userId, avatar } = currentUser;
 
     chatService.addChat({
       id: Date.now() + "",
@@ -69,8 +72,11 @@ function ChatInput(props) {
         />
         {showPicker && (
           <div className="emoji-picker">
-          <Picker pickerStyle={{ width: "20vw", marginLeft:"0rem" }} onEmojiClick={onEmojiClick} />
-        </div>
+            <Picker
+              pickerStyle={{ width: "20vw", marginLeft: "0rem" }}
+              onEmojiClick={onEmojiClick}
+            />
+          </div>
         )}
         <img
           src={chatGif}
@@ -84,17 +90,16 @@ function ChatInput(props) {
             onGiphyClick={onGiphyClick}
           />
         )}
-        <img 
-        src={chatSend} 
-        alt="send" 
-        className="chat-icon" 
-        onClick={() => {
-          if(inputStr !== ""){
-          handleSend();
-          }
-          else return ;
-        }}
-        /*onKeyDown={() => {
+        <img
+          src={chatSend}
+          alt="send"
+          className="chat-icon"
+          onClick={() => {
+            if (inputStr !== "") {
+              handleSend();
+            } else return;
+          }}
+          /*onKeyDown={() => {
           
         }}*/
         />
