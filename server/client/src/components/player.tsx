@@ -13,6 +13,7 @@ import { songSelect } from "../store/songsSlice";
 
 import PlaylistItems from "./common/playlistItems";
 import { useState } from "react";
+import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
 
 function Player() {
   const player = useSelector(getPlayerState);
@@ -22,11 +23,11 @@ function Player() {
 
   if (!player.show) return null;
 
-  const url = "https://www.youtube.com/embed/" + song.id;
+  const url =
+    "https://www.youtube.com/embed/" + getSongIdFromYouTubeUrl(song.url);
 
   function getUpnext() {
     const index = songs.indexOf(song);
-
     return [...songs.slice(index + 1), ...songs.slice(0, index)];
   }
 

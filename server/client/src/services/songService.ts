@@ -4,7 +4,6 @@ import LikeSong from "../types/likeSong";
 import log from "./logService";
 import { songDispatch } from "../store/songsSlice";
 import httpService from "./httpService";
-import { sanitize } from "../utils/sanitizer";
 
 const { songEndpoint, likeEndpoint } = httpService.endpoints;
 
@@ -12,7 +11,7 @@ const getSongs = () => {
   httpService.get(songEndpoint).then(
     (result) => {
       const data = result.data.data ?? [];
-      songDispatch.initialize(data.map(sanitize));
+      songDispatch.initialize(data);
       return result;
     },
 

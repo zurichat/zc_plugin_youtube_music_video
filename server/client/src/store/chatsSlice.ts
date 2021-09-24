@@ -1,17 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import store, { RootState } from ".";
 import Chat from "../types/chat";
+import { sanitize } from "../utils/sanitizer";
 
-import avatar from "../media/chatItem.svg";
-
-// const mock: Chat = {
-//   id: Date.now() + "",
-//   userId: Date.now() + "",
-//   name: "Mr._Primal",
-//   time: 1632221670207,
-//   message: "Hello there",
-//   avatar: avatar,
-// };
+// import avatar from "../media/chatItem.svg";
 
 const chatsSlice = createSlice({
   name: "chats",
@@ -20,11 +12,11 @@ const chatsSlice = createSlice({
 
   reducers: {
     setChats: (state, { payload }: PayloadAction<Chat[]>) => {
-      return payload;
+      return payload.map(sanitize);
     },
 
     addChat: (state, { payload }: PayloadAction<Chat>) => {
-      state.push(payload);
+      state.push(sanitize(payload));
     },
 
     removeChat: (state, { payload }: PayloadAction<Chat>) => {
