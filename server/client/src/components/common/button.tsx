@@ -2,14 +2,19 @@ import React from "react";
 import styled from "styled-components";
 
 interface Props {
-  color?: string;
+  color?: "primary" | "secondary" | "disabled";
   className?: string;
   onClick: () => void;
 }
 
 const Button: React.FC<Props> = (props) => {
-  const { color, children, className, onClick } = props;
-  const Component = color === "secondary" ? Secondary : Primary;
+  const { color, children, ...rest } = props;
+  const Component =
+    color === "secondary"
+      ? Secondary
+      : color === "disabled"
+      ? Disabled
+      : Primary;
 
   // General styles for both buttons
   const styles = {
@@ -17,10 +22,11 @@ const Button: React.FC<Props> = (props) => {
     fontSize: "14px",
     padding: "5px 10px",
     fontFamily: "Lato, sans-serif",
+    cursor: "pointer",
   };
 
   return (
-    <Component className={className} style={styles} onClick={onClick}>
+    <Component style={styles} {...rest}>
       {children}
     </Component>
   );
@@ -35,11 +41,6 @@ const Primary = styled.button`
 
   &:hover {
     box-shadow: 0 2px 5px rgba(0, 184, 124, 0.3);
-  }
-
-  @media (max-width: 388px) {
-    font-size: 12px !important;
-    padding: 3px 5px;
   }
 `;
 
@@ -58,11 +59,21 @@ const Secondary = styled.button`
     border-color: rgba(0, 184, 124, 0.8);
   }
 
-  @media (max-width: 388px) {
+  /* @media (max-width: 388px) {
     font-size: 12px !important;
     padding: 3px 5px;
     margin: 3px 0 !important;
-  }
+  } */
+`;
+
+const Disabled = styled.button`
+  background: #cecccc;
+  border-radius: 3px;
+  color: #0a0a0ace;
+  transition: all 200ms ease-in-out;
+  cursor: none !important;
+  border: none;
+  outline: none;
 `;
 
 export default Button;

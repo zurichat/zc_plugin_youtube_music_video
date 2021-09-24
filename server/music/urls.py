@@ -1,14 +1,16 @@
 from django.urls import path
-from rest_framework.schemas import get_schema_view
-from music.views import PluginPingView, SidebarView, MediaView, PluginInfoView, addSongs, getSongs, updateSongs
-
+from music.views import *
 
 urlpatterns = [
-      path("sidebar/", SidebarView.as_view(), name="sidebar"),
-      path("test/", MediaView.as_view(), name="test"),
-      path("addsong/", addSongs.as_view(), name="addsong"),
-      path("getsong/", getSongs.as_view(), name="getsong"),
-      path("updatesong/", updateSongs.as_view(), name="updatesong"),
-      path("info/", PluginInfoView.as_view(), name="info"),
-      path("ping/", PluginPingView.as_view(), name="ping"),
+    path("song/", SongView.as_view(), name="song"),
+    path("header-user-count/", UserCountView.as_view(), name="header-user-count"),
+    path("sidebar/", SidebarView.as_view(), name="sidebar"),
+    path("test/", MediaView.as_view(), name="test"),
+    path("info/", PluginInfoView.as_view(), name="info"),
+    path("ping/", PluginPingView.as_view(), name="ping"),
+    path("add_to_room/", AddToRoomView.as_view(), name="add_to_room"),
+    path("createroom/", CreateRoomView.as_view(), name="createroom"),
+    path("comments/", CommentView.as_view(), name="comments"),
+    path("removeuser/", remove_user, name="remove_user"),
+    
 ]

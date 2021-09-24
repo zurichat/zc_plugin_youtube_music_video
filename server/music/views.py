@@ -3,8 +3,13 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
-from music.utils.data_access import data_read, data_write, get_video, read_data, write_data
+
+from music.serializers import CommentSerializer
+from music.utils.data_access import get_video, read_data, write_data, centrifugo_post
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+import requests
+from requests import exceptions
 
 
 class SidebarView(GenericAPIView):
@@ -103,43 +108,108 @@ class UserCountView(GenericAPIView):
         header_user_count = centrifugo_post.counter
         return Response(header_user_count)
 
-        centrifugo_post.counter = 0
+    centrifugo_post.counter = 0
 
 
-class addSongs(APIView):
+class SongView(APIView):
+    def get(self, request):
+        data = read_data(settings.SONG_COLLECTION)
 
-    def post(self, req):
-    
-        collection = "Music"
-        user_id = {"user_id":"Mark"}
+        return Response(data, status=status.HTTP_200_OK)
 
-        url = req.data['url']
-        payload = get_video(url)
-        res = data_write(collection, payload)
+    def post(self, request):
+        media_info = get_video(request.data['url'])
 
-        return Response(res.json(), status=200)
+        payload = {
+            "title": media_info["title"],
+            "duration": media_info["duration"],
+            "albumCover": media_info["thumbnail_url"],
+            "url": media_info["track_url"],
+            "addedBy": " ",
+            "likedBy": ["1"]
+        }
 
-class updateSongs(APIView):
-
-    def put(self, req):
-
-        collection = "Music"
-
-        url = req.data['url']
-
-        obj_id = req.data['object_id']
-
-        payload = get_video(url)
-
-        res = data_write(collection, payload, object_id=obj_id)
-
-        return Response(res, status=200)
-
+        data = write_data(settings.SONG_COLLECTION, payload=payload)
+        return Response(data, status=status.HTTP_202_ACCEPTED)
+        #Note: only "track_url": "" should be inputted
 
 class getSongs(APIView):
 
-    def get(self,req):
+    # def get(self,req):
 
-        res = data_read("Music")
-        
-        return Response(res, status=200)
+    def get(self, request):
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(data)
+
+    def post(self, request):
+        _id, user_ids = self.get_obj_id_and_append_user_id(request)
+
+        payload = {
+            "room_user_ids": user_ids
+        }
+
+        data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
+        return Response(data, status=status.HTTP_202_ACCEPTED)
+
+
+class CreateRoomView(APIView):
+    def post(self, request):
+        payload = {}
+        data = write_data(settings.ROOM_COLLECTION, payload=payload)
+        return Response(data)
+
+
+class CommentView(APIView):
+
+    def get(self, request):
+        data = read_data(settings.COMMENTS_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = CommentSerializer(data=request.data)
+
+        if serializer.is_valid():
+            payload = serializer.data
+            data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST'])
+def remove_user(request):
+    plugin_id = settings.PLUGIN_ID
+    organization_id = settings.ORGANIZATON_ID
+    collection_name = settings.ROOM_COLLECTION
+    
+    room_data = read_data(settings.ROOM_COLLECTION)
+    user_ids = room_data["data"][0]["room_user_ids"]
+    _id = room_data["data"][0]["_id"]
+
+    if request.method == 'GET':
+        data = read_data(collection_name)
+        return Response(data)
+
+    elif request.method == 'POST':
+        url = 'https://api.zuri.chat/data/delete'
+
+        data = {
+            "plugin_id": plugin_id,
+            "organization_id": organization_id,
+            "collection_name": collection_name,
+            "bulk_delete": False,
+            "object_id": user_ids,
+            "filter": {}
+        }
+        try:
+            response = requests.post(url=url, json=data)
+
+            if response.status_code == 200:
+                return Response({"message": "User left room"},
+                                status=status.HTTP_200_OK)
+            else:
+                return Response({"error": response.json()['message']}, status=response.status_code)
+
+        except exceptions.ConnectionError as e:
+            return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)

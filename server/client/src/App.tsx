@@ -1,6 +1,9 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
-import React, { useState } from 'react'
+import { useSelector } from "react-redux";
+import Loader from "react-loader-spinner";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
@@ -8,41 +11,67 @@ import EnterRoom from "./components/Modals/EnterRoom";
 
 import chatMediaQuery from "./utils/chatMedia";
 
-import "./App.css";
+import { uiSelect } from "./store/uiSlice";
+import authService from "./services/authService";
+import eventService from "./services/eventService";
+
+import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import "./App.css";
 
 function App() {
-  chatMediaQuery(); // toggle chat display based on screen size.
-  const [showModal, setShowModal] = useState(true)
+  useEffect(() => {
+    authService.signin();
+    eventService.connect();
+  }, []);
 
- 
+  chatMediaQuery(); // toggle chat display based on screen size.
+  const [userCount, setUserCount] = useState(0);
+  const isLoading = useSelector(uiSelect.isLoading);
+  const showModal = useSelector(uiSelect.showModal);
 
   return (
     <Wrapper>
-      
-      {showModal?
-      <>
-        
-        <RoomHeader />
-        <MusicRoom />
-        <EnterRoom setShowModal={setShowModal}/>
-      </>
-      :
-      <>
-        <ToastContainer />
-        <RoomHeader />
-        <MusicRoom />
-      </>
-       }
-       
+      <div className="loader-wrapper">
+        {isLoading && (
+          <Loader
+            visible
+            type="BallTriangle"
+            color="#27ae60"
+            height={80}
+            width={80}
+          />
+        )}
+      </div>
+
+      <div>
+        <ToastContainer theme="colored" />
+
+        {showModal && <EnterRoom setUserCount={setUserCount} />}
+
+        <RoomHeader userCount={userCount} />
+
+        <Switch>
+          <Route path="/music" component={MusicRoom} />
+          <Redirect from="/" to="/music" />
+        </Switch>
+      </div>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
-  /* overflow-y: scroll; */
-  padding: 10px;
+  position: relative;
+  display: flex;
+  justify-content: center;
   height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  & > * {
+    flex-grow: 1;
+  }
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -53,9 +82,10 @@ const Wrapper = styled.div`
     background-color: #00b87c;
   }
 
-  @media (max-width: 600px) {
-    padding: 0;
-    margin: 0;
+  .loader-wrapper {
+    position: absolute;
+    top: 100px;
+    z-index: 111;
   }
 `;
 

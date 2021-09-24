@@ -1,23 +1,29 @@
-import { addChat, removeChat, updateChat, } from '../store/chatsSlice';
-import chatItem from "../media/chatItem.svg";
-function getCurrentUser() {}
+import axios from "axios";
+import { chatDispatch } from "../store/chatsSlice";
+import Chat from "../types/chat";
 
-const authObject = { getCurrentUser };
+const endpoint = "http://localhost:8000/music/api/v1/comments";
 
-export const getChat = () => {
-
+const getChats = async () => {
+  try {
+    const result = await axios.get(endpoint);
+    console.log(result);
+  } catch (e) {
+    console.log(e.message);
+  }
 };
 
-export const createChat = (dispatch, message) => {
-    const newitem = {
-        id: Date.now() + "",
-        userId: Date.now() + "",
-        name: "Mr._Primal",
-        time: 23,
-        message: message,
-        avatar: chatItem,
-    };
-    dispatch(addChat(newitem));
+const addChat = async (chat: Chat) => {
+  try {
+    await axios.post(endpoint, chat);
+  } catch (error) {
+    console.log(error.message);
+  }
+
+  chatDispatch.addChat(chat);
+  return;
 };
 
-export default authObject;
+const chatService = { addChat, getChats };
+
+export default chatService;
