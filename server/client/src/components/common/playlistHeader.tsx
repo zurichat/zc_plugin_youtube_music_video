@@ -31,7 +31,6 @@ const PlaylistHeader = () => {
   };
 
   const handleAddSongToggle = () => {
-    console.log("calling ");
     uiDispatch.showPasteUrl(true);
   };
 

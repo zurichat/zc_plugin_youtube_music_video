@@ -23,9 +23,15 @@ class MediaSerializer(serializers.Serializer):
 class CommentSerializer(serializers.Serializer):
     
     _id = serializers.ReadOnlyField()
-    message_content = serializers.CharField(max_length=256)
-    created_datetime = serializers.DateTimeField(default=timezone.now, read_only=True)
+    message = serializers.CharField(max_length=256)
+    created = serializers.DateTimeField(default=timezone.now, read_only=True)
     added_by = UserSerializer(many=True, read_only=True)
+    
+    # message = serializers.CharField(max_length=256)
+    # time = serializers.IntegerField(max_value=None, min_value=None)
+    # userId = serializers.CharField(max_length=256)
+    # name = serializers.CharField(max_length=256)
+    # avatar = serializers.CharField(max_length=256)
     
     # added_by = serializers.ListField(
     #     child=serializers.CharField(max_length=128), allow_null=False

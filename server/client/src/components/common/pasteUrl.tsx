@@ -12,7 +12,7 @@ import { getSongMetadat } from "../../utils/metadata";
 
 import songService from "../../services/songService";
 import authService from "../../services/authService";
-import log from "../../services/logService";
+import { error as errorLog } from "../../services/logService";
 
 interface Props {
   getSongById: (id: string) => Song;
@@ -23,9 +23,9 @@ const PasteUrl = (props: Props) => {
 
   const [url, setUrl] = useState("");
 
-  const pasteUrl = useSelector(uiSelect.showPasteUrl);
+  const showPasteUrl = useSelector(uiSelect.showPasteUrl);
 
-  if (!pasteUrl) return null;
+  if (!showPasteUrl) return null;
 
   const handleChange = (event: any) => setUrl(event.target.value);
 
@@ -37,7 +37,6 @@ const PasteUrl = (props: Props) => {
       const metadata = await getSongMetadat(url);
 
       const isExist = getSongById(metadata.id);
-
       if (isExist) throw Error("Song already in the library");
 
       const song: Song = {
@@ -46,10 +45,10 @@ const PasteUrl = (props: Props) => {
         likedBy: [],
       };
 
-      songService.addSong(song);
+      await songService.addSong(song);
       uiDispatch.showPasteUrl(false);
     } catch (e) {
-      log.error(e.message);
+      errorLog(e.message);
     }
 
     uiDispatch.loading(false);

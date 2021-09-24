@@ -98,7 +98,7 @@ class MediaView(APIView):
 
         data = read_data("test_collection")
 
-        # centrifugo_post("channel_name", {"event": "join_room"})
+        centrifugo_post("zuri-plugin-music", {"event": "join_room"})
         return Response(data)
 
 
@@ -134,7 +134,7 @@ class SongView(APIView):
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
         return Response(data, status=status.HTTP_202_ACCEPTED)
-        #Note: use only {"url": ""} in the payload
+        # Note: use only {"url": ""} in the payload
 
 
 class AddToRoomView(APIView):
@@ -181,6 +181,7 @@ class CommentView(APIView):
 
         if serializer.is_valid():
             payload = serializer.data
+
             data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
 
             return Response(data, status=status.HTTP_200_OK)
@@ -199,7 +200,7 @@ def leave_room(request):
     plugin_id = settings.PLUGIN_ID
     organization_id = settings.ORGANIZATON_ID
     collection_name = settings.ROOM_COLLECTION
-    
+
     room_data = read_data(settings.ROOM_COLLECTION)
     user_ids = room_data["data"][0]["room_user_ids"]
     _id = room_data["data"][0]["room_user_ids"]
@@ -221,10 +222,10 @@ def leave_room(request):
             # "object_id": user_ids,
             "filter": {}
         }
-        
+
         try:
             r = requests.post(url, data=json.dumps(payload))
-            #Note: use only {"_id": ""} in the payload
+            # Note: use only {"_id": ""} in the payload
 
             if r.status_code == 200:
                 return Response({"message": "User left room"},

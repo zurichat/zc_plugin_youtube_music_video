@@ -6,10 +6,15 @@ import Song from "../types/song";
 
 const songsSlice = createSlice({
   name: "songs",
-  initialState: getMockData(),
-  // initialState: [] as Song[],
+
+  // initialState: getMockData(),
+  initialState: [] as Song[],
 
   reducers: {
+    initialize: (state, action: PayloadAction<Song[]>) => {
+      return action.payload;
+    },
+
     addSong: (state, { payload }: PayloadAction<Song>) => {
       state.unshift(payload);
     },
@@ -35,11 +40,15 @@ const songsSlice = createSlice({
   },
 });
 
-export const { addSong, removeSong, likeSong } = songsSlice.actions;
+export const { addSong, removeSong, likeSong, initialize } = songsSlice.actions;
 
 export const songDispatch = {
   addSong: (payload: Song) => {
     store.dispatch({ type: addSong.type, payload });
+  },
+
+  initialize: (payload: Song[]) => {
+    store.dispatch({ type: initialize.type, payload });
   },
 
   removeSong: (payload: Song) => {
