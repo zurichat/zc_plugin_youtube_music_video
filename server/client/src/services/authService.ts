@@ -14,7 +14,8 @@ async function signin() {
 
   try {
     const { data } = await axios.post(endpoint, {
-
+      email: "pid@oxy.com",
+      password: "pidoxy.com",
     });
 
     currentUser = data.data.user;
