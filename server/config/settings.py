@@ -162,8 +162,8 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'YouTube Music Plugin API',
-    'DESCRIPTION': 'YouTube Music Plugin for Zuri.Chat',
+    'TITLE': 'Music Plugin API',
+    'DESCRIPTION': 'Music Plugin for Zuri.Chat',
     'VERSION': '1.0.0',
     # OTHER SETTINGS
 }
@@ -191,12 +191,12 @@ if bool(os.environ.get("PRODUCTION_SERVER", default="")):
 
 PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
 ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
-# CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
-CENTRIFUGO_TOKEN = "2829fc49-3e6b-4a55-bf02-3b1be88cfc24"
-# USER_ID = env("USER_ID")
+CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
+# CENTRIFUGO_TOKEN = "2829fc49-3e6b-4a55-bf02-3b1be88cfc24"
 
 ROOM_COLLECTION = "test_music_room"
 SONG_COLLECTION = "test_song"
 COMMENTS_COLLECTION = "test_comments"
+USER_COLLECTION = "test_members"
 
 APPEND_SLASH = False

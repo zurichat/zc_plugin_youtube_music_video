@@ -3,8 +3,8 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
-
-from music.serializers import CommentSerializer
+from rest_framework.permissions import IsAdminUser
+from music.serializers import CommentSerializer, UserSerializer, RoomSerializer
 from music.utils.data_access import get_video, read_data, write_data, centrifugo_post, delete_data
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -202,22 +202,23 @@ def leave_room(request):
     
     room_data = read_data(settings.ROOM_COLLECTION)
     user_ids = room_data["data"][0]["room_user_ids"]
-    _id = room_data["data"][0]["_id"]
+    _id = room_data["data"][0]["room_user_ids"]
+    # _id = room_data["data"][0]["_id"]
 
     if request.method == 'GET':
         data = read_data(collection_name)
         return Response(data)
 
-    elif request.method == 'POST':
+    elif request.method == 'PUT':
 
-        url = 'https://api.zuri.chat/data/delete'
+        url = "https://api.zuri.chat/data/write"
         payload = {
             "plugin_id": plugin_id,
             "organization_id": organization_id,
             "collection_name": collection_name,
             "bulk_delete": False,
-            # "object_id": _id,
-            "object_id": user_ids,
+            "object_id": _id,
+            # "object_id": user_ids,
             "filter": {}
         }
         
@@ -233,7 +234,6 @@ def leave_room(request):
 
         except exceptions.ConnectionError as e:
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
-
 
 
 @api_view(['GET', 'POST'])
