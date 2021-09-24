@@ -98,7 +98,7 @@ class MediaView(APIView):
 
         data = read_data("test_collection")
 
-        # centrifugo_post("channel_name", {"event": "join_room"})
+        centrifugo_post("zuri-plugin-music", {"event": "join_room"})
         return Response(data)
 
 
@@ -123,18 +123,17 @@ class SongView(APIView):
 
         payload = {
             "title": media_info["title"],
-            "track_url": media_info["track_url"],
-            "thumbnail_url": media_info["thumbnail_url"],
             "duration": media_info["duration"],
-            "added_by_id": "1",
-            "song_like_ids": [
-                "1"
-            ]
+            "albumCover": media_info["thumbnail_url"],
+            "url": media_info["track_url"],
+            "addedBy": " ",
+            "likedBy": ["1"]
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
         return Response(data, status=status.HTTP_202_ACCEPTED)
-        #Note: use only {"url": ""} in the payload
+        # Note: use only {"url": ""} in the payload
+
 
 
 class AddToRoomView(APIView):
@@ -147,6 +146,8 @@ class AddToRoomView(APIView):
         user_ids.append(request.data["id"])
         return _id, user_ids
 
+
+class getSongs(APIView):
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
@@ -188,6 +189,7 @@ class CommentView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class RoomView(APIView):
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
@@ -199,7 +201,7 @@ def leave_room(request):
     plugin_id = settings.PLUGIN_ID
     organization_id = settings.ORGANIZATON_ID
     collection_name = settings.ROOM_COLLECTION
-    
+
     room_data = read_data(settings.ROOM_COLLECTION)
     user_ids = room_data["data"][0]["room_user_ids"]
     _id = room_data["data"][0]["_id"]
@@ -220,10 +222,10 @@ def leave_room(request):
             "object_id": user_ids,
             "filter": {}
         }
-        
+
         try:
             r = requests.post(url, data=json.dumps(payload))
-            #Note: use only {"_id": ""} in the payload
+            # Note: use only {"_id": ""} in the payload
 
             if r.status_code == 200:
                 return Response({"message": "User left room"},
@@ -234,14 +236,12 @@ def leave_room(request):
         except exceptions.ConnectionError as e:
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
 
-
-
 # @api_view(['GET', 'POST'])
 # def remove_song(request):
 #     plugin_id = settings.PLUGIN_ID
 #     organization_id = settings.ORGANIZATON_ID
 #     collection_name = settings.SONG_COLLECTION
-    
+
 #     song_data = read_data(settings.SONG_COLLECTION)
 #     user_ids = song_data["data"][0]["added_by_id"]
 #     _id = song_data["data"][0]["_id"]
@@ -261,7 +261,7 @@ def leave_room(request):
 #             "object_id": _id,
 #             "filter": {}
 #         }
-        
+
 #         try:
 #             r = requests.post(url, data=json.dumps(payload))
 #             #Note: use only {"_id": ""} in the payload
@@ -273,4 +273,4 @@ def leave_room(request):
 #                 return Response({"error": r.json()['message']}, status=r.status_code)
 
 #         except exceptions.ConnectionError as e:
-#             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)    
+#             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
