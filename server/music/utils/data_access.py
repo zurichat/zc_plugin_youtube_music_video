@@ -99,7 +99,7 @@ def centrifugo_post(room, data):
 
     response = request_client.request(
         method="POST",
-        url="http://localhost:8000/api",
+        url="https://realtime.zuri.chat/api",
         headers=headers,
         post_data=post_data
     )
