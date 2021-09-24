@@ -163,13 +163,6 @@ class AddToRoomView(APIView):
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
-class CreateRoomView(APIView):
-    def post(self, request):
-        payload = {}
-        data = write_data(settings.ROOM_COLLECTION, payload=payload)
-        return Response(data)
-
-
 class CommentView(APIView):
 
     def get(self, request):
@@ -189,7 +182,16 @@ class CommentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class CreateRoomView(APIView):
+
+    def post(self, request):
+        payload = {}
+        data = write_data(settings.ROOM_COLLECTION, payload=payload)
+        return Response(data)
+
+
 class RoomView(APIView):
+    
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
