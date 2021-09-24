@@ -8,7 +8,7 @@ const connect = () => {
   songService.getSongs();
 
   const centrifuge = new Centrifuge(
-    "https://realtime.zuri.chat/connection/sockjs"
+    "wss://realtime.zuri.chat/connection/websocket"
   );
 
   centrifuge.subscribe("zuri-plugin-music", (message) => console.log(message));
