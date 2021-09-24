@@ -1,5 +1,5 @@
 import Centrifuge from "centrifuge";
-import SockJS from "sockjs-client";
+// import SockJS from "sockjs-client";
 
 import songService from "./songService";
 import chatService from "./chatService";
@@ -10,24 +10,16 @@ const connect = () => {
   chatService.getChats();
 
   const centrifuge = new Centrifuge(
-    "https://centrifuge.example.com/connection/sockjs",
-    {
-      sockjs: SockJS,
-    }
+    "wss://realtime.zuri.chat/connection/websocket"
   );
 
-  centrifuge.subscribe("zuri-plugin-music", {
-    publish: function (message) {
-      // {type: "add_song", id...}
-      console.log(message);
-    },
-  });
+  centrifuge.subscribe("zuri-plugin-music", (message) => console.log(message));
 
   centrifuge.on("connect", (context) => {
-    console.log(context);
+    // console.log(context);
   });
 
-  // centrifuge.connect();
+  centrifuge.connect();
 };
 
 export default { connect };
