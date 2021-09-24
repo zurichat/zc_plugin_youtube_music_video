@@ -4,22 +4,22 @@ import Chat from "../types/chat";
 
 import avatar from "../media/chatItem.svg";
 
-const mock: Chat = {
-  id: Date.now() + "",
-  userId: Date.now() + "",
-  name: "Mr._Primal",
-  time: 1632221670207,
-  message: "Hello there",
-  avatar: avatar,
-};
+// const mock: Chat = {
+//   id: Date.now() + "",
+//   userId: Date.now() + "",
+//   name: "Mr._Primal",
+//   time: 1632221670207,
+//   message: "Hello there",
+//   avatar: avatar,
+// };
 
 const chatsSlice = createSlice({
   name: "chats",
 
-  initialState: [mock],
+  initialState: [] as Chat[],
 
   reducers: {
-    initialize: (state, { payload }: PayloadAction<Chat[]>) => {
+    setChats: (state, { payload }: PayloadAction<Chat[]>) => {
       return payload;
     },
 
@@ -46,11 +46,10 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { addChat, initialize } = chatsSlice.actions;
+export const { addChat, setChats } = chatsSlice.actions;
 
 export const chatDispatch = {
-  initialize: (payload: Chat[]) =>
-    store.dispatch({ type: initialize.type, payload }),
+  set: (payload: Chat[]) => store.dispatch({ type: setChats.type, payload }),
 
   addChat: (payload: Chat) => store.dispatch({ type: addChat.type, payload }),
 };
