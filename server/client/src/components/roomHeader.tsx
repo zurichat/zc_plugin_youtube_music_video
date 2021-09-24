@@ -12,8 +12,22 @@ import arrow from "../media/arrow-down.svg";
 import message from "../media/message.svg";
 
 import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import httpService from "../services/httpService";
 
-const roomHeader = ({ userCount }) => {
+const roomHeader = () => {
+  const userCountEndpoint = "/header-user-count";
+  const [userCount, setUserCount] = useState(0);
+
+  useEffect(() => {
+    httpService
+      .get(userCountEndpoint)
+      .then((res) => {
+        setUserCount(res.data);
+      })
+      .catch((err) => console.log(err.message));
+  }, []);
+
   const showExitModal = useSelector(uiSelect.showExitModal);
 
   return (

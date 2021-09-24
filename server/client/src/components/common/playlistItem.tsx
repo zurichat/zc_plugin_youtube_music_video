@@ -29,7 +29,7 @@ function PlaylistItem(props: Props) {
   const liked = likedBy.some((id) => id === userId);
 
   const countText = (count: number) =>
-    count === 0 ? "" : count === 1 ? `${count} like` : `${count} likes`;
+    count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
 
   const handleLike = () => {
     songService.likeSong({ songId, userId, like: !liked });
