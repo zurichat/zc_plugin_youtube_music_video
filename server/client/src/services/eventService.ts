@@ -1,5 +1,4 @@
 import Centrifuge from "centrifuge";
-import chatService from "./chatService";
 
 import songService from "./songService";
 import chatService from "./chatService";

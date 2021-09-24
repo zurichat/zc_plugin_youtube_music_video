@@ -25,7 +25,6 @@ const sanitizer = (chat) => {
 const getChats = async () => {
   try {
     let result = await (await httpService.get(commentEndpoint)).data.data;
-    result.splice(0,14);
     for(let i = 0; i < result.length; i++) {
       result[i] = sanitizer(result[i]);
       chatDispatch.addChat(result[i]);
