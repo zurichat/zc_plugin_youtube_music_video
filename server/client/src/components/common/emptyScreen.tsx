@@ -1,11 +1,18 @@
 import styled from "styled-components";
 import Illustration from "../../media/emptyScreen.svg";
 
+// @ts-ignore
+import { GetUserInfo } from "@zuri/zuri-control";
+
 import { uiDispatch } from "../../store/uiSlice";
 
 import PasteUrl from "./pasteUrl";
 
 const EmptyScreen = () => {
+  const handleClick = () => {
+    GetUserInfo();
+    uiDispatch.showPasteUrl(true);
+  };
   return (
     <Wrapper>
       <PasteUrl />
@@ -14,7 +21,7 @@ const EmptyScreen = () => {
         <img src={Illustration} alt="add songs illustraat" />
         <h3 className="heading_3">There are no songs here!</h3>
         <p className="text">Start adding your songs</p>
-        <button className="btn" onClick={() => uiDispatch.showPasteUrl(true)}>
+        <button className="btn" onClick={handleClick}>
           Add songs
         </button>
       </div>
