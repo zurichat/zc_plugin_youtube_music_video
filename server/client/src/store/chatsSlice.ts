@@ -19,6 +19,10 @@ const chatsSlice = createSlice({
   initialState: [mock],
 
   reducers: {
+    initialize: (state, { payload }: PayloadAction<Chat[]>) => {
+      return payload;
+    },
+
     addChat: (state, { payload }: PayloadAction<Chat>) => {
       state.push(payload);
     },
@@ -42,12 +46,13 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { addChat } = chatsSlice.actions;
+export const { addChat, initialize } = chatsSlice.actions;
 
 export const chatDispatch = {
-  addChat: (payload: Chat) => {
-    store.dispatch({ type: addChat.type, payload });
-  },
+  initialize: (payload: Chat[]) =>
+    store.dispatch({ type: initialize.type, payload }),
+
+  addChat: (payload: Chat) => store.dispatch({ type: addChat.type, payload }),
 };
 
 export const chatSelect = {
