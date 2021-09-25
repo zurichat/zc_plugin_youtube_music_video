@@ -24,14 +24,14 @@ const roomHeader = () => {
   const { userCountEndpoint } = httpService.endpoints;
   const [userCount, setUserCount] = useState(0);
 
-  useEffect(() => {
-    httpService
-      .get(userCountEndpoint)
-      .then((res) => {
-        setUserCount(res.data);
-      })
-      .catch((err) => console.log(err.message));
-  }, []);
+  // useEffect(() => {
+  //   httpService
+  //     .get(userCountEndpoint)
+  //     .then((res) => {
+  //       setUserCount(res.data);
+  //     })
+  //     .catch((err) => console.log(err.message));
+  // }, []);
 
   const showExitModal = useSelector(uiSelect.showExitModal);
   const showChat = useSelector(uiSelect.showChat);
@@ -60,7 +60,7 @@ const roomHeader = () => {
         </Link>
       </div>
       <div className="header-right">
-        <div className="header-right header-right-flex">
+        <div className="header-right-flex">
           <div className="header-avatar">
             <div className="pc-avatars">
               <img className="avatar-1" src={avatar1} alt="avatar name" />
@@ -164,6 +164,8 @@ const Wrapper = styled.div`
   }
 
   .header-right-flex {
+    display: flex;
+    align-items: center;
     padding: 0 8px 0 3px;
     background: #01d892;
     border: 1px solid #01d892;
@@ -175,6 +177,7 @@ const Wrapper = styled.div`
 
   .header-avatar {
     display: flex;
+    height: -webkit-fill-available;
     align-items: center;
     position: relative;
     width: 64px;
@@ -189,10 +192,13 @@ const Wrapper = styled.div`
 
   .pc-avatars {
     display: flex;
+    align-items: center;
+    height: -webkit-fill-available;
   }
 
   .avatar-1,
-  .avatar-2 {
+  .avatar-2,
+  .avatar-3 {
     position: absolute;
     width: 24px;
     border: 1px solid #01d892;
@@ -208,15 +214,7 @@ const Wrapper = styled.div`
     left: 19px;
   }
 
-  .avatar-1,
-  .avatar-2,
   .avatar-3 {
-    top: -13.09px;
-  }
-
-  .avatar-3 {
-    position: absolute;
-    border: 1px solid transparent;
     left: 39px;
   }
 
