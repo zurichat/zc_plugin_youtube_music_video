@@ -10,12 +10,12 @@ interface Props {
 }
 
 function PlaylistItems({ songs }: Props) {
-  let filteredSongs = [];
+  
  
-     filteredSongs = songs
+  let filteredSongs = songs
      .slice(0, songs.length)
      .reverse()
-     .slice(0,10) 
+     .slice(0,15) 
     
   
   return (
