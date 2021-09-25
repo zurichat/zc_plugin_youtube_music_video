@@ -10,7 +10,7 @@ function UserInfo() {
     import("@zuri/zuri-control")
       .then(({ GetUserInfo }) => {
         const { _id: id, first_name: name, ...rest } = GetUserInfo();
-        console.log({ id, name, ...rest });
+        console.log({ id, name, rest });
         userDispatch.setCurrentUser({ ...user, id, name });
       })
       .catch((e) => console.log({ e }));

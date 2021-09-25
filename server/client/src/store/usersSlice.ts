@@ -1,9 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import store, { RootState } from ".";
 
+import avatar from "../media/chatItem.svg";
 import User from "../types/user";
 
-const user: User = { id: "kdkdkdkdkd", avatar: "", name: "Justiz", token: "" };
+const user: User = {
+  id: "juztiz5000kdkdkdkdkdkdkd",
+  avatar,
+  name: "Justiz",
+  token: "",
+  orgId: "",
+};
 
 const usersSlice = createSlice({
   name: "users",
