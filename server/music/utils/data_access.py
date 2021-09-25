@@ -169,7 +169,7 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
     if object_id is None:
         object_id = ""
 
-    post_data = {
+    data = {
         "plugin_id": plugin_id,
         "organization_id": org_id,
         "collection_name": collection,
@@ -184,7 +184,25 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
         method=method,
         url="https://api.zuri.chat/data/delete",
         headers={"Authorization": "headers"},
-        post_data=post_data
+        data=data
     )
     return response.response_data
+
+
+# def delete(collection, obj_id):
+#         body = dict(
+#             plugin_id=plugin_id,
+#             organization_id=org_id,
+#             collection_name=collection,
+#             object_id=obj_id,
+#         )
+#         try:
+#             response = requests.post(url="https://api.zuri.chat/data/delete", json=body)
+#         except requests.exceptions.RequestException as e:
+#             print(e)
+#             return None
+#         if response.status_code == 200:
+#             return response.json()
+#         else:
+#             return {"status_code": response.status_code, "message": response.reason}
 
