@@ -44,7 +44,8 @@ function App() {
       </div>
 
       <div>
-        <ToastContainer theme="colored" />
+
+        <ToastContainer theme = "colored" autoClose = {2000} hideProgressBar = {true} toastClassName = "toast-wrapper" bodyClassName = "toast-body" />
 
         {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
 
@@ -84,6 +85,56 @@ const Wrapper = styled.div`
     position: absolute;
     top: 100px;
     z-index: 111;
+  }
+
+
+
+
+
+
+
+
+
+  // div .toast-success-container {
+  //   width: 102%;
+  //   position: fixed;
+  //   top: 55px;
+  //   left: -4px;
+  //   .toast-success-wrapper {
+  //     background-color: #CBFFEE;
+  //     border-radius: 0px;
+  //     .toast-success-body {
+  //       color: black;
+  //       display: flex;
+  //       justify-content: center;
+  //     }
+  //   }
+  // }
+
+  .Toastify__toast-container {
+    width: 102%;
+    position: fixed;
+    top: 55px;
+    left: -4px;
+
+    .Toastify__toast--success {
+      background-color: #CBFFEE;
+      color: black;
+      display: flex;
+      justify-content: center;
+    }
+
+    .Toastify__toast--error {
+      background: #FFF1F3;
+      color: red;
+      display: flex;
+      justify-content: center;
+    }
+
+    .toast-body {
+      display: flex;
+      justify-content: center;
+    }
   }
 `;
 
