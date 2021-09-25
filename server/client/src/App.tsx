@@ -11,9 +11,7 @@ import MusicRoom from "./components/musicRoom";
 import chatMediaQuery from "./utils/chatMedia";
 
 import { uiSelect } from "./store/uiSlice";
-import authService from "./services/authService";
 import eventService from "./services/eventService";
-import userService from "./services/userService";
 
 import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,7 +23,6 @@ import UserInfo from "./components/userInfo";
 
 function App() {
   useEffect(() => {
-    authService.signin().then(() => userService.addToRoom());
     eventService.connect();
   }, []);
 
@@ -51,7 +48,13 @@ function App() {
       </div>
 
       <div>
-        <ToastContainer theme="colored" />
+        <ToastContainer
+          theme="colored"
+          autoClose={2000}
+          hideProgressBar={true}
+          toastClassName="toast-wrapper"
+          bodyClassName="toast-body"
+        />
 
         {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
 
@@ -91,6 +94,32 @@ const Wrapper = styled.div`
     position: absolute;
     top: 100px;
     z-index: 111;
+  }
+
+  .Toastify__toast-container {
+    width: 102%;
+    position: fixed;
+    top: 55px;
+    left: -4px;
+
+    .Toastify__toast--success {
+      background-color: #cbffee;
+      color: black;
+      display: flex;
+      justify-content: center;
+    }
+
+    .Toastify__toast--error {
+      background: #fff1f3;
+      color: red;
+      display: flex;
+      justify-content: center;
+    }
+
+    .toast-body {
+      display: flex;
+      justify-content: center;
+    }
   }
 `;
 
