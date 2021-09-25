@@ -10,14 +10,24 @@ function UserInfo() {
     import("@zuri/zuri-control")
       .then(({ GetUserInfo }) => {
         const { _id: id, first_name: name, ...rest } = GetUserInfo();
-        console.log({ id, name, ...rest });
+        console.log({ id, name, rest });
         userDispatch.setCurrentUser({ ...user, id, name });
       })
       .catch((e) => console.log({ e }));
   }, []);
 
   return (
-    <div style={{ position: "fixed", bottom: "20px", display: "none" }}></div>
+    <div
+      style={{
+        position: "fixed",
+        bottom: "20px",
+        display: "none",
+        width: "50px",
+        height: "50px",
+      }}
+    >
+      Here
+    </div>
   );
 }
 
