@@ -9,9 +9,9 @@ function getCurrentUser(): User {
 }
 
 async function addToRoom() {
-  const { id } = getCurrentUser();
+  const { id, orgId } = getCurrentUser();
 
-  return httpService.post(enterEndpoint, { userId: id }).then(
+  return httpService.post(enterEndpoint, { userId: id, orgId }).then(
     (r) => r,
     (e) => e
   );
