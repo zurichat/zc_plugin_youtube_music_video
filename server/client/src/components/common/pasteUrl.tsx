@@ -8,19 +8,15 @@ import Song from "../../types/song";
 import { RootState } from "../../store";
 import { uiDispatch, uiSelect } from "../../store/uiSlice";
 
-import { getSongMetadat } from "../../utils/metadata";
-
 import songService from "../../services/songService";
-import authService from "../../services/authService";
 import { error as errorLog } from "../../services/logService";
+import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
 
 interface Props {
-  getSongById: (id: string) => Song;
+  getSongByUrl: (url: string) => Song;
 }
 
 const PasteUrl = (props: Props) => {
-  const { getSongById } = props;
-
   const [url, setUrl] = useState("");
 
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);
@@ -31,21 +27,14 @@ const PasteUrl = (props: Props) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    if (props.getSongByUrl(url)) return errorLog("The song already exist.");
+
     uiDispatch.loading(true);
 
     try {
-      const metadata = await getSongMetadat(url);
-
-      const isExist = getSongById(metadata.id);
-      if (isExist) throw Error("Song already in the library");
-
-      const song: Song = {
-        ...metadata,
-        addedBy: authService.getCurrentUser().name,
-        likedBy: [],
-      };
-
-      await songService.addSong(song);
+      getSongIdFromYouTubeUrl(url);
+      await songService.addSongbyUrl(url);
       uiDispatch.showPasteUrl(false);
     } catch (e) {
       errorLog(e.message);
@@ -139,7 +128,7 @@ const Wrapper = styled.div`
 `;
 
 const mapStateToProps = (state: RootState) => ({
-  getSongById: (songId) => state.songs.find((song) => song.id === songId),
+  getSongByUrl: (url) => state.songs.find((song) => song.url === url),
 });
 
 export default connect(mapStateToProps)(PasteUrl);
