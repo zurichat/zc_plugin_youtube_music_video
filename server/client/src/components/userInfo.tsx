@@ -17,7 +17,17 @@ function UserInfo() {
   }, []);
 
   return (
-    <div style={{ position: "fixed", bottom: "20px", display: "none" }}></div>
+    <div
+      style={{
+        position: "fixed",
+        bottom: "20px",
+        display: "none",
+        width: "50px",
+        height: "50px",
+      }}
+    >
+      Here
+    </div>
   );
 }
 
