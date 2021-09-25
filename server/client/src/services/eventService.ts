@@ -34,7 +34,7 @@ const connect = () => {
     // console.log({ context });
   });
 
-  centrifuge.connect();
+  // centrifuge.connect();
 };
 
 export default { connect };
