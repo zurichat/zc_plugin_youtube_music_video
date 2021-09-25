@@ -6,6 +6,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from django.views.generic import TemplateView
 
 
+
 urlpatterns = [
     # coming from frontend app using react every thing we connect in App.js in components will be
     # rendered here in IndexView using Same Django app Server

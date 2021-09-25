@@ -1,12 +1,23 @@
 from django.utils import timezone
 from rest_framework import serializers
+from .models import Room, RoomUser
 
 
-class UserSerializer(serializers.Serializer):
+class RoomUserSerializer(serializers.Serializer):
     
     _id = serializers.ReadOnlyField()
     name = serializers.CharField(max_length=256)
     avatar = serializers.CharField(max_length=256)
+
+    def create(self, validated_data):
+        return RoomUser(**validated_data)
+
+    # def update(self, instance, validated_data):
+    #     instance._id = validated_data.get('_id', instance._id)
+    #     instance.name = validated_data.get('name', instance.name)
+    #     instance.avatar = validated_data.get('avatar', instance.avatar)
+        
+    #     return instance
 
     def __str__(self):
         return str()
@@ -24,13 +35,11 @@ class CommentSerializer(serializers.Serializer):
     
     _id = serializers.ReadOnlyField()
     message = serializers.CharField(max_length=256)
-    created = serializers.DateTimeField(default=timezone.now, read_only=True)
-    added_by = UserSerializer(many=True, read_only=True)
+    time = serializers.DateTimeField(default=timezone.now, read_only=True)
+    # added_by = RoomUserSerializer(many=True, read_only=True)
     
-    # message = serializers.CharField(max_length=256)
-    # time = serializers.IntegerField(max_value=None, min_value=None)
-    # userId = serializers.CharField(max_length=256)
-    # name = serializers.CharField(max_length=256)
+    userId = serializers.CharField(max_length=256)
+    name = serializers.CharField(max_length=256)
     # avatar = serializers.CharField(max_length=256)
     
     # added_by = serializers.ListField(
@@ -44,14 +53,25 @@ class CommentSerializer(serializers.Serializer):
 class RoomSerializer(serializers.Serializer):
     
     _id = serializers.ReadOnlyField()
+    org_id = serializers.CharField(max_length=100, required=False)
     room_name = serializers.CharField(max_length=100)
     description = serializers.CharField(max_length=300)
     type = serializers.CharField(max_length=50, required=True)
-    members = UserSerializer(many=True, read_only=True)
+    members = RoomUserSerializer(many=True, read_only=True)
+
+    def create(self, validated_data):
+        return Room(**validated_data)
+
+    # def update(self, instance, validated_data):
+    #     instance._id = validated_data.get('_id', instance._id)
+    #     instance.room_name = validated_data.get('room_name', instance.room_name)
+    #     instance.description = validated_data.get('description', instance.description)
+    #     instance.type = validated_data.get('type', instance.type)
+    #     instance.members = validated_data.get('members', instance.members)
+        # return instance
 
     def __str__(self):
         return str()
-
 
 
 

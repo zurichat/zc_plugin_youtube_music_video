@@ -1,16 +1,21 @@
+from music.models import Room
 from django.conf import settings
-from rest_framework import status
-from rest_framework.generics import GenericAPIView
-from rest_framework.response import Response
 from django.http import JsonResponse
-from rest_framework.permissions import IsAdminUser
-from music.serializers import CommentSerializer, UserSerializer, RoomSerializer
-from music.utils.data_access import get_video, read_data, write_data, centrifugo_post, delete_data
+
+from rest_framework import status
+from rest_framework.generics import GenericAPIView, ListCreateAPIView
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+
+# from rest_framework.permissions import IsAdminUser
+from music.serializers import *
+from music.utils.data_access import *
+from music.models import *
+from requests import exceptions
+
 import requests
 import json
-from requests import exceptions
 
 
 class SidebarView(GenericAPIView):
@@ -52,6 +57,44 @@ class SidebarView(GenericAPIView):
             "success": "true"
         }
         return JsonResponse(data, safe=False)
+
+
+def side_bar(request):
+    collections = "dm_rooms"
+    org_id = request.GET.get("org", None)
+    user = request.GET.get("user", None)
+    user_rooms = get_rooms(user_id=user)
+    rooms = []
+    for room in user_rooms:
+        profile_list=[]
+        if "org_id" in room:
+            if org_id == room["org_id"]:
+                for user_id in room["room_user_ids"]:
+                    profile = get_user_profile(org_id,user_id)
+                    if profile["status"]==200:
+                        user_name=profile["data"]["user_name"]
+                        image_url=profile["data"]["image_url"]
+                        data = {"user_name":user_name, "image_url":image_url}
+                        profile_list.append(data)
+                    elif profile["status"]==500:
+                        profile_list.append("user profile not in database")
+                room["room_user_profiles"] = profile_list
+                room["room_url"] = f"dm/messages/{room['_id']}"
+                rooms.append(room)
+    side_bar = {
+        "name": "DM Plugin",
+        "description": "Sends messages between users",
+        "plugin_id": "6135f65de2358b02686503a7",
+        "organisation_id": f"{org_id}",
+        "user_id": f"{user}",
+        "group_name": "DM",
+        "show_group": False,
+        "public_rooms": [],
+        "joined_rooms": rooms,
+        # List of rooms/collections created whenever a user starts a DM chat with another user
+        # This is what will be displayed by Zuri Main
+    }
+    return JsonResponse(side_bar, safe=False)
 
 
 class PluginInfoView(GenericAPIView):
@@ -135,7 +178,6 @@ class SongView(APIView):
         # Note: use only {"url": ""} in the payload
 
 
-
 class AddToRoomView(APIView):
     @staticmethod
     def get_obj_id_and_append_user_id(request):
@@ -146,8 +188,6 @@ class AddToRoomView(APIView):
         user_ids.append(request.data["id"])
         return _id, user_ids
 
-
-class getSongs(APIView):
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
@@ -183,30 +223,62 @@ class CommentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CreateRoomView(APIView):
-
-    def post(self, request):
-        payload = {}
-        data = write_data(settings.ROOM_COLLECTION, payload=payload)
-        return Response(data)
-
-
 class RoomView(APIView):
-    
-    def get(self, request):
+
+    def get(self, request, format=None):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
+    def post(self, request, format=None):
+        serializer = RoomSerializer(data=request.data)
 
+        if serializer.is_valid():
+            payload = serializer.data
+
+            data = write_data(settings.ROOM_COLLECTION, payload=payload)
+            # serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    
+class RoomDetail(APIView):
+
+    def get(self, request, format=None):
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
+
+    def put(self, request, format=None):
+        serializer = RoomSerializer(data=request.data)
+
+        if serializer.is_valid():
+            payload = serializer.data
+
+            data = put_data(settings.ROOM_COLLECTION, payload=payload)
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MemberView(APIView):
+
+    def get(self, request):
+        data = read_data(settings.MEMBERS_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
+
+   
+
+#removes a single user id from the members collection
 @api_view(['GET', 'POST'])
 def leave_room(request):
     plugin_id = settings.PLUGIN_ID
     organization_id = settings.ORGANIZATON_ID
-    collection_name = settings.ROOM_COLLECTION
-
-    room_data = read_data(settings.ROOM_COLLECTION)
-    user_ids = room_data["data"][0]["room_user_ids"]
-    _id = room_data["data"][0]["room_user_ids"]
+    collection_name = settings.MEMBERS_COLLECTION
+    
+    member_data = read_data(settings.MEMBERS_COLLECTION)
+    # user_ids = room_data["data"][0]["room_user_ids"]
+    _id = member_data["data"][0]["room_user_ids"]
     # _id = room_data["data"][0]["_id"]
 
     if request.method == 'GET':
@@ -216,6 +288,9 @@ def leave_room(request):
     elif request.method == 'PUT':
 
         url = "https://api.zuri.chat/data/write"
+
+        # db.collection.update({ d : 2014001 , m :123456789},
+        #               {$pull : { "topups.data" : {"val":NumberLong(200)} } } )
         payload = {
             "plugin_id": plugin_id,
             "organization_id": organization_id,
@@ -247,7 +322,6 @@ def remove_song(request):
     collection_name = settings.SONG_COLLECTION
     
     song_data = read_data(settings.SONG_COLLECTION)
-    user_ids = song_data["data"][0]["added_by_id"]
     _id = song_data["data"][0]["_id"]
 
     if request.method == 'GET':
@@ -272,6 +346,45 @@ def remove_song(request):
 
             if r.status_code == 200:
                 return Response({"message": "Song deleted"},
+                                status=status.HTTP_200_OK)
+            else:
+                return Response({"error": r.json()['message']}, status=r.status_code)
+
+        except exceptions.ConnectionError as e:
+            return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)    
+
+
+@api_view(['GET', 'POST'])
+def remove_comments(request):
+    plugin_id = settings.PLUGIN_ID
+    organization_id = settings.ORGANIZATON_ID
+    collection_name = settings.COMMENTS_COLLECTION
+    
+    chat_data = read_data(settings.COMMENTS_COLLECTION)
+    _id = chat_data["data"][0]["_id"]
+
+    if request.method == 'GET':
+        data = read_data(collection_name)
+        return Response(data)
+
+    elif request.method == 'POST':
+
+        url = 'https://api.zuri.chat/data/delete'
+        payload = {
+            "plugin_id": plugin_id,
+            "organization_id": organization_id,
+            "collection_name": collection_name,
+            "bulk_delete": False,
+            "object_id": _id,
+            "filter": {}
+        }
+        
+        try:
+            r = requests.post(url, data=json.dumps(payload))
+            #Note: use only {"_id": ""} in the payload
+
+            if r.status_code == 200:
+                return Response({"message": "Comment removed"},
                                 status=status.HTTP_200_OK)
             else:
                 return Response({"error": r.json()['message']}, status=r.status_code)

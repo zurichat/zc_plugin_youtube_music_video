@@ -192,14 +192,12 @@ if bool(os.environ.get("PRODUCTION_SERVER", default="")):
 PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
 ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
 CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
-<<<<<<< HEAD
-# CENTRIFUGO_TOKEN = "2829fc49-3e6b-4a55-bf02-3b1be88cfc24"
-=======
->>>>>>> fd39d5429c5f279fbb445cbc5c88319408dd4cdc
 
 ROOM_COLLECTION = "test_music_room"
 SONG_COLLECTION = "test_song"
 COMMENTS_COLLECTION = "test_comments"
-USER_COLLECTION = "test_members"
+MEMBERS_COLLECTION = "test_members"
 
 APPEND_SLASH = False
+
+#https://api.zuri.chat/organizations

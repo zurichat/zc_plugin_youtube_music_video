@@ -6,8 +6,20 @@ class Media:
 
 
 class RoomUser:
-    def __init__(self, user_ids, user_name, avatar):
+    def __init__(self, _ids, name, avatar):
     
-        self.user_ids = user_ids
-        self.user_name = user_name
+        self._ids = _ids
+        self.name = name
         self.avatar = avatar
+
+
+class Room:
+    def __init__(self, _ids, room_name, description, type, members):
+
+        self._ids = _ids
+        self.room_name = room_name
+        self.description = description
+        self.type = type
+        self.members = members
+
+       
