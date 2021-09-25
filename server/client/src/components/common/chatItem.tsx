@@ -3,14 +3,6 @@ import Moment from "react-moment";
 
 import Chat from "../../types/chat";
 
-const Time = (time) => {
-  var hours = (time.getHours() < 13) ? time.getHours() : time.getHours() - 12;
-  var hour = (hours < 10) ? "0" + hours : hours;
-  var minute = (time.getMinutes() < 10) ? "0" + time.getMinutes() : time.getMinutes();
-  var format = (time.getHours() < 12) ? "AM" : "PM";
-  return hour + ":" + minute + " " + format;
-}
-
 function ChatItem({ name, avatar, time, message }: Chat) {
   return (
     <Wrapper>
@@ -21,7 +13,7 @@ function ChatItem({ name, avatar, time, message }: Chat) {
         <div className="item-name-time">
           <span className="item-name">{name}</span>
           <span className="item-time">
-            {Time((new Date(time)))}
+            <Moment fromNow>{new Date(time).toJSON()}</Moment>
           </span>
         </div>
         <div className="item-text">{message}</div>
@@ -32,41 +24,31 @@ function ChatItem({ name, avatar, time, message }: Chat) {
 
 const Wrapper = styled.div`
   display: flex;
-  margin-bottom: 9px;
-  max-height: 646px;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
   color: hsla(300, 2%, 11%, 1);
 
   .item-avatar {
-    flex-basis: 36px;
-    height: 36px;
-    border-radius: 4px;
+    position: relative;
+    flex-basis: 50px;
+    height: 50px;
+    border-radius: 6px;
+    background-color: #bebebe;
     margin-right: 10px;
   }
 
   .item-content {
     flex-basis: 100%;
-    font-weight: 400;
   }
 
   .item-name-time {
     margin-bottom: 6px;
   }
 
-  .item-time {
-    font-size: 12px;
-    font-weight: 400;
-    color: #616061;
-  }
-
   .item-name {
-    font-size: 15px;
-    font-weight: 900;
+    font-size: 18px;
+    font-weight: 700;
     margin-right: 10px;
-  }
-
-  @media (max-width: 1000px) {
-    max-height: 488px;
   }
 `;
 

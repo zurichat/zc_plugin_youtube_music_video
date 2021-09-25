@@ -23,7 +23,6 @@ import avatar3 from "../media/avatar-3.svg";
 const roomHeader = () => {
   const { userCountEndpoint } = httpService.endpoints;
   const [userCount, setUserCount] = useState(0);
-  const showChat = useSelector(uiSelect.showChat);
 
   useEffect(() => {
     httpService
@@ -35,6 +34,7 @@ const roomHeader = () => {
   }, []);
 
   const showExitModal = useSelector(uiSelect.showExitModal);
+  const showChat = useSelector(uiSelect.showChat);
 
   return (
     <Wrapper className="header">
@@ -74,22 +74,22 @@ const roomHeader = () => {
           <div className="header-user-count">{userCount}</div>
         </div>
         <div>
-
           {/*  for pc */}
-          {!showChat && 
+          {!showChat && !window.matchMedia("(min-width: 1000px)") ? (
             <img
               src={message}
               alt="message count"
               className="header-message-count"
               onClick={() => uiDispatch.showChat(true)}
             />
-          }
-
+          ) : (
+            ""
+          )}
           {/* for mobile */}
           <img
             src={message}
             alt="message count"
-            className="header-message-count-mobile"
+            className="header-message-count mobile"
             onClick={() => uiDispatch.showChat(true)}
           />
         </div>
@@ -226,17 +226,12 @@ const Wrapper = styled.div`
 
   .header-message-count {
     margin-left: 40px !important;
-    display: block;
-  }
-
-  .header-message-count-mobile {
-    display: none;
   }
 
   @media screen and (max-width: 1000px) {
     background-color: #27ae60;
     padding: 0 20px;
-    height: 48px;
+    max-height: 48px;
 
     .mobile-avatar {
       display: flex;
@@ -279,15 +274,11 @@ const Wrapper = styled.div`
       line-height: 12px;
     }
 
-    .header-message-count-mobile {
+    .header-message-count,
+    .mobile {
       display: block !important;
       margin-left: 24px !important;
     }
-
-    .header-message-count {
-      display: none;
-    }
-
   }
 `;
 
