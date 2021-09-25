@@ -10,10 +10,8 @@ const { songEndpoint, likeEndpoint } = httpService.endpoints;
 const getSongs = () => {
   httpService.get(songEndpoint).then(
     (result) => {
-      songDispatch.initialize([]);
-
-      console.log(result);
-
+      const data = result.data.data ?? [];
+      songDispatch.initialize(data);
       return result;
     },
 
@@ -25,14 +23,14 @@ const getSongs = () => {
 };
 
 const addSongbyUrl = async (url: string) => {
-  try {
-    const song = await httpService.post(songEndpoint, {
+  return httpService
+    .post(songEndpoint, {
       url,
-    });
-  } catch (error) {
-    log.error(error.message);
-  }
-  return;
+    })
+    .then(
+      (result) => result,
+      (error) => console.log(error)
+    );
 };
 
 const addSong = async (song: Song) => {

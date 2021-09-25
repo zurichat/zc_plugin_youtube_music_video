@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import store, { RootState } from ".";
 import Chat from "../types/chat";
+import { sanitize } from "../utils/sanitizer";
 
+<<<<<<< HEAD
 import avatar from "../media/user-pic.jpg";
 
 const mock: Chat = {
@@ -12,19 +14,22 @@ const mock: Chat = {
   message: "Hello there",
   avatar: avatar,
 };
+=======
+// import avatar from "../media/chatItem.svg";
+>>>>>>> 5484f5659a2d918b8eae38ac3edd09fb75297229
 
 const chatsSlice = createSlice({
   name: "chats",
 
-  initialState: [mock],
+  initialState: [] as Chat[],
 
   reducers: {
-    initialize: (state, { payload }: PayloadAction<Chat[]>) => {
-      return payload;
+    setChats: (state, { payload }: PayloadAction<Chat[]>) => {
+      return payload.map(sanitize);
     },
 
     addChat: (state, { payload }: PayloadAction<Chat>) => {
-      state.push(payload);
+      state.push(sanitize(payload));
     },
 
     removeChat: (state, { payload }: PayloadAction<Chat>) => {
@@ -46,11 +51,10 @@ const chatsSlice = createSlice({
   },
 });
 
-export const { addChat, initialize } = chatsSlice.actions;
+export const { addChat, setChats } = chatsSlice.actions;
 
 export const chatDispatch = {
-  initialize: (payload: Chat[]) =>
-    store.dispatch({ type: initialize.type, payload }),
+  set: (payload: Chat[]) => store.dispatch({ type: setChats.type, payload }),
 
   addChat: (payload: Chat) => store.dispatch({ type: addChat.type, payload }),
 };
