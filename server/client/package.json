@@ -52,6 +52,8 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@mui/icons-material": "^5.0.1",
+    "@mui/material": "^5.0.1",
     "@reduxjs/toolkit": "^1.6.1",
     "@types/jest": "^27.0.1",
     "@types/react": "^17.0.19",
