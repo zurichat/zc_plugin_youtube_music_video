@@ -1,14 +1,15 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { userDispatch, userSelect } from "../store/usersSlice";
 
 function UserInfo() {
+  const user = useSelector(userSelect.currentUser);
+
   const handleSetUser = () => {
     // @ts-ignore
     import("@zuri/zuri-control")
       .then(({ GetUserInfo }) => {
-        const info = GetUserInfo();
-        console.log(info);
+        const { first_name: name, Organizations } = GetUserInfo();
+        userDispatch.setCurrentUser({ ...user, name, orgId: Organizations[0] });
       })
       .catch();
   };
