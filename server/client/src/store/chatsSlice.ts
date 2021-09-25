@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import store, { RootState } from ".";
 import Chat from "../types/chat";
 
-import avatar from "../media/chatItem.svg";
+import avatar from "../media/user-pic.jpg";
 
 const mock: Chat = {
   id: Date.now() + "",

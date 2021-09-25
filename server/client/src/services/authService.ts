@@ -2,7 +2,7 @@ import axios from "axios";
 import { uiDispatch } from "../store/uiSlice";
 import User from "../types/user";
 
-import avatar from "../media/chatItem.svg";
+import avatar from "../media/user-pic.jpg";
 
 let currentUser = {} as any;
 

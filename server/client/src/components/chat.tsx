@@ -73,7 +73,7 @@ const Wrapper = styled.div`
 
   .chat-item-group {
     overflow-y: scroll;
-    margin-top: 10px;
+    margin-top: 1px;
     height: 350px;
   }
   .chat-item-group::-webkit-scrollbar {

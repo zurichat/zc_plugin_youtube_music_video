@@ -4,20 +4,29 @@ import store from "../../store";
 import { uiDispatch } from "../../store/uiSlice";
 
 import chatIcon from "../../media/chat.svg";
+import chatIcon__green from "../../media/chat-green.svg";
 import chatClose from "../../media/close.svg";
+import chatClose__black from "../../media/close-black.svg";
 
 function ChatHeader() {
   return (
     <Wrapper>
       <div className="chatHeader__left">
         <img src={chatIcon} alt="chat" className="chatHeader__icon" />
-        <div className="chatHeader__title">Chats</div>
+        <img src={chatIcon__green} alt="chat" className="chatHeader__icon__green" />
+        <div className="chatHeader__title">Chat</div>
       </div>
 
       <img
         src={chatClose}
         alt="chat"
         className="chatHeader__close"
+        onClick={() => uiDispatch.showChat(false)}
+      />
+      <img
+        src={chatClose__black}
+        alt="chat"
+        className="chatHeader__close__black"
         onClick={() => uiDispatch.showChat(false)}
       />
     </Wrapper>
@@ -28,7 +37,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 20px;
+  height: 26px;
   padding: 16px;
   background: hsla(160, 100%, 36%, 1);
   color: white;
@@ -45,22 +54,49 @@ const Wrapper = styled.div`
     height: 20px;
   }
 
+  .chatHeader__icon__green {
+    display: none;
+  }
+
   .chatHeader__title {
     font-size: 18px;
-    font-weight: 500;
+    font-weight: 700;
   }
 
   .chatHeader__close {
-    display: none;
     width: 30px;
     height: 30px;
     cursor: pointer;
   }
 
+  .chatHeader__close__black {
+    display: none;
+  }
+
   @media (max-width: 1000px) {
-    .chatHeader__close {
+    background: white;
+    color: #00B87C;
+
+    .chatHeader__close{
+      display: none;
+    }
+
+    .chatHeader__close__black{
       display: inline;
     }
+
+    .chatHeader__icon {
+      display: none;
+      width: 20px;
+      height: 20px;
+    }
+
+    .chatHeader__icon__green {
+      display: inline;
+      width: 20px;
+      height: 20px;
+    }
+
   }
 `;
 
