@@ -7,6 +7,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
+import Chats from "./components/chat"
 
 import chatMediaQuery from "./utils/chatMedia";
 
@@ -19,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 import userService from "./services/userService";
+import Chat from "./components/chat";
 
 function App() {
   useEffect(() => {
@@ -43,7 +45,7 @@ function App() {
         )}
       </div>
 
-      <div>
+      <div className="room-main">
         <ToastContainer theme="colored" />
 
         {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
@@ -54,6 +56,9 @@ function App() {
           <Route path="/music" component={MusicRoom} />
           <Redirect from="/" to="/music" />
         </Switch>
+      </div>
+      <div className="room-chat-container">
+        <Chat />
       </div>
     </Wrapper>
   );
@@ -84,6 +89,25 @@ const Wrapper = styled.div`
     position: absolute;
     top: 100px;
     z-index: 111;
+  }
+
+  .room-chat-container {
+    flex-grow: 0;
+  }
+
+  @media screen and (max-width: 1000px) {
+    justify-content: center;
+    align-items: center;
+
+    .room-chat-container {
+      position: fixed;
+      top: 60px;
+      background: rgb(240, 240, 240);
+      flex-basis: 40%;
+      display: flex;
+      justify-content: center;
+      z-index: 115;
+    }
   }
 `;
 

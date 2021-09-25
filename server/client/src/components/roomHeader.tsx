@@ -18,6 +18,7 @@ import httpService from "../services/httpService";
 const roomHeader = () => {
   const { userCountEndpoint } = httpService.endpoints;
   const [userCount, setUserCount] = useState(0);
+  const showChat = useSelector(uiSelect.showChat);
 
   useEffect(() => {
     httpService
@@ -63,6 +64,7 @@ const roomHeader = () => {
           />
         </div>
         <div className="header-user-count">{userCount}</div>
+        { !showChat &&
         <div>
           <img
             src={message}
@@ -71,6 +73,7 @@ const roomHeader = () => {
             onClick={() => uiDispatch.showChat(true)}
           />
         </div>
+        }
       </div>
     </Wrapper>
   );
@@ -83,7 +86,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   background: #ffffff;
   border-radius: 1px 0px;
-  height: 20px;
+  height: 15px;
   color: #27ae60;
   padding: 20px;
   margin-bottom: 10px;
@@ -129,7 +132,7 @@ const Wrapper = styled.div`
   }
 
   .header-message-count {
-    display: none;
+    display: block;
   }
 
   @media screen and (max-width: 1000px) {
@@ -149,10 +152,6 @@ const Wrapper = styled.div`
     .header-link {
       color: white;
       font-size: 18px;
-    }
-
-    .header-message-count {
-      display: block;
     }
   }
 `;
