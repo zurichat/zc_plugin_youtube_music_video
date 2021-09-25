@@ -13,7 +13,7 @@ import { error as errorLog } from "../../services/logService";
 import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
 
 interface Props {
-  getSongById: (id: string) => Song;
+  getSongByUrl: (url: string) => Song;
 }
 
 const PasteUrl = (props: Props) => {
@@ -27,6 +27,9 @@ const PasteUrl = (props: Props) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    if (props.getSongByUrl(url)) return errorLog("The song already exist.");
+
     uiDispatch.loading(true);
 
     try {
@@ -125,7 +128,7 @@ const Wrapper = styled.div`
 `;
 
 const mapStateToProps = (state: RootState) => ({
-  getSongById: (songId) => state.songs.find((song) => song.id === songId),
+  getSongByUrl: (url) => state.songs.find((song) => song.url === url),
 });
 
 export default connect(mapStateToProps)(PasteUrl);
