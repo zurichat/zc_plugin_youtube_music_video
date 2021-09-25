@@ -37,15 +37,14 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 26px;
-  padding: 16px;
+  height: 44px;
+  padding: 0 16px;
   background: hsla(160, 100%, 36%, 1);
   color: white;
 
   .chatHeader__left {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 90px;
   }
 
@@ -61,11 +60,12 @@ const Wrapper = styled.div`
   .chatHeader__title {
     font-size: 18px;
     font-weight: 700;
+    margin-left: 10.25px;
   }
 
   .chatHeader__close {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
   }
 
@@ -76,6 +76,7 @@ const Wrapper = styled.div`
   @media (max-width: 1000px) {
     background: white;
     color: #00B87C;
+    max-height: 64px;
 
     .chatHeader__close{
       display: none;

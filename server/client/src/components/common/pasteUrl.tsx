@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { FiX } from "react-icons/fi";
 import { useSelector, connect } from "react-redux";
+import { toast } from "react-toastify";
 
 import Song from "../../types/song";
 
@@ -9,7 +10,6 @@ import { RootState } from "../../store";
 import { uiDispatch, uiSelect } from "../../store/uiSlice";
 
 import songService from "../../services/songService";
-import { error as errorLog } from "../../services/logService";
 import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
 
 interface Props {
@@ -28,7 +28,7 @@ const PasteUrl = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (props.getSongByUrl(url)) return errorLog("The song already exist.");
+    if (props.getSongByUrl(url)) return toast.error("The song already exist.");
 
     uiDispatch.loading(true);
 
@@ -36,8 +36,9 @@ const PasteUrl = (props: Props) => {
       getSongIdFromYouTubeUrl(url);
       await songService.addSongbyUrl(url);
       uiDispatch.showPasteUrl(false);
+      toast.success("Added Successfully");
     } catch (e) {
-      errorLog(e.message);
+      toast.error(e.message);
     }
 
     uiDispatch.loading(false);

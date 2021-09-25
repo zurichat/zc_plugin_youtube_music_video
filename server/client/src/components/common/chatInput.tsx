@@ -53,16 +53,15 @@ function ChatInput(props) {
   };
 
   return (
-    <Wrapper>
+    <Wrapper onClick = {handleFocus} >
       <input
         type="text"
         className="chat-input"
         placeholder="Type a message..."
         value={inputStr}
         onChange={(e) => setInputStr(e.target.value)}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
       />
+
       <div className="chat-icon-group">
         <img
           src={chatEmoji}
@@ -112,7 +111,7 @@ const Wrapper = styled.div`
   display: flex;
   border: 1px solid #08ffae;
   background-color: #fff;
-  padding: 0 12px;
+  padding-right: 16px;
   z-index: 111;
 
   .chat-input {

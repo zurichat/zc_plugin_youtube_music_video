@@ -32,8 +32,9 @@ function ChatItem({ name, avatar, time, message }: Chat) {
 
 const Wrapper = styled.div`
   display: flex;
-  margin-bottom: 10px;
-  padding: 10px;
+  margin-bottom: 9px;
+  max-height: 646px;
+  padding-bottom: 10px;
   color: hsla(300, 2%, 11%, 1);
 
   .item-avatar {
@@ -62,6 +63,10 @@ const Wrapper = styled.div`
     font-size: 15px;
     font-weight: 900;
     margin-right: 10px;
+  }
+
+  @media (max-width: 1000px) {
+    max-height: 488px;
   }
 `;
 

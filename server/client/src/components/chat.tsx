@@ -68,13 +68,17 @@ function Chat(props) {
 
 const Wrapper = styled.div`
   height: 100%;
-  width: 400px;
+  width: 415px;
   background-color: white;
+  margin-left: 8px;
 
   .chat-item-group {
     overflow-y: scroll;
     margin-top: 1px;
     height: 350px;
+    padding-left: 16px;
+    padding-right: 30px;
+    margin-top: 24px;
   }
   .chat-item-group::-webkit-scrollbar {
     width: 3px;
@@ -85,6 +89,8 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 1000px) {
+    width: 350px;
+    margin-left: 0px;
     .chat-item-group {
       max-height: 450px;
     }
