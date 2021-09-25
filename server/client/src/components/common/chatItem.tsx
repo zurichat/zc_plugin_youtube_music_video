@@ -15,7 +15,7 @@ function ChatItem({ name, avatar, time, message }: Chat) {
   return (
     <Wrapper>
       <div className="item-avatar">
-        <img src={avatar} alt="user avatar" />
+        <img src={avatar} alt="" />
       </div>
       <div className="item-content">
         <div className="item-name-time">

@@ -3,7 +3,13 @@ import store, { RootState } from ".";
 
 import User from "../types/user";
 
-const user: User = { id: "kdkdkdkdkd", avatar: "", name: "Justiz", token: "" };
+const user: User = {
+  id: "juztiz5000kdkdkdkdkdkdkd",
+  avatar: "https://music.zuri.chat/static/8088dff19013ace2e359.svg",
+  name: "Justiz",
+  token: "",
+  orgId: "",
+};
 
 const usersSlice = createSlice({
   name: "users",
