@@ -383,7 +383,7 @@ const ChatInputStyled = styled.div`
   /* display: flex;
   border: 1px solid #08ffae;
   background-color: #fff;
-  padding: 0 12px;
+  padding-right: 16px;
   z-index: 111;
 
   .chat-input {
