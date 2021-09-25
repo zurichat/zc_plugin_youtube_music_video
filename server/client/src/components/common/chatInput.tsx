@@ -6,6 +6,7 @@ import GiphyPicker from "react-giphy-picker";
 import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
+import bold from "../../media/bold.svg";
 
 import authService from "../../services/authService";
 import chatService from "../../services/chatService";
@@ -126,6 +127,13 @@ const Wrapper = styled.div`
     outline: none;
   }
 
+  .bold {
+    height: 24px;
+    width: 24px;
+    left: 12px;
+    top: 60px;
+    border-radius: 3px;
+  }
   .chat-icon-group {
     flex-basis: 90px;
     display: flex;

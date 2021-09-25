@@ -1,15 +1,15 @@
 function UserInfo() {
-  const handleSetUser = () => {
-    // @ts-ignore
-    import("@zuri/zuri-control")
-      .then(({ GetUserInfo }) => {
-        const info = GetUserInfo();
-        console.log(info);
-      })
-      .catch();
-  };
+  // const handleSetUser = () => {
+  //   // @ts-ignore
+  //   import("@zuri/zuri-control")
+  //     .then(({ GetUserInfo }) => {
+  //       const info = GetUserInfo();
+  //       console.log(info);
+  //     })
+  //     .catch();
+  // };
 
-  handleSetUser();
+  // handleSetUser();
 
   return <div style={{ position: "fixed", bottom: "20px" }}></div>;
 }
