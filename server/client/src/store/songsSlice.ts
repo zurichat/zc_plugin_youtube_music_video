@@ -68,6 +68,10 @@ export const songSelect = {
     return state.songs.find((song) => song.id === songId);
   },
 
+  songByUrl: (url: string) => (state: RootState) => {
+    return state.songs.find((song) => song.url === url);
+  },
+
   firstSong: (state: RootState) => state.songs[0],
 
   like_count:

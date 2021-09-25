@@ -1,20 +1,17 @@
-import React from "react";
-// @ts-ignore
-import { GetUserInfo } from "@zuri/zuri-control";
-
-interface Props {}
-
-function UserInfo(props: Props) {
-  const {} = props;
-
+function UserInfo() {
   const handleSetUser = () => {
-    const info = GetUserInfo();
-    console.log({ info });
+    // @ts-ignore
+    import("@zuri/zuri-control")
+      .then(({ GetUserInfo }) => {
+        const info = GetUserInfo();
+        console.log(info);
+      })
+      .catch();
   };
 
   handleSetUser();
 
-  return <div></div>;
+  return <div style={{ position: "fixed", bottom: "20px" }}></div>;
 }
 
 export default UserInfo;
