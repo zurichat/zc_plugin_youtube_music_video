@@ -53,16 +53,15 @@ function ChatInput(props) {
   };
 
   return (
-    <Wrapper>
+    <Wrapper onClick = {handleFocus} >
       <input
         type="text"
         className="chat-input"
         placeholder="Type a message..."
         value={inputStr}
         onChange={(e) => setInputStr(e.target.value)}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
       />
+
       <div className="chat-icon-group">
         <img
           src={chatEmoji}
