@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 
 from music.serializers import CommentSerializer
-from music.utils.data_access import get_video, read_data, write_data, centrifugo_post, delete_data
+from music.utils.data_access import get_video, read_data, write_data, centrifugo_post
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 import requests
@@ -13,41 +13,46 @@ import json
 from requests import exceptions
 
 
+def check_if_user_is_in_room_and_return_room_id(user_id):
+    room_data = read_data(settings.ROOM_COLLECTION)
+    room_user_ids = room_data["data"][0]["room_user_ids"]
+    if user_id not in room_user_ids:
+        return None
+    return room_data["data"][0]["_id"]
+
+
+def get_room_info(room_id=None):
+    room_data = read_data(settings.ROOM_COLLECTION)
+    output = {
+        "name": room_data["data"][0]["name"],
+        "description": room_data["data"][0]["Description"],
+        "icon": "#"
+    }
+    return output
+
+
 class SidebarView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
+        org_id = request.GET.get('org', None)
+        user_id = request.GET.get('user', None)
+
+        pub_room = get_room_info()
+
         data = {
 
             "message": "Plugin Sidebar Retrieved",
             "data": {
                 "type": "Plugin Sidebar",
                 "name": "Music Plugin",
-                "description": "Shows Music items",
+                "description": "Plays YouTube Links",
                 "plugin_id": "61360ab5e2358b02686503ad",
-                "organisation_id": "6134fd770366b6816a0b75ed",
-                "user_id": "6139170699bd9e223a37d91b",
+                "organisation_id": org_id,
+                "user_id": user_id,
                 "group_name": "Music",
                 "show_group": False,
-                "public_rooms": {
-                    "room_name": "music room",
-                    "room_id": "613e906115fb2424261b6652",
-                    "collection_name": "room",
-                    "type": "public_rooms",
-                    "unread": 2,
-                    "members": 23,
-                    "icon": "headphones",
-                    "action": "open",
-                },
-                "joined_rooms": {
-                    "title": "general",
-                    "room_id": "613e906115fb2424261b6652",
-                    "collection_name": "room",
-                    "type": "public_rooms",
-                    "unread": 2,
-                    "members": 23,
-                    "icon": "headphones",
-                    "action": "open",
-                },
+                "public_rooms": pub_room,
+                "joined_rooms": {},
             },
             "success": "true"
         }
@@ -63,7 +68,10 @@ class PluginInfoView(GenericAPIView):
                 "type": "Plugin Information",
                 "plugin_info": {"name": "Music room",
                                 "description": [
-                                    "This is a plugin that allows individuals in an organization to add music and video links from YouTube to a  shared playlist. Users also have the option to chat with other users in the music room and the option to like a song or video that is in the music room library."]
+                                    "This is a plugin that allows individuals in an organization to add music and "
+                                    "video links from YouTube to a  shared playlist. Users also have the option to "
+                                    "chat with other users in the music room and the option to like a song or video "
+                                    "that is in the music room library."]
                                 },
                 "version": "v1",
                 "scaffold_structure": "Monolith",
@@ -73,7 +81,7 @@ class PluginInfoView(GenericAPIView):
                 "icon_url": "https://drive.google.com/file/d/1KB9uSWqg0rM21ohsPxGnG8_1xbcdReio/view?usp=drivesdk",
                 "photos": "https://drive.google.com/file/d/1KB9uSWqg0rM21ohsPxGnG8_1xbcdReio/view?usp=drivesdk",
                 "homepage_url": "https://music.zuri.chat/music/",
-                "sidebar_url": "https://music.zuri.chat/music/api/v1/sidebar/",
+                "sidebar_url": "https://music.zuri.chat/music/api/v1/sidebar",
                 "install_url": "https://music.zuri.chat/music/",
                 'ping_url': 'http://music.zuri.chat/music/api/v1/ping'
             },
@@ -98,18 +106,16 @@ class MediaView(APIView):
 
         data = read_data("test_collection")
 
-        # centrifugo_post("channel_name", {"event": "join_room"})
+        centrifugo_post("zuri-plugin-music", {"event": "join_room"})
         return Response(data)
 
 
 class UserCountView(GenericAPIView):
     def get(self, request):
-        centrifugo_post("channel_name", {"event": "join_room"})
-        centrifugo_post.counter += 1
-        header_user_count = centrifugo_post.counter
-        return Response(header_user_count)
+        data = read_data(settings.ROOM_COLLECTION)
+        header_user_count = data["data"][0]["room_user_ids"]
 
-    centrifugo_post.counter = 0
+        return Response(len(header_user_count))
 
 
 class SongView(APIView):
@@ -123,18 +129,20 @@ class SongView(APIView):
 
         payload = {
             "title": media_info["title"],
-            "track_url": media_info["track_url"],
-            "thumbnail_url": media_info["thumbnail_url"],
             "duration": media_info["duration"],
-            "added_by_id": "1",
-            "song_like_ids": [
-                "1"
-            ]
+            "albumCover": media_info["thumbnail_url"],
+            "url": media_info["track_url"],
+            "addedBy": " ",
+            "likedBy": []
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
+
+        updated_data = read_data(settings.SONG_COLLECTION)
+
+        centrifugo_post("zuri-plugin-music", {"event": "added_song", "data": updated_data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
-        #Note: use only {"url": ""} in the payload
+        # Note: use only {"url": ""} in the payload
 
 
 class AddToRoomView(APIView):
@@ -143,7 +151,8 @@ class AddToRoomView(APIView):
         room_data = read_data(settings.ROOM_COLLECTION)
         user_ids = room_data["data"][0]["room_user_ids"]
         _id = room_data["data"][0]["_id"]
-        user_ids.append(request.data)
+        if request.data["id"] not in user_ids:
+            user_ids.append(request.data["id"])
         return _id, user_ids
 
     def get(self, request):
@@ -158,12 +167,24 @@ class AddToRoomView(APIView):
         }
 
         data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
+        centrifugo_post("channel_name", {"event": "entered_room", "data": "send something"})
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
 class CreateRoomView(APIView):
+    def get(self, request):
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(data)
+
     def post(self, request):
-        payload = {}
+        payload = {
+            "Description": "YouTube Music Room Plugin",
+            "name": "Music Room",
+            "org_id": settings.ORGANIZATON_ID,
+            "room_user_ids": [
+                request.data["id"]
+            ]
+        }
         data = write_data(settings.ROOM_COLLECTION, payload=payload)
         return Response(data)
 
@@ -179,7 +200,12 @@ class CommentView(APIView):
 
         if serializer.is_valid():
             payload = serializer.data
+
             data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
+
+            updated_data = read_data(settings.COMMENTS_COLLECTION)
+
+            centrifugo_post("zuri-plugin-music", {"event": "added_chat", "data": updated_data})
 
             return Response(data, status=status.HTTP_200_OK)
 
@@ -197,7 +223,7 @@ def leave_room(request):
     plugin_id = settings.PLUGIN_ID
     organization_id = settings.ORGANIZATON_ID
     collection_name = settings.ROOM_COLLECTION
-    
+
     room_data = read_data(settings.ROOM_COLLECTION)
     user_ids = room_data["data"][0]["room_user_ids"]
     _id = room_data["data"][0]["_id"]
@@ -218,10 +244,10 @@ def leave_room(request):
             "object_id": user_ids,
             "filter": {}
         }
-        
+
         try:
             r = requests.post(url, data=json.dumps(payload))
-            #Note: use only {"_id": ""} in the payload
+            # Note: use only {"_id": ""} in the payload
 
             if r.status_code == 200:
                 return Response({"message": "User left room"},
@@ -232,14 +258,12 @@ def leave_room(request):
         except exceptions.ConnectionError as e:
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
 
-
-
 # @api_view(['GET', 'POST'])
 # def remove_song(request):
 #     plugin_id = settings.PLUGIN_ID
 #     organization_id = settings.ORGANIZATON_ID
 #     collection_name = settings.SONG_COLLECTION
-    
+
 #     song_data = read_data(settings.SONG_COLLECTION)
 #     user_ids = song_data["data"][0]["added_by_id"]
 #     _id = song_data["data"][0]["_id"]
@@ -259,7 +283,7 @@ def leave_room(request):
 #             "object_id": _id,
 #             "filter": {}
 #         }
-        
+
 #         try:
 #             r = requests.post(url, data=json.dumps(payload))
 #             #Note: use only {"_id": ""} in the payload
@@ -271,4 +295,4 @@ def leave_room(request):
 #                 return Response({"error": r.json()['message']}, status=r.status_code)
 
 #         except exceptions.ConnectionError as e:
-#             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)    
+#             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
