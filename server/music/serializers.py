@@ -32,10 +32,8 @@ class CommentSerializer(serializers.Serializer):
 
 
 class RoomSerializer(serializers.Serializer):
-    org_id = serializers.CharField(required=True)
     room_name = serializers.CharField()
     description = serializers.CharField()
-    room_user_ids = serializers.ListField(child=MembersSerializer(many=True), allow_empty=False, required=True)
 
     def __str__(self):
         return str()
