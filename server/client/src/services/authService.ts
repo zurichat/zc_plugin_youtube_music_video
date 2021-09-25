@@ -1,13 +1,9 @@
 import axios from "axios";
 
-<<<<<<< HEAD
-import avatar from "../media/user-pic.jpg";
-=======
 import store from "../store";
 import { userDispatch } from "../store/usersSlice";
 import User from "../types/user";
 import avatar from "../media/chatItem.svg";
->>>>>>> 5484f5659a2d918b8eae38ac3edd09fb75297229
 
 async function signin() {
   // try {

@@ -3,20 +3,7 @@ import store, { RootState } from ".";
 import Chat from "../types/chat";
 import { sanitize } from "../utils/sanitizer";
 
-<<<<<<< HEAD
-import avatar from "../media/user-pic.jpg";
-
-const mock: Chat = {
-  id: Date.now() + "",
-  userId: Date.now() + "",
-  name: "Mr._Primal",
-  time: 1632221670207,
-  message: "Hello there",
-  avatar: avatar,
-};
-=======
 // import avatar from "../media/chatItem.svg";
->>>>>>> 5484f5659a2d918b8eae38ac3edd09fb75297229
 
 const chatsSlice = createSlice({
   name: "chats",
