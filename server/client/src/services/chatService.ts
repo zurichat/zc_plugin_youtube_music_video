@@ -20,6 +20,7 @@ const addChat = async (chat: Chat) => {
 
   try {
     await httpService.post(commentEndpoint, newChat);
+    chatDispatch.addChat(newChat);
   } catch (error) {
     console.log(error);
   }

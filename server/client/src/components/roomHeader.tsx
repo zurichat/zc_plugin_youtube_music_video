@@ -86,7 +86,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   background: #ffffff;
   border-radius: 1px 0px;
-  height: 15px;
+  height: 20px;
   color: #27ae60;
   padding: 20px;
   margin-bottom: 10px;
