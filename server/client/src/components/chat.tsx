@@ -8,27 +8,24 @@ import ChatInput from "./common/chatInput";
 
 import { chatSelect } from "../store/chatsSlice";
 import { uiSelect } from "../store/uiSlice";
-import chatService from "../services/chatService";
 
 function Chat(props) {
   const chats = useSelector(chatSelect.allChat);
   const showChat = useSelector(uiSelect.showChat);
   const scroller = useRef(null);
 
-  useEffect(() => {
-    chatService.getChats();
-  }, []);
-
-  if (!showChat) return null;
-
   const scrollToBottom = () => {
     scroller.current.scrollIntoView(false);
   };
 
-  // useEffect(() => {
-  //   scrollToBottom();
-  // });
+  useEffect(() => {
+    if(showChat){
+    scrollToBottom();
+    };
+  });
 
+  if (!showChat) return null;
+  
   function handleFocus() {
     const mediaQuery = window.matchMedia("(max-width: 1000px)");
     const chatItemGroup =

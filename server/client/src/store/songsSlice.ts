@@ -3,15 +3,21 @@ import store, { RootState } from ".";
 import LikeSong from "../types/likeSong";
 
 import Song from "../types/song";
+import { sanitize } from "../utils/sanitizer";
 
 const songsSlice = createSlice({
   name: "songs",
-  initialState: getMockData(),
-  // initialState: [] as Song[],
+
+  // initialState: getMockData(),
+  initialState: [] as Song[],
 
   reducers: {
+    initialize: (state, action: PayloadAction<Song[]>) => {
+      return action.payload.map(sanitize);
+    },
+
     addSong: (state, { payload }: PayloadAction<Song>) => {
-      state.unshift(payload);
+      state.unshift(sanitize(payload));
     },
 
     removeSong: (state, { payload }) => {
@@ -35,11 +41,15 @@ const songsSlice = createSlice({
   },
 });
 
-export const { addSong, removeSong, likeSong } = songsSlice.actions;
+export const { addSong, removeSong, likeSong, initialize } = songsSlice.actions;
 
 export const songDispatch = {
   addSong: (payload: Song) => {
     store.dispatch({ type: addSong.type, payload });
+  },
+
+  initialize: (payload: Song[]) => {
+    store.dispatch({ type: initialize.type, payload });
   },
 
   removeSong: (payload: Song) => {
@@ -56,6 +66,10 @@ export const songSelect = {
 
   songById: (songId: string) => (state: RootState) => {
     return state.songs.find((song) => song.id === songId);
+  },
+
+  songByUrl: (url: string) => (state: RootState) => {
+    return state.songs.find((song) => song.url === url);
   },
 
   firstSong: (state: RootState) => state.songs[0],

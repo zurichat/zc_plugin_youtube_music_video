@@ -1,25 +1,20 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import store, { RootState } from ".";
 
 const slice = createSlice({
-  name: "UI",
+  name: "ui",
 
   initialState: {
     isLoading: false,
-    congrats: false,
     showChat: false,
-    addSong: false,
-    showModal: true,
+    showPasteUrl: false,
+    showModal: false,
     exitModal: false,
   },
 
   reducers: {
-    loaded: (state, action) => {
+    loaded: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
-    },
-
-    congratsToggled: (state, action) => {
-      state.congrats = action.payload;
     },
 
     showChat: (state, action) => {
@@ -27,10 +22,11 @@ const slice = createSlice({
     },
 
     showPasteUrl: (state, action) => {
-      state.addSong = action.payload;
+      state.showPasteUrl = action.payload;
     },
     showModal: (state, action) => {
-      state.showModal = action.payload;
+      // state.showModal = action.payload;
+      return state;
     },
 
     exitedModal: (state, action) => {
@@ -62,7 +58,7 @@ export const uiDispatch = {
 export const uiSelect = {
   showChat: (state: RootState) => state.ui.showChat,
 
-  showPasteUrl: (state: RootState) => state.ui.addSong,
+  showPasteUrl: (state: RootState) => state.ui.showPasteUrl,
 
   isLoading: (state: RootState) => state.ui.isLoading,
 

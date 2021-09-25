@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -7,32 +7,37 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
-import EnterRoom from "./components/Modals/EnterRoom";
 
 import chatMediaQuery from "./utils/chatMedia";
 
 import { uiSelect } from "./store/uiSlice";
 import authService from "./services/authService";
 import eventService from "./services/eventService";
+import userService from "./services/userService";
 
 import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
+import ErrorBoundary from "./components/errorBoundary";
+import UserInfo from "./components/userInfo";
+
 function App() {
   useEffect(() => {
-    authService.signin();
+    authService.signin().then(() => userService.addToRoom());
     eventService.connect();
   }, []);
 
   chatMediaQuery(); // toggle chat display based on screen size.
-  const [userCount, setUserCount] = useState(0);
   const isLoading = useSelector(uiSelect.isLoading);
-  const showModal = useSelector(uiSelect.showModal);
 
   return (
     <Wrapper>
+      <ErrorBoundary>
+        <UserInfo />
+      </ErrorBoundary>
+
       <div className="loader-wrapper">
         {isLoading && (
           <Loader
@@ -48,9 +53,9 @@ function App() {
       <div>
         <ToastContainer theme="colored" />
 
-        {showModal && <EnterRoom setUserCount={setUserCount} />}
+        {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
 
-        <RoomHeader userCount={userCount} />
+        <RoomHeader />
 
         <Switch>
           <Route path="/music" component={MusicRoom} />
