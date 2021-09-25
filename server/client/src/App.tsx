@@ -93,31 +93,7 @@ const Wrapper = styled.div`
     top: 100px;
     z-index: 111;
   }
-
-
-
-
-
-
-
-
-
-  // div .toast-success-container {
-  //   width: 102%;
-  //   position: fixed;
-  //   top: 55px;
-  //   left: -4px;
-  //   .toast-success-wrapper {
-  //     background-color: #CBFFEE;
-  //     border-radius: 0px;
-  //     .toast-success-body {
-  //       color: black;
-  //       display: flex;
-  //       justify-content: center;
-  //     }
-  //   }
-  // }
-
+  
   .Toastify__toast-container {
     width: 102%;
     position: fixed;
