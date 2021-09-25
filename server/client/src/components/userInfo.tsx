@@ -3,15 +3,17 @@ function UserInfo() {
     // @ts-ignore
     import("@zuri/zuri-control")
       .then(({ GetUserInfo }) => {
-        const info = GetUserInfo();
-        console.log(info);
+        const { _id: id, first_name: name } = GetUserInfo();
+        console.log({ id, name });
       })
-      .catch();
+      .catch((e) => console.log({ e }));
   };
 
   handleSetUser();
 
-  return <div style={{ position: "fixed", bottom: "20px" }}></div>;
+  return (
+    <div style={{ position: "fixed", bottom: "20px", display: "none" }}></div>
+  );
 }
 
 export default UserInfo;
