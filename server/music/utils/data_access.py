@@ -41,12 +41,6 @@ def verify_token(token):
     return response.response_data
 
 
-
-# def get_user_profile(org_id=None, user_id=None):
-#     profile = requests.get(f"https://api.zuri.chat/organizations/{org_id}/members/{user_id}", headers=header)
-#     return profile.json()
-
-
 def read_data(collection=None, filter_data=None):
     if filter_data is None:
         filter_data = {}
@@ -205,4 +199,11 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
 #             return response.json()
 #         else:
 #             return {"status_code": response.status_code, "message": response.reason}
+
+
+
+# def get_user_profile(org_id=None, user_id=None):
+#     profile = requests.get(f"https://api.zuri.chat/organizations/{org_id}/members/{user_id}", headers=header)
+#     return profile.json()
+
 
