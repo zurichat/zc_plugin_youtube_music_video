@@ -13,6 +13,14 @@ import json
 from requests import exceptions
 
 
+def check_if_user_is_in_room_and_return_room_id(user_id):
+    room_data = read_data(settings.ROOM_COLLECTION)
+    room_user_ids = room_data["data"][0]["room_user_ids"]
+    if user_id not in room_user_ids:
+        return None
+    return room_data["data"][0]["_id"]
+
+
 class SidebarView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
@@ -94,12 +102,12 @@ class PluginPingView(GenericAPIView):
 
 class MediaView(APIView):
     def get(self, request):
-        payload = {"email": "hng.user01@gmail.com", "password": "password"}
-
-        data = read_data("test_collection")
-
-        centrifugo_post("zuri-plugin-music", {"event": "join_room"})
-        return Response(data)
+        # payload = {"email": "hng.user01@gmail.com", "password": "password"}
+        #
+        # data = read_data("test_collection")
+        #
+        # centrifugo_post("zuri-plugin-music", {"event": "join_room"})
+        return Response(request.GET)
 
 
 class UserCountView(GenericAPIView):
@@ -145,8 +153,8 @@ class AddToRoomView(APIView):
         room_data = read_data(settings.ROOM_COLLECTION)
         user_ids = room_data["data"][0]["room_user_ids"]
         _id = room_data["data"][0]["_id"]
-        # TODO: <Emmanuel> Check if user_id is already in the list before appending
-        user_ids.append(request.data["id"])
+        if request.data["id"] not in user_ids:
+            user_ids.append(request.data["id"])
         return _id, user_ids
 
     def get(self, request):
@@ -166,8 +174,19 @@ class AddToRoomView(APIView):
 
 
 class CreateRoomView(APIView):
+    def get(self, request):
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(data)
+
     def post(self, request):
-        payload = {}
+        payload = {
+            "Description": "YouTube Music Room Plugin",
+            "name": "Music Room",
+            "org_id": settings.ORGANIZATON_ID,
+            "room_user_ids": [
+                request.data["id"]
+            ]
+        }
         data = write_data(settings.ROOM_COLLECTION, payload=payload)
         return Response(data)
 
