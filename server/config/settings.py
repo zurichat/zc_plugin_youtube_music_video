@@ -18,7 +18,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1", "*"]
+ALLOWED_HOSTS = ["zuri.chat", "music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1", "*"]
 
 # Application definition
 
@@ -183,6 +183,7 @@ CORS_ALLOWED_ORIGINS = [
     # "https://sub.example.com",
     "http://localhost:8080",
     "http://localhost:8000",
+    "http://localhost:9000",
     "http://localhost:3000",  # if you have seprate react app
 ]
 

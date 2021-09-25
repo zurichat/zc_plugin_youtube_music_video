@@ -1,42 +1,38 @@
-// @ts-ignore
-// import { GetUserInfo } from "@zuri/zuri-control";
 import axios from "axios";
-import { uiDispatch } from "../store/uiSlice";
+
+import store from "../store";
+import { userDispatch } from "../store/usersSlice";
 import User from "../types/user";
-
 import avatar from "../media/chatItem.svg";
-import log from "./logService";
-
-let currentUser = {} as any;
 
 async function signin() {
-  const endpoint = "https://api.zuri.chat/auth/login";
-  uiDispatch.loading(true);
+  // try {
+  //   const { data } = await axios.post("https://api.zuri.chat/auth/login", {
+  //     email: "pid@oxy.com",
+  //     password: "pidoxy.com",
+  //   });
 
-  try {
-    const { data } = await axios.post(endpoint, {
-      email: "pid@oxy.com",
-      password: "pidoxy.com",
-    });
+  //   const { first_name: name, id, token } = data.data.user;
+  //   userDispatch.setCurrentUser({ name, id, token, avatar });
+  // } catch (error) {
+  //   console.log(error);
+  // }
 
-    currentUser = data.data.user;
-
-    log.success("You may proceed.");
-  } catch (error) {
-    console.log(error);
-    log.error("User is not signed in. Please refresh the page");
-  }
-
-  uiDispatch.loading(false);
   return;
 }
 
 function getCurrentUser(): User {
+  const {
+    first_name: name,
+    id,
+    token,
+  } = JSON.parse(store.getState().users.currentUser);
+
   return {
-    name: currentUser.first_name,
-    id: "userId",
+    name,
+    id,
     avatar,
-    ...currentUser,
+    token,
   };
 }
 
