@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -13,12 +13,15 @@ import chatMediaQuery from "./utils/chatMedia";
 import { uiSelect } from "./store/uiSlice";
 import authService from "./services/authService";
 import eventService from "./services/eventService";
+import userService from "./services/userService";
 
 import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
-import userService from "./services/userService";
+
+import ErrorBoundary from "./components/errorBoundary";
+import UserInfo from "./components/userInfo";
 
 function App() {
   useEffect(() => {
@@ -31,6 +34,10 @@ function App() {
 
   return (
     <Wrapper>
+      <ErrorBoundary>
+        <UserInfo />
+      </ErrorBoundary>
+
       <div className="loader-wrapper">
         {isLoading && (
           <Loader
