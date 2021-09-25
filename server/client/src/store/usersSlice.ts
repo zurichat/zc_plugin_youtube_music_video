@@ -3,10 +3,17 @@ import store, { RootState } from ".";
 
 import User from "../types/user";
 
-const user: User = { id: "", avatar: "", name: "", token: "" };
+const user: User = {
+  id: "juztiz5000kdkdkdkdkdkdkd",
+  avatar: "https://music.zuri.chat/static/8088dff19013ace2e359.svg",
+  name: "Justiz",
+  token: "",
+  orgId: "",
+};
 
 const usersSlice = createSlice({
   name: "users",
+
   initialState: { currentUser: JSON.stringify(user), users: [] as User[] },
 
   reducers: {
@@ -25,20 +32,10 @@ const usersSlice = createSlice({
       const existingUser = state.users.find((user) => user.id === id);
       if (existingUser) state.users.filter((user) => user.id !== id);
     },
-
-    updateUser: (state, { payload }) => {
-      // const { id, userName, photo } = payload;
-      // const existingUser = state.find((user) => user.id === id);
-      // if (existingUser) {
-      //   existingUser.userName = userName;
-      //   existingUser.photo = photo;
-      // }
-    },
   },
 });
 
-export const { userLogin, userLogout, updateUser, setCurrentUser } =
-  usersSlice.actions;
+export const { userLogin, userLogout, setCurrentUser } = usersSlice.actions;
 
 export const userDispatch = {
   setCurrentUser: (payload: User) => {

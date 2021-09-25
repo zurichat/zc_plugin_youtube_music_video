@@ -1,19 +1,24 @@
-import authService from "./authService";
+import store from "../store";
+import User from "../types/user";
 import httpService from "./httpService";
 
 const { addToRoom: enterEndpoint, leaveEndpoint } = httpService.endpoints;
 
-async function addToRoom() {
-  const { id } = authService.getCurrentUser();
+function getCurrentUser(): User {
+  return JSON.parse(store.getState().users.currentUser);
+}
 
-  return httpService.post(enterEndpoint, { id }).then(
+async function addToRoom() {
+  const { id } = getCurrentUser();
+
+  return httpService.post(enterEndpoint, { userId: id }).then(
     (r) => r,
     (e) => e
   );
 }
 
 function leaveRoom() {
-  const { id } = authService.getCurrentUser();
+  const { id } = getCurrentUser();
 
   return httpService.post(leaveEndpoint, { id }).then(
     (r) => r,
@@ -21,6 +26,6 @@ function leaveRoom() {
   );
 }
 
-const userService = { addToRoom, leaveRoom };
+const userService = { addToRoom, leaveRoom, getCurrentUser };
 
 export default userService;
