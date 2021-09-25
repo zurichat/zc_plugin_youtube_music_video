@@ -174,10 +174,10 @@ class LikedByView(APIView):
 
      @staticmethod
     def get_obj_id_and_append_user_id(request):
-        room_data = read_data(settings.ROOM_COLLECTION)
+        room_data = read_data(settings.SONG_COLLECTION)
         likedBy_ids = room_data["data"][0]["room_likedBy_ids"]
         _id = room_data["data"][0]["_id"]
-        likedBy_ids.append(request.data["id"])
+        likedBy_ids.append(request.data["_id"])
         return _id, likedBy_ids
 
 
@@ -204,7 +204,7 @@ class LikedByView(APIView):
             "likedBy": liked_by,
             "room_likedBy_ids": likedBy_ids,
         }
-        data = write_data(settings.SONG_COLLECTION, object_id=id, payload=payload, method="PUT")
+        data = write_data(settings.SONG_COLLECTION, object_id=_id, payload=payload, method="PUT")
         return Response(data)
 
 
