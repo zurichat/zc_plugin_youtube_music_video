@@ -4,10 +4,11 @@ import Like from "./like";
 
 import Song from "../../types/song";
 import option from "../../media/option.svg";
-import authService from "../../services/authService";
 
 import { playerAction } from "../../store/playerSlice";
 import songService from "../../services/songService";
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
 interface Props {
   song: Song;
@@ -23,7 +24,7 @@ function PlaylistItem(props: Props) {
     likedBy,
   } = props.song;
 
-  const { id: userId } = authService.getCurrentUser();
+  const { id: userId } = useSelector(userSelect.currentUser);
 
   const { length: count } = likedBy;
   const liked = likedBy.some((id) => id === userId);
@@ -52,7 +53,7 @@ function PlaylistItem(props: Props) {
         <div className="item-title">{title}</div>
 
         <div className="item-addedBy">
-          Added by <span>{addedBy}</span>
+          Added by <span>{addedBy || "Pidoxy"}</span>
         </div>
       </div>
 
@@ -103,7 +104,7 @@ const Wrapper = styled.div`
   }
 
   .item-info {
-    flex-grow: 1;
+    width: 350px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -111,13 +112,13 @@ const Wrapper = styled.div`
   }
 
   .item-title {
+    flex-basis: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight: 700;
     font-size: 15px;
     margin-bottom: 6px;
-    min-width: 150px;
   }
 
   .item-addedBy {
@@ -129,7 +130,7 @@ const Wrapper = styled.div`
   }
 
   .item-group {
-    flex-basis: 48%;
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -149,7 +150,7 @@ const Wrapper = styled.div`
 
   @media screen and (max-width: 780px) {
     .item-group {
-      flex-basis: 60px;
+      justify-content: flex-end;
     }
     .item-duration,
     .item-like {
@@ -157,18 +158,24 @@ const Wrapper = styled.div`
     }
   }
 
+  @media screen and (max-width: 547px) {
+    .item-info {
+      width: 150px;
+    }
+  }
+
   @media screen and (max-width: 460px) {
     .item-title {
       font-weight: 600;
-      font-size: 14px;
+      /* font-size: 14px; */
       margin-bottom: 6px;
     }
 
     .item-albumCover {
       display: block;
       margin-right: 10px;
-      width: 50px;
-      height: 100%;
+      /* width: 50px;
+      height: 100%; */
     }
   }
 `;

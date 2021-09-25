@@ -18,7 +18,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1", "*"]
+ALLOWED_HOSTS = ["zuri.chat", "music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1", "*"]
 
 # Application definition
 
@@ -183,6 +183,7 @@ CORS_ALLOWED_ORIGINS = [
     # "https://sub.example.com",
     "http://localhost:8080",
     "http://localhost:8000",
+    "http://localhost:9000",
     "http://localhost:3000",  # if you have seprate react app
 ]
 
@@ -191,9 +192,7 @@ if bool(os.environ.get("PRODUCTION_SERVER", default="")):
 
 PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
 ORGANIZATON_ID = "6134fd770366b6816a0b75ed"
-# CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
-CENTRIFUGO_TOKEN = "2829fc49-3e6b-4a55-bf02-3b1be88cfc24"
-# USER_ID = env("USER_ID")
+CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
 
 ROOM_COLLECTION = "test_music_room"
 SONG_COLLECTION = "test_song"
