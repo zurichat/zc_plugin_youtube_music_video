@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { FiX } from "react-icons/fi";
 import { useSelector, connect } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
 
 import Song from "../../types/song";
 
@@ -11,6 +12,7 @@ import { uiDispatch, uiSelect } from "../../store/uiSlice";
 import songService from "../../services/songService";
 import { error as errorLog } from "../../services/logService";
 import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
+import { duration } from "moment-timezone";
 
 interface Props {
   getSongByUrl: (url: string) => Song;
@@ -42,7 +44,12 @@ const PasteUrl = (props: Props) => {
 
     uiDispatch.loading(false);
   };
-
+  
+  function pasteUrlAlert() {
+    toast.success("Added Successfully");
+    // toast.error("Failed to add song");
+  }
+ 
   return (
     <Wrapper>
       <form onSubmit={handleSubmit} className="submit-form">
@@ -72,7 +79,7 @@ const PasteUrl = (props: Props) => {
             autoFocus
           />
 
-          <input className="input-submit" type="submit" value="Add" />
+          <input className="input-submit" type="submit" value="Add" onClick={ pasteUrlAlert }/>
         </div>
       </form>
     </Wrapper>
