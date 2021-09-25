@@ -3,6 +3,7 @@ import store, { RootState } from ".";
 import LikeSong from "../types/likeSong";
 
 import Song from "../types/song";
+import { sanitize } from "../utils/sanitizer";
 
 const songsSlice = createSlice({
   name: "songs",
@@ -12,11 +13,11 @@ const songsSlice = createSlice({
 
   reducers: {
     initialize: (state, action: PayloadAction<Song[]>) => {
-      return action.payload;
+      return action.payload.map(sanitize);
     },
 
     addSong: (state, { payload }: PayloadAction<Song>) => {
-      state.unshift(payload);
+      state.unshift(sanitize(payload));
     },
 
     removeSong: (state, { payload }) => {
@@ -65,6 +66,10 @@ export const songSelect = {
 
   songById: (songId: string) => (state: RootState) => {
     return state.songs.find((song) => song.id === songId);
+  },
+
+  songByUrl: (url: string) => (state: RootState) => {
+    return state.songs.find((song) => song.url === url);
   },
 
   firstSong: (state: RootState) => state.songs[0],

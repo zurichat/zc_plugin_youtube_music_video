@@ -7,8 +7,9 @@ import chatEmoji from "../../media/chatEmoji.svg";
 import chatSend from "../../media/chatSend.svg";
 import chatGif from "../../media/chatGif.svg";
 
-import authService from "../../services/authService";
 import chatService from "../../services/chatService";
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
 function ChatInput(props) {
   // states to manage the input text and also the showcasing of the emoji
@@ -16,7 +17,8 @@ function ChatInput(props) {
   const [showPicker, setShowPicker] = useState(false);
   const [showGiphy, setShowGiphy] = useState(false);
   const handleFocus = props.handleFocus;
-  const handleBlur = props.handleBlur;
+  // const handleBlur = props.handleBlur;
+  const currentUser = useSelector(userSelect.currentUser);
 
   // function to display the emoji once clicked and remove once the user select their preferred emoji
   const onEmojiClick = (event, emojiObject) => {
@@ -35,10 +37,10 @@ function ChatInput(props) {
   };
 
   const handleSend = () => {
-    const { name, id: userId, avatar } = authService.getCurrentUser();
+    const { name, id: userId, avatar } = currentUser;
 
     chatService.addChat({
-      id: Date.now() + "",
+      id: "", // this will be taken care of by db
       userId,
       name,
       avatar,
@@ -49,24 +51,16 @@ function ChatInput(props) {
     clearInput();
   };
 
-  /*const handleKeyPress = (event) => {
-    if(event.charCode === 13){
-      props.onClick(dispatch, inputStr);
-      clearInput();
-    }
-  }*/
-
   return (
-    <Wrapper>
+    <Wrapper onClick={handleFocus}>
       <input
         type="text"
         className="chat-input"
         placeholder="Type a message..."
         value={inputStr}
         onChange={(e) => setInputStr(e.target.value)}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
       />
+
       <div className="chat-icon-group">
         <img
           src={chatEmoji}
@@ -76,8 +70,11 @@ function ChatInput(props) {
         />
         {showPicker && (
           <div className="emoji-picker">
-          <Picker pickerStyle={{ width: "20vw", marginLeft:"0rem" }} onEmojiClick={onEmojiClick} />
-        </div>
+            <Picker
+              pickerStyle={{ width: "20vw", marginLeft: "0rem" }}
+              onEmojiClick={onEmojiClick}
+            />
+          </div>
         )}
         <img
           src={chatGif}
@@ -95,7 +92,11 @@ function ChatInput(props) {
           src={chatSend}
           alt="send"
           className="chat-icon"
-          onClick={handleSend}
+          onClick={() => {
+            if (inputStr !== "") {
+              handleSend();
+            } else return;
+          }}
           /*onKeyDown={() => {
           
         }}*/

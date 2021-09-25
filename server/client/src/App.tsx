@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -11,7 +11,6 @@ import MusicRoom from "./components/musicRoom";
 import chatMediaQuery from "./utils/chatMedia";
 
 import { uiSelect } from "./store/uiSlice";
-import authService from "./services/authService";
 import eventService from "./services/eventService";
 
 import "moment-timezone";
@@ -19,9 +18,11 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
+import ErrorBoundary from "./components/errorBoundary";
+import UserInfo from "./components/userInfo";
+
 function App() {
   useEffect(() => {
-    authService.signin();
     eventService.connect();
   }, []);
 
@@ -30,6 +31,10 @@ function App() {
 
   return (
     <Wrapper>
+      <ErrorBoundary>
+        <UserInfo />
+      </ErrorBoundary>
+
       <div className="loader-wrapper">
         {isLoading && (
           <Loader
@@ -43,7 +48,13 @@ function App() {
       </div>
 
       <div>
-        <ToastContainer theme="colored" />
+        <ToastContainer
+          theme="colored"
+          autoClose={2000}
+          hideProgressBar={true}
+          toastClassName="toast-wrapper"
+          bodyClassName="toast-body"
+        />
 
         {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
 
@@ -83,6 +94,32 @@ const Wrapper = styled.div`
     position: absolute;
     top: 100px;
     z-index: 111;
+  }
+
+  .Toastify__toast-container {
+    width: 102%;
+    position: fixed;
+    top: 55px;
+    left: -4px;
+
+    .Toastify__toast--success {
+      background-color: #cbffee;
+      color: black;
+      display: flex;
+      justify-content: center;
+    }
+
+    .Toastify__toast--error {
+      background: #fff1f3;
+      color: red;
+      display: flex;
+      justify-content: center;
+    }
+
+    .toast-body {
+      display: flex;
+      justify-content: center;
+    }
   }
 `;
 

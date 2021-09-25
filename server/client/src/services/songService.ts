@@ -5,14 +5,13 @@ import log from "./logService";
 import { songDispatch } from "../store/songsSlice";
 import httpService from "./httpService";
 
-const sonEndpoint = "/song";
-const likeEndpoint = "/like";
+const { songEndpoint, likeEndpoint } = httpService.endpoints;
 
 const getSongs = () => {
-  httpService.get(sonEndpoint).then(
+  httpService.get(songEndpoint).then(
     (result) => {
-      songDispatch.initialize([]);
-
+      const data = result.data.data ?? [];
+      songDispatch.initialize(data);
       return result;
     },
 
@@ -24,25 +23,24 @@ const getSongs = () => {
 };
 
 const addSongbyUrl = async (url: string) => {
-  try {
-    const song = await httpService.post(sonEndpoint, {
+  return httpService
+    .post(songEndpoint, {
       url,
-    });
-  } catch (error) {
-    log.error(error.message);
-  }
-  return;
+    })
+    .then(
+      (result) => result,
+      (error) => console.log(error)
+    );
 };
 
 const addSong = async (song: Song) => {
   try {
-    await httpService.post(sonEndpoint, {
+    await httpService.post(songEndpoint, {
       url: song.url,
     });
 
     log.success("Song added");
   } catch (error) {
-    // log.error(error.message);
     console.log(error.message);
   }
 
