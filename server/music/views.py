@@ -165,6 +165,15 @@ class getSongs(APIView):
 
 class LikedByView(APIView):
 
+     @staticmethod
+    def get_obj_id_and_append_user_id(request):
+        room_data = read_data(settings.ROOM_COLLECTION)
+        likedBy_ids = room_data["data"][0]["room_likedBy_ids"]
+        _id = room_data["data"][0]["_id"]
+        likedBy_ids.append(request.data["id"])
+        return _id, likedBy_ids
+
+
     def get(self, request):
         data = read_data(settings.SONG_COLLECTION)
         return Response(data)
@@ -173,23 +182,20 @@ class LikedByView(APIView):
         data = read_data(collection_name)
         return Response(data)
 
-    elif request.method == 'POST':
+    def post(self,request):
+        _id, likedBy_ids = self.get_obj_id_append_likedBy_id(request)
 
         url = 'https://music.zuri.chat/music/api/v1/song/'
-        payload = {
-            "_id": _id,
-            "addedBy": addedBy,
-            "albumCover": albumCover,
-            "duration": duration.
-            "likedBy": False,
-            "object_id": likedBy_ids,
-            "filter": {}
-        }
-    def post(self,request):
-        _id, likedBy_ids = self.get_obj_id_append_userid(request)
+        
+        liked_By = request.data['likedBy']
 
         payload = {
-            "room_likedBy_ids": likedBy_ids
+             "_id": _id,
+            "addedBy": addedBy,
+            "albumCover": albumCover,
+            "duration": duration,
+            "likedBy": liked_by,
+            "room_likedBy_ids": likedBy_ids,
         }
         data = write_data(settings.SONG_COLLECTION, object_id=id, payload=payload, method="PUT")
         return Response(data)
