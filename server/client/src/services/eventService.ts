@@ -2,8 +2,9 @@ import Centrifuge from "centrifuge";
 
 import songService from "./songService";
 import chatService from "./chatService";
-import { uiDispatch } from "../store/uiSlice";
+
 import { songDispatch } from "../store/songsSlice";
+import { chatDispatch } from "../store/chatsSlice";
 
 const connect = () => {
   // initialize store
@@ -23,14 +24,14 @@ const connect = () => {
     console.log({ event, data });
 
     if (event === "added_song" && data.length >= 0) {
-      console.log("song array");
+      songDispatch.initialize(data);
     } else if (event === "added_chat" && data.length >= 0) {
-      console.log("chat array");
+      chatDispatch.set(data);
     }
   });
 
   centrifuge.on("connect", (context) => {
-    console.log({ context });
+    // console.log({ context });
   });
 
   centrifuge.connect();
