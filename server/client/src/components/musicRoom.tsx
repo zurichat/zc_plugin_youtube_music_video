@@ -25,9 +25,6 @@ function MusicRoom() {
 
         <Playlist />
       </div>
-      <div className="room-chat-container">
-        <Chat />
-      </div>
     </Wrapper>
   );
 }
