@@ -65,7 +65,7 @@ class SidebarView(GenericAPIView):
                     "organisation_id": org_id,
                     "user_id": user_id,
                     "group_name": "Music",
-                    "show_group": False,
+                    "show_group": True,
                     "public_rooms": [
                         pub_room
                     ],
@@ -81,7 +81,7 @@ class SidebarView(GenericAPIView):
                 "organisation_id": org_id,
                 "user_id": user_id,
                 "group_name": "Music",
-                "show_group": False,
+                "show_group": True,
                 "public_rooms": [
                     pub_room
                 ],
