@@ -48,16 +48,6 @@ function App() {
       </div>
 
       <div>
-        <ToastContainer
-          theme="colored"
-          autoClose={2000}
-          hideProgressBar={true}
-          toastClassName="toast-wrapper"
-          bodyClassName="toast-body"
-        />
-
-        {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
-
         <RoomHeader />
 
         <Switch>
@@ -94,32 +84,6 @@ const Wrapper = styled.div`
     position: absolute;
     top: 100px;
     z-index: 111;
-  }
-
-  .Toastify__toast-container {
-    width: 102%;
-    position: fixed;
-    top: 55px;
-    left: -4px;
-
-    .Toastify__toast--success {
-      background-color: #cbffee;
-      color: black;
-      display: flex;
-      justify-content: center;
-    }
-
-    .Toastify__toast--error {
-      background: #fff1f3;
-      color: red;
-      display: flex;
-      justify-content: center;
-    }
-
-    .toast-body {
-      display: flex;
-      justify-content: center;
-    }
   }
 `;
 
