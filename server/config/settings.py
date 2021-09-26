@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     "client",
     "rest_framework",  # https://www.django-rest-framework.org/
     "rest_framework.authtoken",
-    "corsheaders",  # To Connect API with React App if required in seprate apps
+    #"corsheaders",  # To Connect API with React App if required in seprate apps
     "allauth",  # https://django-allauth.readthedocs.io/en/latest/installation.html
     "allauth.account",
     "allauth.socialaccount",
@@ -48,7 +48,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",  # new
+    #"corsheaders.middleware.CorsMiddleware",  # new
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
