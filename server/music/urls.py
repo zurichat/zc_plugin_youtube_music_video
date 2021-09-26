@@ -12,16 +12,16 @@ urlpatterns = [
 
 
     path("song/", SongView.as_view(), name="song"),
-    path("deletesong/", remove_song, name="deletesong"), #Delete songs 
+    # path("deletesong/", remove_song, name="deletesong"), #Delete songs 
 
 
     path("comments/", CommentView.as_view(), name="comments"),
-    path("deletechat/", remove_comments, name="deletechat"), #Delete comments
+    # path("deletechat/", remove_comments, name="deletechat"), #Delete comments
 
 
     path("createroom/", CreateRoomView.as_view(), name="createroom"),
-    path("room/", RoomView.as_view(), name="room"),
-    path("updateroom/", RoomUpdate.as_view(), name="updateroom"),
+    path("room/<pk>", RoomView.as_view(), name="room"),
+    path("updateroom/<pk>", RoomUpdate.as_view(), name="updateroom"),
            
 
     path("add_to_room", AddToRoomView.as_view(), name="add_to_room"),

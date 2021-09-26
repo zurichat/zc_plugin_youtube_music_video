@@ -53,7 +53,8 @@ class CommentSerializer(serializers.Serializer):
 class RoomSerializer(serializers.Serializer):
     
     _id = serializers.ReadOnlyField()
-    org_id = serializers.CharField(max_length=100, required=False)
+    org_id = serializers.ReadOnlyField()
+    plugin_id = serializers.ReadOnlyField()
     room_name = serializers.CharField(max_length=100)   
     description = serializers.CharField(max_length=300, required=False)
     room_url = serializers.CharField(required=False)

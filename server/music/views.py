@@ -21,7 +21,7 @@ import json
 
 def check_if_user_is_in_room_and_return_room_id(user_id):
     room_data = read_data(settings.ROOM_COLLECTION)
-    room_user_ids = room_data["data"][0]["room_user_ids"]
+    room_user_ids = room_data["data"][0]["user_ids"]
     if user_id not in room_user_ids:
         return None
     return room_data["data"][0]["_id"]
@@ -33,7 +33,7 @@ def get_room_info(room_id=None):
         "name": room_data["data"][0]["name"],
         "description": room_data["data"][0]["Description"],
         "image": "#",
-        "room_url": "#"
+        "room_url": "https://music.zuri.chat/music/api/v1/room/614f5562cf2c0f1ad7584fa0"
     }
     return output
 
@@ -170,9 +170,13 @@ class CreateRoomView(APIView):
     serializer_class = RoomSerializer
 
     def post(self, request):
-        org_id = request.query_params.get('org_id')
+
+        org_id = settings.ORGANIZATON_ID
+        plugin_id = settings.PLUGIN_ID
         coll_name = settings.ROOM_COLLECTION
         room_user_id = read_data(coll_name)
+
+        plugin_id = settings.PLUGIN_ID
 
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -180,20 +184,24 @@ class CreateRoomView(APIView):
         rooms = serializer.data
         rooms['user_id'] = room_user_id
         rooms['org_id'] = org_id
+        rooms['plugin_id'] = plugin_id
         data = write_data(settings.ROOM_COLLECTION, payload=rooms)
         return Response(data)
 
 
 class RoomView(APIView):
-    serializer_class = RoomSerializer
+    serializer_class = RoomSerializer  
 
-    def get(self, request, format=None):
+    def get(self, request, pk, format=None):
+        pk = '_id'
+
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
     
 class RoomUpdate(APIView):
     serializer_class = RoomSerializer
+    lookup_field = '_id'
 
     def put(self, request, format=None):
         serializer = RoomSerializer(data=request.data)
