@@ -56,7 +56,7 @@ const roomHeader = () => {
           className="header-link"
         >
           Music Room
-          <img src={arrow} alt="icon" className="arrow" />
+          {/* <img src={arrow} alt="icon" className="arrow" /> */}
         </Link>
       </div>
       <div className="header-right">
@@ -74,16 +74,15 @@ const roomHeader = () => {
           <div className="header-user-count">{userCount}</div>
         </div>
         <div>
-
           {/*  for pc */}
-          {!showChat && 
+          {!showChat && (
             <img
               src={message}
               alt="message count"
               className="header-message-count"
               onClick={() => uiDispatch.showChat(true)}
             />
-          }
+          )}
 
           {/* for mobile */}
           <img
@@ -287,7 +286,6 @@ const Wrapper = styled.div`
     .header-message-count {
       display: none;
     }
-
   }
 `;
 
