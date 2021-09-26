@@ -32,7 +32,7 @@ urlpatterns = [
     path("user/", UserListView.as_view(), name="user"),
     path("addmember/", AddMember.as_view(), name="addmembers"),
     path("header-user-count/", UserCountView.as_view(), name="header-user-count"),
-    # path("userdelete/", DeleteMember.as_view(), name="userdelete"), #remove user from member list
-    # path("userremove/", RemoveMember.as_view(), name="userremove"), #remove user from member list
+    path("userdelete/", DeleteMember.as_view(), name="userdelete"), #remove user from member list
+    path("userremove/", RemoveMember.as_view(), name="userremove"), #remove user from member list
     
 ]

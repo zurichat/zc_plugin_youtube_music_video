@@ -220,6 +220,9 @@ class CreateRoomView(APIView):
 class RoomView(APIView):
     serializer_class = RoomSerializer
 
+    # def get(self, request, pk, format=None):
+    #    pk = '_id'
+
     def get(self, request, pk, format=None):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -296,7 +299,7 @@ class RemoveMember(GenericAPIView):
 
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        coll_name = settings.ROOM_COLLECTION
+        coll_name = settings.MEMBERS_COLLECTION
 
         member = serializer.data
         member['user_id'] = user_id
