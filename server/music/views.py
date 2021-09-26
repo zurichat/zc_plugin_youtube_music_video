@@ -23,10 +23,11 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
 
 def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION)
+    room_url = room_data["data"][0]["_id"]
     output = {
-        "name": room_data["data"][0]["name"],
-        "description": room_data["data"][0]["Description"],
-        "icon": "#"
+        "room_name": room_data["data"][0]["name"],
+        "room_url": f"/music/{room_url}",
+        "room_image": "https://svgshare.com/i/aXm.svg"
     }
     return output
 
@@ -51,8 +52,10 @@ class SidebarView(GenericAPIView):
                 "user_id": user_id,
                 "group_name": "Music",
                 "show_group": False,
-                "public_rooms": pub_room,
-                "joined_rooms": {},
+                "public_rooms": [
+                    pub_room
+                ],
+                "joined_rooms": [],
             },
             "success": "true"
         }
