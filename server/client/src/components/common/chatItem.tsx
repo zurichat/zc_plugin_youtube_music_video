@@ -34,7 +34,6 @@ const Wrapper = styled.div`
   display: flex;
   margin-bottom: 6px;
   max-height: 646px;
-  padding-bottom: 10px;
   color: hsla(300, 2%, 11%, 1);
 
   .item-avatar {
@@ -63,6 +62,10 @@ const Wrapper = styled.div`
     font-size: 15px;
     font-weight: 900;
     margin-right: 10px;
+  }
+
+  .item-text {
+    line-height: 150%;
   }
 
   @media (max-width: 1000px) {
