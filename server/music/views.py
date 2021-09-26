@@ -21,10 +21,10 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
 
 def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION)
-    room_url = room_data["data"][0]["_id"]
+    # room_url = room_data["data"][0]["_id"]
     output = {
         "room_name": room_data["data"][0]["name"],
-        "room_url": f"/music/{room_url}",
+        "room_url": f"/music",
         "room_image": "https://svgshare.com/i/aXm.svg"
     }
     return output
