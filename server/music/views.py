@@ -65,11 +65,13 @@ class SidebarView(GenericAPIView):
                     "organisation_id": org_id,
                     "user_id": user_id,
                     "group_name": "Music",
-                    "show_group": False,
+                    "show_group": True,
                     "public_rooms": [
                         pub_room
                     ],
-                    "joined_rooms": [],
+                    "joined_rooms": [
+                        pub_room
+                    ],
                 })
         else:
             return JsonResponse({
@@ -79,11 +81,13 @@ class SidebarView(GenericAPIView):
                 "organisation_id": org_id,
                 "user_id": user_id,
                 "group_name": "Music",
-                "show_group": False,
+                "show_group": True,
                 "public_rooms": [
                     pub_room
                 ],
-                "joined_rooms": [],
+                "joined_rooms": [
+                    pub_room
+                ],
             })
 
     def is_valid(param):
@@ -217,8 +221,10 @@ class CreateRoomView(APIView):
 class RoomView(APIView):
     serializer_class = RoomSerializer  
 
-    def get(self, request, pk, format=None):
-        pk = '_id'
+    # def get(self, request, pk, format=None):
+        # pk = '_id'
+
+    def get(self, request, format=None):
 
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -296,7 +302,7 @@ class RemoveMember(GenericAPIView):
     
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        coll_name = settings.MEMBERS_COLLECTION
+        coll_name = settings.ROOM_COLLECTION
 
         member = serializer.data
         member['user_id'] = user_id
