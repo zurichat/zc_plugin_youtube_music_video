@@ -5,8 +5,6 @@ import { uiDispatch, uiSelect } from "../store/uiSlice";
 
 import Exit from "../components/common/exit";
 
-import avatarSvg from "../media/header-avatar.svg";
-import groupIconSvg from "../media/header-group-icon.svg";
 import menu from "../media/menu.svg";
 import arrow from "../media/arrow-down.svg";
 import message from "../media/message.svg";
@@ -25,14 +23,14 @@ const roomHeader = () => {
   const [userCount, setUserCount] = useState(0);
   const showChat = useSelector(uiSelect.showChat);
 
-  // useEffect(() => {
-  //   httpService
-  //     .get(userCountEndpoint)
-  //     .then((res) => {
-  //       setUserCount(res.data);
-  //     })
-  //     .catch((err) => console.log(err.message));
-  // }, []);
+  useEffect(() => {
+    httpService
+      .get(userCountEndpoint)
+      .then((res) => {
+        setUserCount(res.data);
+      })
+      .catch((err) => console.log(err.message));
+  }, []);
 
   const showExitModal = useSelector(uiSelect.showExitModal);
 
