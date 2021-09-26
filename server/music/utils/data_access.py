@@ -86,6 +86,36 @@ def write_data(collection, object_id=None, filter_data=None, payload=None, bulk_
     return response.response_data
 
 
+def put_data(collection, object_id=None, filter_data=None, payload=None, bulk_write=False, method=('PATCH')):
+    if filter_data is None:
+        filter_data = {}
+
+    if payload is None:
+        payload = {}
+
+    if object_id is None:
+        object_id = ""
+
+    put_data = {
+        "plugin_id": plugin_id,
+        "organization_id": org_id,
+        "collection_name": collection,
+        "bulk_write": bulk_write,
+        "object_id": object_id,
+        "filter": filter_data,
+        "payload": payload
+    }
+    request_client = RequestClient()
+
+    response = request_client.request(
+        method=method,
+        url="https://api.zuri.chat/data/write",
+        headers={"Authorization": "headers"},
+        post_data=put_data
+    )
+    return response.response_data
+
+
 def centrifugo_post(room, data):
     headers = {'Content-type': 'application/json', 'Authorization': 'apikey ' + centrifugo}
     post_data = {
@@ -106,45 +136,6 @@ def centrifugo_post(room, data):
     return response
 
 
-def data_write(collection, payload, filter={}, bulk=False, object_id=""):
-    plugin_id = settings.PLUGIN_ID
-
-    org_id = settings.ORGANIZATON_ID
-
-    data = {
-
-            "plugin_id": plugin_id,
-            "organization_id": org_id,
-            "collection_name": collection,
-            "bulk_write": bulk,
-            "object_id":object_id,
-            "filter": filter,
-            "payload": payload,
-             
-    }
-    url = "https://api.zuri.chat/data/write"
-
-    res = requests.post(url, json=data)
-
-    print(res.status_code)
-
-    return res
-
-
-def data_read(coll):
-    plugin_id = settings.PLUGIN_ID
-
-    org_id = settings.ORGANIZATON_ID
-
-    url = "https://api.zuri.chat/data/read/" + plugin_id + "/" + coll + "/" + org_id
-
-    res = requests.get(url)
-
-    print(res.status_code)
-    data = res.json()
-    return data['data']
-
-
 def get_video(url):
     res = requests.get(url)
 
@@ -162,22 +153,6 @@ def get_video(url):
     return result
 
 
-# def delete_user(collection=None, filter_data=None):
-#     if filter_data is None:
-#         filter_data = {}
-
-#     request_client = RequestClient()
-
-#     response = request_client.request(
-#         method="POST",
-#         # url=f"https://api.zuri.chat/data/delete/{plugin_id}/{collection}/{org_id}",
-#         url=f"https://api.zuri.chat/data/delete",
-#         headers={"Authorization": "headers"},
-#         post_data=filter_data
-#     )
-#     return response.response_data
-
-
 def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk_write=False, method="POST"):
     if filter_data is None:
         filter_data = {}
@@ -188,7 +163,7 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
     if object_id is None:
         object_id = ""
 
-    post_data = {
+    data = {
         "plugin_id": plugin_id,
         "organization_id": org_id,
         "collection_name": collection,
@@ -203,6 +178,32 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
         method=method,
         url="https://api.zuri.chat/data/delete",
         headers={"Authorization": "headers"},
-        post_data=post_data
+        data=data
     )
     return response.response_data
+
+
+# def delete(collection, obj_id):
+#         body = dict(
+#             plugin_id=plugin_id,
+#             organization_id=org_id,
+#             collection_name=collection,
+#             object_id=obj_id,
+#         )
+#         try:
+#             response = requests.post(url="https://api.zuri.chat/data/delete", json=body)
+#         except requests.exceptions.RequestException as e:
+#             print(e)
+#             return None
+#         if response.status_code == 200:
+#             return response.json()
+#         else:
+#             return {"status_code": response.status_code, "message": response.reason}
+
+
+
+# def get_user_profile(org_id=None, user_id=None):
+#     profile = requests.get(f"https://api.zuri.chat/organizations/{org_id}/members/{user_id}", headers=header)
+#     return profile.json()
+
+
