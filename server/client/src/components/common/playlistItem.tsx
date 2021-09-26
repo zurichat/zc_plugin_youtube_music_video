@@ -1,14 +1,9 @@
 import styled from "styled-components";
 
-import Like from "./like";
-
 import Song from "../../types/song";
-import option from "../../media/option.svg";
 
 import { playerAction } from "../../store/playerSlice";
-import songService from "../../services/songService";
-import { useSelector } from "react-redux";
-import { userSelect } from "../../store/usersSlice";
+import LikeOptionCount from "./likeOptionCount";
 
 interface Props {
   song: Song;
@@ -18,23 +13,11 @@ function PlaylistItem(props: Props) {
   const {
     title,
     addedBy,
-    duration,
     albumCover,
     id: songId,
+    duration,
     likedBy,
   } = props.song;
-
-  const { id: userId } = useSelector(userSelect.currentUser);
-
-  const { length: count } = likedBy;
-  const liked = likedBy.some((id) => id === userId);
-
-  const countText = (count: number) =>
-    count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
-
-  const handleLike = () => {
-    songService.likeSong({ songId, userId, like: !liked });
-  };
 
   const handlePlay = (e) => {
     if (e.target.dataset.like) return;
@@ -53,25 +36,12 @@ function PlaylistItem(props: Props) {
         <div className="item-title">{title}</div>
 
         <div className="item-addedBy">
-          Added by <span>{addedBy || "Pidoxy"}</span>
+          Added by <span>{addedBy.trim() || "Pidoxy"}</span>
         </div>
       </div>
 
-      <div className="item-group">
-        <div className="item-duration">{duration} mins</div>
-
-        <div className="item-like">{countText(count)}</div>
-
-        <div className="item-icons">
-          <Like liked={liked} onLike={handleLike} />
-
-          <img
-            data-option="option"
-            src={option}
-            alt="option img"
-            style={{ cursor: "pointer", width: "20px", height: "20px" }}
-          />
-        </div>
+      <div className="item-likeOptionCount">
+        <LikeOptionCount {...{ songId, duration, likedBy }} />
       </div>
     </Wrapper>
   );
@@ -104,11 +74,12 @@ const Wrapper = styled.div`
   }
 
   .item-info {
-    width: 350px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 70%;
+    margin-right: 100px;
   }
 
   .item-title {
@@ -129,53 +100,29 @@ const Wrapper = styled.div`
     }
   }
 
-  .item-group {
+  .item-likeOptionCount {
     flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
   }
 
-  .item-icons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 60px;
-  }
-
-  .item-like {
-    color: rgba(153, 153, 153, 1);
-  }
-
-  @media screen and (max-width: 780px) {
-    .item-group {
-      justify-content: flex-end;
-    }
-    .item-duration,
-    .item-like {
-      display: none;
-    }
-  }
-
-  @media screen and (max-width: 547px) {
+  @media screen and (max-width: 614px) {
     .item-info {
       width: 150px;
+      margin-right: 50px;
     }
   }
 
   @media screen and (max-width: 460px) {
+    .item-info {
+      margin-right: 30px;
+    }
+
     .item-title {
-      font-weight: 600;
-      /* font-size: 14px; */
       margin-bottom: 6px;
     }
 
     .item-albumCover {
       display: block;
       margin-right: 10px;
-      /* width: 50px;
-      height: 100%; */
     }
   }
 `;
