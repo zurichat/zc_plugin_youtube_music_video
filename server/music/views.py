@@ -126,13 +126,14 @@ class SongView(APIView):
 
     def post(self, request):
         media_info = get_video(request.data['url'])
+        username_info = request.data["addedBy"]
 
         payload = {
             "title": media_info["title"],
             "duration": media_info["duration"],
             "albumCover": media_info["thumbnail_url"],
             "url": media_info["track_url"],
-            "addedBy": " ",
+            "addedBy": username_info,
             "likedBy": []
         }
 
@@ -142,7 +143,7 @@ class SongView(APIView):
 
         centrifugo_post("zuri-plugin-music", {"event": "added_song", "data": updated_data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
-        # Note: use only {"url": ""} in the payload
+        # Note: song endpoint expects {"url": "", "addedBy":""} in the payload
 
 
 class AddToRoomView(APIView):
