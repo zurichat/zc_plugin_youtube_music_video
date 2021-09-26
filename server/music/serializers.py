@@ -4,6 +4,8 @@ from rest_framework import serializers
 
 class MembersSerializer(serializers.Serializer):
     user_id = serializers.CharField()
+    user_name = serializers.CharField()
+    avatar = serializers.CharField()
 
     def __str__(self):
         return str()
@@ -18,9 +20,9 @@ class MediaSerializer(serializers.Serializer):
 
 class CommentSerializer(serializers.Serializer):
     message = serializers.CharField(max_length=256)
-    created_at = serializers.DateTimeField(default=timezone.now, read_only=True)
+    time = serializers.IntegerField(max_value=None, min_value=None)
     userId = serializers.CharField(max_length=256)
-    user_name = serializers.CharField(max_length=256)
+    name = serializers.CharField(max_length=256)
     avatar = serializers.CharField(max_length=256)
 
     # added_by = serializers.ListField(
@@ -32,7 +34,10 @@ class CommentSerializer(serializers.Serializer):
 
 
 class RoomSerializer(serializers.Serializer):
+    org_id = serializers.CharField()
     room_name = serializers.CharField()
+    room_url = serializers.CharField()
+    room_image = serializers.CharField()
     description = serializers.CharField()
 
     def __str__(self):

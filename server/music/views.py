@@ -176,6 +176,8 @@ class AddMember(GenericAPIView):
 
     def post(self, request):
         user_id = request.query_params.get('user')
+        user_name = request.query_params.get('display name')
+        avatar = request.query_params.get('profile picture')
 
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -183,6 +185,8 @@ class AddMember(GenericAPIView):
 
         member = serializer.data
         member['user_id'] = user_id
+        member['user_name'] = user_name
+        member['avatar'] = avatar
         data = write_data(coll_name, payload=member)
         return Response(data)
 
@@ -191,6 +195,7 @@ class CreateRoomView(APIView):
     serializer_class = RoomSerializer
 
     def post(self, request):
+        org_id = request.query_params.get('org_id')
         coll_name = "members"
         room_user_id = read_data(coll_name)
 
@@ -199,6 +204,7 @@ class CreateRoomView(APIView):
 
         rooms = serializer.data
         rooms['room_user_id'] = room_user_id
+        rooms['org_id'] = org_id
         data = write_data(settings.ROOM_COLLECTION, payload=rooms)
         return Response(data)
 
