@@ -470,7 +470,7 @@ const ChatInputStyled = styled.div`
       background-color: #e9ecef;
     }
     .btn-test {
-      margin-left: 1.7rem;
+      margin-left: 1.3rem;
     }
   }
   .emoji-picker {
