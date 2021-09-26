@@ -71,7 +71,9 @@ function Player() {
 
       <div className="player-title">{song.title}</div>
 
-      <LikeOptionCount likedBy={song.likedBy} songId={song.id} />
+      <div style={{ display: "flex", justifyContent: "flex-start" }}>
+        <LikeOptionCount likedBy={song.likedBy} songId={song.id} />
+      </div>
 
       {upnext.length > 0 && <div className="player-next">Up next</div>}
 
