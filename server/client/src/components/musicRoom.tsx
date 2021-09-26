@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 import Playlist from "./playlist";
-import Chat from "./chat";
 import PasteUrl from "./common/pasteUrl";
 import { ToastContainer, Flip } from "react-toastify";
 
@@ -33,6 +32,7 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   margin: 0;
+  background: white;
 
   .room-main {
     overflow: hidden;

@@ -50,10 +50,7 @@ function App() {
       <div>
         <RoomHeader />
 
-        <Switch>
-          <Route path="/music" component={MusicRoom} />
-          <Redirect from="/" to="/music" />
-        </Switch>
+        <MusicRoom />
       </div>
       <div className="room-chat-container">
         <Chat />
@@ -88,38 +85,10 @@ const Wrapper = styled.div`
     top: 100px;
     z-index: 111;
   }
-<<<<<<< HEAD
-=======
 
   .room-chat-container {
     flex-grow: 0;
     background-color: transparent !important;
-  }
-
-  .Toastify__toast-container {
-    width: 102%;
-    position: fixed;
-    top: 55px;
-    left: -4px;
-
-    .Toastify__toast--success {
-      background-color: #cbffee;
-      color: black;
-      display: flex;
-      justify-content: center;
-    }
-
-    .Toastify__toast--error {
-      background: #fff1f3;
-      color: red;
-      display: flex;
-      justify-content: center;
-    }
-
-    .toast-body {
-      display: flex;
-      justify-content: center;
-    }
   }
 
   @media screen and (max-width: 1000px) {
@@ -136,7 +105,6 @@ const Wrapper = styled.div`
       z-index: 115;
     }
   }
->>>>>>> 2360c6d3cd0298bd66015f59c3526517497d332c
 `;
 
 export default App;
