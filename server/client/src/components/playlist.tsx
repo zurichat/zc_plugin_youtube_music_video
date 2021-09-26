@@ -27,7 +27,7 @@ function Playlist() {
 }
 
 const Wrapper = styled.div`
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   background: #fff;
   padding: 20px;
   height: 83vh;
