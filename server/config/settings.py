@@ -185,7 +185,7 @@ CORS_ALLOWED_ORIGINS = [
     "159.65.123.65",
     #"https://sub.example.com",
     #"http://localhost:8080",
-    #"http://localhost:8000",
+    "http://159.65.123.65:8000",
     #"http://localhost:9000",
     #"http://localhost:3000",  # if you have seprate react app
 ]
