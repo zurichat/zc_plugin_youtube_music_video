@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import { uiDispatch, uiSelect } from "../store/uiSlice";
@@ -6,7 +5,6 @@ import { uiDispatch, uiSelect } from "../store/uiSlice";
 import Exit from "../components/common/exit";
 
 import menu from "../media/menu.svg";
-import arrow from "../media/arrow-down.svg";
 import message from "../media/message.svg";
 
 import { useSelector } from "react-redux";
@@ -48,14 +46,13 @@ const roomHeader = () => {
 
         <img src={RoomIcon} alt="icon" className="header-icon hide-2" />
 
-        <Link
-          to="#"
+        <span
           onClick={() => uiDispatch.showExitModal(true)}
           className="header-link"
         >
           Music Room
           {/* <img src={arrow} alt="icon" className="arrow" /> */}
-        </Link>
+        </span>
       </div>
       <div className="header-right">
         <div className="header-right-flex">
@@ -137,6 +134,7 @@ const Wrapper = styled.div`
     font-size: 18px;
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
   }
 
   .header-link img {
