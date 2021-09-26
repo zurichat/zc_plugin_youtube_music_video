@@ -4,7 +4,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
 
-from music.serializers import CommentSerializer
+from music.serializers import CommentSerializer, RoomSerializer, MembersSerializer
 from music.utils.data_access import get_video, read_data, write_data, centrifugo_post
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -171,21 +171,41 @@ class AddToRoomView(APIView):
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
-class CreateRoomView(APIView):
-    def get(self, request):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data)
+class AddMember(GenericAPIView):
+    serializer_class = MembersSerializer
 
     def post(self, request):
-        payload = {
-            "Description": "YouTube Music Room Plugin",
-            "name": "Music Room",
-            "org_id": settings.ORGANIZATON_ID,
-            "room_user_ids": [
-                request.data["id"]
-            ]
-        }
-        data = write_data(settings.ROOM_COLLECTION, payload=payload)
+        user_id = request.query_params.get('user')
+        user_name = request.query_params.get('display name')
+        avatar = request.query_params.get('profile picture')
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        coll_name = "members"
+
+        member = serializer.data
+        member['user_id'] = user_id
+        member['user_name'] = user_name
+        member['avatar'] = avatar
+        data = write_data(coll_name, payload=member)
+        return Response(data)
+
+
+class CreateRoomView(APIView):
+    serializer_class = RoomSerializer
+
+    def post(self, request):
+        org_id = request.query_params.get('org_id')
+        coll_name = "members"
+        room_user_id = read_data(coll_name)
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        rooms = serializer.data
+        rooms['room_user_id'] = room_user_id
+        rooms['org_id'] = org_id
+        data = write_data(settings.ROOM_COLLECTION, payload=rooms)
         return Response(data)
 
 
