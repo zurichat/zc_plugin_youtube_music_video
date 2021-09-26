@@ -1,4 +1,3 @@
-import React from "react";
 import Song from "../../types/song";
 
 import PlaylistItem from "./playlistItem";

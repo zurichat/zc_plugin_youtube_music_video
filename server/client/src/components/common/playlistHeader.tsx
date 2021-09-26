@@ -7,7 +7,6 @@ import { playerAction, getPlayerState } from "../../store/playerSlice";
 import { uiDispatch } from "../../store/uiSlice";
 
 // Components
-import PasteUrl from "./pasteUrl";
 import Button from "./button";
 
 import Headset from "../../media/playlistIcon.svg";
@@ -36,8 +35,6 @@ const PlaylistHeader = () => {
 
   return (
     <Wrapper>
-      <PasteUrl />
-
       <div className="playlist-content-wrapper">
         <div className="playlist-img-div">
           <img src={Headset} alt="Playlist Header" className="playlist-img" />

@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import Loader from "react-loader-spinner";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -17,7 +16,7 @@ import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
-import Chat from "./components/chat"
+import Chat from "./components/chat";
 
 import ErrorBoundary from "./components/errorBoundary";
 import UserInfo from "./components/userInfo";
@@ -25,16 +24,16 @@ import UserInfo from "./components/userInfo";
 function App() {
   useEffect(() => {
     eventService.connect();
+    chatMediaQuery(); // toggle chat display based on screen size.
   }, []);
 
-  chatMediaQuery(); // toggle chat display based on screen size.
   const isLoading = useSelector(uiSelect.isLoading);
 
   return (
     <Wrapper>
-      {/* <ErrorBoundary>
+      <ErrorBoundary>
         <UserInfo />
-      </ErrorBoundary> */}
+      </ErrorBoundary>
 
       <div className="loader-wrapper">
         {isLoading && (
@@ -48,23 +47,10 @@ function App() {
         )}
       </div>
 
-      <div className="room-main">
-        <ToastContainer
-          theme="colored"
-          autoClose={2000}
-          hideProgressBar={true}
-          toastClassName="toast-wrapper"
-          bodyClassName="toast-body"
-        />
-
-        {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
-
+      <div>
         <RoomHeader />
 
-        <Switch>
-          <Route path="/music" component={MusicRoom} />
-          <Redirect from="/" to="/music" />
-        </Switch>
+        <MusicRoom />
       </div>
       <div className="room-chat-container">
         <Chat />
@@ -103,32 +89,6 @@ const Wrapper = styled.div`
   .room-chat-container {
     flex-grow: 0;
     background-color: transparent !important;
-  }
-
-  .Toastify__toast-container {
-    width: 102%;
-    position: fixed;
-    top: 55px;
-    left: -4px;
-
-    .Toastify__toast--success {
-      background-color: #cbffee;
-      color: black;
-      display: flex;
-      justify-content: center;
-    }
-
-    .Toastify__toast--error {
-      background: #fff1f3;
-      color: red;
-      display: flex;
-      justify-content: center;
-    }
-
-    .toast-body {
-      display: flex;
-      justify-content: center;
-    }
   }
 
   @media screen and (max-width: 1000px) {
