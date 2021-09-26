@@ -32,7 +32,7 @@ function ChatItem({ name, avatar, time, message }: Chat) {
 
 const Wrapper = styled.div`
   display: flex;
-  margin-bottom: 9px;
+  margin-bottom: 6px;
   max-height: 646px;
   padding-bottom: 10px;
   color: hsla(300, 2%, 11%, 1);

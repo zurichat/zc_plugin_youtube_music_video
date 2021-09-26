@@ -74,7 +74,6 @@ const Wrapper = styled.div`
 
   .chat-item-group {
     overflow-y: scroll;
-    margin-top: 1px;
     height: 350px;
     padding-left: 16px;
     padding-right: 30px;
