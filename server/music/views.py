@@ -195,6 +195,8 @@ class CommentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
 class RoomView(APIView):
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
@@ -241,6 +243,11 @@ def leave_room(request):
         except exceptions.ConnectionError as e:
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
 
+
+
+
+
+
 # @api_view(['GET', 'POST'])
 # def remove_song(request):
 #     plugin_id = settings.PLUGIN_ID
@@ -279,3 +286,5 @@ def leave_room(request):
 
 #         except exceptions.ConnectionError as e:
 #             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
+
+

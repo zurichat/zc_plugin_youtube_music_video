@@ -206,3 +206,4 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
         post_data=post_data
     )
     return response.response_data
+
