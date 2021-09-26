@@ -217,8 +217,10 @@ class CreateRoomView(APIView):
 class RoomView(APIView):
     serializer_class = RoomSerializer  
 
+    #def get(self, request, pk, format=None):
+    #    pk = '_id'
+    
     def get(self, request, pk, format=None):
-        pk = '_id'
 
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
