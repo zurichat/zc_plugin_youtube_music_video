@@ -17,5 +17,6 @@ urlpatterns = [
     path('music/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('music/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('music/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    # path('sidebar', SidebarView.as_view(), name='sidebar'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

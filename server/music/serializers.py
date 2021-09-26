@@ -8,6 +8,9 @@ class UserSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=256, read_only=True)
     avatar = serializers.CharField(max_length=256, required=False, read_only=True)
     token = serializers.CharField(max_length=500, required=False, read_only=True)
+
+    def __str__(self):
+        return str(self.name)
     
 
 class MediaSerializer(serializers.Serializer):
@@ -30,46 +33,12 @@ class CommentSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         
-        print(validated_data)
         instance["_id"] = validated_data.get("_id", instance["_id"])
         instance["message"] = validated_data.get("message", instance["message"])
         instance["time"] = validated_data.get("time", instance["time"])
         instance["user_id"] = validated_data.get("user_id", instance["user_id"])
         
         return instance
-
-
-class MessageSerializer(serializers.Serializer):
-    sender_id = serializers.CharField(max_length=128)
-    room_id = serializers.CharField(max_length=128)
-    message = serializers.CharField()
-    media = serializers.ListField(
-        child=serializers.URLField(), allow_empty=True, required=False, default=[]
-    )
-    read = serializers.BooleanField(default=False, required=False)
-    pinned = serializers.BooleanField(default=False, )
-    saved_by = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
-    threads = serializers.ListField(
-        required=False, default=[], child=ThreadSerializer()
-    )
-    reactions = serializers.ListField(
-        required=False, default=[], child=EmojiSerializer()
-    )
-    created_at = serializers.DateTimeField(default=timezone.now)
-
-    def update(self, instance, validated_data):
-        print(validated_data)
-        instance["sender_id"] = validated_data.get(
-            "sender_id", instance["sender_id"])
-        instance["room_id"] = validated_data.get(
-            "room_id", instance["room_id"])
-        instance["message"] = validated_data.get(
-            "message", instance["message"])
-
-        return instance
-
 
 
 class RoomSerializer(serializers.Serializer):
@@ -79,7 +48,10 @@ class RoomSerializer(serializers.Serializer):
     room_name = serializers.CharField(max_length=100)   
     description = serializers.CharField(max_length=300)
     type_of_room = serializers.CharField(max_length=50, required=True)
-    user_id = serializers.ListField(child=serializers.CharField(max_length=128), allow_empty=False, required=True)
+    user_id = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
+
+    def __str__(self):
+        return str(self.room_name)
 
 
 class SongSerializer(serializers.Serializer):
@@ -90,6 +62,10 @@ class SongSerializer(serializers.Serializer):
     albumCover = serializers.CharField(max_length=300)
     url = serializers.URLField(max_length=200, min_length=None, allow_blank=False)
     # addedBy = UserSerializer(many=True, read_only=True)
-    added_by = serializers.ListField(child=serializers.CharField(max_length=128), allow_empty=False, required=True)
+    # added_by = serializers.ListField(child=serializers.CharField(max_length=128), allow_empty=False, required=True)
+    added_by = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
     likedBy = serializers.NullBooleanField(required=False)
+
+    def __str__(self):
+        return str(self.title)
 
