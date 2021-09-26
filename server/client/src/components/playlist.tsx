@@ -13,11 +13,11 @@ function Playlist() {
   const songs = useSelector(songSelect.allSongs);
   const { show } = useSelector(getPlayerState);
 
-  if (songs.length === 0) return <EmptyScreen />;
-
   return (
     <Wrapper>
       <PlaylistHeader />
+
+      {songs.length === 0 && <EmptyScreen />}
 
       <Player />
 
