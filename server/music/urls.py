@@ -11,7 +11,7 @@ urlpatterns = [
     path("ping", PluginPingView.as_view(), name="ping"),
 
 
-    path("song", SongView.as_view(), name="song"),
+    path("song/", SongView.as_view(), name="song"),
     # path("deletesong/", remove_song, name="deletesong"), #Delete songs 
 
 
@@ -20,7 +20,8 @@ urlpatterns = [
 
 
     path("createroom", CreateRoomView.as_view(), name="createroom"),
-    path("room/<pk>", RoomView.as_view(), name="room"),
+    # path("room/<pk>", RoomView.as_view(), name="room"),
+    path("room", RoomView.as_view(), name="room"),
     # path("updateroom/<pk>", RoomUpdate.as_view(), name="updateroom"),
            
 
