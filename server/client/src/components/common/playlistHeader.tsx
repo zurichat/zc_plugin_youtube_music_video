@@ -27,7 +27,7 @@ const PlaylistHeader = () => {
       playerAction.dispatchShowPlayer(true);
     } else playerAction.dispatchPlaying(false);
 
-    if (!player.currentSong.id) playerAction.changeSong(firstSong);
+    if (!player.currentSongId) playerAction.changeSong(firstSong);
   };
 
   const handleAddSongToggle = () => {

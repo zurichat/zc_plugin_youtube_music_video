@@ -4,6 +4,7 @@ import LikeSong from "../types/likeSong";
 import log from "./logService";
 import { songDispatch } from "../store/songsSlice";
 import httpService from "./httpService";
+import store from "../store";
 
 const { songEndpoint, likeEndpoint } = httpService.endpoints;
 
@@ -23,9 +24,12 @@ const getSongs = () => {
 };
 
 const addSongbyUrl = async (url: string) => {
+  const addedBy = JSON.parse(store.getState().users.currentUser).name;
+
   return httpService
     .post(songEndpoint, {
       url,
+      addedBy,
     })
     .then(
       (result) => result,
