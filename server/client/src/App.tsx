@@ -24,16 +24,16 @@ import UserInfo from "./components/userInfo";
 function App() {
   useEffect(() => {
     eventService.connect();
+    chatMediaQuery(); // toggle chat display based on screen size.
   }, []);
 
-  chatMediaQuery(); // toggle chat display based on screen size.
   const isLoading = useSelector(uiSelect.isLoading);
 
   return (
     <Wrapper>
-      {/* <ErrorBoundary>
+      <ErrorBoundary>
         <UserInfo />
-      </ErrorBoundary> */}
+      </ErrorBoundary>
 
       <div className="loader-wrapper">
         {isLoading && (

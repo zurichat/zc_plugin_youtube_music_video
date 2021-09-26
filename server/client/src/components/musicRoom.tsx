@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 import Playlist from "./playlist";
@@ -29,7 +28,7 @@ const Wrapper = styled.div`
     margin-right: 10px;
   }
 
-  @media screen and (max-width: 1120px) {
+  @media screen and (max-width: 1000px) {
     justify-content: center;
     align-items: center;
 
