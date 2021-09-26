@@ -1,5 +1,5 @@
 {
-  "name": "@zuri/zuri-plugin-music",
+  "name": "@zuri/zuri-music-plugin",
   "scripts": {
     "start": "webpack serve",
     "start:standalone": "webpack serve --env standalone",

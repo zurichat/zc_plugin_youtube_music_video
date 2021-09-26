@@ -9,7 +9,7 @@ function UserInfo() {
     async () => {
       try {
         // @ts-ignore
-        const { GetUserInfo } = await import("@zuri/zuri-control");
+        const { GetUserInfo } = await import("@zuri/control");
 
         const info = await GetUserInfo();
 

@@ -29,7 +29,7 @@ function App() {
 
   return (
     <Wrapper>
-      <UserInfo />
+      {/* <UserInfo /> */}
 
       <div className="loader-wrapper">
         {isLoading && (

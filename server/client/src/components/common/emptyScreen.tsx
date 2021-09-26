@@ -3,8 +3,6 @@ import Illustration from "../../media/emptyScreen.svg";
 
 import { uiDispatch } from "../../store/uiSlice";
 
-import PasteUrl from "./pasteUrl";
-
 const EmptyScreen = () => {
   const handleClick = () => {
     uiDispatch.showPasteUrl(true);
@@ -29,7 +27,7 @@ const Wrapper = styled.div`
   background-color: #ffffff;
   padding: 40px 0 84px;
   width: 100%;
-  height: 200px;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
