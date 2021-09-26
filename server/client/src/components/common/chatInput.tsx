@@ -109,6 +109,7 @@ function ChatInput(props) {
       <input
         type="text"
         value={inputStr}
+        onKeyPress={(e) => (e.key === "Enter" ? handleSend() : undefined)}
         onChange={(e) => setInputStr(e.target.value)}
         placeholder="Send a message to John"
       />
@@ -469,7 +470,7 @@ const ChatInputStyled = styled.div`
       background-color: #e9ecef;
     }
     .btn-test {
-      margin-left: 1.7rem;
+      margin-left: 1.3rem;
     }
   }
   .emoji-picker {

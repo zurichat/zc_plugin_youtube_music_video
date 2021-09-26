@@ -12,7 +12,7 @@ const getSongs = () => {
   httpService.get(songEndpoint).then(
     (result) => {
       const data = result.data.data ?? [];
-      songDispatch.initialize(data);
+      songDispatch.initialize(data.filter((song) => song.url));
       return result;
     },
 

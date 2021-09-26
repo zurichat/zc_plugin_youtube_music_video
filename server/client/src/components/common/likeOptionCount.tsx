@@ -24,28 +24,34 @@ function LikeOptionCount(props: Props) {
   const countText =
     count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
 
-  const countClasses = duration ? "like-count" : "like-count-player";
-
   const handleLike = () => {
     songService.likeSong({ songId, userId, like: !liked });
   };
 
+  const formatDuration = (duration: string) => {
+    const [h, ...rest] = duration.split(":");
+    return (h === "0" ? "" : `${h}:`) + rest.join(":");
+  };
+
   return (
     <Wrapper duration={duration}>
-      {duration && <div className="like-duration">{duration} mins</div>}
+      {duration && (
+        <div className="like-duration">{formatDuration(duration)} mins</div>
+      )}
 
-      {countText && <div className={countClasses}>{countText}</div>}
+      {countText && <div className="like-count">{countText}</div>}
 
-      <div className="like-icons">
-        <Like liked={liked} onLike={handleLike} />
-
-        <img
-          data-option="option"
-          src={option}
-          alt="option img"
-          style={{ cursor: "pointer", width: "20px", height: "20px" }}
-        />
+      <div>
+        <Like className="like-button" liked={liked} onLike={handleLike} />
       </div>
+
+      <img
+        data-option="option"
+        src={option}
+        alt="option img"
+        style={{ cursor: "pointer", width: "20px", height: "20px" }}
+        className="like-option"
+      />
     </Wrapper>
   );
 }
@@ -53,9 +59,11 @@ function LikeOptionCount(props: Props) {
 const Wrapper = styled.div<{ duration: string }>`
   display: flex;
   align-items: center;
-  justify-content: ${({ duration }) =>
-    duration ? "space-between" : "flex-start"};
-  padding: 1rem;
+  justify-content: space-between;
+
+  & > * {
+    margin-right: 25px;
+  }
 
   .like-icons {
     display: flex;
@@ -64,30 +72,21 @@ const Wrapper = styled.div<{ duration: string }>`
     width: 60px;
   }
 
-  .like-count,
-  .like-count-player {
+  .like-count {
     color: rgba(153, 153, 153, 1);
   }
 
-  .like-count-player {
-    margin-right: 10px;
+  .like-option {
+    margin-right: 0;
   }
 
-  @media screen and (max-width: 1126px) {
-    .like-count {
+  @media screen and (max-width: 700px) {
+    .like-duration {
       display: none;
     }
   }
 
-  @media screen and (max-width: 1112px) {
-    .like-count {
-      display: inline;
-    }
-  }
-
-  @media screen and (max-width: 780px) {
-    justify-content: ${(props) => (props.duration ? "flex-end" : "flex-start")};
-    .like-duration,
+  @media screen and (max-width: 506px) {
     .like-count {
       display: none;
     }
