@@ -5,6 +5,7 @@ import Chat from "../../types/chat";
 
 const Time = (time) => {
   var hours = (time.getHours() < 13) ? time.getHours() : time.getHours() - 12;
+  if(hours === 0) hours = 12;
   var hour = (hours < 10) ? "0" + hours : hours;
   var minute = (time.getMinutes() < 10) ? "0" + time.getMinutes() : time.getMinutes();
   var format = (time.getHours() < 12) ? "AM" : "PM";
