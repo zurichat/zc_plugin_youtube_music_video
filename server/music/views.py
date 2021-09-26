@@ -21,10 +21,10 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
 
 def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION)
-    room_url = room_data["data"][0]["_id"]
+    # room_url = room_data["data"][0]["_id"]
     output = {
         "room_name": room_data["data"][0]["name"],
-        "room_url": f"/music/{room_url}",
+        "room_url": f"/music",
         "room_image": "https://svgshare.com/i/aXm.svg"
     }
     return output
@@ -45,10 +45,10 @@ class SidebarView(GenericAPIView):
         if request.GET.get('org') and request.GET.get('user'):
             url = f'https://api.zuri.chat/organizations/{org_id}/members/{user_id}'
             headers = {
-                "Authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb29raWUiOiJNVFl6TWpZME16VXhOM3hIZDNkQlIwUlplRTVFWnpGT1JGRXpXbFJTYVUxdFJteFpiVmswV2xkTk5GbDZhM2xOVVQwOWZLaXFkd3RkaFJlOUdpYUgxZ0dQWXpKLVRFTUc4Qm9ZNnIyNUJNQ2pHWlNnIiwiZW1haWwiOiJ1Y2hpd2FsbGkuYkBnbWFpbC5jb20iLCJpZCI6IjYxNDg1NDQ3ZTRiMmFlYmY4ZWM4YzkyMSIsIm9wdGlvbnMiOnsiUGF0aCI6Ii8iLCJEb21haW4iOiIiLCJNYXhBZ2UiOjc5Mzk3ODU3MjUsIlNlY3VyZSI6ZmFsc2UsIkh0dHBPbmx5IjpmYWxzZSwiU2FtZVNpdGUiOjB9LCJzZXNzaW9uX25hbWUiOiJmNjgyMmFmOTRlMjliYTExMmJlMzEwZDNhZjQ1ZDVjNyJ9.YznvgpGNmf9GqnBYBgHYcJucMk3oNLKQf11McWYSwb0",
-                "Content-Type" : "application/json",
-                }
-            r = requests.get(url,headers=headers)
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb29raWUiOiJNVFl6TWpZME16VXhOM3hIZDNkQlIwUlplRTVFWnpGT1JGRXpXbFJTYVUxdFJteFpiVmswV2xkTk5GbDZhM2xOVVQwOWZLaXFkd3RkaFJlOUdpYUgxZ0dQWXpKLVRFTUc4Qm9ZNnIyNUJNQ2pHWlNnIiwiZW1haWwiOiJ1Y2hpd2FsbGkuYkBnbWFpbC5jb20iLCJpZCI6IjYxNDg1NDQ3ZTRiMmFlYmY4ZWM4YzkyMSIsIm9wdGlvbnMiOnsiUGF0aCI6Ii8iLCJEb21haW4iOiIiLCJNYXhBZ2UiOjc5Mzk3ODU3MjUsIlNlY3VyZSI6ZmFsc2UsIkh0dHBPbmx5IjpmYWxzZSwiU2FtZVNpdGUiOjB9LCJzZXNzaW9uX25hbWUiOiJmNjgyMmFmOTRlMjliYTExMmJlMzEwZDNhZjQ1ZDVjNyJ9.YznvgpGNmf9GqnBYBgHYcJucMk3oNLKQf11McWYSwb0",
+                "Content-Type": "application/json",
+            }
+            r = requests.get(url, headers=headers)
             print(r.status_code)
 
             if r.status_code == 200:
@@ -56,7 +56,7 @@ class SidebarView(GenericAPIView):
 
                 r = requests.get(public_url)
                 return JsonResponse(r, safe=True)
-               
+
             else:
                 return JsonResponse({
                     "name": "Music Plugin",
@@ -65,11 +65,13 @@ class SidebarView(GenericAPIView):
                     "organisation_id": org_id,
                     "user_id": user_id,
                     "group_name": "Music",
-                    "show_group": False,
+                    "show_group": True,
                     "public_rooms": [
                         pub_room
                     ],
-                    "joined_rooms": [],
+                    "joined_rooms": [
+                        pub_room
+                    ],
                 })
         else:
             return JsonResponse({
@@ -79,11 +81,13 @@ class SidebarView(GenericAPIView):
                 "organisation_id": org_id,
                 "user_id": user_id,
                 "group_name": "Music",
-                "show_group": False,
+                "show_group": True,
                 "public_rooms": [
                     pub_room
                 ],
-                "joined_rooms": [],
+                "joined_rooms": [
+                    pub_room
+                ],
             })
 
     def is_valid(param):
@@ -195,7 +199,6 @@ class CreateRoomView(APIView):
     serializer_class = RoomSerializer
 
     def post(self, request):
-
         org_id = settings.ORGANIZATON_ID
         plugin_id = settings.PLUGIN_ID
         coll_name = settings.ROOM_COLLECTION
@@ -215,14 +218,12 @@ class CreateRoomView(APIView):
 
 
 class RoomView(APIView):
-    serializer_class = RoomSerializer  
+    serializer_class = RoomSerializer
 
     def get(self, request, pk, format=None):
-        pk = '_id'
-
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
- 
+
 
 class AddToRoomView(APIView):
     @staticmethod
@@ -262,7 +263,6 @@ class AddMember(GenericAPIView):
     serializer_class = MembersSerializer
 
     def post(self, request):
-
         user_id = request.query_params.get('user')
         user_name = request.query_params.get('display name')
         avatar = request.query_params.get('profile picture')
@@ -276,7 +276,7 @@ class AddMember(GenericAPIView):
         member['user_name'] = user_name
         member['avatar'] = avatar
         data = write_data(coll_name, payload=member)
-        
+
         return Response(data, status=status.HTTP_200_OK)
 
 
@@ -287,20 +287,20 @@ class UserCountView(GenericAPIView):
 
         return Response(len(header_user_count))
 
-     
+
 class RemoveMember(GenericAPIView):
     serializer_class = MembersSerializer
 
     def leave_room(self, request):
         user_id = request.query_params.get('user')
-    
+
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        coll_name = settings.MEMBERS_COLLECTION
+        coll_name = settings.ROOM_COLLECTION
 
         member = serializer.data
         member['user_id'] = user_id
-       
+
         try:
             data = delete_data(coll_name, payload=member)
 
@@ -308,22 +308,22 @@ class RemoveMember(GenericAPIView):
                 return Response({"message": "User left room"},
                                 status=status.HTTP_200_OK)
             else:
-                return Response({"error": data.json()['message']}, status=data.status_code)     
-        
+                return Response({"error": data.json()['message']}, status=data.status_code)
+
         except exceptions.ConnectionError as e:
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
-    
+
 
 class DeleteMember(GenericAPIView):
     serializer_class = MembersSerializer
 
     def delete_user(collection_name, user):
-    
+
         collection_name = settings.MEMBERS_COLLECTION
-        
+
         user_list = list()
         users = read_data(settings.MEMBERS_COLLECTION)
-        
+
         if users == None or "status_code" in users:
             return users
         else:

@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import Loader from "react-loader-spinner";
-import { Route, Switch, Redirect } from "react-router-dom";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
@@ -16,9 +15,8 @@ import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
-import Chat from "./components/chat";
 
-import ErrorBoundary from "./components/errorBoundary";
+import Chat from "./components/chat";
 import UserInfo from "./components/userInfo";
 
 function App() {
@@ -31,9 +29,7 @@ function App() {
 
   return (
     <Wrapper>
-      <ErrorBoundary>
-        <UserInfo />
-      </ErrorBoundary>
+      <UserInfo />
 
       <div className="loader-wrapper">
         {isLoading && (
@@ -47,7 +43,7 @@ function App() {
         )}
       </div>
 
-      <div>
+      <div className="room-container">
         <RoomHeader />
 
         <MusicRoom />
@@ -63,7 +59,7 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
 
@@ -93,7 +89,6 @@ const Wrapper = styled.div`
 
   @media screen and (max-width: 1000px) {
     justify-content: center;
-    align-items: center;
 
     .room-chat-container {
       position: fixed;

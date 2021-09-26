@@ -25,6 +25,8 @@ function Playlist() {
     <Wrapper>
       <PlaylistHeader />
 
+      {songs.length === 0 && <EmptyScreen />}
+
       <Player />
 
       {!show && <PlaylistItems songs={songs} />}
@@ -33,7 +35,7 @@ function Playlist() {
 }
 
 const Wrapper = styled.div`
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   background: #fff;
   padding: 20px;
   height: 83vh;

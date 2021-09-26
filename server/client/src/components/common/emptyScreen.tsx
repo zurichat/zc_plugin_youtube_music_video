@@ -3,8 +3,6 @@ import Illustration from "../../media/emptyScreen.svg";
 
 import { uiDispatch } from "../../store/uiSlice";
 
-import PasteUrl from "./pasteUrl";
-
 const EmptyScreen = () => {
   const handleClick = () => {
     uiDispatch.showPasteUrl(true);
@@ -12,8 +10,6 @@ const EmptyScreen = () => {
 
   return (
     <Wrapper>
-      <PasteUrl />
-
       <div className="empty_container">
         <img src={Illustration} alt="add songs illustration" />
         <h3 className="heading_3">There are no songs here!</h3>
@@ -31,6 +27,7 @@ const Wrapper = styled.div`
   background-color: #ffffff;
   padding: 40px 0 84px;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -89,6 +86,7 @@ const Wrapper = styled.div`
 
   @media screen and (max-width: 540px) {
     padding: 32px 0 224px;
+
     background: transparent;
     .text {
       font-size: 12px;

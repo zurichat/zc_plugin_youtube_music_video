@@ -46,9 +46,10 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "music.utils.middleware.CorsMiddleware"
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "corsheaders.middleware.CorsMiddleware",  # new
+    # "corsheaders.middleware.CorsMiddleware",  # new
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -70,7 +71,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         'DIRS': [
             os.path.join(BASE_DIR, '../root/dist'),
-        ],# Django look for templates folder in root directory
+        ],  # Django look for templates folder in root directory
         "APP_DIRS": True,  # Django look for templates folder in app directory
         "OPTIONS": {
             "context_processors": [
@@ -179,25 +180,27 @@ ACCOUNT_UNIQUE_EMAIL = True
 # Allow entering as a guest
 ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""))
 
-CORS_ALLOWED_ORIGINS = [
+#CORS_ALLOW_ALL_ORIGINS: True
+
+#CORS_ALLOWED_ORIGINS = [
     # "https://sub.example.com",
-    "http://localhost:8080",
-    "http://localhost:8000",
-    "http://localhost:9000",
-    "http://localhost:3000",  # if you have seprate react app
-]
+ #   "http://localhost:8080",
+  #  "http://localhost:8000",
+   # "http://localhost:9000",
+    #"http://localhost:3000",  # if you have seprate react app
+#]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
 
-ORGANIZATON_ID = "614679ee1a5607b13c00bcb7" #given by mark.
+ORGANIZATON_ID = "614679ee1a5607b13c00bcb7"  # given by mark.
 PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
 CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
 
-#new collections created
+# new collections created
 ROOM_COLLECTION = "music_room"
-SONG_COLLECTION = "songs" 
-COMMENTS_COLLECTION = "chats" 
-MEMBERS_COLLECTION =  "room_users" 
+SONG_COLLECTION = "songs"
+COMMENTS_COLLECTION = "chats"
+MEMBERS_COLLECTION = "room_users"
 
 APPEND_SLASH = False
