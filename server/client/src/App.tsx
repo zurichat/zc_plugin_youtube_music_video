@@ -17,6 +17,7 @@ import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
+import Chat from "./components/chat"
 
 import ErrorBoundary from "./components/errorBoundary";
 import UserInfo from "./components/userInfo";
@@ -31,9 +32,9 @@ function App() {
 
   return (
     <Wrapper>
-      <ErrorBoundary>
+      {/* <ErrorBoundary>
         <UserInfo />
-      </ErrorBoundary>
+      </ErrorBoundary> */}
 
       <div className="loader-wrapper">
         {isLoading && (
@@ -47,7 +48,7 @@ function App() {
         )}
       </div>
 
-      <div>
+      <div className="room-main">
         <ToastContainer
           theme="colored"
           autoClose={2000}
@@ -64,6 +65,9 @@ function App() {
           <Route path="/music" component={MusicRoom} />
           <Redirect from="/" to="/music" />
         </Switch>
+      </div>
+      <div className="room-chat-container">
+        <Chat />
       </div>
     </Wrapper>
   );
@@ -96,6 +100,11 @@ const Wrapper = styled.div`
     z-index: 111;
   }
 
+  .room-chat-container {
+    flex-grow: 0;
+    background-color: transparent !important;
+  }
+
   .Toastify__toast-container {
     width: 102%;
     position: fixed;
@@ -119,6 +128,21 @@ const Wrapper = styled.div`
     .toast-body {
       display: flex;
       justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 1000px) {
+    justify-content: center;
+    align-items: center;
+
+    .room-chat-container {
+      position: fixed;
+      top: 43px;
+      background: rgb(240, 240, 240);
+      flex-basis: 40%;
+      display: flex;
+      justify-content: center;
+      z-index: 115;
     }
   }
 `;

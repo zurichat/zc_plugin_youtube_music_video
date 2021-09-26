@@ -28,7 +28,9 @@ const PasteUrl = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (props.getSongByUrl(url)) return toast.error("The song already exist.");
+    if (props.getSongByUrl(url)) {
+      return toast.error("This song already exists.") && setUrl("");
+    }
 
     uiDispatch.loading(true);
 
@@ -37,6 +39,10 @@ const PasteUrl = (props: Props) => {
       await songService.addSongbyUrl(url);
       uiDispatch.showPasteUrl(false);
       toast.success("Added Successfully");
+
+      // this.setState(url: "");
+      setUrl("");
+
     } catch (e) {
       toast.error(e.message);
     }

@@ -385,7 +385,6 @@ const ChatInputStyled = styled.div`
   background-color: #fff;
   padding: 0 12px;
   z-index: 111;
-
   .chat-input {
     flex-grow: 1;
     height: 48px;
@@ -396,19 +395,16 @@ const ChatInputStyled = styled.div`
     border: none;
     outline: none;
   }
-
   .chat-icon-group {
     flex-basis: 90px;
     display: flex;
     justify-content: space-between;
   }
-
   .chat-icon {
     color: #08ffae;
     width: 27px;
     cursor: pointer;
   }
-
   .emoji-picker {
     position: absolute;
     top: 5rem;
@@ -428,7 +424,6 @@ const ChatInputStyled = styled.div`
   margin: 8px 16px 0 8px;
   box-sizing: border-box;
   overflow: hidden;
-
   input {
     position: relative;
     height: 54px;
@@ -439,7 +434,6 @@ const ChatInputStyled = styled.div`
     outline: transparent;
     flex: 1;
     border: none;
-
     ::placeholder {
       /* position: absolute;
       height: 18px;
@@ -451,7 +445,6 @@ const ChatInputStyled = styled.div`
       font-weight: normal;
       font-size: 15px;
       line-height: 18px;
-
       /* left: 3.27%;
       right: 55.78%;
       top: 30.21%; */
@@ -468,7 +461,6 @@ const ChatInputStyled = styled.div`
     flex-wrap: wrap;
     padding: 0;
     flex: -1;
-
     button {
       border: none;
       background-color: #fff;
@@ -476,12 +468,10 @@ const ChatInputStyled = styled.div`
     button:hover {
       background-color: #e9ecef;
     }
-
     .btn-test {
       margin-left: 1.7rem;
     }
   }
-
   .emoji-picker {
     position: absolute;
     top: 5rem;
