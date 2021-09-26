@@ -12,8 +12,6 @@ const EmptyScreen = () => {
 
   return (
     <Wrapper>
-      <PasteUrl />
-
       <div className="empty_container">
         <img src={Illustration} alt="add songs illustration" />
         <h3 className="heading_3">There are no songs here!</h3>
@@ -28,9 +26,10 @@ const EmptyScreen = () => {
 
 const Wrapper = styled.div`
   position: relative;
-  background-color: white;
-  padding: 24px 0 31px;
+  background-color: #ffffff;
+  padding: 40px 0 84px;
   width: 100%;
+  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -52,8 +51,8 @@ const Wrapper = styled.div`
     font-family: Lato, sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 32px;
-    line-height: 21px;
+    font-size: 18px;
+    line-height: 22px;
     color: #242424;
     margin: 24px 0 0 0;
   }
@@ -73,23 +72,28 @@ const Wrapper = styled.div`
     cursor: pointer;
   }
 
+  .btn {
+    display: none;
+  }
+
   .text {
     font-family: Lato, sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 20px;
-    line-height: 24px;
+    font-size: 15px;
+    line-height: 18px;
     color: #999999;
-    margin: 16px 24px;
+    margin: 16px 0 0;
   }
 
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 540px) {
     padding: 32px 0 224px;
+
     background: transparent;
     .text {
-      font-size: 11px;
-      line-height: 13.2px;
-      margin: 16px 0px;
+      font-size: 12px;
+      line-height: 14px;
+      margin: 8px 0 24px;
     }
 
     img {
@@ -97,12 +101,13 @@ const Wrapper = styled.div`
     }
 
     .btn {
-      padding: 16.5px 70.5px ;
+      display: block;
+      padding: 16.5px 70.5px;
     }
 
     .heading_3 {
-      font-size: 21px;
-      margin-top: 16px;
+      font-size: 18px;
+      line-height: 21px;
     }
   }
 `;
