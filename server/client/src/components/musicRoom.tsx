@@ -3,10 +3,15 @@ import styled from "styled-components";
 import Playlist from "./playlist";
 import PasteUrl from "./common/pasteUrl";
 import { ToastContainer, Flip } from "react-toastify";
+import MemberList from "./memberList";
+import { useSelector } from "react-redux";
+import { uiSelect } from "../store/uiSlice";
 
 function MusicRoom() {
+  const showMemberList = useSelector(uiSelect.showMemberList);
   return (
     <Wrapper>
+      {showMemberList && <MemberList />}
       <PasteUrl />
 
       <div className="room-main">
