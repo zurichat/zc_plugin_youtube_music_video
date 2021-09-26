@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -7,33 +7,35 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import RoomHeader from "./components/roomHeader";
 import MusicRoom from "./components/musicRoom";
-// import EnterRoom from "./components/modals/enterR";
 
 import chatMediaQuery from "./utils/chatMedia";
 
 import { uiSelect } from "./store/uiSlice";
-import authService from "./services/authService";
 import eventService from "./services/eventService";
 
 import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
+import Chat from "./components/chat"
+
+import ErrorBoundary from "./components/errorBoundary";
+import UserInfo from "./components/userInfo";
 
 function App() {
-  console.log("enter room exists");
-
   useEffect(() => {
-    authService.signin();
     eventService.connect();
   }, []);
 
   chatMediaQuery(); // toggle chat display based on screen size.
   const isLoading = useSelector(uiSelect.isLoading);
-  // const showModal = useSelector(uiSelect.showModal);
 
   return (
     <Wrapper>
+      {/* <ErrorBoundary>
+        <UserInfo />
+      </ErrorBoundary> */}
+
       <div className="loader-wrapper">
         {isLoading && (
           <Loader
@@ -46,17 +48,26 @@ function App() {
         )}
       </div>
 
-      <div>
-        <ToastContainer theme="colored" />
+      <div className="room-main">
+        <ToastContainer
+          theme="colored"
+          autoClose={2000}
+          hideProgressBar={true}
+          toastClassName="toast-wrapper"
+          bodyClassName="toast-body"
+        />
 
         {/* {showModal && <EnterRoom setUserCount={setUserCount} />} */}
 
-        <RoomHeader  />
+        <RoomHeader />
 
         <Switch>
           <Route path="/music" component={MusicRoom} />
           <Redirect from="/" to="/music" />
         </Switch>
+      </div>
+      <div className="room-chat-container">
+        <Chat />
       </div>
     </Wrapper>
   );
@@ -87,6 +98,52 @@ const Wrapper = styled.div`
     position: absolute;
     top: 100px;
     z-index: 111;
+  }
+
+  .room-chat-container {
+    flex-grow: 0;
+    background-color: transparent !important;
+  }
+
+  .Toastify__toast-container {
+    width: 102%;
+    position: fixed;
+    top: 55px;
+    left: -4px;
+
+    .Toastify__toast--success {
+      background-color: #cbffee;
+      color: black;
+      display: flex;
+      justify-content: center;
+    }
+
+    .Toastify__toast--error {
+      background: #fff1f3;
+      color: red;
+      display: flex;
+      justify-content: center;
+    }
+
+    .toast-body {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  @media screen and (max-width: 1000px) {
+    justify-content: center;
+    align-items: center;
+
+    .room-chat-container {
+      position: fixed;
+      top: 43px;
+      background: rgb(240, 240, 240);
+      flex-basis: 40%;
+      display: flex;
+      justify-content: center;
+      z-index: 115;
+    }
   }
 `;
 

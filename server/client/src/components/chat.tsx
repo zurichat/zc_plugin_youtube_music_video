@@ -8,27 +8,24 @@ import ChatInput from "./common/chatInput";
 
 import { chatSelect } from "../store/chatsSlice";
 import { uiSelect } from "../store/uiSlice";
-import chatService from "../services/chatService";
 
 function Chat(props) {
   const chats = useSelector(chatSelect.allChat);
   const showChat = useSelector(uiSelect.showChat);
   const scroller = useRef(null);
 
-  useEffect(() => {
-    chatService.getChats();
-  }, []);
-
-  if (!showChat) return null;
-
   const scrollToBottom = () => {
     scroller.current.scrollIntoView(false);
   };
 
-  // useEffect(() => {
-  //   scrollToBottom();
-  // });
+  useEffect(() => {
+    if(showChat){
+    scrollToBottom();
+    };
+  });
 
+  if (!showChat) return null;
+  
   function handleFocus() {
     const mediaQuery = window.matchMedia("(max-width: 1000px)");
     const chatItemGroup =
@@ -71,13 +68,16 @@ function Chat(props) {
 
 const Wrapper = styled.div`
   height: 100%;
-  width: 400px;
+  width: 415px;
   background-color: white;
+  margin-left: 8px;
 
   .chat-item-group {
     overflow-y: scroll;
-    margin-top: 10px;
     height: 350px;
+    padding-left: 16px;
+    padding-right: 30px;
+    margin-top: 24px;
   }
   .chat-item-group::-webkit-scrollbar {
     width: 3px;
@@ -88,8 +88,13 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 1000px) {
+    background-color: transparent;
+    width: 350px;
+    margin-left: 0px;
     .chat-item-group {
       max-height: 450px;
+      margin-top: 2px;
+      background-color: white;
     }
   }
 `;

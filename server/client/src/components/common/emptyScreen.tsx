@@ -6,15 +6,19 @@ import { uiDispatch } from "../../store/uiSlice";
 import PasteUrl from "./pasteUrl";
 
 const EmptyScreen = () => {
+  const handleClick = () => {
+    uiDispatch.showPasteUrl(true);
+  };
+
   return (
     <Wrapper>
       <PasteUrl />
 
       <div className="empty_container">
-        <img src={Illustration} alt="add songs illustraat" />
+        <img src={Illustration} alt="add songs illustration" />
         <h3 className="heading_3">There are no songs here!</h3>
         <p className="text">Start adding your songs</p>
-        <button className="btn" onClick={() => uiDispatch.showPasteUrl(true)}>
+        <button className="btn" onClick={handleClick}>
           Add songs
         </button>
       </div>
@@ -25,7 +29,7 @@ const EmptyScreen = () => {
 const Wrapper = styled.div`
   position: relative;
   background-color: white;
-  padding: 80px 0 131px;
+  padding: 24px 0 31px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -51,7 +55,7 @@ const Wrapper = styled.div`
     font-size: 32px;
     line-height: 21px;
     color: #242424;
-    margin: 22px 0 0 0;
+    margin: 24px 0 0 0;
   }
 
   .btn {
@@ -64,8 +68,9 @@ const Wrapper = styled.div`
     font-size: 16px;
     line-height: 24px;
     color: #ffffff;
-    padding: 12px 16px;
+    padding: 12px 18px;
     border: none;
+    cursor: pointer;
   }
 
   .text {
@@ -75,14 +80,16 @@ const Wrapper = styled.div`
     font-size: 20px;
     line-height: 24px;
     color: #999999;
-    margin: 15px 22px;
+    margin: 16px 24px;
   }
 
   @media screen and (max-width: 480px) {
+    padding: 32px 0 224px;
+    background: transparent;
     .text {
       font-size: 11px;
       line-height: 13.2px;
-      margin: 7px 0 10px;
+      margin: 16px 0px;
     }
 
     img {
@@ -90,14 +97,13 @@ const Wrapper = styled.div`
     }
 
     .btn {
-      padding: 11.5px 7.5px;
+      padding: 16.5px 70.5px ;
     }
 
     .heading_3 {
       font-size: 21px;
-      margin-top: 50px;
+      margin-top: 16px;
     }
-    padding: 86px auto 157px;
   }
 `;
 
