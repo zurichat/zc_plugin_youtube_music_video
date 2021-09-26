@@ -32,7 +32,9 @@ function App() {
 
   return (
     <Wrapper>
-
+      {/* <ErrorBoundary>
+        <UserInfo />
+      </ErrorBoundary> */}
 
       <div className="loader-wrapper">
         {isLoading && (
