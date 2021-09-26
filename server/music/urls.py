@@ -13,5 +13,7 @@ urlpatterns = [
     path("comments/", CommentView.as_view(), name="comments"),
     path("exit/", leave_room, name="exit"),
     path("room/", RoomView.as_view(), name="room"),
+    path("comments/<str:id>/delete/", DeleteComment.as_view()),
+    path("comments/<str:id>/update/", UpdateComment.as_view()),
 
 ]

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 
 from music.serializers import CommentSerializer
-from music.utils.data_access import get_video, read_data, write_data, centrifugo_post
+from music.utils.data_access import get_video, read_data, write_data, centrifugo_post, delete_data
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 import requests
@@ -261,7 +261,48 @@ def leave_room(request):
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
 
 
+class DeleteComment(APIView):
 
+    # comments = read_data(settings.COMMENTS_COLLECTION)
+    # comment = comments['data']
+    # print(comment[0])
+    # del comment[0]
+    
+    def delete(self, request, id):
+
+        try:
+            delete_data(settings.COMMENTS_COLLECTION,object_id=id)
+
+            return Response (
+                {"success": True,
+                  "message": "Comment Sucessfully deleted"
+                }, status=status.HTTP_200_OK)
+
+        except:
+            return Response (
+                {"success": False,
+                  "message": "Delete operation failed"
+                }, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateComment(APIView):
+
+
+    def put(self, request, id):
+        serializer = CommentSerializer(data=request.data)
+
+        if serializer.is_valid():
+            payload = serializer.data
+
+            data = write_data(settings.COMMENTS_COLLECTION, payload=payload,object_id=id,method='PUT')
+
+            updated_data = read_data(settings.COMMENTS_COLLECTION)
+
+            centrifugo_post("zuri-plugin-music", {"event": "updated_chat", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
