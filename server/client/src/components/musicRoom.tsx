@@ -33,6 +33,7 @@ const Wrapper = styled.div`
   display: flex;
   margin: 0;
   background: white;
+  height: 100%;
 
   .room-main {
     overflow: hidden;

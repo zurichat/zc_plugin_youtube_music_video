@@ -16,7 +16,7 @@ declare global {
 // });
 
 // registerApplication({
-//   name: "@zuri/zuri-plugin-music",
+//   name: "@zuri/zuri-music-plugin",
 //   app: () => System.import("http://localhost:8080/zuri-music-plugin.js"),
 //   activeWhen: ["/"],
 // });
@@ -29,7 +29,7 @@ function customRegister(env: "dev" | "prod") {
 
   if (env === "dev") {
     registerApplication({
-      name: "@zuri/zuri-plugin-music",
+      name: "@zuri/zuri-music-plugin",
       app: () => System.import("//localhost:8000/static/zuri-music-plugin.js"),
       activeWhen: ["/"],
     });
