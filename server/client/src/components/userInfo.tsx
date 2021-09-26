@@ -11,7 +11,7 @@ function UserInfo() {
         const { first_name: name, Organizations } = GetUserInfo();
         userDispatch.setCurrentUser({ ...user, name, orgId: Organizations[0] });
       })
-      .catch();
+      .catch(console.log);
   };
 
   handleSetUser();
