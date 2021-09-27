@@ -21,12 +21,14 @@ const connect = () => {
       data: { data },
     } = message.data;
 
-    console.log({ event, data });
+    // console.log({ event, data });
 
     if (event === "added_song" && data.length >= 0) {
       songDispatch.initialize(data);
     } else if (event === "added_chat" && data.length >= 0) {
       chatDispatch.set(data);
+    } else {
+      console.log("else", { event, data });
     }
   });
 
