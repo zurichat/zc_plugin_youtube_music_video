@@ -3,7 +3,7 @@ import { uiDispatch } from "../store/uiSlice";
 
 export default function chatMediaQuery() {
   // Display chat by default on desktop view
-  const mediaQuery = matchMedia("(min-width: 1020px)");
+  const mediaQuery = matchMedia("(min-width: 1123px)");
 
   mediaQuery.addEventListener("change", (ev) => {
     if (mediaQuery.matches) uiDispatch.showChat(true);

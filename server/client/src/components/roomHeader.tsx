@@ -100,11 +100,9 @@ const Wrapper = styled.div`
   justify-content: space-between;
   background: #00b87c;
   border-radius: 1px 0px;
-  height: 100%;
-  max-height: 44px;
+  height: 44px;
   padding: 0 16px;
   color: #fff;
-  margin-bottom: 2px;
   z-index: 1;
 
   img {
@@ -227,7 +225,6 @@ const Wrapper = styled.div`
   }
 
   @media screen and (max-width: 1000px) {
-    background-color: #27ae60;
     padding: 0 20px;
     height: 48px;
 

@@ -36,8 +36,11 @@ const PasteUrl = (props: Props) => {
 
     try {
       getSongIdFromYouTubeUrl(url);
+
       await songService.addSongbyUrl(url);
+
       uiDispatch.showPasteUrl(false);
+
       toast.success("Added Successfully");
 
       // this.setState(url: "");
@@ -47,6 +50,12 @@ const PasteUrl = (props: Props) => {
     }
 
     uiDispatch.loading(false);
+  };
+
+  const handleEscape = (ev) => {
+    if (ev.code === "Escape") {
+      uiDispatch.showPasteUrl(false);
+    }
   };
 
   return (
@@ -76,6 +85,7 @@ const PasteUrl = (props: Props) => {
             id=""
             value={url}
             onChange={handleChange}
+            onKeyDown={handleEscape}
             autoFocus
           />
         </div>
@@ -89,10 +99,10 @@ const PasteUrl = (props: Props) => {
 };
 
 const Wrapper = styled.div`
-  position: fixed;
+  position: absolute;
   top: 1px;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   background-color: rgb(0, 0, 0, 0.2);

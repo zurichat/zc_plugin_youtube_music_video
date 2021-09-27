@@ -32,6 +32,7 @@ function PlaylistItem(props: Props) {
     <Wrapper onClick={handlePlay}>
       <div className="item-group-1">
         <img src={albumCover} alt="album cover" className="item-albumCover" />
+
         <div className="item-info">
           <div className="item-title">{title}</div>
 
@@ -100,13 +101,13 @@ const Wrapper = styled.div`
     }
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 700px) {
     .item-info {
       width: 200px;
     }
   }
 
-  @media screen and (max-width: 500px) {
+  @media screen and (max-width: 600px) {
     .item-info {
       width: 150px;
     }
