@@ -13,6 +13,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
 import UserInfo from "./components/userInfo";
+import MemberList from "./components/memberList";
 
 function App() {
   useEffect(() => {
@@ -24,6 +25,7 @@ function App() {
     <Wrapper>
       {/* <UserInfo /> */}
 
+      <MemberList />
       <MusicRoom />
     </Wrapper>
   );

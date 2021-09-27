@@ -5,10 +5,14 @@ import Playlist from "./playlist";
 import RoomHeader from "./roomHeader";
 import PasteUrl from "./common/pasteUrl";
 import Chat from "./chat";
+import { useSelector } from "react-redux";
+import { uiSelect } from "../store/uiSlice";
 
 function MusicRoom() {
+  const showPasteUrl = useSelector(uiSelect.showPasteUrl);
+
   return (
-    <Wrapper>
+    <Wrapper overflow={showPasteUrl}>
       <div className="room-main">
         <PasteUrl />
 
@@ -34,27 +38,29 @@ function MusicRoom() {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ overflow: boolean }>`
   position: relative;
   display: flex;
   margin: 0;
   background-color: rgb(240, 240, 240);
-  height: 100vh;
-  max-height: 100vh;
+  height: 96vh;
+  max-height: 96vh;
 
   .room-main {
     flex-grow: 1;
-    overflow-y: scroll;
+    overflow-y: ${(props) => (props.overflow ? "hidden" : "scroll")};
     position: relative;
     margin-right: 10px;
     background-color: white;
   }
 
-  .room-main::-webkit-scrollbar {
+  .room-main::-webkit-scrollbar,
+  .room-chat-container::-webkit-scrollbar {
     width: 5px;
   }
 
-  .room-main::-webkit-scrollbar-thumb {
+  .room-main::-webkit-scrollbar-thumb,
+  .room-chat-container::-webkit-scrollbar-thumb {
     width: 6px;
     background-color: #00b87c;
   }

@@ -11,6 +11,7 @@ const endpoints = {
   userCountEndpoint: "header-user-count/",
   addToRoom: "add_to_room/",
   leaveEndpoint: "exit/",
+  roomEndpoint: "room/",
 };
 
 const httpService = {

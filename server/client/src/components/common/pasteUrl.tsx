@@ -59,7 +59,7 @@ const PasteUrl = (props: Props) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper onClick={() => uiDispatch.showPasteUrl(false)}>
       <form onSubmit={handleSubmit} className="submit-form">
         <div>
           <label htmlFor="" className="form-label">

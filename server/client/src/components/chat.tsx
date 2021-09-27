@@ -60,6 +60,7 @@ function Chat(props) {
         {chats.map((chat, index) => (
           <ChatItem key={index} {...chat} />
         ))}
+
         <div className="scroller" ref={scroller}></div>
       </div>
       <ChatInput handleFocus={handleFocus} handleBlur={handleBlur} />
@@ -73,12 +74,15 @@ const Wrapper = styled.div`
   background-color: white;
 
   .chat-item-group {
+    flex-grow: 1;
     overflow-y: scroll;
-    height: 350px;
+    min-height: 321px;
     padding-left: 16px;
     padding-right: 30px;
     margin-top: 24px;
+    height: 440px;
   }
+
   .chat-item-group::-webkit-scrollbar {
     width: 3px;
   }

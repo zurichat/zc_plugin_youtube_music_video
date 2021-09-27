@@ -21,8 +21,12 @@ DEBUG = True
 ALLOWED_HOSTS = ["zuri.chat", "music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1", "*"]
 
 # Application definition
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_REPLACE_HTTPS_REFERER = True
 
 INSTALLED_APPS = [
+    "corsheaders",  # To Connect API with React App if required in seprate apps
     "django.contrib.admin",
     "django.contrib.sites",
     "django.contrib.auth",
@@ -34,7 +38,6 @@ INSTALLED_APPS = [
     "client",
     "rest_framework",  # https://www.django-rest-framework.org/
     "rest_framework.authtoken",
-    #"corsheaders",  # To Connect API with React App if required in seprate apps
     "allauth",  # https://django-allauth.readthedocs.io/en/latest/installation.html
     "allauth.account",
     "allauth.socialaccount",
@@ -46,11 +49,12 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    #"corsheaders.middleware.CorsMiddleware",  # new
+    "corsheaders.middleware.CorsMiddleware",  # new
     "django.middleware.common.CommonMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "corsheaders.middleware.CorsPostCsrfMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -179,13 +183,12 @@ ACCOUNT_UNIQUE_EMAIL = True
 # Allow entering as a guest
 ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""))
 
-#CORS_ALLOW_ALL_ORIGINS: True
 
 #CORS_ALLOWED_ORIGINS = [
- #   "159.65.123.65",
-    #"https://sub.example.com",
-    #"http://localhost:8080",
-    #"http://159.65.123.65:8000",
+    
+ #   "https://sub.example.com",
+  #  "http://localhost:8080",
+   # "http://localhost:8000",
     #"http://localhost:9000",
     #"http://localhost:3000",  # if you have seprate react app
 #]
