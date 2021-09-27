@@ -1,20 +1,12 @@
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { uiDispatch, uiSelect } from "../store/uiSlice";
-
-import Exit from "../components/common/exit";
-
-import avatarSvg from "../media/header-avatar.svg";
-import groupIconSvg from "../media/header-group-icon.svg";
-import menu from "../media/menu.svg";
-import arrow from "../media/arrow-down.svg";
-import message from "../media/message.svg";
-
-import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
 import httpService from "../services/httpService";
 
+import menu from "../media/menu.svg";
+import message from "../media/message.svg";
 import RoomIcon from "../media/musicRoomIcon.svg";
 import avatar1 from "../media/avatar-1.svg";
 import avatar2 from "../media/avatar-2.svg";
@@ -23,6 +15,7 @@ import avatar3 from "../media/avatar-3.svg";
 const roomHeader = () => {
   const { userCountEndpoint } = httpService.endpoints;
   const [userCount, setUserCount] = useState(0);
+  const showChat = useSelector(uiSelect.showChat);
 
   useEffect(() => {
     httpService
@@ -33,14 +26,9 @@ const roomHeader = () => {
       .catch((err) => console.log(err.message));
   }, []);
 
-  const showExitModal = useSelector(uiSelect.showExitModal);
-  const showChat = useSelector(uiSelect.showChat);
-
   return (
-    <Wrapper className="header">
+    <Wrapper>
       <div className="header-left">
-        {showExitModal && <Exit />}
-
         <img
           src={menu}
           alt="icon"
@@ -50,17 +38,13 @@ const roomHeader = () => {
 
         <img src={RoomIcon} alt="icon" className="header-icon hide-2" />
 
-        <Link
-          to="#"
-          onClick={() => uiDispatch.showExitModal(true)}
-          className="header-link"
-        >
-          Music Room
-          <img src={arrow} alt="icon" className="arrow" />
-        </Link>
+        <span className="header-link">Music Room</span>
       </div>
       <div className="header-right">
-        <div className="header-right header-right-flex">
+        <div
+          className="header-right-flex"
+          onClick={() => uiDispatch.showMemberList(true)}
+        >
           <div className="header-avatar">
             <div className="pc-avatars">
               <img className="avatar-1" src={avatar1} alt="avatar name" />
@@ -75,21 +59,21 @@ const roomHeader = () => {
         </div>
         <div>
           {/*  for pc */}
-          {!showChat && !window.matchMedia("(min-width: 1000px)") ? (
+          {!showChat && (
             <img
+              style={{ cursor: "pointer" }}
               src={message}
               alt="message count"
               className="header-message-count"
               onClick={() => uiDispatch.showChat(true)}
-            />
-          ) : (
-            ""
-          )}
+              />
+              )}
+
           {/* for mobile */}
           <img
             src={message}
             alt="message count"
-            className="header-message-count mobile"
+            className="header-message-count-mobile"
             onClick={() => uiDispatch.showChat(true)}
           />
         </div>
@@ -106,11 +90,9 @@ const Wrapper = styled.div`
   justify-content: space-between;
   background: #00b87c;
   border-radius: 1px 0px;
-  height: 100%;
-  max-height: 44px;
+  height: 44px;
   padding: 0 16px;
   color: #fff;
-  margin-bottom: 2px;
   z-index: 1;
 
   img {
@@ -140,6 +122,7 @@ const Wrapper = styled.div`
     font-size: 18px;
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
   }
 
   .header-link img {
@@ -164,6 +147,8 @@ const Wrapper = styled.div`
   }
 
   .header-right-flex {
+    display: flex;
+    align-items: center;
     padding: 0 8px 0 3px;
     background: #01d892;
     border: 1px solid #01d892;
@@ -175,6 +160,7 @@ const Wrapper = styled.div`
 
   .header-avatar {
     display: flex;
+    height: -webkit-fill-available;
     align-items: center;
     position: relative;
     width: 64px;
@@ -189,10 +175,13 @@ const Wrapper = styled.div`
 
   .pc-avatars {
     display: flex;
+    align-items: center;
+    height: -webkit-fill-available;
   }
 
   .avatar-1,
-  .avatar-2 {
+  .avatar-2,
+  .avatar-3 {
     position: absolute;
     width: 24px;
     border: 1px solid #01d892;
@@ -208,31 +197,24 @@ const Wrapper = styled.div`
     left: 19px;
   }
 
-  .avatar-1,
-  .avatar-2,
   .avatar-3 {
-    top: -13.09px;
-  }
-
-  .avatar-3 {
-    position: absolute;
-    border: 1px solid transparent;
     left: 39px;
   }
 
-  .mobile {
+  /* .mobile {
     display: none;
-  }
+  } */
 
   .header-message-count {
     margin-left: 40px !important;
+    display: block;
+  }
+
+  .header-message-count-mobile {
+    display: none;
   }
 
   @media screen and (max-width: 1000px) {
-    background-color: #27ae60;
-    padding: 0 20px;
-    max-height: 48px;
-
     .mobile-avatar {
       display: flex;
     }
@@ -244,9 +226,9 @@ const Wrapper = styled.div`
       fill: white;
     }
 
-    .mobile {
+    /* .mobile {
       display: none !important;
-    }
+    } */
 
     .pc-avatars,
     .arrow {
@@ -274,10 +256,13 @@ const Wrapper = styled.div`
       line-height: 12px;
     }
 
-    .header-message-count,
-    .mobile {
+    .header-message-count-mobile {
       display: block !important;
       margin-left: 24px !important;
+    }
+
+    .header-message-count {
+      display: none;
     }
   }
 `;

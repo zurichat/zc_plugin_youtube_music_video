@@ -7,7 +7,6 @@ import { playerAction, getPlayerState } from "../../store/playerSlice";
 import { uiDispatch } from "../../store/uiSlice";
 
 // Components
-import PasteUrl from "./pasteUrl";
 import Button from "./button";
 
 import Headset from "../../media/playlistIcon.svg";
@@ -27,7 +26,7 @@ const PlaylistHeader = () => {
       playerAction.dispatchShowPlayer(true);
     } else playerAction.dispatchPlaying(false);
 
-    if (!player.currentSong.id) playerAction.changeSong(firstSong);
+    if (!player.currentSongId) playerAction.changeSong(firstSong);
   };
 
   const handleAddSongToggle = () => {
@@ -36,8 +35,6 @@ const PlaylistHeader = () => {
 
   return (
     <Wrapper>
-      <PasteUrl />
-
       <div className="playlist-content-wrapper">
         <div className="playlist-img-div">
           <img src={Headset} alt="Playlist Header" className="playlist-img" />
@@ -73,7 +70,10 @@ const PlaylistHeader = () => {
 };
 
 const Wrapper = styled.div`
-  position: relative;
+  position: sticky;
+  top: 25px;
+  padding-top: 10px;
+  background: white;
   display: flex;
   justify-content: center;
   width: 100%;

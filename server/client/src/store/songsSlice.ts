@@ -12,8 +12,8 @@ const songsSlice = createSlice({
   initialState: [] as Song[],
 
   reducers: {
-    initialize: (state, action: PayloadAction<Song[]>) => {
-      return action.payload.map(sanitize);
+    initialize: (state, { payload }: PayloadAction<Song[]>) => {
+      return payload.reverse().map(sanitize);
     },
 
     addSong: (state, { payload }: PayloadAction<Song>) => {

@@ -19,13 +19,13 @@ function Chat(props) {
   };
 
   useEffect(() => {
-    if(showChat){
-    scrollToBottom();
-    };
+    if (showChat) {
+      scrollToBottom();
+    }
   });
 
   if (!showChat) return null;
-  
+
   function handleFocus() {
     const mediaQuery = window.matchMedia("(max-width: 1000px)");
     const chatItemGroup =
@@ -55,10 +55,12 @@ function Chat(props) {
   return (
     <Wrapper className="chat-wrapper">
       <ChatHeader />
+
       <div className="chat-item-group">
         {chats.map((chat, index) => (
           <ChatItem key={index} {...chat} />
         ))}
+
         <div className="scroller" ref={scroller}></div>
       </div>
       <ChatInput handleFocus={handleFocus} handleBlur={handleBlur} />
@@ -68,14 +70,19 @@ function Chat(props) {
 
 const Wrapper = styled.div`
   height: 100%;
-  width: 400px;
+  width: 420px;
   background-color: white;
 
   .chat-item-group {
+    flex-grow: 1;
     overflow-y: scroll;
-    margin-top: 10px;
-    height: 350px;
+    min-height: 321px;
+    padding-left: 16px;
+    padding-right: 30px;
+    margin-top: 24px;
+    height: 440px;
   }
+
   .chat-item-group::-webkit-scrollbar {
     width: 3px;
   }
@@ -85,8 +92,14 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 1000px) {
+    background-color: transparent;
+    width: 350px;
+    margin-left: 0px;
+
     .chat-item-group {
       max-height: 450px;
+      margin-top: 2px;
+      background-color: white;
     }
   }
 `;

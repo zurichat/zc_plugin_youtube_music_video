@@ -3,17 +3,30 @@ import { useSelector } from "react-redux";
 import { userDispatch, userSelect } from "../store/usersSlice";
 
 function UserInfo() {
-  const handleSetUser = () => {
-    // @ts-ignore
-    import("@zuri/zuri-control")
-      .then(({ GetUserInfo }) => {
-        const info = GetUserInfo();
-        console.log(info);
-      })
-      .catch();
-  };
+  const user = useSelector(userSelect.currentUser);
 
-  handleSetUser();
+  useEffect(() => {
+    async () => {
+      try {
+        // @ts-ignore
+        const { GetUserInfo } = await import("@zuri/control");
+
+        const info = await GetUserInfo();
+
+        console.log("mz", { info });
+
+        if (!info) return;
+
+        userDispatch.setCurrentUser({
+          ...user,
+          name: info.first_name,
+          orgId: info.Organizations ? info.Organizations[0] : "",
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    };
+  }, []);
 
   return (
     <div
