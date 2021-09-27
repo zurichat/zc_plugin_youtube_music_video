@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import HeaderIcon from "../media/member-list-icon.svg";
-import CloseIcon from "../media/close-black.svg";
-import SearchIcon from "../media/search.svg";
-import MemberItem from "./common/memberItem";
-import { uiDispatch, uiSelect } from "../store/uiSlice";
+import HeaderIcon from "../../media/member-list-icon.svg";
+import CloseIcon from "../../media/close-black.svg";
+import SearchIcon from "../../media/search.svg";
+import MemberItem from "../common/memberItem";
+import { uiDispatch, uiSelect } from "../../store/uiSlice";
 import { useEffect, useState } from "react";
-import httpService from "../services/httpService";
+import httpService from "../../services/httpService";
 import { useSelector } from "react-redux";
 
 const MemberList = () => {
@@ -18,10 +18,18 @@ const MemberList = () => {
       setMemberList(res.data.data[0].room_user_ids);
     });
   }, [showMemberList]);
-  
+
   return (
-    <Wrapper>
-      <div className="container">
+    <Wrapper
+      data-focus-lock-disabled={false}
+      aria-modal={true}
+      role="dialog"
+      tabIndex={0}
+      onClick={() => {
+        uiDispatch.showMemberList(false);
+      }}
+    >
+      <div style={{zIndex: 1000}} tabIndex={-1} className="container">
         <div className="header-container">
           <div className="title-container">
             <div className="align-center">

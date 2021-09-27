@@ -3,9 +3,10 @@ import styled from "styled-components";
 import Playlist from "./playlist";
 import PasteUrl from "./common/pasteUrl";
 import { ToastContainer, Flip } from "react-toastify";
-import MemberList from "./memberList";
+import MemberList from "./Modals/memberList";
 import { useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
+import OptionMenu from "./common/optionMenu";
 
 function MusicRoom() {
   const showMemberList = useSelector(uiSelect.showMemberList);
@@ -41,7 +42,8 @@ const Wrapper = styled.div`
   height: 100%;
 
   .room-main {
-    overflow: hidden;
+    overflow: sroll;
+    height -webkit-fill-available;
     position: relative;
     flex-grow: 1;
     margin-right: 10px;

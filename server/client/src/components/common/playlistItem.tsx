@@ -4,9 +4,13 @@ import Song from "../../types/song";
 
 import { playerAction } from "../../store/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
+import OptionMenu from "./optionMenu";
+import { useSelector } from "react-redux";
+import { uiSelect } from "../../store/uiSlice";
 
 interface Props {
   song: Song;
+  key: number;
 }
 
 function PlaylistItem(props: Props) {
@@ -19,6 +23,8 @@ function PlaylistItem(props: Props) {
     likedBy,
   } = props.song;
 
+  const showOption = useSelector(uiSelect.showOption);
+
   const handlePlay = (e) => {
     if (e.target.dataset.like) return;
     if (e.target.dataset.option) return;
@@ -29,7 +35,8 @@ function PlaylistItem(props: Props) {
   };
 
   return (
-    <Wrapper onClick={handlePlay}>
+    <Wrapper key={props.key} onClick={handlePlay}>
+      {/* {showOption && <OptionMenu key={props.key} />} */}
       <div className="item-group-1">
         <img src={albumCover} alt="album cover" className="item-albumCover" />
         <div className="item-info">
@@ -47,6 +54,7 @@ function PlaylistItem(props: Props) {
 }
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   background: #fff;

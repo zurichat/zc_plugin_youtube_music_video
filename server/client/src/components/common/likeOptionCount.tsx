@@ -6,6 +6,7 @@ import { userSelect } from "../../store/usersSlice";
 
 import Like from "./like";
 import option from "../../media/option.svg";
+import { uiDispatch } from "../../store/uiSlice";
 
 interface Props {
   duration?: string;
@@ -46,6 +47,9 @@ function LikeOptionCount(props: Props) {
       </div>
 
       <img
+        onClick={() => {
+          uiDispatch.showOption(true);
+        }}
         data-option="option"
         src={option}
         alt="option img"
