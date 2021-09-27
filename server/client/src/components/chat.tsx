@@ -71,13 +71,16 @@ const Wrapper = styled.div`
   width: 415px;
   background-color: white;
   margin-left: 8px;
+  display: flex;
+  flex-direction: column;
 
   .chat-item-group {
-    overflow-y: scroll;
-    height: 350px;
+    overflow-y: scroll !important;
+    min-height: 321px;
     padding-left: 16px;
     padding-right: 30px;
     margin-top: 24px;
+    flex-grow: 1;
   }
   .chat-item-group::-webkit-scrollbar {
     width: 3px;
