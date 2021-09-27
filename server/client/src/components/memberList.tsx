@@ -18,9 +18,17 @@ const MemberList = () => {
       setMemberList(res.data.data[0].room_user_ids);
     });
   }, [showMemberList]);
-  
+
+  if (!showMemberList) return null;
+
+  const handleEscape = (e) => {
+    if (e.code === "Escape") {
+      uiDispatch.showMemberList(false);
+    }
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onClick={() => uiDispatch.showMemberList(false)}>
       <div className="container">
         <div className="header-container">
           <div className="title-container">
@@ -47,7 +55,12 @@ const MemberList = () => {
         <div className="list-container">
           <form action="">
             <img src={SearchIcon} alt="" />
-            <input type="text" placeholder="Find People" />
+            <input
+              type="text"
+              placeholder="Find People"
+              autoFocus
+              onKeyDown={handleEscape}
+            />
           </form>
         </div>
         <div className="member">
@@ -66,14 +79,15 @@ const Wrapper = styled.div`
     box-sizing: border-box;
   }
 
-  position: fixed;
+  position: absolute;
+  top: 1;
   box-sizing: border-box;
   overflow-y: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: rgba(64, 79, 74, 0.5);
   top: 0px;
   left: 0px;
@@ -94,7 +108,7 @@ const Wrapper = styled.div`
     line-height: 21px;
     color: #000000;
     padding-bottom: 2px;
-    border-bottom-radius: 3px;
+    /* border-bottom-radius: 3px; */
     border-bottom: 3px solid #00b87c;
     width: fit-content;
   }

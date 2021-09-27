@@ -70,7 +70,9 @@ const PlaylistHeader = () => {
 };
 
 const Wrapper = styled.div`
-  padding-top: 20px;
+  position: sticky;
+  top: 25px;
+  padding-top: 10px;
   background: white;
   display: flex;
   justify-content: center;

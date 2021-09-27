@@ -1,63 +1,82 @@
 import styled from "styled-components";
+import { ToastContainer } from "react-toastify";
 
 import Playlist from "./playlist";
+import RoomHeader from "./roomHeader";
 import PasteUrl from "./common/pasteUrl";
-import { ToastContainer, Flip } from "react-toastify";
-import MemberList from "./memberList";
+import Chat from "./chat";
 import { useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
 
 function MusicRoom() {
-  const showMemberList = useSelector(uiSelect.showMemberList);
-  return (
-    <Wrapper>
-      {showMemberList && <MemberList />}
-      <PasteUrl />
+  const showPasteUrl = useSelector(uiSelect.showPasteUrl);
 
+  return (
+    <Wrapper overflow={showPasteUrl}>
       <div className="room-main">
+        <PasteUrl />
+
         <div className="toast-holder">
           <ToastContainer
+            position="top-center"
             theme="colored"
             autoClose={3000}
             hideProgressBar={true}
             toastClassName="toast-wrapper"
             bodyClassName="toast-body"
-            transition={Flip}
-            limit={1}
           />
         </div>
 
+        <RoomHeader />
         <Playlist />
+      </div>
+
+      <div className="room-chat-container">
+        <Chat />
       </div>
     </Wrapper>
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ overflow: boolean }>`
   position: relative;
   display: flex;
   margin: 0;
-  background: white;
-  height: 100%;
+  background-color: rgb(240, 240, 240);
+  height: 96vh;
+  max-height: 96vh;
 
   .room-main {
-    overflow: hidden;
-    position: relative;
     flex-grow: 1;
+    overflow-y: ${(props) => (props.overflow ? "hidden" : "scroll")};
+    position: relative;
     margin-right: 10px;
+    background-color: white;
+  }
+
+  .room-main::-webkit-scrollbar,
+  .room-chat-container::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .room-main::-webkit-scrollbar-thumb,
+  .room-chat-container::-webkit-scrollbar-thumb {
+    width: 6px;
+    background-color: #00b87c;
   }
 
   .toast-holder {
     position: relative;
     display: flex;
     justify-content: center;
+    flex-grow: 1;
   }
 
   .Toastify__toast-container {
-    width: 100%;
     position: absolute;
     top: 1px;
-    left: 5px;
+    width: 100%;
+    right: 1px;
 
     .Toastify__toast--success {
       background-color: #cbffee;
@@ -79,13 +98,11 @@ const Wrapper = styled.div`
     }
   }
 
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 1120px) {
     justify-content: center;
-    align-items: center;
 
     .room-main {
       margin: 0;
-      flex-grow: 1;
     }
 
     .room-chat-container {
