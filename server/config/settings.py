@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     "client",
     "rest_framework",  # https://www.django-rest-framework.org/
     "rest_framework.authtoken",
-    #"corsheaders",  # To Connect API with React App if required in seprate apps
+    "corsheaders",  # To Connect API with React App if required in seprate apps
     "allauth",  # https://django-allauth.readthedocs.io/en/latest/installation.html
     "allauth.account",
     "allauth.socialaccount",
@@ -48,7 +48,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    #"corsheaders.middleware.CorsMiddleware",  # new
+    "corsheaders.middleware.CorsMiddleware",  # new
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -179,16 +179,16 @@ ACCOUNT_UNIQUE_EMAIL = True
 # Allow entering as a guest
 ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""))
 
-#CORS_ALLOW_ALL_ORIGINS: True
+CORS_ALLOW_ALL_ORIGINS: True
 
-#CORS_ALLOWED_ORIGINS = [
- #   "159.65.123.65",
-    #"https://sub.example.com",
-    #"http://localhost:8080",
-    #"http://159.65.123.65:8000",
-    #"http://localhost:9000",
-    #"http://localhost:3000",  # if you have seprate react app
-#]
+CORS_ALLOWED_ORIGINS = [
+    
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://localhost:8000",
+    "http://localhost:9000",
+    "http://localhost:3000",  # if you have seprate react app
+]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
