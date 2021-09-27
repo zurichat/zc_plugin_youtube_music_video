@@ -55,7 +55,10 @@ const roomHeader = () => {
         </span>
       </div>
       <div className="header-right">
-        <div className="header-right-flex">
+        <div
+          className="header-right-flex"
+          onClick={() => uiDispatch.showMemberList(true)}
+        >
           <div className="header-avatar">
             <div className="pc-avatars">
               <img className="avatar-1" src={avatar1} alt="avatar name" />
@@ -72,12 +75,13 @@ const roomHeader = () => {
           {/*  for pc */}
           {!showChat && (
             <img
+              style={{ cursor: "pointer" }}
               src={message}
               alt="message count"
               className="header-message-count"
               onClick={() => uiDispatch.showChat(true)}
-            />
-          )}
+              />
+              )}
 
           {/* for mobile */}
           <img
