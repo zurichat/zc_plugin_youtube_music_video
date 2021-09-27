@@ -22,13 +22,13 @@ const MemberList = () => {
   if (!showMemberList) return null;
 
   const handleEscape = (e) => {
-    if (e.code === "Escape") {
+    if (e.code === "Escape" || e.target.dataset.close === "close") {
       uiDispatch.showMemberList(false);
     }
   };
 
   return (
-    <Wrapper onClick={() => uiDispatch.showMemberList(false)}>
+    <Wrapper onClick={handleEscape} data-close="close">
       <div className="container">
         <div className="header-container">
           <div className="title-container">
@@ -53,7 +53,7 @@ const MemberList = () => {
         </div>
 
         <div className="list-container">
-          <form action="">
+          <form action="#">
             <img src={SearchIcon} alt="" />
             <input
               type="text"
