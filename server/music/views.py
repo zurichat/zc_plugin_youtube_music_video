@@ -11,6 +11,7 @@ import requests
 from requests import exceptions
 
 
+
 def check_if_user_is_in_room_and_return_room_id(user_id):
     room_data = read_data(settings.ROOM_COLLECTION)
     room_user_ids = room_data["data"][0]["room_user_ids"]
@@ -220,7 +221,7 @@ class CreateRoomView(APIView):
 class RoomView(APIView):
     serializer_class = RoomSerializer
 
-    def get(self, request, pk, format=None):
+    def get(self, request, format=None):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
@@ -288,30 +289,30 @@ class UserCountView(GenericAPIView):
         return Response(len(header_user_count))
 
 
-class RemoveMember(GenericAPIView):
-    serializer_class = MembersSerializer
+# class RemoveMember(GenericAPIView):
+#     serializer_class = MembersSerializer
 
-    def leave_room(self, request):
-        user_id = request.query_params.get('user')
+#     def leave_room(self, request):
+#         user_id = request.query_params.get('user')
 
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        coll_name = settings.ROOM_COLLECTION
+#         serializer = self.serializer_class(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         coll_name = settings.ROOM_COLLECTION
 
-        member = serializer.data
-        member['user_id'] = user_id
+#         member = serializer.data
+#         member['user_id'] = user_id
 
-        try:
-            data = delete_data(coll_name, payload=member)
+#         try:
+#             data = delete_data(coll_name, payload=member)
 
-            if data.status_code == 200:
-                return Response({"message": "User left room"},
-                                status=status.HTTP_200_OK)
-            else:
-                return Response({"error": data.json()['message']}, status=data.status_code)
+#             if data.status_code == 200:
+#                 return Response({"message": "User left room"},
+#                                 status=status.HTTP_200_OK)
+#             else:
+#                 return Response({"error": data.json()['message']}, status=data.status_code)
 
-        except exceptions.ConnectionError as e:
-            return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
+#         except exceptions.ConnectionError as e:
+#             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
 
 
 class DeleteMember(GenericAPIView):
@@ -334,3 +335,29 @@ class DeleteMember(GenericAPIView):
                     else:
                         return user_list
             return user_list
+
+
+class RemoveMember(GenericAPIView):
+    serializer_class = CommentSerializer
+
+    def leave_room(self, request):
+        r = request.query_params.get('_id')
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        coll_name = settings.COMMENTS_COLLECTION
+
+        member = serializer.data
+        member['_id'] = r
+
+        try:
+            data = delete_data(coll_name, payload=member)
+
+            if data.status_code == 200:
+                return Response({"message": "User left room"},
+                                status=status.HTTP_200_OK)
+            else:
+                return Response({"error": data.json()['message']}, status=data.status_code)
+
+        except exceptions.ConnectionError as e:
+            return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)

@@ -35,4 +35,5 @@ urlpatterns = [
     # path("userdelete/", DeleteMember.as_view(), name="userdelete"), #remove user from member list
     # path("userremove/", RemoveMember.as_view(), name="userremove"), #remove user from member list
     
+    path("remove/", RemoveMember.as_view(), name="remove"), #remove user from member list
 ]
