@@ -185,10 +185,10 @@ ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""
  #   "159.65.123.65",
     #"https://sub.example.com",
     #"http://localhost:8080",
-    "http://159.65.123.65:8000",
+    #"http://159.65.123.65:8000",
     #"http://localhost:9000",
     #"http://localhost:3000",  # if you have seprate react app
-]
+#]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
