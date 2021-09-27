@@ -12,20 +12,15 @@ interface Props {
 function PlaylistItems({ songs }: Props) {
   const showOption = useSelector(uiSelect.showOption);
   return (
-    // className="playlist-item-group"
-    <Wrapper >
+    <div className="playlist-item-group" style={{ paddingBottom: "10px" }}>
       {songs.map((song, index) => (
         <div>
           <PlaylistItem key={index} song={song} />
           {showOption && <OptionMenu />}
         </div>
       ))}
-    </Wrapper>
+    </div>
   );
 }
-
-const Wrapper = styled.div`
-  position: relative;
-`;
 
 export default PlaylistItems;

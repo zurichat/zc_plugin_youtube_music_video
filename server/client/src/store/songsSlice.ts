@@ -13,10 +13,7 @@ const songsSlice = createSlice({
 
   reducers: {
     initialize: (state, { payload }: PayloadAction<Song[]>) => {
-      const urls = [...(new Set(payload.map((song) => song.url)) as any)];
-      return urls
-        .map((url) => payload.find((song) => song.url === url))
-        .map(sanitize);
+      return payload.reverse().map(sanitize);
     },
 
     addSong: (state, { payload }: PayloadAction<Song>) => {

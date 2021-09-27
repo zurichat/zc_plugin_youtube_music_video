@@ -15,10 +15,46 @@ import { songSelect } from "../../store/songsSlice";
 const PlaylistHeader = () => {
   const player = useSelector(getPlayerState);
   const firstSong = useSelector(songSelect.firstSong);
+  const songs = useSelector(songSelect.allSongs);
 
   const [text, setText] = useState("Play");
 
   useEffect(() => setText(player.playing ? "Pause" : "Play"), [player.playing]);
+
+  const to2Digits = (num: number, str: string) =>
+    num === 0 ? "" : num < 10 ? `0${num} ${str}` : `${num} ${str}`;
+
+  const totalDuration = () => {
+    const durs = songs.map((song) => {
+      const [h, m, s] = song.duration.split(":");
+      return { h: +h, m: +m, s: +s };
+    });
+
+    const duration = { h: 0, m: 0, s: 0 };
+
+    durs.forEach(({ h, m, s }) => {
+      (duration.h = duration.h + h),
+        (duration.m = duration.m + m),
+        (duration.s = duration.s + s);
+    });
+
+    const sr = duration.s % 60;
+    duration.s = Math.round(duration.s / 60);
+
+    const mr = (duration.m + sr) % 60;
+    duration.m = Math.round((duration.m + sr) / 60);
+
+    duration.h = Math.round(duration.h + mr);
+
+    const { h: hf, m: mf, s: sf } = duration;
+
+    return `${to2Digits(hf, "hr ")}${to2Digits(mf, "min ")}${to2Digits(
+      sf,
+      "sec"
+    )} `;
+  };
+
+  totalDuration();
 
   const handleShowPlayer = () => {
     if (text === "Play") {
@@ -45,7 +81,9 @@ const PlaylistHeader = () => {
             Music <span className="playlist-caption-hide">Room</span> Playlist
           </div>
 
-          <div className="playlist-summary">10 songs, 38 min 33 sec</div>
+          <div className="playlist-summary">
+            {songs.length} songs, {totalDuration()}
+          </div>
 
           <div className="playlist-button-group">
             <Button
@@ -70,7 +108,9 @@ const PlaylistHeader = () => {
 };
 
 const Wrapper = styled.div`
-  padding-top: 20px;
+  position: sticky;
+  top: 25px;
+  padding-top: 10px;
   background: white;
   display: flex;
   justify-content: center;
@@ -99,6 +139,8 @@ const Wrapper = styled.div`
   .playlist-caption {
     font-weight: 500;
     font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 5px;
   }
 
   .playlist-summary {

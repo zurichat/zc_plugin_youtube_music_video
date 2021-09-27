@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import HeaderIcon from "../../media/member-list-icon.svg";
-import CloseIcon from "../../media/close-black.svg";
-import SearchIcon from "../../media/search.svg";
-import MemberItem from "../common/memberItem";
-import { uiDispatch, uiSelect } from "../../store/uiSlice";
+import HeaderIcon from "../media/member-list-icon.svg";
+import CloseIcon from "../media/close-black.svg";
+import SearchIcon from "../media/search.svg";
+import MemberItem from "./common/memberItem";
+import { uiDispatch, uiSelect } from "../store/uiSlice";
 import { useEffect, useState } from "react";
-import httpService from "../../services/httpService";
+import httpService from "../services/httpService";
 import { useSelector } from "react-redux";
 
 const MemberList = () => {
@@ -19,17 +19,17 @@ const MemberList = () => {
     });
   }, [showMemberList]);
 
+  if (!showMemberList) return null;
+
+  const handleEscape = (e) => {
+    if (e.code === "Escape" || e.target.dataset.close === "close") {
+      uiDispatch.showMemberList(false);
+    }
+  };
+
   return (
-    <Wrapper
-      data-focus-lock-disabled={false}
-      aria-modal={true}
-      role="dialog"
-      tabIndex={0}
-      onClick={() => {
-        uiDispatch.showMemberList(false);
-      }}
-    >
-      <div style={{zIndex: 1000}} tabIndex={-1} className="container">
+    <Wrapper onClick={handleEscape} data-close="close">
+      <div className="container">
         <div className="header-container">
           <div className="title-container">
             <div className="align-center">
@@ -53,9 +53,14 @@ const MemberList = () => {
         </div>
 
         <div className="list-container">
-          <form action="">
+          <form action="#">
             <img src={SearchIcon} alt="" />
-            <input type="text" placeholder="Find People" />
+            <input
+              type="text"
+              placeholder="Find People"
+              autoFocus
+              onKeyDown={handleEscape}
+            />
           </form>
         </div>
         <div className="member">
@@ -74,14 +79,15 @@ const Wrapper = styled.div`
     box-sizing: border-box;
   }
 
-  position: fixed;
+  position: absolute;
+  top: 1;
   box-sizing: border-box;
   overflow-y: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: rgba(64, 79, 74, 0.5);
   top: 0px;
   left: 0px;
@@ -102,7 +108,7 @@ const Wrapper = styled.div`
     line-height: 21px;
     color: #000000;
     padding-bottom: 2px;
-    border-bottom-radius: 3px;
+    /* border-bottom-radius: 3px; */
     border-bottom: 3px solid #00b87c;
     width: fit-content;
   }

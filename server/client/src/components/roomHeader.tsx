@@ -1,16 +1,12 @@
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { uiDispatch, uiSelect } from "../store/uiSlice";
-
-import Exit from "../components/common/exit";
+import httpService from "../services/httpService";
 
 import menu from "../media/menu.svg";
 import message from "../media/message.svg";
-
-import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-import httpService from "../services/httpService";
-
 import RoomIcon from "../media/musicRoomIcon.svg";
 import avatar1 from "../media/avatar-1.svg";
 import avatar2 from "../media/avatar-2.svg";
@@ -30,13 +26,9 @@ const roomHeader = () => {
       .catch((err) => console.log(err.message));
   }, []);
 
-  const showExitModal = useSelector(uiSelect.showExitModal);
-
   return (
-    <Wrapper className="header">
+    <Wrapper>
       <div className="header-left">
-        {showExitModal && <Exit />}
-
         <img
           src={menu}
           alt="icon"
@@ -46,13 +38,7 @@ const roomHeader = () => {
 
         <img src={RoomIcon} alt="icon" className="header-icon hide-2" />
 
-        <span
-          onClick={() => uiDispatch.showExitModal(true)}
-          className="header-link"
-        >
-          Music Room
-          {/* <img src={arrow} alt="icon" className="arrow" /> */}
-        </span>
+        <span className="header-link">Music Room</span>
       </div>
       <div className="header-right">
         <div
@@ -104,11 +90,9 @@ const Wrapper = styled.div`
   justify-content: space-between;
   background: #00b87c;
   border-radius: 1px 0px;
-  height: 100%;
-  max-height: 44px;
+  height: 44px;
   padding: 0 16px;
   color: #fff;
-  margin-bottom: 2px;
   z-index: 1;
 
   img {
@@ -217,9 +201,9 @@ const Wrapper = styled.div`
     left: 39px;
   }
 
-  .mobile {
+  /* .mobile {
     display: none;
-  }
+  } */
 
   .header-message-count {
     margin-left: 40px !important;
@@ -231,10 +215,6 @@ const Wrapper = styled.div`
   }
 
   @media screen and (max-width: 1000px) {
-    background-color: #27ae60;
-    padding: 0 20px;
-    height: 48px;
-
     .mobile-avatar {
       display: flex;
     }
@@ -246,9 +226,9 @@ const Wrapper = styled.div`
       fill: white;
     }
 
-    .mobile {
+    /* .mobile {
       display: none !important;
-    }
+    } */
 
     .pc-avatars,
     .arrow {
