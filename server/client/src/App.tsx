@@ -23,7 +23,7 @@ function App() {
 
   return (
     <Wrapper>
-      <UserInfo />
+      {/* <UserInfo /> */}
 
       <MemberList />
       <MusicRoom />

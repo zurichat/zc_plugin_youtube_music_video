@@ -18,6 +18,7 @@ interface Props {
 
 const PasteUrl = (props: Props) => {
   const [url, setUrl] = useState("");
+  const isLoading = useSelector(uiSelect.isLoading);
 
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);
 
@@ -31,6 +32,8 @@ const PasteUrl = (props: Props) => {
     if (props.getSongByUrl(url)) {
       return toast.error("This song already exists.") && setUrl("");
     }
+
+    if (isLoading) return;
 
     uiDispatch.loading(true);
 
@@ -53,6 +56,8 @@ const PasteUrl = (props: Props) => {
   };
 
   const handleEscape = (ev) => {
+    console.log({ code: ev.code, key: ev.key });
+
     if (ev.code === "Escape" || ev.target.dataset.close === "close") {
       uiDispatch.showPasteUrl(false);
     }

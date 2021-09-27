@@ -12,7 +12,7 @@ function MusicRoom() {
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);
 
   return (
-    <Wrapper overflow={showPasteUrl}>
+    <Wrapper overflowMain={showPasteUrl}>
       <div className="room-main">
         <PasteUrl />
 
@@ -38,7 +38,7 @@ function MusicRoom() {
   );
 }
 
-const Wrapper = styled.div<{ overflow: boolean }>`
+const Wrapper = styled.div<{ overflowMain: boolean }>`
   position: relative;
   display: flex;
   margin: 0;
@@ -48,7 +48,7 @@ const Wrapper = styled.div<{ overflow: boolean }>`
 
   .room-main {
     flex-grow: 1;
-    overflow-y: ${(props) => (props.overflow ? "hidden" : "scroll")};
+    overflow-y: ${(props) => (props.overflowMain ? "hidden" : "scroll")};
     position: relative;
     margin-right: 10px;
     background-color: white;
@@ -107,12 +107,13 @@ const Wrapper = styled.div<{ overflow: boolean }>`
 
     .room-chat-container {
       position: fixed;
-      top: 70px;
+      top: 40px;
       background: rgb(240, 240, 240);
       flex-basis: 40%;
       display: flex;
       justify-content: center;
       z-index: 111;
+      max-height: 400px;
     }
   }
 `;
