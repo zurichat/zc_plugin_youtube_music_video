@@ -53,13 +53,13 @@ const PasteUrl = (props: Props) => {
   };
 
   const handleEscape = (ev) => {
-    if (ev.code === "Escape") {
+    if (ev.code === "Escape" || ev.target.dataset.close === "close") {
       uiDispatch.showPasteUrl(false);
     }
   };
 
   return (
-    <Wrapper onClick={() => uiDispatch.showPasteUrl(false)}>
+    <Wrapper onClick={handleEscape} data-close="close">
       <form onSubmit={handleSubmit} className="submit-form">
         <div>
           <label htmlFor="" className="form-label">

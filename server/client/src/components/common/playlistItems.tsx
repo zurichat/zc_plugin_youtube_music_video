@@ -8,7 +8,7 @@ interface Props {
 
 function PlaylistItems({ songs }: Props) {
   return (
-    <div className="playlist-item-group">
+    <div className="playlist-item-group" style={{ paddingBottom: "10px" }}>
       {songs.map((song, index) => (
         <PlaylistItem key={index} song={song} />
       ))}
