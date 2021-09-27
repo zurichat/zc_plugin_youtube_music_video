@@ -181,14 +181,14 @@ ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""
 
 CORS_ALLOW_ALL_ORIGINS: True
 
-CORS_ALLOWED_ORIGINS = [
+#CORS_ALLOWED_ORIGINS = [
     
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://localhost:8000",
-    "http://localhost:9000",
-    "http://localhost:3000",  # if you have seprate react app
-]
+ #   "https://sub.example.com",
+  #  "http://localhost:8080",
+   # "http://localhost:8000",
+    #"http://localhost:9000",
+    #"http://localhost:3000",  # if you have seprate react app
+#]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
