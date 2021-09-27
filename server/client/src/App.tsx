@@ -22,7 +22,7 @@ function App() {
 
   return (
     <Wrapper>
-      <UserInfo />
+      {/* <UserInfo /> */}
 
       <MusicRoom />
     </Wrapper>

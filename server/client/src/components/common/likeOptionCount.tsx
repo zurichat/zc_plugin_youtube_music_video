@@ -24,6 +24,8 @@ function LikeOptionCount(props: Props) {
   const countText =
     count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
 
+  const countClasses = duration ? "like-count" : "like-count-player";
+
   const handleLike = () => {
     songService.likeSong({ songId, userId, like: !liked });
   };
@@ -39,7 +41,7 @@ function LikeOptionCount(props: Props) {
         <div className="like-duration">{formatDuration(duration)} mins</div>
       )}
 
-      {countText && <div className="like-count">{countText}</div>}
+      {countText && <div className={countClasses}>{countText}</div>}
 
       <div>
         <Like className="like-button" liked={liked} onLike={handleLike} />
@@ -72,7 +74,8 @@ const Wrapper = styled.div<{ duration: string }>`
     width: 60px;
   }
 
-  .like-count {
+  .like-count,
+  .like-count-player {
     color: rgba(153, 153, 153, 1);
   }
 

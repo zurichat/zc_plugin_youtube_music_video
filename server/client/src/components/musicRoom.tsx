@@ -94,11 +94,9 @@ const Wrapper = styled.div`
 
   @media screen and (max-width: 1120px) {
     justify-content: center;
-    align-items: center;
 
     .room-main {
       margin: 0;
-      flex-grow: 1;
     }
 
     .room-chat-container {
