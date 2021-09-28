@@ -37,7 +37,7 @@ function PlaylistItem(props: Props) {
           <div className="item-title">{title}</div>
 
           <div className="item-addedBy">
-            Added by <span>{addedBy.trim() || "Pidoxy"}</span>
+            Added by <span>{addedBy}</span>
           </div>
         </div>
       </div>

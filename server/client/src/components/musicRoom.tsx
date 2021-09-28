@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
+import Parcel from "single-spa-react/parcel";
+
+import { pluginHeader, headerConfig } from "../utils/config";
 
 import Playlist from "./playlist";
 import RoomHeader from "./roomHeader";
@@ -27,7 +30,12 @@ function MusicRoom() {
           />
         </div>
 
-        <RoomHeader />
+        <Parcel
+          config={pluginHeader}
+          wrapWith="div"
+          headerConfig={headerConfig}
+        />
+        {/* <RoomHeader /> */}
         <Playlist />
       </div>
 

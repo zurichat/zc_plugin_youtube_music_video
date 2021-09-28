@@ -7,7 +7,6 @@ const user: User = {
   id: "juztiz5000kdkdkdkdkdkdkd",
   avatar: "https://music.zuri.chat/static/8088dff19013ace2e359.svg",
   name: "Justiz",
-  token: "",
   orgId: "",
 };
 
