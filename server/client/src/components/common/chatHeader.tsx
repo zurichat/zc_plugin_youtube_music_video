@@ -1,6 +1,4 @@
 import styled from "styled-components";
-
-import store from "../../store";
 import { uiDispatch } from "../../store/uiSlice";
 
 import chatIcon from "../../media/chat.svg";
@@ -13,7 +11,11 @@ function ChatHeader() {
     <Wrapper>
       <div className="chatHeader__left">
         <img src={chatIcon} alt="chat" className="chatHeader__icon" />
-        <img src={chatIcon__green} alt="chat" className="chatHeader__icon__green" />
+        <img
+          src={chatIcon__green}
+          alt="chat"
+          className="chatHeader__icon__green"
+        />
         <div className="chatHeader__title">Chat</div>
       </div>
 
@@ -75,14 +77,14 @@ const Wrapper = styled.div`
 
   @media (max-width: 1000px) {
     background: white;
-    color: #00B87C;
+    color: #00b87c;
     max-height: 64px;
 
-    .chatHeader__close{
+    .chatHeader__close {
       display: none;
     }
 
-    .chatHeader__close__black{
+    .chatHeader__close__black {
       display: inline;
     }
 
@@ -97,7 +99,6 @@ const Wrapper = styled.div`
       width: 20px;
       height: 20px;
     }
-
   }
 `;
 

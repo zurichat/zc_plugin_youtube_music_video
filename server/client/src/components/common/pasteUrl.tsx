@@ -57,8 +57,8 @@ const PasteUrl = (props: Props) => {
 
   const handleEscape = (ev) => {
     console.log({ code: ev.code, key: ev.key });
-
-    if (ev.code === "Escape" || ev.target.dataset.close === "close") {
+    const escape = ev.code || ev.key;
+    if (escape === "Escape" || ev.target.dataset.close === "close") {
       uiDispatch.showPasteUrl(false);
     }
   };

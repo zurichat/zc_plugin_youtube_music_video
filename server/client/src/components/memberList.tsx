@@ -22,7 +22,8 @@ const MemberList = () => {
   if (!showMemberList) return null;
 
   const handleEscape = (e) => {
-    if (e.code === "Escape" || e.target.dataset.close === "close") {
+    const escape = e.code || e.key;
+    if (escape === "Escape" || e.target.dataset.close === "close") {
       uiDispatch.showMemberList(false);
     }
   };

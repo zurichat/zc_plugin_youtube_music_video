@@ -1,13 +1,7 @@
 import styled from "styled-components";
 import Illustration from "../../media/emptyScreen.svg";
 
-import { uiDispatch } from "../../store/uiSlice";
-
 const EmptyScreen = () => {
-  const handleClick = () => {
-    uiDispatch.showPasteUrl(true);
-  };
-
   return (
     <Wrapper>
       <div className="empty_container">
