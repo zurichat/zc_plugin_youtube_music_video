@@ -13,11 +13,19 @@ function Playlist() {
   const songs = useSelector(songSelect.allSongs);
   const { show } = useSelector(getPlayerState);
 
-  if (songs.length === 0) return <EmptyScreen />;
+  if (songs.length === 0)
+    return (
+      <Wrapper>
+        <PlaylistHeader />
+        <EmptyScreen />
+      </Wrapper>
+    );
 
   return (
     <Wrapper>
       <PlaylistHeader />
+
+      {songs.length === 0 && <EmptyScreen />}
 
       <Player />
 
@@ -27,7 +35,7 @@ function Playlist() {
 }
 
 const Wrapper = styled.div`
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   background: #fff;
   padding: 20px;
   height: 83vh;

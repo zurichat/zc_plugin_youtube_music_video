@@ -12,7 +12,7 @@ const getSongs = () => {
   httpService.get(songEndpoint).then(
     (result) => {
       const data = result.data.data ?? [];
-      songDispatch.initialize(data);
+      songDispatch.initialize(data.filter((song) => song.url));
       return result;
     },
 
@@ -24,12 +24,15 @@ const getSongs = () => {
 };
 
 const addSongbyUrl = async (url: string) => {
-  const addedBy = JSON.parse(store.getState().users.currentUser).name;
+  const { name: addedBy, id: userId } = JSON.parse(
+    store.getState().users.currentUser
+  );
 
   return httpService
     .post(songEndpoint, {
       url,
       addedBy,
+      userId,
     })
     .then(
       (result) => result,

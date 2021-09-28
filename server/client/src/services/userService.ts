@@ -11,7 +11,7 @@ function getCurrentUser(): User {
 async function addToRoom() {
   const { id, orgId } = getCurrentUser();
 
-  return httpService.post(enterEndpoint, { userId: id, orgId }).then(
+  return httpService.post(enterEndpoint, { userId: id, orgId, id }).then(
     (r) => r,
     (e) => e
   );
