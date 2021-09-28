@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import { songSelector } from "../store/songsSlice";
+import { songSelect } from "../store/songsSlice";
 import { getPlayerState } from "../store/playerSlice";
 
 import Player from "./player";
@@ -10,14 +10,22 @@ import PlaylistItems from "./common/playlistItems";
 import EmptyScreen from "./common/emptyScreen";
 
 function Playlist() {
-  const songs = useSelector(songSelector.selectAllSongs);
+  const songs = useSelector(songSelect.allSongs);
   const { show } = useSelector(getPlayerState);
 
-  if (songs.length === 0) return <EmptyScreen />;
+  if (songs.length === 0)
+    return (
+      <Wrapper>
+        <PlaylistHeader />
+        <EmptyScreen />
+      </Wrapper>
+    );
 
   return (
     <Wrapper>
       <PlaylistHeader />
+
+      {songs.length === 0 && <EmptyScreen />}
 
       <Player />
 
@@ -27,7 +35,7 @@ function Playlist() {
 }
 
 const Wrapper = styled.div`
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   background: #fff;
   padding: 20px;
   height: 83vh;

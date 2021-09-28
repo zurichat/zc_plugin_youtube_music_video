@@ -8,7 +8,7 @@ const slice = createSlice({
   initialState: {
     playing: false,
     show: false,
-    currentSong: {} as Song,
+    currentSongId: "",
   },
 
   reducers: {
@@ -21,7 +21,7 @@ const slice = createSlice({
     },
 
     changeCurrentSong: (state, action) => {
-      state.currentSong = action.payload;
+      state.currentSongId = action.payload;
     },
   },
 });
@@ -38,14 +38,15 @@ export const playerAction = {
   },
 
   changeSong: (payload: Song) => {
-    store.dispatch({ type: changeCurrentSong.type, payload });
+    store.dispatch({ type: changeCurrentSong.type, payload: payload.id });
   },
 };
 
 export const getPlayerState = (state: RootState) => state.player;
 
 export const playerSelector = {
-  selectCurrentSong: (state: RootState) => state.player.currentSong,
+  selectCurrentSong: (state: RootState) =>
+    state.songs.find((s) => s.id === state.player.currentSongId),
 };
 
 export default slice.reducer;

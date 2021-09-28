@@ -2,24 +2,23 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import authService from "../../services/authService";
+import userService from "../../services/userService";
 import log from "../../services/logService";
 import { uiDispatch, uiSelect } from "../../store/uiSlice";
 import Button from "../common/button";
 
-function EnterRoom({ setUserCount }) {
+function EnterRoom() {
   const isLoading = useSelector(uiSelect.isLoading);
 
   const handleClick = async () => {
     uiDispatch.loading(true);
 
     try {
-      await authService.addToRoom();
+      await userService.addToRoom();
 
       toast.dismiss();
 
       uiDispatch.showModal(false);
-      setUserCount((prev) => 1);
 
       log.success("Welcome!");
     } catch (e) {

@@ -1,25 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import store, { RootState } from ".";
 
 const slice = createSlice({
-  name: "UI",
+  name: "ui",
 
   initialState: {
     isLoading: false,
-    congrats: false,
     showChat: false,
-    addSong: false,
-    showModal: true,
+    showPasteUrl: false,
+    showModal: false,
     exitModal: false,
+    showMemberList: false,
+    showDeleteModal: false
   },
 
   reducers: {
-    loaded: (state, action) => {
+    loaded: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
-    },
-
-    congratsToggled: (state, action) => {
-      state.congrats = action.payload;
     },
 
     showChat: (state, action) => {
@@ -27,19 +24,28 @@ const slice = createSlice({
     },
 
     showPasteUrl: (state, action) => {
-      state.addSong = action.payload;
+      state.showPasteUrl = action.payload;
     },
     showModal: (state, action) => {
-      state.showModal = action.payload;
+      // state.showModal = action.payload;
+      return state;
     },
 
     exitedModal: (state, action) => {
       state.exitModal = action.payload;
     },
+
+    showMemberList: (state, action) => {
+      state.showMemberList = action.payload;
+    },
+    
+    showDeleteModal: (state, action) => {
+      state.showDeleteModal = action.payload;
+    },
   },
 });
 
-const { loaded, showChat, showPasteUrl, showModal, exitedModal } =
+const { loaded, showChat, showPasteUrl, showModal, exitedModal, showMemberList, showDeleteModal } =
   slice.actions;
 
 export const uiDispatch = {
@@ -57,18 +63,28 @@ export const uiDispatch = {
 
   showExitModal: (payload: boolean) =>
     store.dispatch({ type: exitedModal.type, payload }),
+
+  showMemberList: (payload: boolean) =>
+    store.dispatch({ type: showMemberList.type, payload }),
+
+  showDeleteModal: (payload: boolean) =>
+    store.dispatch({ type: showDeleteModal.type, payload }),
 };
 
 export const uiSelect = {
   showChat: (state: RootState) => state.ui.showChat,
 
-  showPasteUrl: (state: RootState) => state.ui.addSong,
+  showPasteUrl: (state: RootState) => state.ui.showPasteUrl,
 
   isLoading: (state: RootState) => state.ui.isLoading,
 
   showModal: (state: RootState) => state.ui.showModal,
 
   showExitModal: (state: RootState) => state.ui.exitModal,
+
+  showMemberList: (state: RootState) => state.ui.showMemberList,
+
+  showDeleteModal: (state: RootState) => state.ui.showDeleteModal,
 };
 
 export default slice.reducer;

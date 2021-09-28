@@ -9,24 +9,25 @@ import {
   playerSelector,
   playing,
 } from "../store/playerSlice";
-import { songSelector } from "../store/songsSlice";
+import { songSelect } from "../store/songsSlice";
 
 import PlaylistItems from "./common/playlistItems";
-import { useState } from "react";
+import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
+import LikeOptionCount from "./common/likeOptionCount";
 
 function Player() {
   const player = useSelector(getPlayerState);
-  const songs = useSelector(songSelector.selectAllSongs);
+  const songs = useSelector(songSelect.allSongs);
   const song = useSelector(playerSelector.selectCurrentSong);
   const upnext = getUpnext();
 
   if (!player.show) return null;
 
-  const url = "https://www.youtube.com/embed/" + song.id;
+  const url =
+    "https://www.youtube.com/embed/" + getSongIdFromYouTubeUrl(song.url);
 
   function getUpnext() {
     const index = songs.indexOf(song);
-
     return [...songs.slice(index + 1), ...songs.slice(0, index)];
   }
 
@@ -69,7 +70,13 @@ function Player() {
       </div>
 
       <div className="player-title">{song.title}</div>
+
+      <div style={{ display: "flex", justifyContent: "flex-start" }}>
+        <LikeOptionCount likedBy={song.likedBy} songId={song.id} />
+      </div>
+
       {upnext.length > 0 && <div className="player-next">Up next</div>}
+
       <PlaylistItems songs={upnext} />
     </Wrapper>
   );
