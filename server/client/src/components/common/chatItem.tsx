@@ -67,6 +67,7 @@ const Wrapper = styled.div`
 
   .item-text {
     line-height: 150%;
+    overflow-wrap: anywhere;
   }
 
   @media (max-width: 1000px) {
