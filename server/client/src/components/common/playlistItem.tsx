@@ -5,8 +5,7 @@ import Song from "../../types/song";
 import { playerAction } from "../../store/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
 import OptionMenu from "./optionMenu";
-import { useSelector } from "react-redux";
-import { uiSelect } from "../../store/uiSlice";
+import { useEffect, useState } from "react";
 
 interface Props {
   song: Song;
@@ -21,9 +20,10 @@ function PlaylistItem(props: Props) {
     id: songId,
     duration,
     likedBy,
+    url,
   } = props.song;
 
-  const showOption = useSelector(uiSelect.showOption);
+  const [showOption, setShowOption] = useState(false);
 
   const handlePlay = (e) => {
     if (e.target.dataset.like) return;
@@ -34,11 +34,31 @@ function PlaylistItem(props: Props) {
     playerAction.dispatchPlaying(true);
   };
 
+  const handleOption = (e) => {
+    setShowOption(e);
+  };
+
+  useEffect(() => {
+    const onClickOutside = () => {
+      setShowOption(false);
+    };
+      window.addEventListener("click", onClickOutside),
+      false;
+    return () => {
+      window.removeEventListener("click", onClickOutside);
+    };
+  }, []);
+
   return (
-    <Wrapper key={props.key} onClick={handlePlay}>
+    <Wrapper key={props.key}>
+
+      <OptionMenu
+        option={showOption}
+        copyUrl={url}
+        toggleOption={handleOption}
+      />
       <div className="item-group-1">
         <img src={albumCover} alt="album cover" className="item-albumCover" />
-
         <div className="item-info">
           <div className="item-title">{title}</div>
 
@@ -48,7 +68,8 @@ function PlaylistItem(props: Props) {
         </div>
       </div>
 
-      <LikeOptionCount {...{ songId, duration, likedBy }} />
+      <LikeOptionCount {...{ songId, duration, likedBy, handleOption }} />
+      <div className="handle-play" onClick={handlePlay}></div>
     </Wrapper>
   );
 }
@@ -65,8 +86,13 @@ const Wrapper = styled.div`
   margin-bottom: 8px;
   cursor: pointer;
 
-  &:hover {
-    box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);
+  .handle-play {
+    position: absolute;
+    width: -webkit-fill-available;
+    height: 100%;
+    &:hover {
+      box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);
+    }
   }
 
   .item-group-1 {

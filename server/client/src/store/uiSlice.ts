@@ -11,7 +11,7 @@ const slice = createSlice({
     showModal: false,
     exitModal: false,
     showMemberList: false,
-    showOption: false
+    showDeleteModal: false,
   },
 
   reducers: {
@@ -38,13 +38,13 @@ const slice = createSlice({
     showMemberList: (state, action) => {
       state.showMemberList = action.payload;
     },
-    showOption: (state, action) => {
-      state.showOption = action.payload;
+    showDeleteModal: (state, action) => {
+      state.showDeleteModal = action.payload;
     },
   },
 });
 
-const { loaded, showChat, showPasteUrl, showModal, exitedModal, showMemberList, showOption } =
+const { loaded, showChat, showPasteUrl, showModal, exitedModal, showMemberList, showDeleteModal } =
   slice.actions;
 
 export const uiDispatch = {
@@ -66,8 +66,8 @@ export const uiDispatch = {
   showMemberList: (payload: boolean) =>
     store.dispatch({ type: showMemberList.type, payload }),
 
-  showOption: (payload: boolean) =>
-    store.dispatch({ type: showOption.type, payload }),
+  showDeleteModal: (payload: boolean) =>
+    store.dispatch({ type: showDeleteModal.type, payload }),
 };
 
 export const uiSelect = {
@@ -83,7 +83,7 @@ export const uiSelect = {
 
   showMemberList: (state: RootState) => state.ui.showMemberList,
 
-  showOption: (state: RootState) => state.ui.showOption,
+  showDeleteModal: (state: RootState) => state.ui.showDeleteModal,
 };
 
 export default slice.reducer;

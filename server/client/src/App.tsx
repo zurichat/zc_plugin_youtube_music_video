@@ -14,6 +14,7 @@ import "./App.css";
 
 import UserInfo from "./components/userInfo";
 import MemberList from "./components/memberList";
+import DeleteModal from "./components/Modals/deleteModal";
 
 function App() {
   useEffect(() => {
@@ -23,8 +24,8 @@ function App() {
 
   return (
     <Wrapper>
-      {/* <UserInfo /> */}
-
+      <UserInfo />
+      <DeleteModal />
       <MemberList />
       <MusicRoom />
     </Wrapper>
