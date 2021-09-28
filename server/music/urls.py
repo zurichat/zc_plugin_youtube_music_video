@@ -11,7 +11,7 @@ urlpatterns = [
     path("ping", PluginPingView.as_view(), name="ping"),
 
 
-    path("song", SongView.as_view(), name="song"),
+    path("songs", SongView.as_view(), name="song"),
    
 
     path("comments", CommentView.as_view(), name="comments"),
@@ -27,8 +27,5 @@ urlpatterns = [
     path("user", UserListView.as_view(), name="user"),
     path("addmember", AddMember.as_view(), name="addmembers"),
     path("user-count", UserCountView.as_view(), name="header-user-count"),
-    
-    path("userdelete", DeleteMember.as_view(), name="userdelete"), #remove user from member list
-    path("userremove", RemoveMember.as_view(), name="userremove"), #remove user from member list
     
 ]
