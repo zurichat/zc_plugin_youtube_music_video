@@ -28,11 +28,18 @@ function Chat(props) {
 
   function handleFocus() {
     const mediaQuery = window.matchMedia("(max-width: 1000px)");
+    const mediaQueryPhone = window.matchMedia("(max-width: 450px)");
     const chatItemGroup =
       document.querySelector<HTMLElement>(".chat-item-group");
     const chatWrapper = document.querySelector<HTMLElement>(".chat-wrapper");
 
-    if (mediaQuery.matches) {
+    if (mediaQueryPhone.matches) {
+      chatItemGroup.style.maxHeight = "180px";
+      chatWrapper.style.position = "fixed";
+      chatWrapper.style.top = "40px";
+    }
+
+    else if (mediaQuery.matches) {
       chatItemGroup.style.maxHeight = "200px";
       chatWrapper.style.position = "fixed";
       chatWrapper.style.top = "60px";
@@ -76,7 +83,7 @@ const Wrapper = styled.div`
   .chat-item-group {
     flex-grow: 1;
     overflow-y: scroll;
-    min-height: 321px;
+    min-height: 121px;
     padding-left: 16px;
     padding-right: 30px;
     margin-top: 24px;
