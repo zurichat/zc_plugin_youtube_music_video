@@ -18,6 +18,7 @@ interface Props {
 
 const PasteUrl = (props: Props) => {
   const [url, setUrl] = useState("");
+  const isLoading = useSelector(uiSelect.isLoading);
 
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);
 
@@ -32,12 +33,17 @@ const PasteUrl = (props: Props) => {
       return toast.error("This song already exists.") && setUrl("");
     }
 
+    if (isLoading) return;
+
     uiDispatch.loading(true);
 
     try {
       getSongIdFromYouTubeUrl(url);
+
       await songService.addSongbyUrl(url);
+
       uiDispatch.showPasteUrl(false);
+
       toast.success("Added Successfully");
 
       // this.setState(url: "");
@@ -49,8 +55,16 @@ const PasteUrl = (props: Props) => {
     uiDispatch.loading(false);
   };
 
+  const handleEscape = (ev) => {
+    console.log({ code: ev.code, key: ev.key });
+
+    if (ev.code === "Escape" || ev.target.dataset.close === "close") {
+      uiDispatch.showPasteUrl(false);
+    }
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onClick={handleEscape} data-close="close">
       <form onSubmit={handleSubmit} className="submit-form">
         <div>
           <label htmlFor="" className="form-label">
@@ -76,6 +90,7 @@ const PasteUrl = (props: Props) => {
             id=""
             value={url}
             onChange={handleChange}
+            onKeyDown={handleEscape}
             autoFocus
           />
         </div>
@@ -89,10 +104,10 @@ const PasteUrl = (props: Props) => {
 };
 
 const Wrapper = styled.div`
-  position: fixed;
+  position: absolute;
   top: 1px;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   background-color: rgb(0, 0, 0, 0.2);

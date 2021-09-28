@@ -290,3 +290,49 @@ class UserCountView(GenericAPIView):
         return Response(len(header_user_count))
 
 
+class RemoveMember(GenericAPIView):
+    serializer_class = MembersSerializer
+
+    def leave_room(self, request):
+        user_id = request.query_params.get('user')
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        coll_name = settings.MEMBERS_COLLECTION
+
+        member = serializer.data
+        member['user_id'] = user_id
+
+        try:
+            data = delete_data(coll_name, payload=member)
+
+            if data.status_code == 200:
+                return Response({"message": "User left room"},
+                                status=status.HTTP_200_OK)
+            else:
+                return Response({"error": data.json()['message']}, status=data.status_code)
+
+        except exceptions.ConnectionError as e:
+            return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
+
+
+class DeleteMember(GenericAPIView):
+    serializer_class = MembersSerializer
+
+    def delete_user(collection_name, user):
+
+        collection_name = settings.MEMBERS_COLLECTION
+
+        user_list = list()
+        users = read_data(settings.MEMBERS_COLLECTION)
+
+        if users == None or "status_code" in users:
+            return users
+        else:
+            for user in users:
+                if "user_ids" in user:
+                    if user in user.get("user_ids"):
+                        user_list.remove(user)
+                    else:
+                        return user_list
+            return user_list

@@ -24,12 +24,15 @@ const getSongs = () => {
 };
 
 const addSongbyUrl = async (url: string) => {
-  const addedBy = JSON.parse(store.getState().users.currentUser).name;
+  const { name: addedBy, id: userId } = JSON.parse(
+    store.getState().users.currentUser
+  );
 
   return httpService
     .post(songEndpoint, {
       url,
       addedBy,
+      userId,
     })
     .then(
       (result) => result,
