@@ -20,6 +20,8 @@ class MediaSerializer(serializers.Serializer):
 
 
 class CommentSerializer(serializers.Serializer):
+
+    plugin_id = serializers.ReadOnlyField()
     message = serializers.CharField(max_length=256)
     time = serializers.DateTimeField(default=timezone.now, read_only=True)
     user_id = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
