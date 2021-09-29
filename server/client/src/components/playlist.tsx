@@ -25,7 +25,7 @@ function Playlist() {
     <Wrapper>
       <PlaylistHeader />
 
-      {songs.length === 0 && <EmptyScreen />}
+      {/* {songs.length === 0 && <EmptyScreen />} */}
 
       <Player />
 
