@@ -38,11 +38,11 @@ INSTALLED_APPS = [
     "client",
     "rest_framework",  # https://www.django-rest-framework.org/
     "rest_framework.authtoken",
-    "allauth",  # https://django-allauth.readthedocs.io/en/latest/installation.html
-    "allauth.account",
-    "allauth.socialaccount",
-    "dj_rest_auth",
-    "dj_rest_auth.registration",
+    # "allauth",  # https://django-allauth.readthedocs.io/en/latest/installation.html
+    # "allauth.account",
+    # "allauth.socialaccount",
+    # "dj_rest_auth",
+    # "dj_rest_auth.registration",
     "django_extensions",
     "drf_spectacular",
 ]
