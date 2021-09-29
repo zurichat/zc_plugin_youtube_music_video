@@ -18,7 +18,6 @@ function Like({ liked, onLike, className }: Props) {
       onClick={onLike}
       className={className}
       style={{
-        zIndex: 1,
         display: "block",
         cursor: "pointer",
         width: "20px",

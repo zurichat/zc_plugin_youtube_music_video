@@ -82,7 +82,7 @@ const roomHeader = () => {
   );
 };
 
-const Wrapper = styled.header`
+const Wrapper = styled.div`
   position: sticky;
   top: -1px;
   display: flex;
@@ -93,7 +93,7 @@ const Wrapper = styled.header`
   height: 44px;
   padding: 0 16px;
   color: #fff;
-  z-index: 4;
+  z-index: 1;
 
   img {
     height: 24px !important;

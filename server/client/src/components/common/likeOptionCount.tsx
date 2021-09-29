@@ -6,17 +6,15 @@ import { userSelect } from "../../store/usersSlice";
 
 import Like from "./like";
 import option from "../../media/option.svg";
-import { uiDispatch } from "../../store/uiSlice";
 
-// interface Props {
-//   duration?: string;
-//   likedBy: string[];
-//   songId: string;
+interface Props {
+  duration?: string;
+  likedBy: string[];
+  songId: string;
+}
 
-// }
-
-function LikeOptionCount(props) {
-  const { duration, likedBy, songId, handleOption } = props;
+function LikeOptionCount(props: Props) {
+  const { duration, likedBy, songId } = props;
 
   const { id: userId } = useSelector(userSelect.currentUser);
 
@@ -50,15 +48,11 @@ function LikeOptionCount(props) {
       </div>
 
       <img
-        onClick={(e) => {
-          e.stopPropagation();
-          handleOption(true);
-        }}
         data-option="option"
         src={option}
         alt="option img"
         style={{ cursor: "pointer", width: "20px", height: "20px" }}
-        className="option"
+        className="like-option"
       />
     </Wrapper>
   );
@@ -68,12 +62,11 @@ const Wrapper = styled.div<{ duration: string }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 1;
-  
+
   & > * {
     margin-right: 25px;
   }
-  
+
   .like-icons {
     display: flex;
     align-items: center;
@@ -85,17 +78,17 @@ const Wrapper = styled.div<{ duration: string }>`
   .like-count-player {
     color: rgba(153, 153, 153, 1);
   }
-  
-  .option {
+
+  .like-option {
     margin-right: 0;
   }
-  
+
   @media screen and (max-width: 700px) {
     .like-duration {
       display: none;
     }
   }
-  
+
   @media screen and (max-width: 506px) {
     .like-count {
       display: none;
