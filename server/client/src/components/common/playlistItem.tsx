@@ -32,7 +32,6 @@ function PlaylistItem(props: Props) {
     <Wrapper onClick={handlePlay}>
       <div className="item-group-1">
         <img src={albumCover} alt="album cover" className="item-albumCover" />
-
         <div className="item-info">
           <div className="item-title">{title}</div>
 
