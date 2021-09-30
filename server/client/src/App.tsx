@@ -14,7 +14,7 @@ import "./App.css";
 
 // import UserInfo from "./components/userInfo";
 import MemberList from "./components/memberList";
-import DeleteModal from "./components/Modals/deleteModal";
+import DeleteModal from "./components/deleteModal";
 
 function App() {
   useEffect(() => {

@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Close from "../../media/close-black.svg";
-import { uiDispatch, uiSelect } from "../../store/uiSlice";
+import Close from "../media/close-black.svg";
+import { uiDispatch, uiSelect } from "../store/uiSlice";
+
+
+
 
 const DeleteModal = () => {
   const showDeleteModal = useSelector(uiSelect.showDeleteModal);
@@ -15,9 +18,9 @@ const DeleteModal = () => {
     return uiDispatch.showDeleteModal(false);
   }
 
-  function handleDelete() {
-    //waiting for endpoint from the backend
-  }
+  // function handleDelete() {
+  //   //waiting for endpoint from the backend
+  // }
 
   function handleEscape(e) {
     if (e.key === "Escape" || e.target.dataset.close === "close") {
@@ -44,7 +47,7 @@ const DeleteModal = () => {
           <button className="secondary-btn" onClick={handleClose}>
             No, cancel
           </button>
-          <button className="danger-btn" onClick={handleDelete}>
+          <button className="danger-btn">
             Yes, Delete
           </button>
         </div>
