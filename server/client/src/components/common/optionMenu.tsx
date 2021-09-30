@@ -1,19 +1,16 @@
-import React, { createRef, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import CopyIcon from "../../media/copy-icon.svg";
-import ShareIcon from "../../media/share-icon.svg";
 import DeleteIcon from "../../media/delete-icon.svg";
 import { uiDispatch } from "../../store/uiSlice";
 import { toast } from "react-toastify";
 
-
 const OptionMenu = ({ toggleOption, option, copyUrl }) => {
-
   let ref = useRef(null);
 
   const handleClickOutside = (e) => {
     if (ref.current && !ref.current.contains(e.target)) {
-      toggleOption && toggleOption();
+      toggleOption && toggleOption(false);
     }
   };
 
@@ -41,14 +38,8 @@ const OptionMenu = ({ toggleOption, option, copyUrl }) => {
   }
 
   return (
-    <Wrapper
-      ref={ref}
-      role="menu"
-      onBlur={() => {
-        toggleOption(false);
-      }}
-    >
-      <button onClick={handleCopy} className="option-item">
+    <Wrapper role="dialog" ref={ref}>
+      <button autoFocus onClick={handleCopy} className="option-item">
         <img src={CopyIcon} alt="" />
         <span>Copy link</span>
       </button>
@@ -79,9 +70,15 @@ const Wrapper = styled.div`
     width: 100%;
     background: transparent;
     border: none;
+
     &:hover {
       background: #f6f6f6;
       cursor: pointer;
+    }
+    
+    &:focus {
+      outline: none;
+      background: #f6f6f6;
     }
   }
 

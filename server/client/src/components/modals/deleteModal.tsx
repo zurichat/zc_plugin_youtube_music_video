@@ -10,7 +10,7 @@ const DeleteModal = () => {
   useEffect(() => {
     document.addEventListener("keydown", handleEscape);
   });
-  
+
   function handleClose() {
     return uiDispatch.showDeleteModal(false);
   }
@@ -24,16 +24,17 @@ const DeleteModal = () => {
       return handleClose();
     }
   }
-  
 
   if (!showDeleteModal) return null;
 
   return (
-    <Wrapper onClick={handleEscape} data-close="close">
+    <Wrapper role="dialog" onClick={handleEscape} data-close="close">
       <div className="container">
         <div className="header">
           <h6>Are you sure?</h6>
-          <img src={Close} alt="" onClick={handleClose} />
+          <button autoFocus className="cancel-btn" onClick={handleClose}>
+            <img src={Close} alt="" />
+          </button>
         </div>
         <p>
           You’re about to permanently delete this song. This action cannot be
@@ -43,7 +44,9 @@ const DeleteModal = () => {
           <button className="secondary-btn" onClick={handleClose}>
             No, cancel
           </button>
-          <button className="danger-btn">Yes, Delete</button>
+          <button className="danger-btn" onClick={handleDelete}>
+            Yes, Delete
+          </button>
         </div>
       </div>
     </Wrapper>
@@ -61,7 +64,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   top: 0px;
-  left: 0px;
+  right: 0px;
   width: 100vw;
   height: 100vh;
   background: rgba(64, 79, 74, 0.5);
@@ -74,7 +77,7 @@ const Wrapper = styled.div`
   .container {
     width: 100%;
     max-width: 464px;
-    max-height: 220px;
+    min-height: 220px;
     background: #ffffff;
     box-shadow: 1px 1px 44px rgba(64, 64, 64, 0.5);
     border-radius: 4px;
@@ -93,6 +96,16 @@ const Wrapper = styled.div`
     font-size: 28px;
     line-height: 40px;
     color: #1d1c1d;
+  }
+
+  .cancel-btn {
+    width: fit-content;
+    height: fit-content;
+    border: none;
+    padding: 0;
+    &:focus {
+      outline: 2px solid #000;
+    }
   }
 
   p {
@@ -131,11 +144,18 @@ const Wrapper = styled.div`
     color: #00b87c;
     border: 1px solid #00b87c;
     margin-right: 24px;
+
+    &:focus {
+      box-shadow: 0px 4px 4px rgba(0, 184, 124, 0.1);
+    }
   }
 
   .danger-btn {
     color: #ffffff;
     background: #f40101;
+    &:focus {
+      box-shadow: 0px 4px 4px rgba(244, 1, 1, 0.1);
+    }
   }
 `;
 

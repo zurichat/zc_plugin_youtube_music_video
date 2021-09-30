@@ -52,7 +52,7 @@ function LikeOptionCount(props) {
       <img
         onClick={(e) => {
           e.stopPropagation();
-          handleOption(true);
+          handleOption((state) => !state);
         }}
         data-option="option"
         src={option}
@@ -69,11 +69,11 @@ const Wrapper = styled.div<{ duration: string }>`
   align-items: center;
   justify-content: space-between;
   z-index: 1;
-  
+
   & > * {
     margin-right: 25px;
   }
-  
+
   .like-icons {
     display: flex;
     align-items: center;
@@ -85,17 +85,17 @@ const Wrapper = styled.div<{ duration: string }>`
   .like-count-player {
     color: rgba(153, 153, 153, 1);
   }
-  
+
   .option {
     margin-right: 0;
   }
-  
+
   @media screen and (max-width: 700px) {
     .like-duration {
       display: none;
     }
   }
-  
+
   @media screen and (max-width: 506px) {
     .like-count {
       display: none;
