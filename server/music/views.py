@@ -28,7 +28,7 @@ class change_room_image(APIView):
         data = request.data
         room_image[0] = data['albumCover']
         return Response(room_image,status=status.HTTP_200_OK )
-    print(room_image[0])
+#     print(room_image[0])
 
 
 def get_room_info(room_id=None):
