@@ -178,7 +178,7 @@ class SongView(APIView):
         # Note: song endpoint expects {"url": "", likedBy":"", "userId": "", "addedBy":""} in the payload
 
     def delete(self, request):
-        object_id = request.data["id"]
+        object_id = request.data["_id"]
         data = delete_data(settings.SONG_COLLECTION, object_id=object_id)
         return Response(data, status=status.HTTP_200_OK)
         # Note: use {"id": ""} to delete
