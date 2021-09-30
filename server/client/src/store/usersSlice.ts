@@ -13,7 +13,13 @@ const user: User = {
 const usersSlice = createSlice({
   name: "users",
 
-  initialState: { currentUser: JSON.stringify(user), users: [] as User[] },
+  initialState: {
+    currentUser: JSON.stringify(user),
+    users: [
+      { id: "kdkdkdkd", email: "justice.com" },
+      { id: "kdkdkisisi", email: "vincent.com" },
+    ],
+  },
 
   reducers: {
     setCurrentUser: (state, { payload }: PayloadAction<string>) => {
@@ -47,6 +53,9 @@ export const userDispatch = {
 
 export const userSelect = {
   currentUser: (state: RootState): User => JSON.parse(state.users.currentUser),
+  userList: (state: RootState) => state.users.users,
+  userById: (id: string) => (state: RootState) =>
+    state.users.users.find((user) => user.id === id),
 };
 
 export const selectAllUsers = (state: RootState) => state.users;

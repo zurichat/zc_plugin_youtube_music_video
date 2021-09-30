@@ -3,6 +3,16 @@ import { GetUserInfo, GetWorkspaceUser } from "@zuri/control";
 import { userDispatch } from "../store/usersSlice";
 import User from "../types/user";
 
+
+async function getUserInfo(email: string) {
+  try {
+    const info = await GetWorkspaceUser(email);
+    
+  } catch (error) {
+    
+  }
+}
+
 async function setUserInfo() {
   try {
     const userInfo = await GetUserInfo();
