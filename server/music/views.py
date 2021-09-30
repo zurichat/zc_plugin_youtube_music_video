@@ -20,14 +20,25 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
         return None
     return room_data["data"][0]["_id"]
 
+room_image = ["https://svgshare.com/i/aXm.svg"]
+
+class change_room_image(APIView):
+
+    def post(self, request):
+        data = request.data
+        room_image[0] = data['albumCover']
+        return Response(room_image,status=status.HTTP_200_OK )
+    print(room_image[0])
+
 
 def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION)
     # room_url = room_data["data"][0]["_id"]
+
     output = {
         "room_name": room_data["data"][0]["name"],
         "room_url": f"/music",
-        "room_image": "https://svgshare.com/i/aXm.svg"
+        "room_image": room_image[0]
     }
     return output
 
