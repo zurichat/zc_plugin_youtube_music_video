@@ -69,6 +69,7 @@ const PlaylistHeader = () => {
     uiDispatch.showPasteUrl(true);
   };
 
+
   return (
     <Wrapper>
       <div className="playlist-content-wrapper">
@@ -110,11 +111,13 @@ const PlaylistHeader = () => {
 const Wrapper = styled.div`
   position: sticky;
   top: 25px;
+  left: 0;
   padding-top: 10px;
   background: white;
   display: flex;
   justify-content: center;
   width: 100%;
+  overflow: hidden;
 
   .playlist-content-wrapper {
     display: flex;

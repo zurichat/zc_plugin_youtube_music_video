@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 
 interface Props {
   song: Song;
-  key: number;
 }
 
 function PlaylistItem(props: Props) {
@@ -42,16 +41,14 @@ function PlaylistItem(props: Props) {
     const onClickOutside = () => {
       setShowOption(false);
     };
-      window.addEventListener("click", onClickOutside),
-      false;
+    window.addEventListener("click", onClickOutside), false;
     return () => {
       window.removeEventListener("click", onClickOutside);
     };
   }, []);
 
   return (
-    <Wrapper key={props.key}>
-
+    <Wrapper>
       <OptionMenu
         option={showOption}
         copyUrl={url}
@@ -63,7 +60,7 @@ function PlaylistItem(props: Props) {
           <div className="item-title">{title}</div>
 
           <div className="item-addedBy">
-            Added by <span>{addedBy.trim() || "Pidoxy"}</span>
+            Added by <span>{addedBy /*.trim()*/ || "Pidoxy"}</span>
           </div>
         </div>
       </div>

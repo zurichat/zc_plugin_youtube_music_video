@@ -6,13 +6,12 @@ import { userSelect } from "../../store/usersSlice";
 
 import Like from "./like";
 import option from "../../media/option.svg";
-import { uiDispatch } from "../../store/uiSlice";
 
 // interface Props {
 //   duration?: string;
 //   likedBy: string[];
 //   songId: string;
-
+//   handleOption: any;
 // }
 
 function LikeOptionCount(props) {
@@ -58,7 +57,7 @@ function LikeOptionCount(props) {
         src={option}
         alt="option img"
         style={{ cursor: "pointer", width: "20px", height: "20px" }}
-        className="option"
+        className="like-option"
       />
     </Wrapper>
   );
@@ -86,7 +85,7 @@ const Wrapper = styled.div<{ duration: string }>`
     color: rgba(153, 153, 153, 1);
   }
 
-  .option {
+  .like-option {
     margin-right: 0;
   }
 

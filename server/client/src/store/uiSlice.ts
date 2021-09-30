@@ -11,7 +11,7 @@ const slice = createSlice({
     showModal: false,
     exitModal: false,
     showMemberList: false,
-    showDeleteModal: false,
+    showDeleteModal: false
   },
 
   reducers: {
@@ -38,6 +38,7 @@ const slice = createSlice({
     showMemberList: (state, action) => {
       state.showMemberList = action.payload;
     },
+    
     showDeleteModal: (state, action) => {
       state.showDeleteModal = action.payload;
     },

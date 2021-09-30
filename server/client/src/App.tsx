@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
-import UserInfo from "./components/userInfo";
+// import UserInfo from "./components/userInfo";
 import MemberList from "./components/memberList";
 import DeleteModal from "./components/Modals/deleteModal";
 
@@ -24,7 +24,7 @@ function App() {
 
   return (
     <Wrapper>
-      <UserInfo />
+      {/* <UserInfo /> */}
       <DeleteModal />
       <MemberList />
       <MusicRoom />

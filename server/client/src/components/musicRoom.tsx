@@ -7,7 +7,6 @@ import PasteUrl from "./common/pasteUrl";
 import Chat from "./chat";
 import { useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
-import OptionMenu from "./common/optionMenu";
 
 function MusicRoom() {
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);

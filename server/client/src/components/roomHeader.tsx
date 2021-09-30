@@ -85,6 +85,7 @@ const roomHeader = () => {
 const Wrapper = styled.header`
   position: sticky;
   top: -1px;
+  left: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
