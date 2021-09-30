@@ -18,6 +18,7 @@ interface Props {
 
 const PasteUrl = (props: Props) => {
   const [url, setUrl] = useState("");
+  const isLoading = useSelector(uiSelect.isLoading);
 
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);
 
@@ -28,15 +29,25 @@ const PasteUrl = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    if (props.getSongByUrl(url)) return toast.error("The song already exist.");
+    if (props.getSongByUrl(url)) {
+      return toast.error("This song already exists.") && setUrl("");
+    }
+
+    if (isLoading) return;
 
     uiDispatch.loading(true);
 
     try {
       getSongIdFromYouTubeUrl(url);
+
       await songService.addSongbyUrl(url);
+
       uiDispatch.showPasteUrl(false);
+
       toast.success("Added Successfully");
+
+      // this.setState(url: "");
+      setUrl("");
     } catch (e) {
       toast.error(e.message);
     }
@@ -44,16 +55,24 @@ const PasteUrl = (props: Props) => {
     uiDispatch.loading(false);
   };
 
+  const handleEscape = (ev) => {
+    console.log({ code: ev.code, key: ev.key });
+
+    if (ev.code === "Escape" || ev.target.dataset.close === "close") {
+      uiDispatch.showPasteUrl(false);
+    }
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onClick={handleEscape} data-close="close">
       <form onSubmit={handleSubmit} className="submit-form">
         <div>
           <label htmlFor="" className="form-label">
             Paste Youtube URL here
             <FiX
               style={{
-                color: "#00bb7c",
-                background: "#e5fff6",
+                color: "#000",
+                background: "#fff",
                 width: "1rem",
                 height: "1rem",
                 cursor: "pointer",
@@ -62,7 +81,8 @@ const PasteUrl = (props: Props) => {
             />
           </label>
         </div>
-        <div className="inputs">
+
+        <div className="input-text-div">
           <input
             className="input-text"
             type="text"
@@ -70,9 +90,12 @@ const PasteUrl = (props: Props) => {
             id=""
             value={url}
             onChange={handleChange}
+            onKeyDown={handleEscape}
             autoFocus
           />
+        </div>
 
+        <div className="input-submit-div">
           <input className="input-submit" type="submit" value="Add" />
         </div>
       </form>
@@ -82,49 +105,67 @@ const PasteUrl = (props: Props) => {
 
 const Wrapper = styled.div`
   position: absolute;
-  height: 110px;
+  top: 1px;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
-  width: min(90%, 400px);
+  background-color: rgb(0, 0, 0, 0.2);
+  z-index: 111;
 
   .submit-form {
+    position: absolute;
+    top: 170px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background: #fff;
-    border: 2px solid #00bb7c;
-    padding: 1rem;
-    width: 100%;
+    padding: 20px;
+    width: min(90%, 400px);
+    box-shadow: 3px -4px 8px rgb(0, 0, 0, 0.2);
+    border-radius: 4px;
   }
+
   .form-label {
     display: flex;
     justify-content: space-between;
     font-weight: 700;
+    font-size: 20px;
   }
-  .inputs {
+
+  .input-text-div {
     display: flex;
-    height: 40px;
+    margin: 20px 0;
   }
+
   .input-text {
-    flex-grow: 1;
     border: 1.5px solid #00bb7c;
     outline: none;
     padding: 0.5rem;
     font-size: 17px;
+    width: 100%;
+    border-radius: 5px;
   }
+
   .input-text::selection {
     background-color: #00bb7c;
     color: white;
   }
+
+  .input-submit-div {
+    display: flex;
+    justify-content: flex-end;
+  }
+
   .input-submit {
-    flex-basis: 70px;
-    padding: 5px 10px;
+    padding: 8px 20px;
     font-size: 17px;
     color: #fff;
     background: #00bb7c;
     border: none;
     outline: none;
     cursor: pointer;
+    border-radius: 5px;
   }
 `;
 

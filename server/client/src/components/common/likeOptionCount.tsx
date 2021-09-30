@@ -7,14 +7,15 @@ import { userSelect } from "../../store/usersSlice";
 import Like from "./like";
 import option from "../../media/option.svg";
 
-interface Props {
-  duration?: string;
-  likedBy: string[];
-  songId: string;
-}
+// interface Props {
+//   duration?: string;
+//   likedBy: string[];
+//   songId: string;
+//   handleOption: any;
+// }
 
-function LikeOptionCount(props: Props) {
-  const { duration, likedBy, songId } = props;
+function LikeOptionCount(props) {
+  const { duration, likedBy, songId, handleOption } = props;
 
   const { id: userId } = useSelector(userSelect.currentUser);
 
@@ -30,22 +31,34 @@ function LikeOptionCount(props: Props) {
     songService.likeSong({ songId, userId, like: !liked });
   };
 
+  const formatDuration = (duration: string) => {
+    const [h, ...rest] = duration.split(":");
+    return (h === "0" ? "" : `${h}:`) + rest.join(":");
+  };
+
   return (
     <Wrapper duration={duration}>
-      {duration && <div className="like-duration">{duration} mins</div>}
+      {duration && (
+        <div className="like-duration">{formatDuration(duration)} mins</div>
+      )}
 
       {countText && <div className={countClasses}>{countText}</div>}
 
-      <div className="like-icons">
-        <Like liked={liked} onLike={handleLike} />
-
-        <img
-          data-option="option"
-          src={option}
-          alt="option img"
-          style={{ cursor: "pointer", width: "20px", height: "20px" }}
-        />
+      <div>
+        <Like className="like-button" liked={liked} onLike={handleLike} />
       </div>
+
+      <img
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOption((state) => !state);
+        }}
+        data-option="option"
+        src={option}
+        alt="option img"
+        style={{ cursor: "pointer", width: "20px", height: "20px" }}
+        className="like-option"
+      />
     </Wrapper>
   );
 }
@@ -53,9 +66,12 @@ function LikeOptionCount(props: Props) {
 const Wrapper = styled.div<{ duration: string }>`
   display: flex;
   align-items: center;
-  justify-content: ${({ duration }) =>
-    duration ? "space-between" : "flex-start"};
-  padding: 1rem;
+  justify-content: space-between;
+  z-index: 1;
+
+  & > * {
+    margin-right: 25px;
+  }
 
   .like-icons {
     display: flex;
@@ -69,25 +85,17 @@ const Wrapper = styled.div<{ duration: string }>`
     color: rgba(153, 153, 153, 1);
   }
 
-  .like-count-player {
-    margin-right: 10px;
+  .like-option {
+    margin-right: 0;
   }
 
-  @media screen and (max-width: 1126px) {
-    .like-count {
+  @media screen and (max-width: 700px) {
+    .like-duration {
       display: none;
     }
   }
 
-  @media screen and (max-width: 1112px) {
-    .like-count {
-      display: inline;
-    }
-  }
-
-  @media screen and (max-width: 780px) {
-    justify-content: ${(props) => (props.duration ? "flex-end" : "flex-start")};
-    .like-duration,
+  @media screen and (max-width: 506px) {
     .like-count {
       display: none;
     }
