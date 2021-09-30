@@ -15,7 +15,7 @@ const connect = () => {
     "wss://realtime.zuri.chat/connection/websocket"
   );
 
-  centrifuge.subscribe("zuri-plugin-music", (message) => {
+  centrifuge.subscribe("613ceb50ceee2ab59d44df2f", (message) => {
     const {
       event,
       data: { data },
