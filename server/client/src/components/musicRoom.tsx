@@ -10,9 +10,11 @@ import PasteUrl from "./common/pasteUrl";
 import Chat from "./chat";
 import { useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
+import { userSelect } from "../store/usersSlice";
 
 function MusicRoom() {
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);
+  const users = useSelector(userSelect.userList);
 
   return (
     <Wrapper overflowMain={showPasteUrl}>
@@ -33,9 +35,12 @@ function MusicRoom() {
         <Parcel
           config={pluginHeader}
           wrapWith="div"
-          headerConfig={headerConfig}
+          wrapStyle={{ width: "100%" }}
+          headerConfig={headerConfig(users)}
         />
+
         {/* <RoomHeader /> */}
+
         <Playlist />
       </div>
 

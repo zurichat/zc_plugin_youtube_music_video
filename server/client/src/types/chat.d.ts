@@ -3,4 +3,6 @@ export default interface Chat {
   message: string;
   userId: string;
   time: number; // date in milliseconds
+  name: string;
+  avatar: string;
 }

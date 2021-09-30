@@ -7,7 +7,7 @@ const user: User = {
   id: "juztiz5000kdkdkdkdkdkdkd",
   avatar: "https://music.zuri.chat/static/8088dff19013ace2e359.svg",
   name: "Justiz",
-  orgId: "",
+  email: "",
 };
 
 const usersSlice = createSlice({
@@ -15,10 +15,7 @@ const usersSlice = createSlice({
 
   initialState: {
     currentUser: JSON.stringify(user),
-    users: [
-      { id: "kdkdkdkd", email: "justice.com" },
-      { id: "kdkdkisisi", email: "vincent.com" },
-    ],
+    users: [] as User[],
   },
 
   reducers: {
@@ -28,19 +25,18 @@ const usersSlice = createSlice({
       state.currentUser = payload;
     },
 
-    userLogin: (state, { payload }) => {
-      state.users.push(payload.user);
+    addUser: (state, { payload }: PayloadAction<User>) => {
+      state.users.push(payload);
     },
 
-    userLogout: (state, { payload }) => {
-      const { id } = payload;
-      const existingUser = state.users.find((user) => user.id === id);
-      if (existingUser) state.users.filter((user) => user.id !== id);
+    removeUser: (state, { payload }: PayloadAction<{ id: string }>) => {
+      const index = state.users.findIndex((user) => user.id === payload.id);
+      state.users.splice(index, 1);
     },
   },
 });
 
-export const { userLogin, userLogout, setCurrentUser } = usersSlice.actions;
+const { setCurrentUser, addUser, removeUser } = usersSlice.actions;
 
 export const userDispatch = {
   setCurrentUser: (payload: User) => {
@@ -49,13 +45,25 @@ export const userDispatch = {
       payload: JSON.stringify(payload),
     });
   },
+
+  addUser: (payload: User) => {
+    store.dispatch({ type: addUser.type, payload });
+  },
+
+  removeUser: (payload: { id: string }) => {
+    store.dispatch({ type: removeUser.type, payload });
+  },
 };
 
 export const userSelect = {
   currentUser: (state: RootState): User => JSON.parse(state.users.currentUser),
+
   userList: (state: RootState) => state.users.users,
+
   userById: (id: string) => (state: RootState) =>
     state.users.users.find((user) => user.id === id),
+
+  userCount: (state: RootState) => state.users.users.length,
 };
 
 export const selectAllUsers = (state: RootState) => state.users;

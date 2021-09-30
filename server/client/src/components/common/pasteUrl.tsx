@@ -11,6 +11,7 @@ import { uiDispatch, uiSelect } from "../../store/uiSlice";
 
 import songService from "../../services/songService";
 import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
+import { userSelect } from "../../store/usersSlice";
 
 interface Props {
   getSongByUrl: (url: string) => Song;
@@ -19,6 +20,7 @@ interface Props {
 const PasteUrl = (props: Props) => {
   const [url, setUrl] = useState("");
   const isLoading = useSelector(uiSelect.isLoading);
+  const { name: addedBy, id: userId } = useSelector(userSelect.currentUser);
 
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);
 
@@ -40,16 +42,19 @@ const PasteUrl = (props: Props) => {
     try {
       getSongIdFromYouTubeUrl(url);
 
-      await songService.addSongbyUrl(url);
+      await songService.addSongbyUrl({
+        url,
+        addedBy,
+        userId,
+        likedBy: [],
+      });
 
       uiDispatch.showPasteUrl(false);
 
       toast.success("Added Successfully");
-
-      // this.setState(url: "");
       setUrl("");
     } catch (e) {
-      toast.error(e.message);
+      toast.error(`Error: ${e.message}`);
     }
 
     uiDispatch.loading(false);

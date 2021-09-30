@@ -2,25 +2,23 @@ import { useEffect } from "react";
 import styled from "styled-components";
 
 import MusicRoom from "./components/musicRoom";
-
 import chatMediaQuery from "./utils/chatMedia";
 
 import eventService from "./services/eventService";
+import MemberList from "./components/memberList";
+import userService from "./services/userService";
 
 import "moment-timezone";
 import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
-import MemberList from "./components/memberList";
-import setUserInfo from "./services/authService";
-
 function App() {
   useEffect(() => {
-    eventService.connect();
+    // eventService.connect();
     chatMediaQuery(); // toggle chat display based on screen size.
 
-    setUserInfo();
+    userService.addUserToRoom();
   }, []);
 
   return (

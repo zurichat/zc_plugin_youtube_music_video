@@ -1,15 +1,31 @@
 // @ts-ignore
 import { pluginHeader } from "@zuri/plugin-header";
+import { uiDispatch } from "../store/uiSlice";
+import User from "../types/user";
+import icon from "../media/musicRoomIcon.svg";
 
 export { pluginHeader };
 
-export const headerConfig = {
-  name: "Music Plugin",
-  logo: "https://www.pngfind.com/pngs/m/19-194225_png-file-svg-hashtag-icon-png-transparent-png.png",
-  thumbnailUrl: [
-    "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80",
-    "https://upload.wikimedia.org/wikipedia/en/7/70/Shawn_Tok_Profile.jpg",
-    "https://www.kemhospitalpune.org/wp-content/uploads/2020/12/Profile_avatar_placeholder_large.png",
-  ],
-  userCount: 1,
+export const headerConfig = (users: User[]) => {
+  const thumbnailUrls = users.filter((user) => user.avatar);
+
+  return {
+    name: "Music Plugin", //Name on header
+
+    icon, //Image on header
+
+    thumbnailUrl: thumbnailUrls, //Replace with images of users
+
+    userCount: users.length, //User count on header
+
+    eventTitle: () => {
+      uiDispatch.showMemberList(true);
+    },
+
+    eventThumbnail: () => {
+      console.log("thumbnail clicked");
+    },
+
+    hasThumbnail: thumbnailUrls.length > 0, //set false if you don't want thumbnail on the header
+  };
 };

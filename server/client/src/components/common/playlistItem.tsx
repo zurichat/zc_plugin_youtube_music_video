@@ -4,6 +4,8 @@ import Song from "../../types/song";
 
 import { playerAction } from "../../store/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
 interface Props {
   song: Song;
@@ -15,9 +17,12 @@ function PlaylistItem(props: Props) {
     addedBy,
     albumCover,
     id: songId,
+    userId,
     duration,
     likedBy,
   } = props.song;
+
+  const user = useSelector(userSelect.userById(userId));
 
   const handlePlay = (e) => {
     if (e.target.dataset.like) return;
@@ -37,7 +42,7 @@ function PlaylistItem(props: Props) {
           <div className="item-title">{title}</div>
 
           <div className="item-addedBy">
-            Added by <span>{addedBy}</span>
+            Added by <span>{user.name || addedBy}</span>
           </div>
         </div>
       </div>
