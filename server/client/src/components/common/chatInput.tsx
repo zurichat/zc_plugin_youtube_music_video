@@ -106,12 +106,12 @@ function ChatInput(props) {
     //   </div>
     // </Wrapper>
     <ChatInputStyled onClick={handleFocus}>
-      <input
-        type="text"
+      <textarea
+        // type="text"
         value={inputStr}
         onKeyPress={(e) => (e.key === "Enter" ? handleSend() : undefined)}
         onChange={(e) => setInputStr(e.target.value)}
-        placeholder="Send a message to John"
+        placeholder="Type your message here..."
       />
       <div className="tags">
         <button>
@@ -425,7 +425,7 @@ const ChatInputStyled = styled.div`
   margin: 8px 16px 0 8px;
   box-sizing: border-box;
   overflow: hidden;
-  input {
+  textarea {
     position: relative;
     height: 54px;
     width: 385px;
@@ -435,6 +435,11 @@ const ChatInputStyled = styled.div`
     outline: transparent;
     flex: 1;
     border: none;
+    overflow: hidden;
+    resize: none;
+    font-family: inherit;
+    font-size: inherit;
+    width: 90%;
     ::placeholder {
       /* position: absolute;
       height: 18px;
