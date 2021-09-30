@@ -170,9 +170,10 @@ class SongView(APIView):
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
-
-        updated_data = read_data(settings.SONG_COLLECTION,)
-
+        
+        
+        updated_data = read_data(settings.SONG_COLLECTION)
+        
         centrifugo_post("zuri-plugin-music", {"event": "added_song", "data": updated_data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
         # Note: song endpoint expects {"url": "", likedBy":"", "userId": "", "addedBy":""} in the payload
