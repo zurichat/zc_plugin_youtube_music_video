@@ -1,6 +1,8 @@
 from django.conf import settings
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
 
@@ -33,6 +35,8 @@ def get_room_info(room_id=None):
 
 
 class SidebarView(GenericAPIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
 
@@ -97,6 +101,8 @@ class SidebarView(GenericAPIView):
 
 
 class PluginInfoView(GenericAPIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -128,6 +134,8 @@ class PluginInfoView(GenericAPIView):
 
 
 class PluginPingView(GenericAPIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         server = [
@@ -138,6 +146,9 @@ class PluginPingView(GenericAPIView):
 
 
 class MediaView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         payload = {"email": "hng.user01@gmail.com", "password": "password"}
 
@@ -148,6 +159,9 @@ class MediaView(APIView):
 
 
 class SongView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         data = read_data(settings.SONG_COLLECTION)
 
@@ -175,6 +189,8 @@ class SongView(APIView):
 
 
 class CommentView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -198,6 +214,9 @@ class CommentView(APIView):
 
 
 class CreateRoomView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     serializer_class = RoomSerializer
 
     def post(self, request):
@@ -220,6 +239,9 @@ class CreateRoomView(APIView):
 
 
 class RoomView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     serializer_class = RoomSerializer
 
     def get(self, request, format=None):
@@ -228,6 +250,9 @@ class RoomView(APIView):
 
 
 class AddToRoomView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     @staticmethod
     def get_obj_id_and_append_user_id(request):
         room_data = read_data(settings.ROOM_COLLECTION)
@@ -254,6 +279,9 @@ class AddToRoomView(APIView):
 
 
 class UserListView(GenericAPIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     serializer_class = MembersSerializer
 
     def get(self, request):
@@ -262,6 +290,9 @@ class UserListView(GenericAPIView):
 
 
 class AddMember(GenericAPIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     serializer_class = MembersSerializer
 
     def post(self, request):
@@ -283,9 +314,11 @@ class AddMember(GenericAPIView):
 
 
 class UserCountView(GenericAPIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         header_user_count = data["data"][0]["room_user_ids"]
 
         return Response(len(header_user_count))
-
