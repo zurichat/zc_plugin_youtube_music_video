@@ -27,5 +27,6 @@ urlpatterns = [
     path("user", UserListView.as_view(), name="user"),
     path("addmember", AddMember.as_view(), name="addmembers"),
     path("user-count", UserCountView.as_view(), name="header-user-count"),
+    path("current-song", change_room_image.as_view(), name="current-song"),
     
 ]
