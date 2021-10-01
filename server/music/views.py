@@ -157,7 +157,6 @@ class SongView(APIView):
         media_info = get_video(request.data['url'])
         userId_info = request.data["userId"]
         addedBy_info = request.data["addedBy"]
-        likedBy_info = request.data["likedBy"]
 
         payload = {
             "title": media_info["title"],
@@ -166,7 +165,7 @@ class SongView(APIView):
             "url": media_info["track_url"],
             "userId": userId_info,
             "addedBy": addedBy_info,
-            "likedBy": [likedBy_info]
+            "likedBy": []
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
