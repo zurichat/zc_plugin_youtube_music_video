@@ -15,7 +15,9 @@ import option from "../../media/option.svg";
 // }
 
 function LikeOptionCount(props) {
-  const { duration, likedBy, songId, handleOption } = props;
+  let { duration, likedBy = [], songId, handleOption } = props;
+
+  console.log({ likedBy });
 
   const { id: userId } = useSelector(userSelect.currentUser);
 

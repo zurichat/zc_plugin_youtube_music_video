@@ -115,7 +115,6 @@ const Wrapper = styled.div`
     margin: 0;
     box-sizing: border-box;
   }
-
   position: absolute;
   top: 1;
   box-sizing: border-box;
@@ -129,7 +128,6 @@ const Wrapper = styled.div`
   top: 0px;
   left: 0px;
   z-index: 100;
-
   h3 {
     font-style: normal;
     font-weight: bold;
@@ -161,7 +159,6 @@ const Wrapper = styled.div`
     height: fit-content;
     max-height: 536px;
   }
-
   .header-container {
     display: flex;
     flex-direction: column;
@@ -169,30 +166,25 @@ const Wrapper = styled.div`
     padding: 24px 24px 0 24px;
     border-bottom: 1px solid #f6f6f6;
   }
-
   .title-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
   }
-
   .align-center {
     display: flex;
     align-items: center;
   }
-
   form {
     position: relative;
   }
-
   form > img {
     position: absolute;
     top: 12px;
     left: 16px;
     width: 16px;
   }
-
   form > input {
     border: 1px solid #00b87c;
     box-sizing: border-box;
@@ -204,22 +196,18 @@ const Wrapper = styled.div`
     color: #616061;
     padding-left: 40px;
   }
-
   form > input:focus {
     outline: none;
   }
-
   .list-container {
     padding: 19px 20px 0 20px;
   }
-
   .member {
     overflow: auto;
     padding: 24px;
     height: -webkit-fill-available;
     max-height: 371px;
   }
-
   .member::-webkit-scrollbar {
     width: 5px;
     background-color: transparent;
@@ -228,7 +216,6 @@ const Wrapper = styled.div`
     background-color: #00b87c;
     border-radius: 10px;
   }
-
   @media screen and (max-width: 480px) {
     padding: 0 24px;
     border-radius: 8px;

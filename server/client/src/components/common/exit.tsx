@@ -17,7 +17,7 @@ const Exit = () => {
   const handleLeaveRoom = () => {
     log.success("Goodbye user");
 
-    userService.leaveRoom();
+    userService.removeUserFromRoom();
     uiDispatch.showExitModal(false);
     uiDispatch.loading(true);
 

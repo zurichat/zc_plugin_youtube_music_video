@@ -2,29 +2,27 @@ import styled from "styled-components";
 import Moment from "react-moment";
 
 import Chat from "../../types/chat";
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
-const Time = (time) => {
-  var hours = (time.getHours() < 13) ? time.getHours() : time.getHours() - 12;
-  if(hours === 0) hours = 12;
-  var hour = (hours < 10) ? "0" + hours : hours;
-  var minute = (time.getMinutes() < 10) ? "0" + time.getMinutes() : time.getMinutes();
-  var format = (time.getHours() < 12) ? "AM" : "PM";
-  return hour + ":" + minute + " " + format;
-}
+function ChatItem({ userId, time, message, name, avatar }: Chat) {
+  const user = useSelector(userSelect.userById(userId));
 
-function ChatItem({ name, avatar, time, message }: Chat) {
   return (
     <Wrapper>
       <div className="item-avatar">
-        <img src={avatar} alt="" />
+        <img src={user?.avatar ?? avatar} alt="" />
       </div>
+
       <div className="item-content">
         <div className="item-name-time">
-          <span className="item-name">{name}</span>
+          <span className="item-name">{user?.name ?? name}</span>
+
           <span className="item-time">
-            {Time((new Date(time)))}
+            <Moment>{new Date(time).toJSON()}</Moment>
           </span>
         </div>
+
         <div className="item-text">{message}</div>
       </div>
     </Wrapper>
