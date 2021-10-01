@@ -366,7 +366,7 @@ class UserCountView(GenericAPIView):
 
     def get(self, request):
         data = read_data(settings.MEMBERS_COLLECTION)
-        header_user_count = data["data"][0]["_id"]
+        header_user_count = data["data"][0]
         user_count = len(header_user_count)
 
         centrifugo_post(plugin_id, {"event": "header_user_count", "data": user_count})
