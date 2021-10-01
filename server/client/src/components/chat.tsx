@@ -77,10 +77,7 @@ function Chat(props) {
 
       <div className="chat-item-group">
         {chats.map((chat, index) => (
-          <ChatItem 
-          change={change}
-          key={index} {...chat} 
-          failedValue={failedValue}/>
+          <ChatItem key={index} {...chat} />
         ))}
 
         <div className="scroller" ref={scroller}></div>

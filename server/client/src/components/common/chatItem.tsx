@@ -14,7 +14,7 @@ const Time = (time) => {
   return hour + ":" + minute + " " + format;
 }
 
-function ChatItem(change,{ name, avatar, time, message, userId,notSent = false, failed = false, failedValue }: Chat) {
+function ChatItem({ name, avatar, time, message, userId,notSent = false, failed = false}: Chat) {
   const resend = () => {
     const newChat = {
       id: "test", // this will be taken care of by db
@@ -30,7 +30,6 @@ function ChatItem(change,{ name, avatar, time, message, userId,notSent = false, 
 
   return (
     <Wrapper 
-    onMouseOver={() => change()}
     onClick={() => {if(failed) resend();}}
     >
       <div className="item-avatar">
@@ -43,7 +42,7 @@ function ChatItem(change,{ name, avatar, time, message, userId,notSent = false, 
           <span className="item-time/status">sending...</span>
           }
           { failed &&
-          <span className="item-failed">{failedValue}</span>
+          <span className="item-failed">mesage not sent</span>
           }
           { !notSent && !failed &&
           <span className="item-time/status">
