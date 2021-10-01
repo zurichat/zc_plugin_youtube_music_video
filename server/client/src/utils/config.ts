@@ -16,7 +16,7 @@ export const headerConfig = (users: User[]) => {
       .filter((user) => user.avatar)
       .map((user) => user.avatar), //Replace with images of users
 
-    userCount: users.length, //User count on header
+    userCount: users.length || 1, //User count on header
 
     eventTitle: () => {
       uiDispatch.showMemberList(true);

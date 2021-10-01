@@ -16,7 +16,7 @@ async function addUserToList({ email, id }: { email: string; id: string }) {
 
     userDispatch.addUser({ ...extractInfo(info), id });
   } catch (error) {
-    console.log("Error:", error.message);
+    console.log("Error: add to list", error.message);
   }
 }
 
