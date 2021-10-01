@@ -3,12 +3,14 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse
-
+import json
 from music.serializers import *
+from music.models import *
 from music.utils.data_access import *
 from rest_framework.views import APIView
 import requests
 from requests import exceptions
+from django.http import Http404
 
 from rest_framework.decorators import api_view
 
@@ -174,9 +176,14 @@ class SongView(APIView):
             "duration": media_info["duration"],
             "albumCover": media_info["thumbnail_url"],
             "url": media_info["track_url"],
+<<<<<<< HEAD
             "userId": userId_info,
             "addedBy": addedBy_info,
             "likedBy": []
+=======
+            "addedby": " ",
+            "likedby": []
+>>>>>>> c529fe070952faec7ac0182093962f40d946d612
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
@@ -274,16 +281,33 @@ class AddToRoomView(APIView):
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
-class UserListView(GenericAPIView):
-    serializer_class = MembersSerializer
+class MemberListView(GenericAPIView):
+    serializer_class = MemberSerializer
 
     def get(self, request):
         data = read_data(settings.MEMBERS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        if serializer.is_valid():
+            payload = serializer.data
+
+            data = write_data(settings.MEMBERS_COLLECTION, payload=payload)
+
+            updated_data = read_data(settings.MEMBERS_COLLECTION)
+
+            centrifugo_post("zuri-plugin-music", {"event": "added_user", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class AddMember(GenericAPIView):
-    serializer_class = MembersSerializer
+    serializer_class = MemberSerializer
 
     def post(self, request):
         user_id = request.query_params.get('user')
@@ -305,7 +329,7 @@ class AddMember(GenericAPIView):
 
 class UserCountView(GenericAPIView):
     def get(self, request):
-        data = read_data(settings.ROOM_COLLECTION)
+        data = read_data(settings.MEMBERS_COLLECTION)
         header_user_count = data["data"][0]["room_user_ids"]
 
         return Response(len(header_user_count))
