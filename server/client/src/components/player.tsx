@@ -46,7 +46,7 @@ function Player() {
 
   function getUpnext() {
     const index = songs.indexOf(song);
-    return [...songs.slice(index + 1), ...songs.slice(0, index)];
+    return [...songs.slice(index + 1), song, ...songs.slice(0, index)];
   }
 
   const handlePlay = () => {

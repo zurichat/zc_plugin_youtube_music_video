@@ -4,27 +4,21 @@ import Moment from "react-moment";
 import Chat from "../../types/chat";
 import chatService from "../../services/chatService";
 import { chatDispatch } from "../../store/chatsSlice";
-
-const Time = (time) => {
-  var hours = (time.getHours() < 13) ? time.getHours() : time.getHours() - 12;
-  if(hours === 0) hours = 12;
-  var hour = (hours < 10) ? "0" + hours : hours;
-  var minute = (time.getMinutes() < 10) ? "0" + time.getMinutes() : time.getMinutes();
-  var format = (time.getHours() < 12) ? "AM" : "PM";
-  return hour + ":" + minute + " " + format;
-}
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
 function ChatItem({ name, avatar, time, message, userId,notSent = false, failed = false}: Chat) {
+  const user = useSelector(userSelect.userById(userId));
   const resend = () => {
     const newChat = {
-      id: "test", // this will be taken care of by db
+      id: "",
       userId : userId,
       name: name,
       avatar: avatar,
       message: message,
       time: Date.now(),
     };
-    chatDispatch.removeChat(newChat);
+    chatDispatch.removeChat(newChat.id);
     chatService.addChat(newChat);
   };
 
@@ -33,11 +27,12 @@ function ChatItem({ name, avatar, time, message, userId,notSent = false, failed 
     onClick={() => {if(failed) resend();}}
     >
       <div className="item-avatar">
-        <img src={avatar} alt="" />
+        <img src={user?.avatar ?? avatar} alt="" />
       </div>
+
       <div className="item-content">
         <div className="item-name-time">
-          <span className="item-name">{name}</span>
+          <span className="item-name">{user?.name ?? name}</span>
           { notSent &&
           <span className="item-time/status">sending...</span>
           }
@@ -46,10 +41,11 @@ function ChatItem({ name, avatar, time, message, userId,notSent = false, failed 
           }
           { !notSent && !failed &&
           <span className="item-time/status">
-            {Time((new Date(time)))}
+            <Moment>{new Date(time).toJSON()}</Moment>
           </span>
           }
         </div>
+
         <div className="item-text">{message}</div>
       </div>
     </Wrapper>

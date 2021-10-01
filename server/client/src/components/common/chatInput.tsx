@@ -45,10 +45,10 @@ function ChatInput(props) {
     const message = {
       id: "test", // this will be taken care of by db
       userId,
-      name,
-      avatar,
       message: inputStr,
       time: Date.now(),
+      name,
+      avatar,
     }
 
     //sends message to the comments endpoint

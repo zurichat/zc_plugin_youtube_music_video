@@ -1,17 +1,17 @@
-import Song from "../types/song";
+import { SongToAdd } from "../types/song";
 import LikeSong from "../types/likeSong";
 
-import log from "./logService";
 import { songDispatch } from "../store/songsSlice";
-import httpService from "./httpService";
+import httpService, { endpoints } from "./httpService";
 import store from "../store";
 
-const { songEndpoint, likeEndpoint } = httpService.endpoints;
+const { songEndpoint, likeEndpoint } = endpoints;
 
 const getSongs = () => {
   httpService.get(songEndpoint).then(
     (result) => {
       const data = result.data.data ?? [];
+      // data.forEach((song) => deleteSong(song.id));
       songDispatch.initialize(data.filter((song) => song.url));
       return result;
     },
@@ -23,36 +23,17 @@ const getSongs = () => {
   );
 };
 
-const addSongbyUrl = async (url: string) => {
-  const { name: addedBy, id: userId } = JSON.parse(
-    store.getState().users.currentUser
-  );
-
-  return httpService
-    .post(songEndpoint, {
-      url,
-      addedBy,
-      userId,
-    })
-    .then(
-      (result) => result,
-      (error) => console.log(error)
-    );
+const addSong = async (song: SongToAdd) => {
+  return httpService.post(songEndpoint, song).then(() => {
+    const { songs } = store.getState();
+    if (songs.length >= 10) deleteSong(songs[songs.length - 1].id);
+  });
 };
 
-const addSong = async (song: Song) => {
-  try {
-    await httpService.post(songEndpoint, {
-      url: song.url,
-    });
-
-    log.success("Song added");
-  } catch (error) {
-    console.log(error.message);
-  }
-
-  songDispatch.addSong(song);
-  return;
+const deleteSong = async (id: string) => {
+  return httpService
+    .post(endpoints.deleteSong, { id })
+    .then(() => songDispatch.removeSong(id));
 };
 
 const likeSong = async (like: LikeSong) => {
@@ -60,14 +41,11 @@ const likeSong = async (like: LikeSong) => {
 
   try {
     await httpService.post(likeEndpoint, like);
-
-    log.success("User liked a song");
   } catch (error) {
-    // log.error(error.message);
     console.log(error.message);
   }
 };
 
-const songService = { getSongs, addSong, likeSong, addSongbyUrl };
+const songService = { getSongs, addSong, likeSong, deleteSong };
 
 export default songService;
