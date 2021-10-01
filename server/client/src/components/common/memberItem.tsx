@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import avatar1 from "../../media/avatar-1.svg";
+import memberList from "../memberList";
 
 interface Props {
   display_name: string;

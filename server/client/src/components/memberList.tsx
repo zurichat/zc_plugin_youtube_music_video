@@ -10,12 +10,14 @@ import { useSelector } from "react-redux";
 
 const MemberList = () => {
   const showMemberList = useSelector(uiSelect.showMemberList);
-  const { addToRoom } = httpService.endpoints;
+  const { songEndpoint } = httpService.endpoints;
   const [memberList, setMemberList] = useState([]);
+  const [searchList, setSearchList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(" ");
 
   useEffect(() => {
-    httpService.get(addToRoom).then((res) => {
-      setMemberList(res.data.data[0].room_user_ids);
+    httpService.get(songEndpoint).then((res) => {
+      setMemberList(res.data.data);
     });
   }, [showMemberList]);
 
@@ -25,6 +27,16 @@ const MemberList = () => {
     if (e.code === "Escape" || e.target.dataset.close === "close") {
       uiDispatch.showMemberList(false);
     }
+  };
+
+  const searchHandler = (event) => {
+    event.preventDefault();
+    const searchWord = event.target.value;
+    setSearchTerm(searchWord);
+    const newMemberList = memberList.filter((value) => {
+      return value.title.toLowerCase().includes(searchWord.toLowerCase());
+    });
+    setSearchList(newMemberList);
   };
 
   return (
@@ -60,13 +72,31 @@ const MemberList = () => {
               placeholder="Find People"
               autoFocus
               onKeyDown={handleEscape}
+              onChange={searchHandler}
+              value={searchTerm}
             />
           </form>
         </div>
         <div className="member">
-          {memberList.map((item, i) => (
-            <MemberItem key={i} display_name="" status={true} name="" desc="" />
-          ))}
+          {searchTerm === " "
+            ? memberList.map((item, i) => (
+                <MemberItem
+                  key={i}
+                  display_name={item.title}
+                  status={true}
+                  name=""
+                  desc=""
+                />
+              ))
+            : searchList.map((item, i) => (
+                <MemberItem
+                  key={i}
+                  display_name={item.title}
+                  status={true}
+                  name=""
+                  desc=""
+                />
+              ))}
         </div>
       </div>
     </Wrapper>

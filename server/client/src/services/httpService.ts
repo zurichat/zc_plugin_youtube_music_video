@@ -12,6 +12,7 @@ const endpoints = {
   addToRoom: "add_to_room",
   leaveEndpoint: "exit",
   roomEndpoint: "room",
+  membersListEndpoint: "user",
 };
 
 const httpService = {
