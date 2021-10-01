@@ -7,8 +7,19 @@ import { uiDispatch, uiSelect } from "../store/uiSlice";
 import { useEffect, useState } from "react";
 import httpService from "../services/httpService";
 import { useSelector } from "react-redux";
+import { userSelect } from "../store/usersSlice";
 
 const MemberList = () => {
+  // const showMemberList = useSelector(uiSelect.showMemberList);
+  // const list = useSelector(userSelect.userList);
+  // const { addToRoom } = httpService.endpoints;
+  // const [memberList, setMemberList] = useState([]);
+
+  // useEffect(() => {
+  //   httpService.get(addToRoom).then((res) => {
+  //     setMemberList(res.data.data[0].room_user_ids);
+  //   });
+  // }, [showMemberList]);
   const showMemberList = useSelector(uiSelect.showMemberList);
   const { membersListEndpoint } = httpService.endpoints;
   const [memberList, setMemberList] = useState([]);
@@ -56,7 +67,7 @@ const MemberList = () => {
                 uiDispatch.showMemberList(false);
               }}
               src={CloseIcon}
-              alt=""
+              alt="Close Icon"
             />
           </div>
 
@@ -64,6 +75,10 @@ const MemberList = () => {
             <p className="member-tag">
               Members <span>{memberList.length}</span>
             </p>
+
+            {/* <p className="member-tag">
+              Members <span>{list.length}</span>
+            </p> */}
           </div>
         </div>
 
@@ -81,6 +96,9 @@ const MemberList = () => {
           </form>
         </div>
         <div className="member">
+          {/* {list.map((item, i) => (
+            <MemberItem key={i} display_name="" status={true} name="" desc="" />
+          ))} */}
           {searchTerm === " "
             ? memberList.map((item, i) => (
                 <MemberItem
