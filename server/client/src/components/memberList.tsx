@@ -66,7 +66,7 @@ const MemberList = () => {
 
         <div className="list-container">
           <form action="#">
-            <img src={SearchIcon} alt="" />
+            <img src={SearchIcon} alt="search icon" />
             <input
               type="text"
               placeholder="Find People"

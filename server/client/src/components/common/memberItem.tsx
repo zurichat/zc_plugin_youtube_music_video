@@ -15,9 +15,7 @@ const MemberItem = ({ display_name, name, status, desc }: Props) => {
       <img src={avatar1} alt="" />
       <div className="profile-container">
         <div className="profile">
-          <p className="display-name">
-            {(display_name && display_name) || "Imhade"}
-          </p>
+          <p className="display-name">{display_name && display_name}</p>
           <div
             style={{
               borderColor: `${status ? "#0DBE3F" : "#616061"}`,
@@ -25,9 +23,9 @@ const MemberItem = ({ display_name, name, status, desc }: Props) => {
             }}
             className="status none"
           ></div>
-          <p className="name none">{(name && name) || "Imhade Amavu"}</p>
+          <p className="name none">{name && name}</p>
         </div>
-        <p className="desc">{(desc && desc) || "Product designer"}</p>
+        <p className="desc">{desc && desc}</p>
       </div>
     </Wrapper>
   );
