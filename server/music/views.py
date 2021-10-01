@@ -221,11 +221,11 @@ class SongView(APIView):
         return Response(updated_object, status=status.HTTP_202_ACCEPTED)
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":""} in the payload
 
-    def delete(self, request):
-        object_id = request.data["_id"]
-        data = delete_data(settings.SONG_COLLECTION, object_id=object_id)
-        return Response(data, status=status.HTTP_200_OK)
-        # Note: use {"id": ""} to delete
+    # def delete(self, request):
+    #     object_id = request.data["_id"]
+    #     data = delete_data(settings.SONG_COLLECTION, object_id=object_id)
+    #     return Response(data, status=status.HTTP_200_OK)
+    #     # Note: use {"id": ""} to delete
 
 
 class CommentView(APIView):
