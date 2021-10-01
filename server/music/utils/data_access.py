@@ -106,6 +106,27 @@ def centrifugo_post(room, data):
     return response
 
 
+def publish_to_sidebar(org_id, user_id, data):
+    headers = {'Content-type': 'application/json', 'Authorization': 'apikey ' + centrifugo}
+    room = {org_id, user_id}
+    post_data = {
+        "method": "publish",
+        "params": {
+            "channel": room,
+            "data": data
+        }
+    }
+    request_client = RequestClient()
+
+    response = request_client.request(
+        method="POST",
+        url="https://realtime.zuri.chat/api",
+        headers=headers,
+        post_data=post_data
+    )
+    return response
+
+
 def get_video(url):
     res = requests.get(url)
 
