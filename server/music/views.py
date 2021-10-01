@@ -186,7 +186,7 @@ class SongView(APIView):
         
         centrifugo_post("zuri-plugin-music", {"event": "added_song", "data": updated_data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
-        # Note: song endpoint expects {"url": "", likedBy":"", "userId": "", "addedBy":""} in the payload
+        # Note: song endpoint expects {"url": "", "userId": "", "addedBy":""} in the payload
 
     def delete(self, request):
         object_id = request.data["_id"]
