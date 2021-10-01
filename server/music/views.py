@@ -174,8 +174,8 @@ class SongView(APIView):
             "duration": media_info["duration"],
             "albumCover": media_info["thumbnail_url"],
             "url": media_info["track_url"],
-            "addedby": " ",
-            "likedby": []
+            "addedBy": " ",
+            "likedBy": []
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
