@@ -106,9 +106,9 @@ def centrifugo_post(room, data):
     return response
 
 
-def publish_to_sidebar(org_id, user_id, data):
+def publish_to_sidebar(organization_id, user_id, data):
     headers = {'Content-type': 'application/json', 'Authorization': 'apikey ' + centrifugo}
-    room = {org_id, user_id}
+    room = {'org_id': organization_id, 'user_id': user_id}
     post_data = {
         "method": "publish",
         "params": {

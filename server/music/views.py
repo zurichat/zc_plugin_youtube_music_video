@@ -59,7 +59,7 @@ class SidebarView(GenericAPIView):
 
         pub_room = get_room_info()
 
-        centrifugo_post(org_id, {"event": "sidebar_update", "data": pub_room})
+        publish_to_sidebar(org_id, user_id, {"event": "sidebar_update", "data": pub_room})
 
         if request.GET.get('org') and request.GET.get('user'):
             url = f'https://api.zuri.chat/organizations/{org_id}/members/{user_id}'
