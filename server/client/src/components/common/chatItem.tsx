@@ -2,14 +2,32 @@ import styled from "styled-components";
 import Moment from "react-moment";
 
 import Chat from "../../types/chat";
+import chatService from "../../services/chatService";
+import { chatDispatch } from "../../store/chatsSlice";
 import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
 
-function ChatItem({ userId, time, message, name, avatar }: Chat) {
+function ChatItem({ name, avatar, time, message, userId,notSent = false, failed = false}: Chat) {
   const user = useSelector(userSelect.userById(userId));
+  
+  const resend = () => {
+    const newChat = {
+      id: "test",
+      userId : userId,
+      name: name,
+      avatar: avatar,
+      message: message,
+      time: Date.now(),
+    };
+    let x = newChat.id;
+    chatDispatch.removeChat(x);
+    chatService.addChat(newChat);
+  };
 
   return (
-    <Wrapper>
+    <Wrapper 
+    onClick={() => {if(failed) resend();}}
+    >
       <div className="item-avatar">
         <img src={user?.avatar ?? avatar} alt="" />
       </div>
@@ -17,10 +35,17 @@ function ChatItem({ userId, time, message, name, avatar }: Chat) {
       <div className="item-content">
         <div className="item-name-time">
           <span className="item-name">{user?.name ?? name}</span>
-
-          <span className="item-time">
+          { notSent &&
+          <span className="item-time/status">sending...</span>
+          }
+          { failed &&
+          <span className="item-failed">mesage not sent</span>
+          }
+          { !notSent && !failed &&
+          <span className="item-time/status">
             <Moment>{new Date(time).toJSON()}</Moment>
           </span>
+          }
         </div>
 
         <div className="item-text">{message}</div>
@@ -51,10 +76,16 @@ const Wrapper = styled.div`
     margin-bottom: 6px;
   }
 
-  .item-time {
+  .item-time/status {
     font-size: 12px;
     font-weight: 400;
     color: #616061;
+  }
+
+  .item-failed {
+    font-size: 12px;
+    font-weight: 400;
+    color: red;
   }
 
   .item-name {
