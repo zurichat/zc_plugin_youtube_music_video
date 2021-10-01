@@ -29,11 +29,12 @@ class Comment:
 
 
 class Member:
-    def __init__(self, _id, user_name, avatar):
+    def __init__(self, _id, name, avatar):
         
         self._id = _id
-        self.user_name = user_name
+        self.name = name
         self.avatar = avatar
+        
         
 
 class Room:
