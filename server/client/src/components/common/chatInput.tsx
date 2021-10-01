@@ -44,10 +44,10 @@ function ChatInput(props) {
     chatService.addChat({
       id: "", // this will be taken care of by db
       userId,
-      name,
-      avatar,
       message: inputStr,
       time: Date.now(),
+      name,
+      avatar,
     });
 
     clearInput();

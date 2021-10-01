@@ -9,6 +9,8 @@ class MediaSerializer(serializers.Serializer):
     
 
 class MemberSerializer(serializers.Serializer):
+    
+    _id = serializers.CharField(read_only=False)
     user_name = serializers.CharField(max_length=256, read_only=False)
     avatar = serializers.CharField(max_length=256, required=False, read_only=False)
 
@@ -78,13 +80,14 @@ class RoomSerializer(serializers.Serializer):
 
 class SongSerializer(serializers.Serializer):
     
-    _id = serializers.IntegerField(read_only=True)
+    # _id = serializers.IntegerField(read_only=True)
+    _id = serializers.CharField(read_only=False)
     title = serializers.CharField(required=False)
     duration = serializers.IntegerField()
     albumcover = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    addedby = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
-    likedby = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
+    addedBy = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
+    likedBy = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
 
     def create(self, validated_data):
         return Song(_id=None, **validated_data)
@@ -94,8 +97,8 @@ class SongSerializer(serializers.Serializer):
         instance.duration = validated_data.get('duration', instance.duration)
         instance.albumcover = validated_data.get('albumcover', instance.albumcover)
         instance.url = validated_data.get('url', instance.url)
-        instance.addedby = validated_data.get('addedby', instance.addedby)
-        instance.likedby = validated_data.get('likedby', instance.likedby)
+        instance.addedBy = validated_data.get('addedBy', instance.addedBy)
+        instance.likedBy = validated_data.get('likedBy', instance.likedBy)
         return instance
 
     def __str__(self):

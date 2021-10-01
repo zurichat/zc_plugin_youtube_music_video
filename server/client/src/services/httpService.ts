@@ -2,9 +2,8 @@ import axios from "axios";
 
 // axios.defaults.baseURL = "http://localhost:8000/music/api/v1";
 axios.defaults.baseURL = "https://music.zuri.chat/music/api/v1/";
-// axios.defaults.baseURL = "159.65.123.65/music/api/v1/";
 
-const endpoints = {
+export const endpoints = {
   songEndpoint: "songs",
   commentEndpoint: "comments",
   likeEndpoint: "likesong",
@@ -12,6 +11,8 @@ const endpoints = {
   addToRoom: "add_to_room",
   leaveEndpoint: "exit",
   roomEndpoint: "room",
+  deleteSong: "deletesong",
+  deleteComment: "deletecomment",
 };
 
 const httpService = {
