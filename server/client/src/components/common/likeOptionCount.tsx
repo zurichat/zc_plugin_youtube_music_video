@@ -7,14 +7,15 @@ import { userSelect } from "../../store/usersSlice";
 import Like from "./like";
 import option from "../../media/option.svg";
 
-interface Props {
-  duration?: string;
-  likedBy: string[];
-  songId: string;
-}
+// interface Props {
+//   duration?: string;
+//   likedBy: string[];
+//   songId: string;
+//   handleOption: any;
+// }
 
-function LikeOptionCount(props: Props) {
-  const { duration, likedBy, songId } = props;
+function LikeOptionCount(props) {
+  const { duration, likedBy, songId, handleOption } = props;
 
   const { id: userId } = useSelector(userSelect.currentUser);
 
@@ -48,6 +49,10 @@ function LikeOptionCount(props: Props) {
       </div>
 
       <img
+        onClick={(e) => {
+          e.stopPropagation();
+          handleOption((state) => !state);
+        }}
         data-option="option"
         src={option}
         alt="option img"
@@ -62,6 +67,7 @@ const Wrapper = styled.div<{ duration: string }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 1;
 
   & > * {
     margin-right: 25px;
