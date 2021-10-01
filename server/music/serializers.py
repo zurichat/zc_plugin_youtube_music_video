@@ -9,6 +9,8 @@ class MediaSerializer(serializers.Serializer):
     
 
 class MemberSerializer(serializers.Serializer):
+    
+    _id = serializers.CharField(read_only=False)
     user_name = serializers.CharField(max_length=256, read_only=False)
     avatar = serializers.CharField(max_length=256, required=False, read_only=False)
 
@@ -78,7 +80,8 @@ class RoomSerializer(serializers.Serializer):
 
 class SongSerializer(serializers.Serializer):
     
-    _id = serializers.IntegerField(read_only=True)
+    # _id = serializers.IntegerField(read_only=True)
+    _id = serializers.CharField(read_only=False)
     title = serializers.CharField(required=False)
     duration = serializers.IntegerField()
     albumcover = serializers.CharField(required=False)
