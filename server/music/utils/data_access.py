@@ -148,6 +148,7 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
         method=method,
         url="https://api.zuri.chat/data/delete",
         headers={"Authorization": "headers"},
-        data=data
+        post_data=data
     )
     return response.response_data
+

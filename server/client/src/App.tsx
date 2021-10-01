@@ -13,6 +13,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 
+// import UserInfo from "./components/userInfo";
+import MemberList from "./components/memberList";
+import DeleteModal from "./components/deleteModal";
+
 function App() {
   useEffect(() => {
     eventService.connect();
@@ -23,6 +27,8 @@ function App() {
 
   return (
     <Wrapper>
+      {/* <UserInfo /> */}
+      <DeleteModal />
       <MemberList />
       <MusicRoom />
     </Wrapper>
