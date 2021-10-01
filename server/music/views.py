@@ -1,20 +1,18 @@
 from django.conf import settings
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.generics import GenericAPIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
-
+import json
 from music.serializers import *
+from music.models import *
 from music.utils.data_access import *
 from rest_framework.views import APIView
 import requests
 from requests import exceptions
+from django.http import Http404
 
 from rest_framework.decorators import api_view
-
-plugin_id = settings.PLUGIN_ID
 
 
 def check_if_user_is_in_room_and_return_room_id(user_id):
@@ -27,8 +25,6 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
 room_image = ["https://svgshare.com/i/aXm.svg"]
 
 class change_room_image(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
@@ -50,8 +46,6 @@ def get_room_info(room_id=None):
 
 
 class SidebarView(GenericAPIView):
-    # authentication_classes = [SessionAuthentication, TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
 
@@ -62,8 +56,6 @@ class SidebarView(GenericAPIView):
         org_id = settings.ORGANIZATON_ID
 
         pub_room = get_room_info()
-
-        publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
 
         if request.GET.get('org') and request.GET.get('user'):
             url = f'https://api.zuri.chat/organizations/{org_id}/members/{user_id}'
@@ -118,8 +110,6 @@ class SidebarView(GenericAPIView):
 
 
 class PluginInfoView(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -151,8 +141,6 @@ class PluginInfoView(GenericAPIView):
 
 
 class PluginPingView(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         server = [
@@ -163,22 +151,16 @@ class PluginPingView(GenericAPIView):
 
 
 class MediaView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
         payload = {"email": "hng.user01@gmail.com", "password": "password"}
 
         data = read_data("test_collection")
 
-        centrifugo_post(plugin_id, {"event": "join_room"})
+        centrifugo_post("zuri-plugin-music", {"event": "join_room"})
         return Response(data)
 
 
 class SongView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
         data = read_data(settings.SONG_COLLECTION)
 
@@ -192,22 +174,20 @@ class SongView(APIView):
             "duration": media_info["duration"],
             "albumCover": media_info["thumbnail_url"],
             "url": media_info["track_url"],
-            "addedBy": " ",
-            "likedBy": []
+            "addedby": " ",
+            "likedby": []
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
 
         updated_data = read_data(settings.SONG_COLLECTION)
 
-        centrifugo_post(plugin_id, {"event": "added_song", "data": updated_data})
+        centrifugo_post("zuri-plugin-music", {"event": "added_song", "data": updated_data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
         # Note: use only {"url": ""} in the payload
 
 
 class CommentView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -223,7 +203,7 @@ class CommentView(APIView):
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
-            centrifugo_post(plugin_id, {"event": "added_chat", "data": updated_data})
+            centrifugo_post("zuri-plugin-music", {"event": "added_chat", "data": updated_data})
 
             return Response(data, status=status.HTTP_200_OK)
 
@@ -231,9 +211,6 @@ class CommentView(APIView):
 
 
 class CreateRoomView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
     serializer_class = RoomSerializer
 
     def post(self, request):
@@ -256,9 +233,6 @@ class CreateRoomView(APIView):
 
 
 class RoomView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
     serializer_class = RoomSerializer
 
     def get(self, request, format=None):
@@ -267,9 +241,6 @@ class RoomView(APIView):
 
 
 class AddToRoomView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
     @staticmethod
     def get_obj_id_and_append_user_id(request):
         room_data = read_data(settings.ROOM_COLLECTION)
@@ -291,26 +262,37 @@ class AddToRoomView(APIView):
         }
 
         data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
-        centrifugo_post(plugin_id, {"event": "entered_room", "data": "send something"})
+        centrifugo_post("channel_name", {"event": "entered_room", "data": "send something"})
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
-class UserListView(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    serializer_class = MembersSerializer
+class MemberListView(GenericAPIView):
+    serializer_class = MemberSerializer
 
     def get(self, request):
         data = read_data(settings.MEMBERS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        if serializer.is_valid():
+            payload = serializer.data
+
+            data = write_data(settings.MEMBERS_COLLECTION, payload=payload)
+
+            updated_data = read_data(settings.MEMBERS_COLLECTION)
+
+            centrifugo_post("zuri-plugin-music", {"event": "added_user", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class AddMember(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    serializer_class = MembersSerializer
+    serializer_class = MemberSerializer
 
     def post(self, request):
         user_id = request.query_params.get('user')
@@ -331,14 +313,9 @@ class AddMember(GenericAPIView):
 
 
 class UserCountView(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
-        data = read_data(settings.ROOM_COLLECTION)
+        data = read_data(settings.MEMBERS_COLLECTION)
         header_user_count = data["data"][0]["room_user_ids"]
-        user_count = len(header_user_count)
 
-        centrifugo_post(plugin_id, {"event": "entered_room", "data": user_count})
+        return Response(len(header_user_count))
 
-        return Response(user_count)
