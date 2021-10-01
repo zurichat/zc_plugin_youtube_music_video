@@ -8,11 +8,20 @@ interface Props {
   status: boolean;
   name: string;
   desc: string;
+  avatar: string;
+  stack: string;
 }
-const MemberItem = ({ display_name, name, status, desc }: Props) => {
+const MemberItem = ({
+  display_name,
+  name,
+  status,
+  desc,
+  avatar,
+  stack,
+}: Props) => {
   return (
     <Wrapper>
-      <img src={avatar1} alt="" />
+      <img src={avatar ? avatar : avatar1} alt="Member Profile Picture" />
       <div className="profile-container">
         <div className="profile">
           <p className="display-name">{display_name && display_name}</p>
@@ -25,7 +34,7 @@ const MemberItem = ({ display_name, name, status, desc }: Props) => {
           ></div>
           <p className="name none">{name && name}</p>
         </div>
-        <p className="desc">{desc && desc}</p>
+        <p className="desc">{stack && stack}</p>
       </div>
     </Wrapper>
   );

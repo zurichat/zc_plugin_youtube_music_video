@@ -10,15 +10,18 @@ import { useSelector } from "react-redux";
 
 const MemberList = () => {
   const showMemberList = useSelector(uiSelect.showMemberList);
-  const { songEndpoint } = httpService.endpoints;
+  const { membersListEndpoint } = httpService.endpoints;
   const [memberList, setMemberList] = useState([]);
   const [searchList, setSearchList] = useState([]);
   const [searchTerm, setSearchTerm] = useState(" ");
 
   useEffect(() => {
-    httpService.get(songEndpoint).then((res) => {
-      setMemberList(res.data.data);
-    });
+    httpService
+      .get(membersListEndpoint)
+      .then((res) => {
+        setMemberList(res.data.data);
+      })
+      .catch((err) => console.log(err.message));
   }, [showMemberList]);
 
   if (!showMemberList) return null;
@@ -34,7 +37,7 @@ const MemberList = () => {
     const searchWord = event.target.value;
     setSearchTerm(searchWord);
     const newMemberList = memberList.filter((value) => {
-      return value.title.toLowerCase().includes(searchWord.toLowerCase());
+      return value.user_name.toLowerCase().includes(searchWord.toLowerCase());
     });
     setSearchList(newMemberList);
   };
@@ -45,7 +48,7 @@ const MemberList = () => {
         <div className="header-container">
           <div className="title-container">
             <div className="align-center">
-              <img src={HeaderIcon} alt="" /> <h3>Music room</h3>
+              <img src={HeaderIcon} alt=" Header icon" /> <h3>Music room</h3>
             </div>
             <img
               style={{ cursor: "pointer" }}
@@ -82,19 +85,23 @@ const MemberList = () => {
             ? memberList.map((item, i) => (
                 <MemberItem
                   key={i}
-                  display_name={item.title}
+                  display_name={item.user_name}
                   status={true}
                   name=""
                   desc=""
+                  avatar={item.avatar}
+                  stack={item.stack}
                 />
               ))
             : searchList.map((item, i) => (
                 <MemberItem
                   key={i}
-                  display_name={item.title}
+                  display_name={item.user_name}
                   status={true}
                   name=""
                   desc=""
+                  avatar={item.avatar}
+                  stack={item.stack}
                 />
               ))}
         </div>
