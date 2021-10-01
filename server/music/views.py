@@ -186,23 +186,36 @@ class SongView(APIView):
 
     def post(self, request):
         media_info = get_video(request.data['url'])
+        userId_info = request.data["userId"]
+        addedBy_info = request.data["addedBy"]
+        time_info = request.data["time"]
 
         payload = {
             "title": media_info["title"],
             "duration": media_info["duration"],
             "albumCover": media_info["thumbnail_url"],
             "url": media_info["track_url"],
-            "addedBy": " ",
-            "likedBy": []
+            "userId": userId_info,
+            "addedBy": addedBy_info,
+            "likedBy": [],
+            "time": time_info
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
 
         updated_data = read_data(settings.SONG_COLLECTION)
+        updated_object = updated_data["data"][-1]
+        # returns the updated_object alone
 
-        centrifugo_post(plugin_id, {"event": "added_song", "data": updated_data})
-        return Response(data, status=status.HTTP_202_ACCEPTED)
-        # Note: use only {"url": ""} in the payload
+        centrifugo_post(plugin_id, {"event": "added_song", "data": updated_object})
+        return Response(updated_object, status=status.HTTP_202_ACCEPTED)
+        # Note: song endpoint expects {"url": "", "userId": "", "addedBy":""} in the payload
+
+    # def delete(self, request):
+    #     object_id = request.data["_id"]
+    #     data = delete_data(settings.SONG_COLLECTION, object_id=object_id)
+    #     return Response(data, status=status.HTTP_200_OK)
+    #     # Note: use {"id": ""} to delete
 
 
 class CommentView(APIView):
