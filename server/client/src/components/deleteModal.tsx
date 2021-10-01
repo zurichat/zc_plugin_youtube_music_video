@@ -1,13 +1,15 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import Close from "../media/close-black.svg";
+import httpService from "../services/httpService";
+import { deleteDispatch, deleteSlice } from "../store/deleteSongSlice";
+import { songDispatch, songSelect } from "../store/songsSlice";
 import { uiDispatch, uiSelect } from "../store/uiSlice";
 
-
-
-
 const DeleteModal = () => {
+  const removeId = useSelector(songSelect.allSongs);
   const showDeleteModal = useSelector(uiSelect.showDeleteModal);
 
   useEffect(() => {
@@ -18,9 +20,31 @@ const DeleteModal = () => {
     return uiDispatch.showDeleteModal(false);
   }
 
-  // function handleDelete() {
-  //   //waiting for endpoint from the backend
-  // }
+  const id = useSelector(deleteSlice.updateId);
+  const name = useSelector(deleteSlice.updateName);
+  const url = useSelector(deleteSlice.updateUrl);
+
+  function handleDelete() {
+    const endpoint = "deletesong";
+    httpService
+      .post(endpoint, {
+        _id: id,
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success("Deleted successfully");
+        uiDispatch.showDeleteModal(false);
+        songDispatch.removeSong(removeId[id]);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Unable to delete: permission denied");
+      });
+    console.log({ id, name, url });
+
+    // songDispatch.removeSong()
+    //waiting for endpoint from the backend
+  }
 
   function handleEscape(e) {
     if (e.key === "Escape" || e.target.dataset.close === "close") {
@@ -47,7 +71,7 @@ const DeleteModal = () => {
           <button className="secondary-btn" onClick={handleClose}>
             No, cancel
           </button>
-          <button className="danger-btn">
+          <button className="danger-btn" onClick={handleDelete}>
             Yes, Delete
           </button>
         </div>
@@ -57,6 +81,7 @@ const DeleteModal = () => {
 };
 
 const Wrapper = styled.div`
+  box-sizing: border-box;
   * {
     margin: 0;
     box-sizing: border-box;
@@ -159,6 +184,10 @@ const Wrapper = styled.div`
     &:focus {
       box-shadow: 0px 4px 4px rgba(244, 1, 1, 0.1);
     }
+  }
+
+  @media screen and (max-width: 540px) {
+    padding: 0 24px;
   }
 `;
 
