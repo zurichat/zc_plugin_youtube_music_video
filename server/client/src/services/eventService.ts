@@ -10,7 +10,7 @@ import { chatDispatch } from "../store/chatsSlice";
 
 type PublishedMessage = {
   data: {
-    event: "added_song" | "added_chat" | "join_room" | "entered_room";
+    event: "added_song" | "added_chat" | "join_room" | "entered_room" | "sidebar_update";
     data: {
       data: any;
     };
@@ -46,6 +46,10 @@ const connect = () => {
       }
 
       case "entered_room": {
+        console.log({ event, data });
+      }
+
+      case "sidebar_update": {
         console.log({ event, data });
       }
 
