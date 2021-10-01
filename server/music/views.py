@@ -315,7 +315,7 @@ class AddMember(GenericAPIView):
 class UserCountView(GenericAPIView):
     def get(self, request):
         data = read_data(settings.MEMBERS_COLLECTION)
-        header_user_count = data["data"][0]["_ids"]
+        header_user_count = data["data"][0]["_id"]
 
         return Response(len(header_user_count))
 

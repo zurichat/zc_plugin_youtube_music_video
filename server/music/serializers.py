@@ -80,7 +80,8 @@ class RoomSerializer(serializers.Serializer):
 
 class SongSerializer(serializers.Serializer):
     
-    _id = serializers.IntegerField(read_only=True)
+    # _id = serializers.IntegerField(read_only=True)
+    _id = serializers.CharField(read_only=False)
     title = serializers.CharField(required=False)
     duration = serializers.IntegerField()
     albumcover = serializers.CharField(required=False)
