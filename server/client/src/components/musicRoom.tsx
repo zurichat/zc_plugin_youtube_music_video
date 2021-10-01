@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
+import Parcel from "single-spa-react/parcel";
+
+import { pluginHeader, headerConfig } from "../utils/config";
 
 import Playlist from "./playlist";
 import RoomHeader from "./roomHeader";
@@ -7,9 +10,11 @@ import PasteUrl from "./common/pasteUrl";
 import Chat from "./chat";
 import { useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
+import { userSelect } from "../store/usersSlice";
 
 function MusicRoom() {
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);
+  const users = useSelector(userSelect.userList);
 
   return (
     <Wrapper overflowMain={showPasteUrl}>
@@ -27,7 +32,15 @@ function MusicRoom() {
           />
         </div>
 
-        <RoomHeader />
+        <Parcel
+          config={pluginHeader}
+          wrapWith="div"
+          wrapStyle={{ width: "100%" }}
+          headerConfig={headerConfig(users)}
+        />
+
+        {/* <RoomHeader /> */}
+
         <Playlist />
       </div>
 
@@ -43,8 +56,6 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
   display: flex;
   margin: 0;
   background-color: rgb(240, 240, 240);
-  height: 100vh;
-  max-height: 100vh;
 
   .room-main {
     flex-grow: 1;
