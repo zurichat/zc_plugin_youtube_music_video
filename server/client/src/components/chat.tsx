@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -8,11 +8,17 @@ import ChatInput from "./common/chatInput";
 
 import { chatSelect } from "../store/chatsSlice";
 import { uiSelect } from "../store/uiSlice";
+import { syncArray } from "../utils/syncArray"
 
 function Chat(props) {
-  const chats = useSelector(chatSelect.allChat);
+  const chat = useSelector(chatSelect.allChat);
   const showChat = useSelector(uiSelect.showChat);
   const scroller = useRef(null);
+  const [ chats, setChats] = useState(chat);
+
+  useEffect(() => {
+    setChats(syncArray(chats, chat));
+  }, [chat]);
 
   const scrollToBottom = () => {
     scroller.current.scrollIntoView(false);
@@ -59,13 +65,22 @@ function Chat(props) {
     }
   }
 
+  let failedValue = "message not sent";
+
+  const change = () => {
+    failedValue = "Click on message to resend";
+  };
+
   return (
     <Wrapper className="chat-wrapper">
       <ChatHeader />
 
       <div className="chat-item-group">
         {chats.map((chat, index) => (
-          <ChatItem key={index} {...chat} />
+          <ChatItem 
+          change={change}
+          key={index} {...chat} 
+          failedValue={failedValue}/>
         ))}
 
         <div className="scroller" ref={scroller}></div>

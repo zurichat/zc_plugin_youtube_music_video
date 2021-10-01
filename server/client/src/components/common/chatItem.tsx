@@ -2,6 +2,8 @@ import styled from "styled-components";
 import Moment from "react-moment";
 
 import Chat from "../../types/chat";
+import chatService from "../../services/chatService";
+import { chatDispatch } from "../../store/chatsSlice";
 
 const Time = (time) => {
   var hours = (time.getHours() < 13) ? time.getHours() : time.getHours() - 12;
@@ -12,18 +14,42 @@ const Time = (time) => {
   return hour + ":" + minute + " " + format;
 }
 
-function ChatItem({ name, avatar, time, message }: Chat) {
+function ChatItem(change,{ name, avatar, time, message, userId,notSent = false, failed = false, failedValue }: Chat) {
+  const resend = () => {
+    const newChat = {
+      id: "test", // this will be taken care of by db
+      userId : userId,
+      name: name,
+      avatar: avatar,
+      message: message,
+      time: Date.now(),
+    };
+    chatDispatch.removeChat(newChat);
+    chatService.addChat(newChat);
+  };
+
   return (
-    <Wrapper>
+    <Wrapper 
+    onMouseOver={() => change()}
+    onClick={() => {if(failed) resend();}}
+    >
       <div className="item-avatar">
         <img src={avatar} alt="" />
       </div>
       <div className="item-content">
         <div className="item-name-time">
           <span className="item-name">{name}</span>
-          <span className="item-time">
+          { notSent &&
+          <span className="item-time/status">sending...</span>
+          }
+          { failed &&
+          <span className="item-failed">{failedValue}</span>
+          }
+          { !notSent && !failed &&
+          <span className="item-time/status">
             {Time((new Date(time)))}
           </span>
+          }
         </div>
         <div className="item-text">{message}</div>
       </div>
@@ -53,10 +79,16 @@ const Wrapper = styled.div`
     margin-bottom: 6px;
   }
 
-  .item-time {
+  .item-time/status {
     font-size: 12px;
     font-weight: 400;
     color: #616061;
+  }
+
+  .item-failed {
+    font-size: 12px;
+    font-weight: 400;
+    color: red;
   }
 
   .item-name {

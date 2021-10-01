@@ -5,4 +5,7 @@ export default interface Chat {
   avatar: string;
   time: number; // date in milliseconds
   name: string;
+  notSent?: boolean;
+  failed?: boolean;
+  failedValue?: string;
 }
