@@ -14,6 +14,8 @@ from requests import exceptions
 
 from rest_framework.decorators import api_view
 
+plugin_id = settings.PLUGIN_ID
+
 
 def check_if_user_is_in_room_and_return_room_id(user_id):
     room_data = read_data(settings.ROOM_COLLECTION)
@@ -25,6 +27,8 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
 room_image = ["https://svgshare.com/i/aXm.svg"]
 
 class change_room_image(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
@@ -46,8 +50,8 @@ def get_room_info(room_id=None):
 
 
 class SidebarView(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [SessionAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
 
@@ -59,7 +63,7 @@ class SidebarView(GenericAPIView):
 
         pub_room = get_room_info()
 
-        publish_to_sidebar(org_id, user_id, {"event": "sidebar_update", "data": pub_room})
+        publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
 
         if request.GET.get('org') and request.GET.get('user'):
             url = f'https://api.zuri.chat/organizations/{org_id}/members/{user_id}'
@@ -167,7 +171,7 @@ class MediaView(APIView):
 
         data = read_data("test_collection")
 
-        centrifugo_post("zuri-plugin-music", {"event": "join_room"})
+        centrifugo_post(plugin_id, {"event": "join_room"})
         return Response(data)
 
 
@@ -196,7 +200,7 @@ class SongView(APIView):
 
         updated_data = read_data(settings.SONG_COLLECTION)
 
-        centrifugo_post("zuri-plugin-music", {"event": "added_song", "data": updated_data})
+        centrifugo_post(plugin_id, {"event": "added_song", "data": updated_data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
         # Note: use only {"url": ""} in the payload
 
@@ -219,7 +223,7 @@ class CommentView(APIView):
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
-            centrifugo_post("zuri-plugin-music", {"event": "added_chat", "data": updated_data})
+            centrifugo_post(plugin_id, {"event": "added_chat", "data": updated_data})
 
             return Response(data, status=status.HTTP_200_OK)
 
@@ -287,7 +291,7 @@ class AddToRoomView(APIView):
         }
 
         data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
-        centrifugo_post("channel_name", {"event": "entered_room", "data": "send something"})
+        centrifugo_post(plugin_id, {"event": "entered_room", "data": "send something"})
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
@@ -333,5 +337,8 @@ class UserCountView(GenericAPIView):
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         header_user_count = data["data"][0]["room_user_ids"]
+        user_count = len(header_user_count)
 
-        return Response(len(header_user_count))
+        centrifugo_post(plugin_id, {"event": "entered_room", "data": user_count})
+
+        return Response(user_count)
