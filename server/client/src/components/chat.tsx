@@ -65,12 +65,6 @@ function Chat(props) {
     }
   }
 
-  let failedValue = "message not sent";
-
-  const change = () => {
-    failedValue = "Click on message to resend";
-  };
-
   return (
     <Wrapper className="chat-wrapper">
       <ChatHeader />

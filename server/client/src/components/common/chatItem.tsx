@@ -9,16 +9,18 @@ import { userSelect } from "../../store/usersSlice";
 
 function ChatItem({ name, avatar, time, message, userId,notSent = false, failed = false}: Chat) {
   const user = useSelector(userSelect.userById(userId));
+  
   const resend = () => {
     const newChat = {
-      id: "",
+      id: "test",
       userId : userId,
       name: name,
       avatar: avatar,
       message: message,
       time: Date.now(),
     };
-    chatDispatch.removeChat(newChat.id);
+    let x = newChat.id;
+    chatDispatch.removeChat(x);
     chatService.addChat(newChat);
   };
 
