@@ -6,15 +6,15 @@ class Media:
 
 
 class Song:
-    def __init__(self, title, _id, duration, albumcover, url, addedby, likedby):
+    def __init__(self, title, _id, duration, albumcover, url, addedBy, likedBy):
 
         self._id = _id
         self.title = title
         self.duration = duration
         self.albumcover = albumcover
         self.url = url
-        self.addedby = addedby
-        self.likedby = likedby
+        self.addedBy = addedBy
+        self.likedBy = likedBy
 
 
 class Comment:
