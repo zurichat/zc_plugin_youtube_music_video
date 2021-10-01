@@ -1,19 +1,17 @@
 import Song from "../types/song";
+
 const to2Digits = (num: number, str: string) =>
   num === 0 ? "" : num < 10 ? `0${num} ${str}` : `${num} ${str}`;
 
 export const totalDuration = (songs: Song[]) => {
-  const durs = songs.map((song) => {
-    const [h, m, s] = song.duration.split(":");
-    return { h: +h, m: +m, s: +s };
-  });
-
   const duration = { h: 0, m: 0, s: 0 };
 
-  durs.forEach(({ h, m, s }) => {
-    (duration.h = duration.h + h),
-      (duration.m = duration.m + m),
-      (duration.s = duration.s + s);
+  songs.forEach((song) => {
+    const [h, m, s] = song.duration.split(":");
+
+    duration.h = duration.h + +h;
+    duration.m = duration.m + +m;
+    duration.s = duration.s + +s;
   });
 
   const sr = duration.s % 60;

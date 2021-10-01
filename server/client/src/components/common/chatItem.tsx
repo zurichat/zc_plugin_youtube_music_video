@@ -6,20 +6,23 @@ import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
 
 function ChatItem({ userId, time, message, name, avatar }: Chat) {
-  let user = useSelector(userSelect.userById(userId));
+  const user = useSelector(userSelect.userById(userId));
 
   return (
     <Wrapper>
       <div className="item-avatar">
-        <img src={user.avatar || avatar} alt="" />
+        <img src={user?.avatar ?? avatar} alt="" />
       </div>
+
       <div className="item-content">
         <div className="item-name-time">
-          <span className="item-name">{user.name || name}</span>
+          <span className="item-name">{user?.name ?? name}</span>
+
           <span className="item-time">
             <Moment>{new Date(time).toJSON()}</Moment>
           </span>
         </div>
+
         <div className="item-text">{message}</div>
       </div>
     </Wrapper>

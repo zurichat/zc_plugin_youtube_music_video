@@ -8,56 +8,52 @@ import httpService from "./httpService";
 
 const { addToRoom: enterEndpoint, leaveEndpoint } = httpService.endpoints;
 
-function getCurrentUser(): User {
-  return JSON.parse(store.getState().users.currentUser);
-}
-
 async function addUserToList({ email, id }: { email: string; id: string }) {
   try {
-    const { user_name, image_url } = await GetWorkspaceUser(email);
-    userDispatch.addUser({ name: user_name, avatar: image_url, email, id });
+    const info = await GetWorkspaceUser(email);
+
+    // console.log({ workspaceInfo: info });
+
+    userDispatch.addUser({ ...extractInfo(info), id });
   } catch (error) {
     console.log("Error:", error.message);
   }
 }
 
-function removeUserFromList(id: string) {
-  userDispatch.removeUser({ id });
-}
-
 async function addUserToRoom() {
   try {
-    const { 0: info, token, currentWorkspace } = await GetUserInfo();
-    // const { email, _id } = info;
+    const data = await GetUserInfo();
 
-    console.log({ info, token, currentWorkspace });
+    // console.log({ userInfo: data });
 
-    const { email, image_url, user_name, _id } = info;
+    const { 0: info } = data;
 
-    const user = {
-      email,
-      id: _id,
-      name: user_name,
-      avatar: image_url,
-    };
+    userDispatch.setCurrentUser(extractInfo(info));
+    userDispatch.addUser(extractInfo(info));
 
-    userDispatch.setCurrentUser(user);
-    userDispatch.addUser(user);
-
-    return httpService.post(enterEndpoint, { _id, email }).then(
-      (r) => r,
-      (e) => console.log(e.message)
-    );
+    return httpService
+      .post(enterEndpoint, { _id: info._id, email: info.email })
+      .then(
+        (r) => r,
+        (e) => console.log(e.message)
+      );
   } catch (error) {
     console.log("Error: add to room:", error.message);
   }
 }
 
+const extractInfo = (info) => ({
+  id: info._id,
+  avatar: info.image_url,
+  name: info.display_name || info.user_name,
+  email: info.email,
+});
+
 function removeUserFromRoom() {
-  const { id } = getCurrentUser();
+  const { id } = store.getState().users.currentUser;
 
   return httpService.post(leaveEndpoint, { id }).then(
-    (r) => r,
+    (r) => userDispatch.removeUser({ id }),
     (e) => e
   );
 }
@@ -65,8 +61,7 @@ function removeUserFromRoom() {
 const userService = {
   addUserToRoom,
   addUserToList,
-  leaveRoom: removeUserFromRoom,
-  getCurrentUser,
+  removeUserFromRoom,
 };
 
 export default userService;

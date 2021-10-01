@@ -14,13 +14,13 @@ const usersSlice = createSlice({
   name: "users",
 
   initialState: {
-    currentUser: JSON.stringify(user),
+    currentUser: user,
     users: [] as User[],
   },
 
   reducers: {
-    setCurrentUser: (state, { payload }: PayloadAction<string>) => {
-      if (typeof payload !== "string") return state;
+    setCurrentUser: (state, { payload }: PayloadAction<User>) => {
+      // if (typeof payload !== "string") return state;
 
       state.currentUser = payload;
     },
@@ -42,7 +42,7 @@ export const userDispatch = {
   setCurrentUser: (payload: User) => {
     store.dispatch({
       type: setCurrentUser.type,
-      payload: JSON.stringify(payload),
+      payload,
     });
   },
 
@@ -56,7 +56,7 @@ export const userDispatch = {
 };
 
 export const userSelect = {
-  currentUser: (state: RootState): User => JSON.parse(state.users.currentUser),
+  currentUser: (state: RootState): User => state.users.currentUser,
 
   userList: (state: RootState) => state.users.users,
 

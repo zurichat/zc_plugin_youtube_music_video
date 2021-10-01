@@ -19,6 +19,7 @@ interface Props {
 
 const PasteUrl = (props: Props) => {
   const [url, setUrl] = useState("");
+
   const isLoading = useSelector(uiSelect.isLoading);
   const { name: addedBy, id: userId } = useSelector(userSelect.currentUser);
 
@@ -42,7 +43,7 @@ const PasteUrl = (props: Props) => {
     try {
       getSongIdFromYouTubeUrl(url);
 
-      await songService.addSongbyUrl({
+      await songService.addSong({
         url,
         addedBy,
         userId,

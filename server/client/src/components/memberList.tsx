@@ -7,17 +7,19 @@ import { uiDispatch, uiSelect } from "../store/uiSlice";
 import { useEffect, useState } from "react";
 import httpService from "../services/httpService";
 import { useSelector } from "react-redux";
+import { userSelect } from "../store/usersSlice";
 
 const MemberList = () => {
   const showMemberList = useSelector(uiSelect.showMemberList);
-  const { addToRoom } = httpService.endpoints;
-  const [memberList, setMemberList] = useState([]);
+  const list = useSelector(userSelect.userList);
+  // const { addToRoom } = httpService.endpoints;
+  // const [memberList, setMemberList] = useState([]);
 
-  useEffect(() => {
-    httpService.get(addToRoom).then((res) => {
-      setMemberList(res.data.data[0].room_user_ids);
-    });
-  }, [showMemberList]);
+  // useEffect(() => {
+  //   httpService.get(addToRoom).then((res) => {
+  //     setMemberList(res.data.data[0].room_user_ids);
+  //   });
+  // }, [showMemberList]);
 
   if (!showMemberList) return null;
 
@@ -48,7 +50,7 @@ const MemberList = () => {
 
           <div>
             <p className="member-tag">
-              Members <span>{memberList.length}</span>
+              Members <span>{list.length}</span>
             </p>
           </div>
         </div>
@@ -65,7 +67,7 @@ const MemberList = () => {
           </form>
         </div>
         <div className="member">
-          {memberList.map((item, i) => (
+          {list.map((item, i) => (
             <MemberItem key={i} display_name="" status={true} name="" desc="" />
           ))}
         </div>

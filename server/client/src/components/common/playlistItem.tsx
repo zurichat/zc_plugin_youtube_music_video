@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import Song from "../../types/song";
 
 import { playerAction } from "../../store/playerSlice";
@@ -42,7 +41,7 @@ function PlaylistItem(props: Props) {
           <div className="item-title">{title}</div>
 
           <div className="item-addedBy">
-            Added by <span>{user.name || addedBy}</span>
+            Added by <span>{user?.name ?? addedBy}</span>
           </div>
         </div>
       </div>

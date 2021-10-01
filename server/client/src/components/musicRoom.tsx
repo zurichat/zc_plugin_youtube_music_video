@@ -56,8 +56,6 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
   display: flex;
   margin: 0;
   background-color: rgb(240, 240, 240);
-  height: 100vh;
-  max-height: 100vh;
 
   .room-main {
     flex-grow: 1;

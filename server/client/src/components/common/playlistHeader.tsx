@@ -47,9 +47,11 @@ const PlaylistHeader = () => {
             Music <span className="playlist-caption-hide">Room</span> Playlist
           </div>
 
-          <div className="playlist-summary">
-            {songs.length} songs, {totalDuration(songs)}
-          </div>
+          {songs.length > 0 && (
+            <div className="playlist-summary">
+              {songs.length} songs, {totalDuration(songs)}
+            </div>
+          )}
 
           <div className="playlist-button-group">
             <Button

@@ -10,7 +10,8 @@ function ChatHeader() {
   return (
     <Wrapper>
       <div className="chatHeader__left">
-        <img src={chatIcon} alt="chat" className="chatHeader__icon" />
+        <img src={chatIcon} alt="" className="chatHeader__icon" />
+
         <img
           src={chatIcon__green}
           alt="chat"
@@ -21,13 +22,13 @@ function ChatHeader() {
 
       <img
         src={chatClose}
-        alt="chat"
+        alt=""
         className="chatHeader__close"
         onClick={() => uiDispatch.showChat(false)}
       />
       <img
         src={chatClose__black}
-        alt="chat"
+        alt=""
         className="chatHeader__close__black"
         onClick={() => uiDispatch.showChat(false)}
       />

@@ -15,7 +15,7 @@ import "./App.css";
 
 function App() {
   useEffect(() => {
-    // eventService.connect();
+    eventService.connect();
     chatMediaQuery(); // toggle chat display based on screen size.
 
     userService.addUserToRoom();
@@ -34,14 +34,14 @@ const Wrapper = styled.div`
   margin: 0;
   padding: 0;
 
-  &::-webkit-scrollbar {
+  /* &::-webkit-scrollbar {
     width: 5px;
   }
 
   &::-webkit-scrollbar-thumb {
     width: 6px;
     background-color: #00b87c;
-  }
+  } */
 
   .loader-wrapper {
     position: absolute;

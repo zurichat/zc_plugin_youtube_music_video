@@ -12,7 +12,7 @@ const songsSlice = createSlice({
 
   reducers: {
     initialize: (state, { payload }: PayloadAction<Song[]>) => {
-      return payload.reverse().map(sanitize);
+      return payload.map(sanitize).reverse();
     },
 
     addSong: (state, { payload }: PayloadAction<Song>) => {
@@ -20,7 +20,7 @@ const songsSlice = createSlice({
     },
 
     removeSong: (state, { payload }) => {
-      state.filter((song) => song.id !== payload.id);
+      state = state.filter((song) => song.id !== payload.id);
     },
 
     likeSong: (state, { payload }: PayloadAction<LikeSong>) => {
@@ -51,8 +51,8 @@ export const songDispatch = {
     store.dispatch({ type: initialize.type, payload });
   },
 
-  removeSong: (payload: Song) => {
-    store.dispatch({ type: removeSong.type, payload: { id: payload.id } });
+  removeSong: (id: string) => {
+    store.dispatch({ type: removeSong.type, payload: { id } });
   },
 
   likeSong: (payload: LikeSong) => {

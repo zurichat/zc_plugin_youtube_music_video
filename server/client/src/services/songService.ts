@@ -2,9 +2,10 @@ import { SongToAdd } from "../types/song";
 import LikeSong from "../types/likeSong";
 
 import { songDispatch } from "../store/songsSlice";
-import httpService from "./httpService";
+import httpService, { endpoints } from "./httpService";
+import store from "../store";
 
-const { songEndpoint, likeEndpoint } = httpService.endpoints;
+const { songEndpoint, likeEndpoint } = endpoints;
 
 const getSongs = () => {
   httpService.get(songEndpoint).then(
@@ -22,7 +23,16 @@ const getSongs = () => {
 };
 
 const addSong = async (song: SongToAdd) => {
-  return httpService.post(songEndpoint, song);
+  return httpService.post(songEndpoint, song).then(() => {
+    const { songs } = store.getState();
+    if (songs.length >= 10) deleteSong(songs[songs.length - 1].id);
+  });
+};
+
+const deleteSong = async (id: string) => {
+  return httpService
+    .post(endpoints.deleteSong, { id })
+    .then(() => songDispatch.removeSong(id));
 };
 
 const likeSong = async (like: LikeSong) => {
@@ -35,6 +45,6 @@ const likeSong = async (like: LikeSong) => {
   }
 };
 
-const songService = { getSongs, addSong, likeSong, addSongbyUrl: addSong };
+const songService = { getSongs, addSong, likeSong, deleteSong };
 
 export default songService;
