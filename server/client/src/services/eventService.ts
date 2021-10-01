@@ -1,4 +1,5 @@
-import Centrifuge from "centrifuge";
+// @ts-ignore;
+import { SubscribeToChannel } from "@zuri/control";
 
 import songService from "./songService";
 import chatService from "./chatService";
@@ -8,7 +9,12 @@ import { chatDispatch } from "../store/chatsSlice";
 
 type PublishedMessage = {
   data: {
-    event: "added_song" | "added_chat" | "join_room" | "entered_room";
+    event:
+      | "added_song"
+      | "added_chat"
+      | "join_room"
+      | "entered_room"
+      | "sidebar_update";
     data: {
       data: any;
     };
@@ -20,36 +26,45 @@ const connect = () => {
   songService.getSongs();
   chatService.getChats();
 
-  const centrifuge = new Centrifuge(
-    "wss://realtime.zuri.chat/connection/websocket"
-  );
+  SubscribeToChannel(
+    "613ceb50ceee2ab59d44df2f",
+    (message: PublishedMessage) => {
+      const {
+        event,
+        data: { data },
+      } = message.data;
 
-  centrifuge.subscribe("zuri-plugin-music", (message: PublishedMessage) => {
-    const {
-      event,
-      data: { data },
-    } = message.data;
+      console.log({ event, data });
 
-    console.log({ event, data });
+      switch (event) {
+        case "added_song": {
+          if (data.length >= 0) songDispatch.initialize(data);
+          else songDispatch.addSong(data);
+        }
 
-    switch (event) {
-      case "added_song":
-        return data.length >= 0
-          ? songDispatch.initialize(data)
-          : songDispatch.addSong(data);
+        case "added_chat": {
+          if (data.length >= 0) chatDispatch.set(data);
+          else chatDispatch.addChat(data);
+        }
 
-      case "added_chat":
-        return data.length >= 0
-          ? chatDispatch.set(data)
-          : chatDispatch.addChat(data);
+        case "join_room": {
+          console.log({ event, data });
+        }
 
-      default: {
-        console.log({ event, data });
+        case "entered_room": {
+          console.log({ event, data });
+        }
+
+        case "sidebar_update": {
+          console.log({ event, data });
+        }
+
+        default: {
+          console.log({ event, data });
+        }
       }
     }
-  });
-
-  centrifuge.connect();
+  );
 };
 
 export default { connect };

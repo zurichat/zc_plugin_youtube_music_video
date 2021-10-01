@@ -217,7 +217,7 @@ class CreateRoomView(APIView):
         org_id = settings.ORGANIZATON_ID
         plugin_id = settings.PLUGIN_ID
         coll_name = settings.ROOM_COLLECTION
-        room_user_id = read_data(coll_name)
+        user_id = read_data(coll_name)
 
         plugin_id = settings.PLUGIN_ID
 
@@ -225,7 +225,7 @@ class CreateRoomView(APIView):
         serializer.is_valid(raise_exception=True)
 
         rooms = serializer.data
-        rooms['user_id'] = room_user_id
+        rooms['user_id'] = user_id
         rooms['org_id'] = org_id
         rooms['plugin_id'] = plugin_id
         data = write_data(settings.ROOM_COLLECTION, payload=rooms)
@@ -244,21 +244,21 @@ class AddToRoomView(APIView):
     @staticmethod
     def get_obj_id_and_append_user_id(request):
         room_data = read_data(settings.ROOM_COLLECTION)
-        user_ids = room_data["data"][0]["room_user_ids"]
+        user_id = room_data["data"][0]["user_id"]
         _id = room_data["data"][0]["_id"]
-        if request.data["id"] not in user_ids:
-            user_ids.append(request.data["id"])
-        return _id, user_ids
+        if request.data["_id"] not in user_id:
+            user_id.append(request.data["_id"])
+        return _id, user_id
 
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
 
     def post(self, request):
-        _id, user_ids = self.get_obj_id_and_append_user_id(request)
+        _id, user_id = self.get_obj_id_and_append_user_id(request)
 
         payload = {
-            "room_user_ids": user_ids
+            "user_id": user_id
         }
 
         data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
@@ -304,7 +304,7 @@ class AddMember(GenericAPIView):
         coll_name = settings.MEMBERS_COLLECTION
 
         member = serializer.data
-        member['user_id'] = user_id
+        member['_id'] = user_id
         member['user_name'] = user_name
         member['avatar'] = avatar
         data = write_data(coll_name, payload=member)
@@ -315,7 +315,7 @@ class AddMember(GenericAPIView):
 class UserCountView(GenericAPIView):
     def get(self, request):
         data = read_data(settings.MEMBERS_COLLECTION)
-        header_user_count = data["data"][0]["room_user_ids"]
+        header_user_count = data["data"][0]["_ids"]
 
         return Response(len(header_user_count))
 

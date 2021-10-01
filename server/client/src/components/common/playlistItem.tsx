@@ -3,13 +3,10 @@ import Song from "../../types/song";
 
 import { playerAction } from "../../store/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
-<<<<<<< HEAD
-import { useSelector } from "react-redux";
-import { userSelect } from "../../store/usersSlice";
-=======
 import OptionMenu from "./optionMenu";
 import { useEffect, useState } from "react";
->>>>>>> c529fe070952faec7ac0182093962f40d946d612
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
 interface Props {
   song: Song;
@@ -27,11 +24,8 @@ function PlaylistItem(props: Props) {
     url,
   } = props.song;
 
-<<<<<<< HEAD
-  const user = useSelector(userSelect.userById(userId));
-=======
   const [showOption, setShowOption] = useState(false);
->>>>>>> c529fe070952faec7ac0182093962f40d946d612
+  const user = useSelector(userSelect.userById(userId));
 
   const handlePlay = (e) => {
     if (e.target.dataset.like) return;
@@ -69,11 +63,7 @@ function PlaylistItem(props: Props) {
           <div className="item-title">{title}</div>
 
           <div className="item-addedBy">
-<<<<<<< HEAD
             Added by <span>{user?.name ?? addedBy}</span>
-=======
-            Added by <span>{addedBy /*.trim()*/ || "Pidoxy"}</span>
->>>>>>> c529fe070952faec7ac0182093962f40d946d612
           </div>
         </div>
       </div>
