@@ -67,14 +67,14 @@ function Chat(props) {
   }
 
   const Cancel = (id, message) => {
-    const newchats = chats.filter((chat) => (chat.id !== id) && (chat.message !== message));
+    const newchats = chats.filter((chat) => (chat.message !== message) && (chat.id !== id) );
     setChats(newchats);
     chatDispatch.set(newchats);
   };
 
   const Resend = (id, message) => {
-    let test = chats.find((chat) => (chat.id === id) && (chat.message !== message));
-    const newchats = chats.filter((chat) => (chat.id !== id) && (chat.message !== message));
+    let test = chats.find((chat) => (chat.message !== message) && (chat.id !== id) );
+    const newchats = chats.filter((chat) => (chat.message !== message) && (chat.id !== id) );
     setChats(newchats);
     chatDispatch.set(newchats);
     chatService.addChat(test);
@@ -95,7 +95,7 @@ function Chat(props) {
 
       <div className="chat-item-group">
         {chats.map((chat, index) => (
-          <ChatItem {...items(chat)} />
+          <ChatItem key={index} {...items(chat)} />
         ))}
 
         <div className="scroller" ref={scroller}></div>
