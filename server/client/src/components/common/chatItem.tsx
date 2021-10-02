@@ -5,13 +5,17 @@ import Chat from "../../types/chat";
 import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
 
-function ChatItem({ userId, time, message, name, avatar }: Chat) {
+function ChatItem({ name, avatar, time, message, userId }: Chat) {
   const user = useSelector(userSelect.userById(userId));
 
   return (
     <Wrapper>
       <div className="item-avatar">
-        <img src={user?.avatar ?? avatar} alt="" />
+        <img
+          src={user?.avatar ?? avatar}
+          alt=""
+          className="item-avatar-actual"
+        />
       </div>
 
       <div className="item-content">
@@ -19,7 +23,7 @@ function ChatItem({ userId, time, message, name, avatar }: Chat) {
           <span className="item-name">{user?.name ?? name}</span>
 
           <span className="item-time">
-            <Moment>{new Date(time).toJSON()}</Moment>
+            <Moment fromNow date={time ? new Date(time) : new Date()} />
           </span>
         </div>
 
@@ -31,15 +35,28 @@ function ChatItem({ userId, time, message, name, avatar }: Chat) {
 
 const Wrapper = styled.div`
   display: flex;
-  margin-bottom: 6px;
+  align-items: center;
+  margin-bottom: 7px;
   max-height: 200px;
   color: hsla(300, 2%, 11%, 1);
+  width: 100%;
 
   .item-avatar {
-    flex-basis: 36px;
-    height: 36px;
-    border-radius: 4px;
+    align-self: flex-start;
+    /* flex-basis: 36px; */
+    margin-top: 8px;
+    height: 40px;
+    width: 40px;
+    border-radius: 5px;
     margin-right: 10px;
+    padding: 0;
+  }
+
+  .item-avatar-actual {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    margin: 0;
   }
 
   .item-content {
@@ -48,17 +65,23 @@ const Wrapper = styled.div`
   }
 
   .item-name-time {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
-  .item-time {
+  .item-time/status {
     font-size: 12px;
     font-weight: 400;
     color: #616061;
   }
 
+  .item-failed {
+    font-size: 12px;
+    font-weight: 400;
+    color: red;
+  }
+
   .item-name {
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 900;
     margin-right: 10px;
   }

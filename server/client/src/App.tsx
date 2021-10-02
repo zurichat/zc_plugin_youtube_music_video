@@ -20,6 +20,7 @@ function App() {
     eventService.connect();
     chatMediaQuery(); // toggle chat display based on screen size.
 
+    userService.getUsers();
     userService.addUserToRoom();
   }, []);
 

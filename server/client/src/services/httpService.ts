@@ -11,8 +11,10 @@ export const endpoints = {
   addToRoom: "add_to_room",
   leaveEndpoint: "exit",
   roomEndpoint: "room",
+  currentSongEndpoint: "current-song",
   deleteSong: "deletesong",
   deleteComment: "deletecomment",
+  users: "user",
 };
 
 const httpService = {

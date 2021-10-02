@@ -17,6 +17,7 @@ const PlaylistHeader = () => {
   const player = useSelector(getPlayerState);
   const firstSong = useSelector(songSelect.firstSong);
   const songs = useSelector(songSelect.allSongs);
+  const count = songs.length;
 
   const [text, setText] = useState("Play");
 
@@ -35,7 +36,6 @@ const PlaylistHeader = () => {
     uiDispatch.showPasteUrl(true);
   };
 
-
   return (
     <Wrapper>
       <div className="playlist-content-wrapper">
@@ -48,9 +48,9 @@ const PlaylistHeader = () => {
             Music <span className="playlist-caption-hide">Room</span> Playlist
           </div>
 
-          {songs.length > 0 && (
+          {count > 0 && (
             <div className="playlist-summary">
-              {songs.length} songs, {totalDuration(songs)}
+              {count} {count > 1 ? "songs" : "song"}, {totalDuration(songs)}
             </div>
           )}
 
