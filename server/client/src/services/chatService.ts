@@ -22,7 +22,7 @@ const addChat = async (chat: Chat) => {
   try {
     await httpService.post(commentEndpoint, newChat);
     const { chats } = store.getState();
-    if (chats.length > 10) deleteChat(chats[chats.length - 1].id);
+    if (chats.length > 10) deleteChat(chats[0].id);
   } catch (error) {
     console.log(error);
   }

@@ -68,7 +68,13 @@ const MemberList = () => {
         </div>
         <div className="member">
           {list.map((item, i) => (
-            <MemberItem key={i} display_name="" status={true} name="" desc="" />
+            <MemberItem
+              key={i}
+              status={true}
+              name={item.name}
+              desc=""
+              avatar={item.avatar}
+            />
           ))}
         </div>
       </div>

@@ -13,6 +13,7 @@ export const endpoints = {
   roomEndpoint: "room",
   deleteSong: "deletesong",
   deleteComment: "deletecomment",
+  users: "user",
 };
 
 const httpService = {

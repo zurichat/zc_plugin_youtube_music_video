@@ -27,45 +27,42 @@ const connect = () => {
   songService.getSongs();
   chatService.getChats();
 
-  SubscribeToChannel(
-    "613ceb50ceee2ab59d44df2f",
-    (message: PublishedMessage) => {
-      const {
-        event,
-        data: { data },
-      } = message.data;
+  SubscribeToChannel("zuri-plugin-music", (message: PublishedMessage) => {
+    const {
+      event,
+      data: { data },
+    } = message.data;
 
-      console.log({ event, data });
+    console.log({ event, data });
 
-      switch (event) {
-        case "added_song": {
-          if (data.length >= 0) songDispatch.initialize(data);
-          else songDispatch.addSong(data);
-        }
+    switch (event) {
+      case "added_song": {
+        if (data.length >= 0) songDispatch.initialize(data);
+        else songDispatch.addSong(data);
+      }
 
-        case "added_chat": {
-          if (data.length >= 0) chatDispatch.set(data);
-          else chatDispatch.addChat(data);
-        }
+      case "added_chat": {
+        if (data.length >= 0) chatDispatch.set(data);
+        else chatDispatch.addChat(data);
+      }
 
-        case "join_room": {
-          console.log({ event, data });
-        }
+      case "join_room": {
+        console.log({ event, data });
+      }
 
-        case "entered_room": {
-          console.log({ event, data });
-        }
+      case "entered_room": {
+        console.log({ event, data });
+      }
 
-        case "sidebar_update": {
-          console.log({ event, data });
-        }
+      case "sidebar_update": {
+        console.log({ event, data });
+      }
 
-        default: {
-          console.log({ event, data });
-        }
+      default: {
+        console.log({ event, data });
       }
     }
-  );
+  });
 };
 
 export default { connect };
