@@ -1,7 +1,6 @@
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-
 import store from "../store";
 import {
   getPlayerState,
@@ -10,16 +9,34 @@ import {
   playing,
 } from "../store/playerSlice";
 import { songSelect } from "../store/songsSlice";
-
+import {useState} from "react"
 import PlaylistItems from "./common/playlistItems";
 import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
 import LikeOptionCount from "./common/likeOptionCount";
-
+import { useEffect } from "react";
+import httpService from "../services/httpService";
+import Song from "../types/song";
+const [init, setInit] = useState (false)
 function Player() {
   const player = useSelector(getPlayerState);
   const songs = useSelector(songSelect.allSongs);
   const song = useSelector(playerSelector.selectCurrentSong);
   const upnext = getUpnext();
+  const { currentSongEndpoint } = httpService.endpoints;
+
+  const thumbnail = async (song: Song) => {
+    try {
+      await httpService.post(currentSongEndpoint, song);
+      console.log("Succesfully sent to current-song Endpoint");
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  };
+
+  useEffect(() => {
+    thumbnail(song);
+  }, [song]);
 
   if (!player.show) return null;
 
@@ -28,7 +45,7 @@ function Player() {
 
   function getUpnext() {
     const index = songs.indexOf(song);
-    return [...songs.slice(index + 1), ...songs.slice(0, index)];
+    return [...songs.slice(index + 1), song, ...songs.slice(0, index)];
   }
 
   const handlePlay = () => {
@@ -65,6 +82,11 @@ function Player() {
           onEnded={handedEnded}
           pip={true}
           stopOnUnmount={false}
+
+          onEnablePIP={()=> setInit(true)}
+          onDisablePIP={()=> setInit(false)}
+
+
           // config={{ playerVars: { showinfo: 1 } }}
         />
       </div>
@@ -83,7 +105,9 @@ function Player() {
 }
 
 const Wrapper = styled.div`
-  height: 100%;
+  height: "100%"
+  display:${init ? "none" : "block"};
+
 
   .player-wrapper {
     position: relative;

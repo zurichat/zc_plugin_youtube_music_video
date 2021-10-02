@@ -9,7 +9,7 @@ from music.utils.data_access import *
 import requests
 from requests import exceptions
 from django.http import Http404
-
+# from .permissions import IsOwner
 from rest_framework.decorators import api_view
 
 
@@ -20,8 +20,8 @@ def removecomment(request):
     organization_id = settings.ORGANIZATON_ID
     collection_name = settings.COMMENTS_COLLECTION
 
-    song_data = read_data(settings.COMMENTS_COLLECTION)
-    _id = song_data["data"][0]["_id"]
+    comment_data = read_data(settings.COMMENTS_COLLECTION)
+    _id = comment_data["data"][0]["_id"]
     # _id = song_data.GET.get("_id", None)
 
     if request.method == 'GET':
@@ -54,7 +54,6 @@ def removecomment(request):
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
 
 
-
 @api_view(['GET', 'POST'])
 def removesong(request):
     plugin_id = settings.PLUGIN_ID
@@ -63,7 +62,8 @@ def removesong(request):
 
     song_data = read_data(settings.SONG_COLLECTION)
     _id = song_data["data"][0]["_id"]
-    # _id = song_data.GET.get("_id", None)
+    userId = song_data["data"][0]["addBy"]
+    # userId = song_data.GET.get("userId", None)
 
     if request.method == 'GET':
         data = read_data(collection_name)
@@ -78,6 +78,7 @@ def removesong(request):
             "collection_name": collection_name,
             "bulk_delete": False,
             "object_id": _id,
+            "addedBy" : userId,
             "filter": {}
         }
 

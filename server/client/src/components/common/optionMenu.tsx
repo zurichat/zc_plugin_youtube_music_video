@@ -4,9 +4,14 @@ import CopyIcon from "../../media/copy-icon.svg";
 import DeleteIcon from "../../media/delete-icon.svg";
 import { uiDispatch } from "../../store/uiSlice";
 import { toast } from "react-toastify";
+import { deleteDispatch } from "../../store/deleteSongSlice";
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
-const OptionMenu = ({ toggleOption, option, copyUrl }) => {
+const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
   let ref = useRef(null);
+
+  const user = useSelector(userSelect.currentUser);
 
   const handleClickOutside = (e) => {
     if (ref.current && !ref.current.contains(e.target)) {
@@ -28,13 +33,16 @@ const OptionMenu = ({ toggleOption, option, copyUrl }) => {
 
   function handleCopy() {
     return (
-      navigator.clipboard.writeText(copyUrl) &&
+      navigator.clipboard.writeText(url) &&
       toast.success("Link copied to clipboard")
     );
   }
 
   function handleDelete() {
-    return uiDispatch.showDeleteModal(true);
+    if (user.id !== userId)
+      return toast.error("Sorry, you cannot delete this file.");
+    deleteDispatch.updateId(songId);
+    uiDispatch.showDeleteModal(true);
   }
 
   return (
@@ -43,10 +51,12 @@ const OptionMenu = ({ toggleOption, option, copyUrl }) => {
         <img src={CopyIcon} alt="" />
         <span>Copy link</span>
       </button>
-      <button className="option-item" onClick={handleDelete}>
-        <img src={DeleteIcon} alt="" />
-        <span>Delete</span>
-      </button>
+      {user.id === userId && (
+        <button className="option-item" onClick={handleDelete}>
+          <img src={DeleteIcon} alt="" />
+          <span>Delete</span>
+        </button>
+      )}
     </Wrapper>
   );
 };
@@ -54,7 +64,7 @@ const OptionMenu = ({ toggleOption, option, copyUrl }) => {
 const Wrapper = styled.div`
   position: absolute;
   z-index: 5;
-  bottom: 35px;
+  top: 46px;
   width: 100%;
   max-width: 200px;
   right: 0px;
@@ -75,7 +85,7 @@ const Wrapper = styled.div`
       background: #f6f6f6;
       cursor: pointer;
     }
-    
+
     &:focus {
       outline: none;
       background: #f6f6f6;
