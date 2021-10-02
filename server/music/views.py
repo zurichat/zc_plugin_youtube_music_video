@@ -230,14 +230,14 @@ class SongView(APIView):
         }
 
         data = write_data(settings.SONG_COLLECTION, payload=payload)
-
+        
         updated_data = read_data(settings.SONG_COLLECTION)
         updated_object = updated_data["data"][-1]
         # returns the updated_object alone
 
         centrifugo_post(plugin_id, {"event": "added_song", "data": updated_object})
         return Response(updated_object, status=status.HTTP_202_ACCEPTED)
-        # Note: song endpoint expects {"url": "", "userId": "", "addedBy":""} in the payload
+        # Note: song endpoint expects {"url": "", "userId": "", "addedBy":"", "time":""} in the payload
 
     # def delete(self, request):
     #     object_id = request.data["_id"]
