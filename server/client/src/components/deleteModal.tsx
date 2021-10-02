@@ -176,6 +176,15 @@ const Wrapper = styled.div`
 
   @media screen and (max-width: 540px) {
     padding: 0 24px;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    top: 0px;
+    right: 0px;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(64, 79, 74, 0.5);
+    z-index: 100;
   }
 `;
 

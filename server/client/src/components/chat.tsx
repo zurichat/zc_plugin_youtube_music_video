@@ -117,12 +117,17 @@ const Wrapper = styled.div`
       max-height: 450px;
       margin-top: 2px;
       background-color: white;
+      padding-right: 30px;
     }
   }
 
   @media (max-width: 400px) {
     width: 350px;
     background: white;
+    background-color: white;
+    box-shadow: 1px 3px 5px #b4b2b2;
+    position: relative;
+    z-index: 100;
   }
 `;
 
