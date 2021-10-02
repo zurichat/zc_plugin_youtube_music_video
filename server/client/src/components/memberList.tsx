@@ -10,8 +10,8 @@ import { useSelector } from "react-redux";
 import { userSelect } from "../store/usersSlice";
 
 const MemberList = () => {
-  // const showMemberList = useSelector(uiSelect.showMemberList);
-  // const list = useSelector(userSelect.userList);
+  const showMemberList = useSelector(uiSelect.showMemberList);
+  const list = useSelector(userSelect.userList);
   // const { addToRoom } = httpService.endpoints;
   // const [memberList, setMemberList] = useState([]);
 
@@ -20,20 +20,20 @@ const MemberList = () => {
   //     setMemberList(res.data.data[0].room_user_ids);
   //   });
   // }, [showMemberList]);
-  const showMemberList = useSelector(uiSelect.showMemberList);
-  const { membersListEndpoint } = httpService.endpoints;
-  const [memberList, setMemberList] = useState([]);
+  // const showMemberList = useSelector(uiSelect.showMemberList);
+  // const { membersListEndpoint } = httpService.endpoints;
+  // const [memberList, setMemberList] = useState([]);
   const [searchList, setSearchList] = useState([]);
   const [searchTerm, setSearchTerm] = useState(" ");
 
-  useEffect(() => {
-    httpService
-      .get(membersListEndpoint)
-      .then((res) => {
-        setMemberList(res.data.data);
-      })
-      .catch((err) => console.log(err.message));
-  }, [showMemberList]);
+  // useEffect(() => {
+  //   httpService
+  //     .get(membersListEndpoint)
+  //     .then((res) => {
+  //       setMemberList(res.data.data);
+  //     })
+  //     .catch((err) => console.log(err.message));
+  // }, [showMemberList]);
 
   if (!showMemberList) return null;
 
@@ -47,8 +47,8 @@ const MemberList = () => {
     event.preventDefault();
     const searchWord = event.target.value;
     setSearchTerm(searchWord);
-    const newMemberList = memberList.filter((value) => {
-      return value.user_name.toLowerCase().includes(searchWord.toLowerCase());
+    const newMemberList = list.filter((value) => {
+      return value.name.toLowerCase().includes(searchWord.toLowerCase());
     });
     setSearchList(newMemberList);
   };
@@ -72,13 +72,13 @@ const MemberList = () => {
           </div>
 
           <div>
-            <p className="member-tag">
-              Members <span>{memberList.length}</span>
-            </p>
-
             {/* <p className="member-tag">
-              Members <span>{list.length}</span>
+              Members <span>{memberList.length}</span>
             </p> */}
+
+            <p className="member-tag">
+              Members <span>{list.length}</span>
+            </p>
           </div>
         </div>
 
@@ -100,26 +100,26 @@ const MemberList = () => {
             <MemberItem key={i} display_name="" status={true} name="" desc="" />
           ))} */}
           {searchTerm === " "
-            ? memberList.map((item, i) => (
+            ? list.map((item, i) => (
                 <MemberItem
                   key={i}
-                  display_name={item.user_name}
+                  display_name={item.name}
                   status={true}
                   name=""
                   desc=""
                   avatar={item.avatar}
-                  stack={item.stack}
+                  stack=""
                 />
               ))
             : searchList.map((item, i) => (
                 <MemberItem
                   key={i}
-                  display_name={item.user_name}
+                  display_name={item.name}
                   status={true}
                   name=""
                   desc=""
                   avatar={item.avatar}
-                  stack={item.stack}
+                  stack=""
                 />
               ))}
         </div>
