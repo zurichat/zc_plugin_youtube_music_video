@@ -1,7 +1,6 @@
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-
 import store from "../store";
 import {
   getPlayerState,
@@ -101,8 +100,6 @@ function Player() {
 }
 
 const Wrapper = styled.div`
-  height: 100%;
-
   .player-wrapper {
     position: relative;
     padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
