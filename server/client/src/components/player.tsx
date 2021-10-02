@@ -1,7 +1,6 @@
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-Import {useState, useEffect} from 'react';
 import store from "../store";
 import {
   getPlayerState,
@@ -17,7 +16,7 @@ import LikeOptionCount from "./common/likeOptionCount";
 import { useEffect } from "react";
 import httpService from "../services/httpService";
 import Song from "../types/song";
-const [init, setInit] = useState (false);
+
 function Player() {
   const player = useSelector(getPlayerState);
   const songs = useSelector(songSelect.allSongs);
@@ -83,8 +82,6 @@ function Player() {
           onEnded={handedEnded}
           pip={true}
           stopOnUnmount={false}
-          onEnablePIP={()=> setInit(true)};
-          onDisablePIP={()=> setInit(false)};
           // config={{ playerVars: { showinfo: 1 } }}
         />
       </div>
@@ -103,8 +100,6 @@ function Player() {
 }
 
 const Wrapper = styled.div`
-  height: {init ? "0" : "100%"};
-  display:${init ? "none" : "block"};
   .player-wrapper {
     position: relative;
     padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */

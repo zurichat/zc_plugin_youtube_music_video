@@ -5,14 +5,13 @@ import DeleteIcon from "../../media/delete-icon.svg";
 import { uiDispatch } from "../../store/uiSlice";
 import { toast } from "react-toastify";
 import { deleteDispatch } from "../../store/deleteSongSlice";
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
-const OptionMenu = ({
-  toggleOption,
-  option,
-  url,
-  songId,
-}) => {
+const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
   let ref = useRef(null);
+
+  const user = useSelector(userSelect.currentUser);
 
   const handleClickOutside = (e) => {
     if (ref.current && !ref.current.contains(e.target)) {
@@ -40,6 +39,8 @@ const OptionMenu = ({
   }
 
   function handleDelete() {
+    if (user.id !== userId)
+      return toast.error("Sorry, you cannot delete this file.");
     deleteDispatch.updateId(songId);
     uiDispatch.showDeleteModal(true);
   }
@@ -50,10 +51,12 @@ const OptionMenu = ({
         <img src={CopyIcon} alt="" />
         <span>Copy link</span>
       </button>
-      <button className="option-item" onClick={handleDelete}>
-        <img src={DeleteIcon} alt="" />
-        <span>Delete</span>
-      </button>
+      {user.id === userId && (
+        <button className="option-item" onClick={handleDelete}>
+          <img src={DeleteIcon} alt="" />
+          <span>Delete</span>
+        </button>
+      )}
     </Wrapper>
   );
 };
