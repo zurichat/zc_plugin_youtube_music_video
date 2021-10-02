@@ -62,6 +62,7 @@ def removesong(request):
 
     song_data = read_data(settings.SONG_COLLECTION)
     _id = song_data["data"][0]["_id"]
+    userId = song_data["data"][0]["addBy"]
     # userId = song_data.GET.get("userId", None)
 
     if request.method == 'GET':
@@ -77,6 +78,7 @@ def removesong(request):
             "collection_name": collection_name,
             "bulk_delete": False,
             "object_id": _id,
+            "addedBy" : userId,
             "filter": {}
         }
 
