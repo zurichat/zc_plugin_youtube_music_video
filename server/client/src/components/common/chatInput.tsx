@@ -12,6 +12,7 @@ import bold from "../../media/bold.svg";
 import chatService from "../../services/chatService";
 import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
+import { chatDispatch } from "../../store/chatsSlice";
 
 function ChatInput(props) {
   // states to manage the input text and also the showcasing of the emoji
@@ -41,15 +42,19 @@ function ChatInput(props) {
   const handleSend = () => {
     const { name, id: userId, avatar } = currentUser;
 
-    chatService.addChat({
-      id: "", // this will be taken care of by db
+    const message = {
+      id: "test", // this will be taken care of by db
       userId,
-      name,
-      avatar,
       message: inputStr,
       time: Date.now(),
-    });
+      name,
+      avatar,
+    };
 
+    //sends message to the comments endpoint
+    chatService.addChat(message);
+
+    //clears the current contents of the input box
     clearInput();
   };
 

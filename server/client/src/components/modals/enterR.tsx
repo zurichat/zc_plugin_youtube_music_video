@@ -14,7 +14,7 @@ function EnterRoom() {
     uiDispatch.loading(true);
 
     try {
-      await userService.addToRoom();
+      await userService.addUserToRoom();
 
       toast.dismiss();
 
