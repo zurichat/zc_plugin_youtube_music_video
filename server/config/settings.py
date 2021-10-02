@@ -164,9 +164,13 @@ REST_FRAMEWORK = {
     # "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 
+    # 'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S", 
+    'DATETIME_FORMAT': '%s.%f', 
+ 
     "DEFAULT_PERMISSION_CLASSES": (
         # "rest_framework.permissions.IsAuthenticatedOrReadOnly",
         "rest_framework.permissions.AllowAny",
+        
     ),
 }
 
