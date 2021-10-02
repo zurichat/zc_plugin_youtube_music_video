@@ -26,7 +26,9 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
         return None
     return room_data["data"][0]["_id"]
 
+
 room_image = ["https://svgshare.com/i/aXm.svg"]
+
 
 class change_room_image(APIView):
     # authentication_classes = [TokenAuthentication]
@@ -34,9 +36,12 @@ class change_room_image(APIView):
 
     def post(self, request):
         data = request.data
-        room_image[0] = data['albumCover']
-        return Response(room_image,status=status.HTTP_200_OK )
-#     print(room_image[0])
+        if data['albumCover'] == "":
+            room_image[0] = "https://svgshare.com/i/aXm.svg"
+        else:
+             room_image[0] = data['albumCover']
+        
+        return Response({'room_image': room_image, 'curent-song':data},status=status.HTTP_200_OK )
 
 
 def get_room_info(room_id=None):
@@ -60,10 +65,9 @@ class SidebarView(GenericAPIView):
         room = settings.ROOM_COLLECTION
         plugin_id = settings.PLUGIN_ID
         org_id = settings.ORGANIZATON_ID
+        room_id = settings.ROOM_ID
 
         pub_room = get_room_info()
-
-        publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
 
         if request.GET.get('org') and request.GET.get('user'):
             url = f'https://api.zuri.chat/organizations/{org_id}/members/{user_id}'
@@ -78,6 +82,7 @@ class SidebarView(GenericAPIView):
                 public_url = f"https://api.zuri.chat/data/read/{plugin_id}/{room}/{org_id}"
 
                 r = requests.get(public_url)
+                publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
                 return JsonResponse(r, safe=True)
 
             else:
@@ -86,6 +91,7 @@ class SidebarView(GenericAPIView):
                     "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                     "plugin_id": plugin_id,
                     "organisation_id": org_id,
+                    "room_id": room_id,
                     "user_id": user_id,
                     "group_name": "Music",
                     "show_group": True,
@@ -102,6 +108,7 @@ class SidebarView(GenericAPIView):
                 "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                 "plugin_id": plugin_id,
                 "organisation_id": org_id,
+                "room_id": room_id,
                 "user_id": user_id,
                 "group_name": "Music",
                 "show_group": True,
@@ -271,7 +278,6 @@ class CreateRoomView(APIView):
 class RoomView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
-
     serializer_class = RoomSerializer
 
     def get(self, request, format=None):
@@ -286,25 +292,27 @@ class AddToRoomView(APIView):
     @staticmethod
     def get_obj_id_and_append_user_id(request):
         room_data = read_data(settings.ROOM_COLLECTION)
-        user_id = room_data["data"][0]["user_id"]
+        room_users = room_data["data"][0]["room_user_ids"]
         _id = room_data["data"][0]["_id"]
-        if request.data["_id"] not in user_id:
-            user_id.append(request.data["_id"])
-        return _id, user_id
+        new_user = {"userEmail": request.data["userEmail"], "userId": request.data["userId"]}
+        # TODO: Do a check for existing user before appending
+        room_users.append(new_user)
+        return _id, room_users
 
-    def get(self, request):
+    def get(self, request,  orgid=settings.ORGANIZATON_ID, roomid=settings.ROOM_ID):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
 
-    def post(self, request):
-        _id, user_id = self.get_obj_id_and_append_user_id(request)
+    def post(self, request, orgid=settings.ORGANIZATON_ID, roomid=settings.ROOM_ID):
+        _id, updated_room = self.get_obj_id_and_append_user_id(request)
 
         payload = {
-            "user_id": user_id
+            "room_user_ids": updated_room
         }
 
         data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
-        centrifugo_post(plugin_id, {"event": "entered_room", "data": "send something"})
+
+        centrifugo_post(plugin_id, {"event": "entered_room", "data": data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
@@ -372,4 +380,3 @@ class UserCountView(GenericAPIView):
         centrifugo_post(plugin_id, {"event": "header_user_count", "data": user_count})
 
         return Response(user_count)
-

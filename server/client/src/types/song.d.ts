@@ -10,4 +10,5 @@ export interface SongToAdd {
   addedBy: string;
   userId: string;
   likedBy: string[]; // an array of userIds who have liked this song.
+  time: string; // time in milliseconds
 }
