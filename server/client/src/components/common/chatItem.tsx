@@ -7,7 +7,7 @@ import { chatDispatch } from "../../store/chatsSlice";
 import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
 
-function ChatItem(onCancel, onResend, { id, name, avatar, time, message, userId, notSent = false, failed = false }: Chat) {
+function ChatItem({onCancel, onResend, id, name, avatar, time, message, userId, notSent = false, failed = false }) {
   const user = useSelector(userSelect.userById(userId));
   const mediaQueryPhone = window.matchMedia("(max-width: 450px)");
   const phone = mediaQueryPhone.matches;

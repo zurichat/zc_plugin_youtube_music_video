@@ -78,13 +78,22 @@ function Chat(props) {
     chatService.addChat(test);
   };
 
+  const items = (chat) => {
+    const y = {
+      onCancel: Cancel,
+       onResend: Resend,
+       ...chat,
+    }
+    return y;
+  }
+
   return (
     <Wrapper className="chat-wrapper">
       <ChatHeader />
 
       <div className="chat-item-group">
         {chats.map((chat, index) => (
-          <ChatItem key={index} onCancel={Cancel} onResend={Resend} {...chat} />
+          <ChatItem {...items(chat)} />
         ))}
 
         <div className="scroller" ref={scroller}></div>
