@@ -103,25 +103,30 @@ const MemberList = () => {
             ? list.map((item, i) => (
                 <MemberItem
                   key={i}
-                  display_name={item.name}
                   status={true}
-                  name=""
+                  name={item.name}
                   desc=""
                   avatar={item.avatar}
-                  stack=""
                 />
               ))
             : searchList.map((item, i) => (
                 <MemberItem
                   key={i}
-                  display_name={item.name}
                   status={true}
-                  name=""
+                  name={item.name}
                   desc=""
                   avatar={item.avatar}
-                  stack=""
                 />
               ))}
+          {/* {list.map((item, i) => (
+            <MemberItem
+              key={i}
+              status={true}
+              name={item.name}
+              desc=""
+              avatar={item.avatar}
+            />
+          ))} */}
         </div>
       </div>
     </Wrapper>

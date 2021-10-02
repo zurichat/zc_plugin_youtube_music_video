@@ -25,8 +25,13 @@ const usersSlice = createSlice({
       state.currentUser = payload;
     },
 
+    setUsers: (state, { payload }: PayloadAction<User[]>) => {
+      state.users = payload;
+    },
+
     addUser: (state, { payload }: PayloadAction<User>) => {
-      state.users.push(payload);
+      const index = state.users.find((user) => user.id === payload.id);
+      if (!index) state.users.push(payload);
     },
 
     removeUser: (state, { payload }: PayloadAction<{ id: string }>) => {
@@ -36,7 +41,7 @@ const usersSlice = createSlice({
   },
 });
 
-const { setCurrentUser, addUser, removeUser } = usersSlice.actions;
+const { setCurrentUser, addUser, setUsers, removeUser } = usersSlice.actions;
 
 export const userDispatch = {
   setCurrentUser: (payload: User) => {
@@ -48,6 +53,10 @@ export const userDispatch = {
 
   addUser: (payload: User) => {
     store.dispatch({ type: addUser.type, payload });
+  },
+
+  setUsers: (users: User[]) => {
+    store.dispatch({ type: setUsers.type, payload: users });
   },
 
   removeUser: (payload: { id: string }) => {

@@ -1,30 +1,18 @@
-import React from "react";
 import styled from "styled-components";
-import avatar1 from "../../media/avatar-1.svg";
-import memberList from "../memberList";
 
 interface Props {
-  display_name: string;
   status: boolean;
   name: string;
   desc: string;
   avatar: string;
-  stack: string;
 }
-const MemberItem = ({
-  display_name,
-  name,
-  status,
-  desc,
-  avatar,
-  stack,
-}: Props) => {
+const MemberItem = ({ name, status, desc, avatar }: Props) => {
   return (
     <Wrapper>
-      <img src={avatar ? avatar : avatar1} alt="Member Profile Picture" />
+      <img src={avatar} alt="" />
       <div className="profile-container">
         <div className="profile">
-          <p className="display-name">{display_name && display_name}</p>
+          <p className="display-name">{name}</p>
           <div
             style={{
               borderColor: `${status ? "#0DBE3F" : "#616061"}`,
@@ -32,9 +20,9 @@ const MemberItem = ({
             }}
             className="status none"
           ></div>
-          <p className="name none">{name && name}</p>
+          <p className="name none"></p>
         </div>
-        <p className="desc">{stack && stack}</p>
+        <p className="desc">{desc || "Product designer"}</p>
       </div>
     </Wrapper>
   );

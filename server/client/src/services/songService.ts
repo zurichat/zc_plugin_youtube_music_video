@@ -11,7 +11,6 @@ const getSongs = () => {
   httpService.get(songEndpoint).then(
     (result) => {
       const data = result.data.data ?? [];
-      // data.forEach((song) => deleteSong(song.id));
       songDispatch.initialize(data.filter((song) => song.url));
       return result;
     },
@@ -24,9 +23,11 @@ const getSongs = () => {
 };
 
 const addSong = async (song: SongToAdd) => {
+  console.log("adding song", { song });
+
   return httpService.post(songEndpoint, song).then(() => {
     const { songs } = store.getState();
-    if (songs.length >= 10) deleteSong(songs[songs.length - 1].id);
+    if (songs.length > 7) deleteSong(songs[songs.length - 1].id);
   });
 };
 

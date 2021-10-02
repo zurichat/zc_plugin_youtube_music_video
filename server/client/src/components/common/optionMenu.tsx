@@ -75,7 +75,7 @@ const Wrapper = styled.div`
       background: #f6f6f6;
       cursor: pointer;
     }
-    
+
     &:focus {
       outline: none;
       background: #f6f6f6;
