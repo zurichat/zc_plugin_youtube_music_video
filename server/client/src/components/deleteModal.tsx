@@ -4,9 +4,6 @@ import styled from "styled-components";
 import Close from "../media/close-black.svg";
 import { uiDispatch, uiSelect } from "../store/uiSlice";
 
-
-
-
 const DeleteModal = () => {
   const showDeleteModal = useSelector(uiSelect.showDeleteModal);
 
@@ -47,9 +44,7 @@ const DeleteModal = () => {
           <button className="secondary-btn" onClick={handleClose}>
             No, cancel
           </button>
-          <button className="danger-btn">
-            Yes, Delete
-          </button>
+          <button className="danger-btn">Yes, Delete</button>
         </div>
       </div>
     </Wrapper>
