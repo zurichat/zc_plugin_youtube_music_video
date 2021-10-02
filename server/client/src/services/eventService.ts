@@ -43,23 +43,28 @@ const connect = () => {
         case "added_song": {
           if (data.length >= 0) songDispatch.initialize(data);
           else songDispatch.addSong(data);
+          break;
         }
 
         case "added_chat": {
           if (data.length >= 0) chatDispatch.set(data);
           else chatDispatch.addChat(data);
+          break;
         }
 
         case "join_room": {
           console.log({ event, data });
+          break;
         }
 
         case "entered_room": {
           console.log({ event, data });
+          break;
         }
 
         case "sidebar_update": {
           console.log({ event, data });
+          break;
         }
 
         default: {
