@@ -20,7 +20,7 @@ async function getUsers() {
       data.find((item) => item.email === email)
     );
 
-    console.log({ newList });
+    // console.log({ newList });
 
     newList.forEach((item) =>
       addUserToList({ email: item.email, id: item.userId })
