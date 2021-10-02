@@ -36,8 +36,7 @@ class Member:
         self._id = _id
         self.name = name
         self.avatar = avatar
-        
-        
+          
 
 class Room:
     def __init__(self, _id, room_name, description, room_image, type_of_room, room_url, user_id):

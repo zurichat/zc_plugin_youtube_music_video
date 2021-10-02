@@ -79,7 +79,7 @@ class SidebarView(GenericAPIView):
             print(r.status_code)
 
             if r.status_code == 200:
-                public_url = f"https://api.zuri.chat/data/read/{plugin_id}/{room}/{org_id}"
+                public_url = f"https://api.zuri.chat/data/read/{plugin_id}/{room}/{room_id}/{org_id}"
 
                 r = requests.get(public_url)
                 publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
