@@ -2,27 +2,11 @@ import styled from "styled-components";
 import Moment from "react-moment";
 
 import Chat from "../../types/chat";
-import chatService from "../../services/chatService";
-import { chatDispatch } from "../../store/chatsSlice";
 import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
 
 function ChatItem({ name, avatar, time, message, userId }: Chat) {
   const user = useSelector(userSelect.userById(userId));
-
-  const resend = () => {
-    const newChat = {
-      id: "test",
-      userId: userId,
-      name: name,
-      avatar: avatar,
-      message: message,
-      time: Date.now(),
-    };
-    let x = newChat.id;
-    chatDispatch.removeChat(x);
-    chatService.addChat(newChat);
-  };
 
   return (
     <Wrapper>
@@ -39,9 +23,7 @@ function ChatItem({ name, avatar, time, message, userId }: Chat) {
           <span className="item-name">{user?.name ?? name}</span>
 
           <span className="item-time">
-            <Moment format="hh:mm:ss">
-              {time ? new Date(time).toJSON() : new Date().toJSON()}
-            </Moment>
+            <Moment fromNow date={time ? new Date(time) : new Date()} />
           </span>
         </div>
 
