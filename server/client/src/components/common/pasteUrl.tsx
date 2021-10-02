@@ -32,9 +32,9 @@ const PasteUrl = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    // if (props.getSongByUrl(url)) {
-    //   return toast.error("This song already exists.") && setUrl("");
-    // }
+    if (props.getSongByUrl(url)) {
+      return toast.error("This song already exists.") && setUrl("");
+    }
 
     if (isLoading) return;
 
