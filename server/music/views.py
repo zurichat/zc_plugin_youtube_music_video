@@ -26,7 +26,9 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
         return None
     return room_data["data"][0]["_id"]
 
+
 room_image = ["https://svgshare.com/i/aXm.svg"]
+
 
 class change_room_image(APIView):
     # authentication_classes = [TokenAuthentication]
@@ -59,7 +61,7 @@ class SidebarView(GenericAPIView):
     def get(self, request, *args, **kwargs):
 
         org_id = request.GET.get('org', None)
-        user_id = request.GET.get('user', None)        
+        user_id = request.GET.get('user', None)
         room = settings.ROOM_COLLECTION
         plugin_id = settings.PLUGIN_ID
         org_id = settings.ORGANIZATON_ID
@@ -290,25 +292,27 @@ class AddToRoomView(APIView):
     @staticmethod
     def get_obj_id_and_append_user_id(request):
         room_data = read_data(settings.ROOM_COLLECTION)
-        user_id = room_data["data"][0]["user_id"]
+        room_users = room_data["data"][0]["room_user_ids"]
         _id = room_data["data"][0]["_id"]
-        if request.data["_id"] not in user_id:
-            user_id.append(request.data["_id"])
-        return _id, user_id
+        new_user = {"userEmail": request.data["userEmail"], "userId": request.data["userId"]}
+        # TODO: Do a check for existing user before appending
+        room_users.append(new_user)
+        return _id, room_users
 
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
 
     def post(self, request):
-        _id, user_id = self.get_obj_id_and_append_user_id(request)
+        _id, updated_room = self.get_obj_id_and_append_user_id(request)
 
         payload = {
-            "user_id": user_id
+            "room_user_ids": updated_room
         }
 
         data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
-        centrifugo_post(plugin_id, {"event": "entered_room", "data": "send something"})
+
+        centrifugo_post(plugin_id, {"event": "entered_room", "data": data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
 
 
@@ -376,4 +380,3 @@ class UserCountView(GenericAPIView):
         centrifugo_post(plugin_id, {"event": "header_user_count", "data": user_count})
 
         return Response(user_count)
-
