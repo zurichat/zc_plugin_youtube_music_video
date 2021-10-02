@@ -56,10 +56,11 @@ class SidebarView(GenericAPIView):
     def get(self, request, *args, **kwargs):
 
         org_id = request.GET.get('org', None)
-        user_id = request.GET.get('user', None)
+        user_id = request.GET.get('user', None)        
         room = settings.ROOM_COLLECTION
         plugin_id = settings.PLUGIN_ID
         org_id = settings.ORGANIZATON_ID
+        room_id = settings.ROOM_ID
 
         pub_room = get_room_info()
 
@@ -86,6 +87,7 @@ class SidebarView(GenericAPIView):
                     "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                     "plugin_id": plugin_id,
                     "organisation_id": org_id,
+                    "room_id": room_id,
                     "user_id": user_id,
                     "group_name": "Music",
                     "show_group": True,
@@ -102,6 +104,7 @@ class SidebarView(GenericAPIView):
                 "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                 "plugin_id": plugin_id,
                 "organisation_id": org_id,
+                "room_id": room_id,
                 "user_id": user_id,
                 "group_name": "Music",
                 "show_group": True,
@@ -271,7 +274,6 @@ class CreateRoomView(APIView):
 class RoomView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
-
     serializer_class = RoomSerializer
 
     def get(self, request, format=None):

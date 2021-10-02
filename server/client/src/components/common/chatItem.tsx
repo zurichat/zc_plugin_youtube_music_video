@@ -23,7 +23,7 @@ function ChatItem({ name, avatar, time, message, userId }: Chat) {
           <span className="item-name">{user?.name ?? name}</span>
 
           <span className="item-time">
-            <Moment fromNow date={time ? new Date(time) : new Date()} />
+            <Moment fromNow date={new Date(time).toJSON()} />
           </span>
         </div>
 

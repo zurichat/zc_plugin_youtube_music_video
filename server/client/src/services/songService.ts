@@ -32,9 +32,10 @@ const addSong = async (song: SongToAdd) => {
 };
 
 const deleteSong = async (id: string) => {
-  return httpService
-    .post(endpoints.deleteSong, { id })
-    .then(() => songDispatch.removeSong(id));
+  return httpService.post(endpoints.deleteSong, { id }).then((res) => {
+    songDispatch.removeSong(id);
+    return res;
+  });
 };
 
 const likeSong = async (like: LikeSong) => {
