@@ -24,7 +24,7 @@ urlpatterns = [
            
 
     path("add_to_room", AddToRoomView.as_view(), name="add_to_room"),
-    path("deleteuser", removemember, name="deleteuser"), #remove user
+    # path("deleteuser", removemember, name="deleteuser"), #remove user
     
     path("user", MemberListView.as_view(), name="user"), #works for get and post
     path("addmember", AddMember.as_view(), name="addmembers"), # not working

@@ -26,6 +26,7 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
         return None
     return room_data["data"][0]["_id"]
 
+
 room_image = ["https://svgshare.com/i/aXm.svg"]
 
 class change_room_image(APIView):
@@ -76,7 +77,7 @@ class SidebarView(GenericAPIView):
             print(r.status_code)
 
             if r.status_code == 200:
-                public_url = f"https://api.zuri.chat/data/read/{plugin_id}/{room}/{org_id}"
+                public_url = f"https://api.zuri.chat/data/read/{plugin_id}/{room}/{room_id}/{org_id}"
 
                 r = requests.get(public_url)
                 return JsonResponse(r, safe=True)
