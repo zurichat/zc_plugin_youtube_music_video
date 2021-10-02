@@ -95,15 +95,12 @@ const Wrapper = styled.div`
 
   .item-sending {
     font-size: 14px;
-  .item-time,
-  .item-failed {
+  }
+
+  .item-time {
     font-size: 12px;
     font-weight: 500;
     color: #616061;
-  }
-
-  .item-failed {
-    color: red;
   }
 
   .item-name {
