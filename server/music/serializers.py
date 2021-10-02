@@ -1,55 +1,36 @@
-from django.utils import timezone
+from config.settings import *
+from django.utils.text import slugify
 from rest_framework import serializers
 from music.models import *
+
 
 class MediaSerializer(serializers.Serializer):
     media_id = serializers.CharField()
     name = serializers.CharField()
     url = serializers.CharField()
-    
+
 
 class MemberSerializer(serializers.Serializer):
-    
-    _id = serializers.CharField(read_only=True)
-    userId = serializers.CharField(read_only=False)
-    name = serializers.CharField(max_length=256, read_only=True)
-    avatar = serializers.CharField(max_length=256, required=False, read_only=True)
-    email = serializers.CharField(max_length=256, read_only=False)
-    job = serializers.CharField(max_length=256, required=False, read_only=False)
-
-    def create(self, validated_data):
-        return Member(**validated_data)
-
-    def update(self, instance, validated_data):
-        
-        instance._id = validated_data.get('_id', instance._id)
-        instance.userId = validated_data.get('userId', instance.userId)
-        instance.name = validated_data.get('name', instance.name)
-        instance.avatar = validated_data.get('avatar', instance.avatar)
-        instance.email = validated_data.get('email', instance.email)
-        instance.job = validated_data.get('job', instance.job)
-        return instance
-
-    def __str__(self):
-        return str()
+    _id = serializers.CharField(max_length=50, required=True, help_text="member id")
+    role = serializers.CharField(max_length=30, required=False)
+    pronoun = serializers.CharField(max_length=10, required=False)
+    email = serializers.CharField(max_length=30, required=False)
 
 
 class CommentSerializer(serializers.Serializer):
-
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
     userId = serializers.CharField(read_only=True)
     # userId = serializers.CharField(max_length=256, required=False)
     name = serializers.CharField(max_length=256, required=False)
     avatar = serializers.CharField(max_length=256, required=False)
-    #time = serializers.DateTimeField()
+    # time = serializers.DateTimeField()
     time = serializers.IntegerField()
 
     def create(self, validated_data):
         return Comment(**validated_data)
 
     def update(self, instance, validated_data):
-
         instance.message = validated_data.get('message', instance.message)
         instance.userId = validated_data.get('userId', instance.userId)
         instance.name = validated_data.get('name', instance.name)
@@ -61,34 +42,43 @@ class CommentSerializer(serializers.Serializer):
         return str()
 
 
-class RoomSerializer(serializers.Serializer):
+class MusicRoomSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=70, required=True, help_text="music room name")
+    created_by = serializers.CharField(max_length=50, required=True)
+    description = serializers.CharField(required=False)
+    public = serializers.BooleanField(default=False)
 
-    _id = serializers.CharField(read_only=True)
-    room_name = serializers.CharField(max_length=100)   
-    description = serializers.CharField(max_length=300, required=False)
-    room_image = serializers.CharField(required=False)
-    type_of_room = serializers.CharField(max_length=50, required=False)
-    room_url = serializers.CharField(required=False)
-    userId = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
+    def validate_name(self, name):
+        """
+        checks if a name already exists in an organization
+        """
+        data = {"name": name.lower()}
+        response = read_data(ROOM_COLLECTION, data)
+        if isinstance(response, list):
+            raise serializers.ValidationError({"error": "name exist in organisation"})
+        return name
 
-    def create(self, validated_data):
-        return Room(**validated_data)
+    def to_representation(self, instance):
+        instance = dict(instance)
+        member_id = instance.get("created_by")
+        slug = slugify(instance.get("name"))
+        musicroom = MusicRoom(**instance, slug=slug)
+        musicroom.users = {member_id: {"_id": member_id}}
+        data = {ROOM_COLLECTION: musicroom}
+        return data
 
-    def update(self, instance, validated_data):
-        instance.room_name = validated_data.get('room_name', instance.room_name)
-        instance.description = validated_data.get('description', instance.description)
-        instance.room_image = validated_data.get('room_image', instance.room_image)
-        instance.type_of_room = validated_data.get('type_of_room', instance.type_of_room)
-        instance.room_url = validated_data.get('room_url', instance.room_url)
-        instance.userId = validated_data.get('userId', instance.userId)
-        return instance
 
-    def __str__(self):
-        return str()
+class MusiccRoomSerializer(serializers.Serializer):
+    # leave this serializer this way, this should be used in place of the one above for documentation
+    name = serializers.CharField(max_length=70, required=True, help_text="music room name")
+    created_by = serializers.CharField(max_length=50, required=True)
+    description = serializers.CharField(required=False)
+    public = serializers.BooleanField(default=False)
+    users = serializers.DictField(child=MemberSerializer(many=True), required=False,
+                                  help_text="list of members in a room"),
 
 
 class SongSerializer(serializers.Serializer):
-    
     # _id = serializers.IntegerField(read_only=True)
     _id = serializers.CharField(read_only=False)
     title = serializers.CharField(required=False)
@@ -112,4 +102,3 @@ class SongSerializer(serializers.Serializer):
 
     def __str__(self):
         return str()
-
