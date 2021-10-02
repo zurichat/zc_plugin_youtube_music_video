@@ -17,10 +17,10 @@ const EmptyScreen = () => {
 
 const Wrapper = styled.div`
   position: relative;
-  background-color: #ffffff;
-  padding: 40px 0 84px;
+  background-color: #fff;
+  /* padding: 40px 0 0 0; */
   width: 100%;
-  height: 30%;
+  height: 40%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -29,11 +29,12 @@ const Wrapper = styled.div`
     margin-top: 50px;
     display: flex;
     flex-direction: column;
-    align-content: center;
+    justify-content: space-between;
     align-items: center;
   }
 
   img {
+    margin-top: 5px;
     width: 100%;
     max-width: 309px;
     height: fit-content;
