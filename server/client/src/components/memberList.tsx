@@ -20,14 +20,37 @@ const MemberList = () => {
   //     setMemberList(res.data.data[0].room_user_ids);
   //   });
   // }, [showMemberList]);
+  // const showMemberList = useSelector(uiSelect.showMemberList);
+  // const { membersListEndpoint } = httpService.endpoints;
+  // const [memberList, setMemberList] = useState([]);
+  const [searchList, setSearchList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(" ");
+
+  // useEffect(() => {
+  //   httpService
+  //     .get(membersListEndpoint)
+  //     .then((res) => {
+  //       setMemberList(res.data.data);
+  //     })
+  //     .catch((err) => console.log(err.message));
+  // }, [showMemberList]);
 
   if (!showMemberList) return null;
 
   const handleEscape = (e) => {
-    const escape = e.code || e.key;
-    if (escape === "Escape" || e.target.dataset.close === "close") {
+    if (e.code === "Escape" || e.target.dataset.close === "close") {
       uiDispatch.showMemberList(false);
     }
+  };
+
+  const searchHandler = (event) => {
+    event.preventDefault();
+    const searchWord = event.target.value;
+    setSearchTerm(searchWord);
+    const newMemberList = list.filter((value) => {
+      return value.name.toLowerCase().includes(searchWord.toLowerCase());
+    });
+    setSearchList(newMemberList);
   };
 
   return (
@@ -36,7 +59,7 @@ const MemberList = () => {
         <div className="header-container">
           <div className="title-container">
             <div className="align-center">
-              <img src={HeaderIcon} alt="" /> <h3>Music room</h3>
+              <img src={HeaderIcon} alt=" Header icon" /> <h3>Music room</h3>
             </div>
             <img
               style={{ cursor: "pointer" }}
@@ -44,11 +67,15 @@ const MemberList = () => {
                 uiDispatch.showMemberList(false);
               }}
               src={CloseIcon}
-              alt=""
+              alt="Close Icon"
             />
           </div>
 
           <div>
+            {/* <p className="member-tag">
+              Members <span>{memberList.length}</span>
+            </p> */}
+
             <p className="member-tag">
               Members <span>{list.length}</span>
             </p>
@@ -57,19 +84,49 @@ const MemberList = () => {
 
         <div className="list-container">
           <form action="#">
-            <img src={SearchIcon} alt="" />
+            <img src={SearchIcon} alt="search icon" />
             <input
               type="text"
               placeholder="Find People"
               autoFocus
               onKeyDown={handleEscape}
+              onChange={searchHandler}
+              value={searchTerm}
             />
           </form>
         </div>
         <div className="member">
-          {list.map((item, i) => (
+          {/* {list.map((item, i) => (
             <MemberItem key={i} display_name="" status={true} name="" desc="" />
-          ))}
+          ))} */}
+          {searchTerm === " "
+            ? list.map((item, i) => (
+                <MemberItem
+                  key={i}
+                  status={true}
+                  name={item.name}
+                  desc=""
+                  avatar={item.avatar}
+                />
+              ))
+            : searchList.map((item, i) => (
+                <MemberItem
+                  key={i}
+                  status={true}
+                  name={item.name}
+                  desc=""
+                  avatar={item.avatar}
+                />
+              ))}
+          {/* {list.map((item, i) => (
+            <MemberItem
+              key={i}
+              status={true}
+              name={item.name}
+              desc=""
+              avatar={item.avatar}
+            />
+          ))} */}
         </div>
       </div>
     </Wrapper>
@@ -81,7 +138,6 @@ const Wrapper = styled.div`
     margin: 0;
     box-sizing: border-box;
   }
-
   position: absolute;
   top: 1;
   box-sizing: border-box;
@@ -95,7 +151,6 @@ const Wrapper = styled.div`
   top: 0px;
   left: 0px;
   z-index: 100;
-
   h3 {
     font-style: normal;
     font-weight: bold;
@@ -127,7 +182,6 @@ const Wrapper = styled.div`
     height: fit-content;
     max-height: 536px;
   }
-
   .header-container {
     display: flex;
     flex-direction: column;
@@ -135,30 +189,25 @@ const Wrapper = styled.div`
     padding: 24px 24px 0 24px;
     border-bottom: 1px solid #f6f6f6;
   }
-
   .title-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
   }
-
   .align-center {
     display: flex;
     align-items: center;
   }
-
   form {
     position: relative;
   }
-
   form > img {
     position: absolute;
     top: 12px;
     left: 16px;
     width: 16px;
   }
-
   form > input {
     border: 1px solid #00b87c;
     box-sizing: border-box;
@@ -170,22 +219,18 @@ const Wrapper = styled.div`
     color: #616061;
     padding-left: 40px;
   }
-
   form > input:focus {
     outline: none;
   }
-
   .list-container {
     padding: 19px 20px 0 20px;
   }
-
   .member {
     overflow: auto;
     padding: 24px;
     height: -webkit-fill-available;
     max-height: 371px;
   }
-
   .member::-webkit-scrollbar {
     width: 5px;
     background-color: transparent;
@@ -194,7 +239,6 @@ const Wrapper = styled.div`
     background-color: #00b87c;
     border-radius: 10px;
   }
-
   @media screen and (max-width: 480px) {
     padding: 0 24px;
     border-radius: 8px;

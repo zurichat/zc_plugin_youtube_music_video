@@ -4,5 +4,7 @@ export default interface Chat {
   userId: string;
   time: number; // date in milliseconds
   name: string;
+  notSent?: boolean;
+  failed?: boolean;
   avatar: string;
 }
