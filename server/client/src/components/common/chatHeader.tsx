@@ -87,6 +87,7 @@ const Wrapper = styled.div`
 
     .chatHeader__close__black {
       display: inline;
+      cursor: pointer;
     }
 
     .chatHeader__icon {
