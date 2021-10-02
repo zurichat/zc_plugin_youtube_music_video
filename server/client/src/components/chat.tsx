@@ -6,9 +6,10 @@ import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
 import ChatInput from "./common/chatInput";
 
-import { chatSelect } from "../store/chatsSlice";
+import { chatSelect, chatDispatch } from "../store/chatsSlice";
 import { uiSelect } from "../store/uiSlice";
 import { syncArray } from "../utils/syncArray"
+import chatService from "../services/chatService";
 
 function Chat(props) {
   const chat = useSelector(chatSelect.allChat);
@@ -65,13 +66,36 @@ function Chat(props) {
     }
   }
 
+  const Cancel = (id, message) => {
+    const newchats = chats.filter((chat) => (chat.message !== message) && (chat.id !== id) );
+    setChats(newchats);
+    chatDispatch.set(newchats);
+  };
+
+  const Resend = (id, message) => {
+    let test = chats.find((chat) => (chat.message !== message) && (chat.id !== id) );
+    const newchats = chats.filter((chat) => (chat.message !== message) && (chat.id !== id) );
+    setChats(newchats);
+    chatDispatch.set(newchats);
+    chatService.addChat(test);
+  };
+
+  const items = (chat) => {
+    const y = {
+      onCancel: Cancel,
+       onResend: Resend,
+       ...chat,
+    }
+    return y;
+  }
+
   return (
     <Wrapper className="chat-wrapper">
       <ChatHeader />
 
       <div className="chat-item-group">
         {chats.map((chat, index) => (
-          <ChatItem key={index} {...chat} />
+          <ChatItem key={index} {...items(chat)} />
         ))}
 
         <div className="scroller" ref={scroller}></div>
