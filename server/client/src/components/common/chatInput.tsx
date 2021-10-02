@@ -119,7 +119,7 @@ function ChatInput(props) {
         placeholder="Type your message here..."
       />
       <div className="tags">
-        <button>
+        {/* <button>
           <svg
             width="24"
             height="24"
@@ -134,7 +134,7 @@ function ChatInput(props) {
               fill="#616061"
             />
           </svg>
-        </button>
+        </button> */}
         <button>
           <svg
             width="2"
@@ -426,10 +426,11 @@ const ChatInputStyled = styled.div`
   top: 0px;
   border-radius: 3px;
   background: #ffffff;
-  border: 1px solid #ebebeb;
+  border: 1px solid red;
   margin: 8px 16px 0 8px;
   box-sizing: border-box;
   overflow: hidden;
+  background-color: red;
   textarea {
     position: relative;
     height: 54px;
