@@ -1,11 +1,12 @@
 import styled from "styled-components";
-
 import Song from "../../types/song";
 
 import { playerAction } from "../../store/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
 import OptionMenu from "./optionMenu";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { userSelect } from "../../store/usersSlice";
 
 interface Props {
   song: Song;
@@ -17,12 +18,14 @@ function PlaylistItem(props: Props) {
     addedBy,
     albumCover,
     id: songId,
+    userId,
     duration,
     likedBy,
     url,
   } = props.song;
 
   const [showOption, setShowOption] = useState(false);
+  const user = useSelector(userSelect.userById(userId));
 
   const handlePlay = (e) => {
     if (e.target.dataset.like) return;
@@ -51,8 +54,8 @@ function PlaylistItem(props: Props) {
     <Wrapper>
       <OptionMenu
         option={showOption}
-        copyUrl={url}
         toggleOption={handleOption}
+        {...{ url, songId }}
       />
       <div className="item-group-1">
         <img src={albumCover} alt="album cover" className="item-albumCover" />
@@ -60,7 +63,7 @@ function PlaylistItem(props: Props) {
           <div className="item-title">{title}</div>
 
           <div className="item-addedBy">
-            Added by <span>{addedBy /*.trim()*/ || "Pidoxy"}</span>
+            Added by <span>{user?.name ?? addedBy}</span>
           </div>
         </div>
       </div>

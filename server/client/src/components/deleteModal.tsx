@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import Close from "../media/close-black.svg";
+import { deleteDispatch, deleteSlice } from "../store/deleteSongSlice";
 import { uiDispatch, uiSelect } from "../store/uiSlice";
-
-
-
+import songService from "../services/songService";
 
 const DeleteModal = () => {
   const showDeleteModal = useSelector(uiSelect.showDeleteModal);
@@ -18,9 +18,21 @@ const DeleteModal = () => {
     return uiDispatch.showDeleteModal(false);
   }
 
-  // function handleDelete() {
-  //   //waiting for endpoint from the backend
-  // }
+  const id = useSelector(deleteSlice.updateId);
+
+  function handleDelete() {
+    uiDispatch.showDeleteModal(false);
+    songService
+      .deleteSong(id)
+      .then((res) => {
+        if (res.status === 200) toast.success("Deleted successfully");
+        deleteDispatch.updateId("");
+      })
+      .catch((err) => {
+        toast.error(`${err.message}`);
+        console.log(err.message);
+      });
+  }
 
   function handleEscape(e) {
     if (e.key === "Escape" || e.target.dataset.close === "close") {
@@ -47,7 +59,7 @@ const DeleteModal = () => {
           <button className="secondary-btn" onClick={handleClose}>
             No, cancel
           </button>
-          <button className="danger-btn">
+          <button className="danger-btn" onClick={handleDelete}>
             Yes, Delete
           </button>
         </div>
@@ -57,6 +69,7 @@ const DeleteModal = () => {
 };
 
 const Wrapper = styled.div`
+  box-sizing: border-box;
   * {
     margin: 0;
     box-sizing: border-box;
@@ -159,6 +172,10 @@ const Wrapper = styled.div`
     &:focus {
       box-shadow: 0px 4px 4px rgba(244, 1, 1, 0.1);
     }
+  }
+
+  @media screen and (max-width: 540px) {
+    padding: 0 24px;
   }
 `;
 

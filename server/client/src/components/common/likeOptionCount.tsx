@@ -15,7 +15,7 @@ import option from "../../media/option.svg";
 // }
 
 function LikeOptionCount(props) {
-  const { duration, likedBy, songId, handleOption } = props;
+  const { duration, likedBy = [], songId, handleOption } = props;
 
   const { id: userId } = useSelector(userSelect.currentUser);
 
@@ -51,7 +51,7 @@ function LikeOptionCount(props) {
       <img
         onClick={(e) => {
           e.stopPropagation();
-          handleOption((state) => !state);
+          handleOption(true);
         }}
         data-option="option"
         src={option}

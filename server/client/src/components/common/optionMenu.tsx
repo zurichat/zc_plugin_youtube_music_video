@@ -4,8 +4,14 @@ import CopyIcon from "../../media/copy-icon.svg";
 import DeleteIcon from "../../media/delete-icon.svg";
 import { uiDispatch } from "../../store/uiSlice";
 import { toast } from "react-toastify";
+import { deleteDispatch } from "../../store/deleteSongSlice";
 
-const OptionMenu = ({ toggleOption, option, copyUrl }) => {
+const OptionMenu = ({
+  toggleOption,
+  option,
+  url,
+  songId,
+}) => {
   let ref = useRef(null);
 
   const handleClickOutside = (e) => {
@@ -28,13 +34,14 @@ const OptionMenu = ({ toggleOption, option, copyUrl }) => {
 
   function handleCopy() {
     return (
-      navigator.clipboard.writeText(copyUrl) &&
+      navigator.clipboard.writeText(url) &&
       toast.success("Link copied to clipboard")
     );
   }
 
   function handleDelete() {
-    return uiDispatch.showDeleteModal(true);
+    deleteDispatch.updateId(songId);
+    uiDispatch.showDeleteModal(true);
   }
 
   return (
@@ -54,7 +61,7 @@ const OptionMenu = ({ toggleOption, option, copyUrl }) => {
 const Wrapper = styled.div`
   position: absolute;
   z-index: 5;
-  bottom: 35px;
+  top: 46px;
   width: 100%;
   max-width: 200px;
   right: 0px;
@@ -75,7 +82,7 @@ const Wrapper = styled.div`
       background: #f6f6f6;
       cursor: pointer;
     }
-    
+
     &:focus {
       outline: none;
       background: #f6f6f6;
