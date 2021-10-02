@@ -214,7 +214,7 @@ class SongView(APIView):
         updated_object = updated_data["data"][-1]
         # returns the updated_object alone
 
-        centrifugo_post(plugin_id, {"event": "added_song", "data": updated_data})
+        centrifugo_post(plugin_id, {"event": "added_song", "data": updated_object})
         return Response(updated_object, status=status.HTTP_202_ACCEPTED)
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":""} in the payload
 
