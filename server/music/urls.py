@@ -22,7 +22,7 @@ urlpatterns = [
     path("room", RoomView.as_view(), name="room"),
            
 
-    path("add_to_room", AddToRoomView.as_view(), name="add_to_room"),
+    path("<int:orgid>/musicroom/<int:roomid>/users", AddToRoomView.as_view(), name="add_to_room"),
     # path("deleteuser", removemember, name="deleteuser"), #remove user
     
 

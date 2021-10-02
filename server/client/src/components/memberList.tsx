@@ -4,54 +4,30 @@ import CloseIcon from "../media/close-black.svg";
 import SearchIcon from "../media/search.svg";
 import MemberItem from "./common/memberItem";
 import { uiDispatch, uiSelect } from "../store/uiSlice";
-import { useEffect, useState } from "react";
-import httpService from "../services/httpService";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { userSelect } from "../store/usersSlice";
 
 const MemberList = () => {
   const showMemberList = useSelector(uiSelect.showMemberList);
   const list = useSelector(userSelect.userList);
-  // const { addToRoom } = httpService.endpoints;
-  // const [memberList, setMemberList] = useState([]);
 
-  // useEffect(() => {
-  //   httpService.get(addToRoom).then((res) => {
-  //     setMemberList(res.data.data[0].room_user_ids);
-  //   });
-  // }, [showMemberList]);
-  // const showMemberList = useSelector(uiSelect.showMemberList);
-  // const { membersListEndpoint } = httpService.endpoints;
-  // const [memberList, setMemberList] = useState([]);
-  const [searchList, setSearchList] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(" ");
-
-  // useEffect(() => {
-  //   httpService
-  //     .get(membersListEndpoint)
-  //     .then((res) => {
-  //       setMemberList(res.data.data);
-  //     })
-  //     .catch((err) => console.log(err.message));
-  // }, [showMemberList]);
+  const [query, setQuery] = useState("");
 
   if (!showMemberList) return null;
 
   const handleEscape = (e) => {
-    if (e.code === "Escape" || e.target.dataset.close === "close") {
+    const key = e.code || e.key;
+    if (key === "Escape" || e.target.dataset.close === "close") {
       uiDispatch.showMemberList(false);
     }
   };
 
-  const searchHandler = (event) => {
-    event.preventDefault();
-    const searchWord = event.target.value;
-    setSearchTerm(searchWord);
-    const newMemberList = list.filter((value) => {
-      return value.name.toLowerCase().includes(searchWord.toLowerCase());
-    });
-    setSearchList(newMemberList);
-  };
+  const filtered = query
+    ? list.filter((user) =>
+        user.name.toLowerCase().includes(query.toLowerCase())
+      )
+    : list;
 
   return (
     <Wrapper onClick={handleEscape} data-close="close">
@@ -72,12 +48,8 @@ const MemberList = () => {
           </div>
 
           <div>
-            {/* <p className="member-tag">
-              Members <span>{memberList.length}</span>
-            </p> */}
-
             <p className="member-tag">
-              Members <span>{list.length}</span>
+              Members <span>{filtered.length}</span>
             </p>
           </div>
         </div>
@@ -90,35 +62,13 @@ const MemberList = () => {
               placeholder="Find People"
               autoFocus
               onKeyDown={handleEscape}
-              onChange={searchHandler}
-              value={searchTerm}
+              onChange={(e) => setQuery(e.target.value)}
+              value={query}
             />
           </form>
         </div>
         <div className="member">
-          {/* {list.map((item, i) => (
-            <MemberItem key={i} display_name="" status={true} name="" desc="" />
-          ))} */}
-          {searchTerm === " "
-            ? list.map((item, i) => (
-                <MemberItem
-                  key={i}
-                  status={true}
-                  name={item.name}
-                  desc=""
-                  avatar={item.avatar}
-                />
-              ))
-            : searchList.map((item, i) => (
-                <MemberItem
-                  key={i}
-                  status={true}
-                  name={item.name}
-                  desc=""
-                  avatar={item.avatar}
-                />
-              ))}
-          {/* {list.map((item, i) => (
+          {filtered.map((item, i) => (
             <MemberItem
               key={i}
               status={true}
@@ -126,7 +76,7 @@ const MemberList = () => {
               desc=""
               avatar={item.avatar}
             />
-          ))} */}
+          ))}
         </div>
       </div>
     </Wrapper>
