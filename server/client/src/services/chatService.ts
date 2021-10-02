@@ -20,16 +20,19 @@ const addChat = async (chat: Chat) => {
   delete newChat.id;
 
   chatDispatch.addChat({ ...chat, notSent: true});
+  console.log("Dispatched message");
 
   try {
-    await httpService.post(commentEndpoint, newChat);
+    await httpService.post(commentEndpoint, newChat, {timeout: 15000});
+    chatDispatch.sentChat({...chat});
+
 
     const { chats } = store.getState();
 
     chats.slice(0, chats.length - 8).forEach(({ id }) => deleteChat(id));
   } catch (error) {
     console.log("Chat error:", error.message);
-    chatDispatch.updateChat({...chat});
+    chatDispatch.failChat({...chat});
   }
 
   return;

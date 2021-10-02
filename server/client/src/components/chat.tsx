@@ -66,15 +66,17 @@ function Chat(props) {
     }
   }
 
-  const Cancel = (id) => {
-    const newchats = chats.filter((chat) => chat.id !== id);
+  const Cancel = (id, message) => {
+    const newchats = chats.filter((chat) => (chat.id !== id) && (chat.message !== message));
     setChats(newchats);
+    chatDispatch.set(newchats);
   };
 
-  const Resend = (id) => {
-    let test = chats.find((chat) => chat.id === id);
-    const newchats = chats.filter((chat) => chat.id !== id);
+  const Resend = (id, message) => {
+    let test = chats.find((chat) => (chat.id === id) && (chat.message !== message));
+    const newchats = chats.filter((chat) => (chat.id !== id) && (chat.message !== message));
     setChats(newchats);
+    chatDispatch.set(newchats);
     chatService.addChat(test);
   };
 

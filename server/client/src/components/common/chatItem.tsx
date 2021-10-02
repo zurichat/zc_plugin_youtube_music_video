@@ -14,7 +14,7 @@ function ChatItem({onCancel, onResend, id, name, avatar, time, message, userId, 
 
   return (
     <Wrapper
-    onClick={phone? onResend(id) : null}
+    onClick={phone? () => onResend(id, message) : null}
     >
       <div className="item-avatar">
         <img
@@ -43,11 +43,11 @@ function ChatItem({onCancel, onResend, id, name, avatar, time, message, userId, 
         <div className="item-text">
           <div>{message}</div>
           {failed && <div className="lower-text">zuri.chat couldn't send this message
-          <span id="start" onClick={onResend(id)}>
+          <span id="start" onClick={() => onResend(id, message)}>
           Try again
           </span> 
           <span id="line">|</span> 
-          <span onClick={onCancel(id)}>
+          <span onClick={() => onCancel(id, message)}>
           Cancel
           </span>
           </div>}
