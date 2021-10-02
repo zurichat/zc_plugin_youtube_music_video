@@ -3,9 +3,11 @@ import { SubscribeToChannel } from "@zuri/control";
 
 import songService from "./songService";
 import chatService from "./chatService";
+import userService from "./userService";
 
 import { songDispatch } from "../store/songsSlice";
 import { chatDispatch } from "../store/chatsSlice";
+import { userDispatch } from "../store/usersSlice";
 
 type PublishedMessage = {
   data: {
@@ -26,6 +28,8 @@ const connect = () => {
   // initialize store
   songService.getSongs();
   chatService.getChats();
+  userService.addUserToRoom();
+  userService.removeUserFromRoom();
 
   SubscribeToChannel(
     "613ceb50ceee2ab59d44df2f",
@@ -58,7 +62,8 @@ const connect = () => {
         }
 
         case "entered_room": {
-          console.log({ event, data });
+          if (data.length >= 0) userDispatch.setCurrentUser(data);
+          else userDispatch.addUser(data);
           break;
         }
 
