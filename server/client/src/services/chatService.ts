@@ -19,12 +19,15 @@ const addChat = async (chat: Chat) => {
   const newChat: any = { ...chat };
   delete newChat.id;
 
+  chatDispatch.addChat({ ...newChat, notSent: true});
+
   try {
     await httpService.post(commentEndpoint, newChat);
     const { chats } = store.getState();
     if (chats.length > 10) deleteChat(chats[0].id);
   } catch (error) {
     console.log(error);
+    chatDispatch.updateChat(newChat);
   }
 
   return;

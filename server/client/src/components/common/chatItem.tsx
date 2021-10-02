@@ -2,11 +2,27 @@ import styled from "styled-components";
 import Moment from "react-moment";
 
 import Chat from "../../types/chat";
+import chatService from "../../services/chatService";
+import { chatDispatch } from "../../store/chatsSlice";
 import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
 
-function ChatItem({ userId, time, message, name, avatar }: Chat) {
+function ChatItem({ name, avatar, time, message, userId }: Chat) {
   const user = useSelector(userSelect.userById(userId));
+
+  const resend = () => {
+    const newChat = {
+      id: "test",
+      userId: userId,
+      name: name,
+      avatar: avatar,
+      message: message,
+      time: Date.now(),
+    };
+    let x = newChat.id;
+    chatDispatch.removeChat(x);
+    chatService.addChat(newChat);
+  };
 
   return (
     <Wrapper>
@@ -70,10 +86,16 @@ const Wrapper = styled.div`
     margin-bottom: 8px;
   }
 
-  .item-time {
+  .item-time/status {
     font-size: 12px;
     font-weight: 400;
     color: #616061;
+  }
+
+  .item-failed {
+    font-size: 12px;
+    font-weight: 400;
+    color: red;
   }
 
   .item-name {
