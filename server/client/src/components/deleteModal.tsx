@@ -3,13 +3,11 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import Close from "../media/close-black.svg";
-import httpService from "../services/httpService";
 import { deleteDispatch, deleteSlice } from "../store/deleteSongSlice";
-import { songDispatch, songSelect } from "../store/songsSlice";
 import { uiDispatch, uiSelect } from "../store/uiSlice";
+import songService from "../services/songService";
 
 const DeleteModal = () => {
-  const removeId = useSelector(songSelect.allSongs);
   const showDeleteModal = useSelector(uiSelect.showDeleteModal);
 
   useEffect(() => {
@@ -21,26 +19,34 @@ const DeleteModal = () => {
   }
 
   const id = useSelector(deleteSlice.updateId);
-  const name = useSelector(deleteSlice.updateName);
-  const url = useSelector(deleteSlice.updateUrl);
+
 
   function handleDelete() {
-    const endpoint = "deletesong";
-    httpService
-      .post(endpoint, {
-        _id: id,
-      })
+    uiDispatch.showDeleteModal(false);
+    songService
+      .deleteSong(id)
       .then((res) => {
-        console.log(res);
+        // if (res.status === 200) {
+        // }
         toast.success("Deleted successfully");
-        uiDispatch.showDeleteModal(false);
-        songDispatch.removeSong(removeId[id]);
       })
       .catch((err) => {
-        console.log(err);
         toast.error("Unable to delete: permission denied");
+        console.log(err.message);
       });
-    console.log({ id, name, url });
+    // const endpoint = "deletesong";
+    // httpService
+    //   .post(endpoint, {
+    //     _id: id,
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     songDispatch.removeSong(removeId[id]);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    console.log({ id });
 
     // songDispatch.removeSong()
     //waiting for endpoint from the backend

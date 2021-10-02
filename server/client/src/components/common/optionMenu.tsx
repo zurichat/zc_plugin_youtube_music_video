@@ -9,7 +9,6 @@ import { deleteDispatch } from "../../store/deleteSongSlice";
 const OptionMenu = ({
   toggleOption,
   option,
-  addedBy,
   url,
   songId,
 }) => {
@@ -41,10 +40,8 @@ const OptionMenu = ({
   }
 
   function handleDelete() {
-    deleteDispatch.updateName(addedBy);
-    deleteDispatch.updateUrl(url);
     deleteDispatch.updateId(songId);
-    return uiDispatch.showDeleteModal(true);
+    uiDispatch.showDeleteModal(true);
   }
 
   return (
@@ -64,7 +61,7 @@ const OptionMenu = ({
 const Wrapper = styled.div`
   position: absolute;
   z-index: 5;
-  bottom: 35px;
+  top: 46px;
   width: 100%;
   max-width: 200px;
   right: 0px;

@@ -55,7 +55,7 @@ function PlaylistItem(props: Props) {
       <OptionMenu
         option={showOption}
         toggleOption={handleOption}
-        {...{ addedBy, url, songId }}
+        {...{ url, songId }}
       />
       <div className="item-group-1">
         <img src={albumCover} alt="album cover" className="item-albumCover" />
