@@ -19,7 +19,7 @@ const slice = createSlice({
 export const { updateId } = slice.actions;
 
 export const deleteDispatch = {
-  updateId: (payload: number) => {
+  updateId: (payload: string) => {
     store.dispatch({ type: updateId.type, payload });
   },
 

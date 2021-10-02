@@ -20,36 +20,18 @@ const DeleteModal = () => {
 
   const id = useSelector(deleteSlice.updateId);
 
-
   function handleDelete() {
     uiDispatch.showDeleteModal(false);
     songService
       .deleteSong(id)
       .then((res) => {
-        // if (res.status === 200) {
-        // }
-        toast.success("Deleted successfully");
+        if (res.status === 200) toast.success("Deleted successfully");
+        deleteDispatch.updateId("");
       })
       .catch((err) => {
-        toast.error("Unable to delete: permission denied");
+        toast.error(`${err.message}`);
         console.log(err.message);
       });
-    // const endpoint = "deletesong";
-    // httpService
-    //   .post(endpoint, {
-    //     _id: id,
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //     songDispatch.removeSong(removeId[id]);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    console.log({ id });
-
-    // songDispatch.removeSong()
-    //waiting for endpoint from the backend
   }
 
   function handleEscape(e) {
