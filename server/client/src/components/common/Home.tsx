@@ -131,8 +131,8 @@ function Home() {
                                 </div>
                             </div>
                             
-                            <a className="prev" onclick="plusSlides(-1)">&#10094;</a>
-                            <a className="next" onclick="plusSlides(1)">&#10095;</a>
+                            {/* <a className="prev" onClick="plusSlides(-1)">&#10094;</a>
+                            <a className="next" onClick="plusSlides(1)">&#10095;</a> */}
                             </div>
                             <br/>
                             
@@ -685,15 +685,15 @@ function Home() {
 }
 
 .img1{
-    background-image: url(img/Rectangle\ 159.svg);
+    background-image: url(Rectangle\ 159.svg);
 }
 
 .img2{
-    background-image: url(img/Rectangle\ 160.svg);
+    background-image: url(Rectangle\ 160.svg);
 }
 
 .img3{
-    background-image: url(img/Rectangle\ 161.svg);
+    background-image: url(Rectangle\ 161.svg);
 }
 
 .display h1{
@@ -791,7 +791,7 @@ function Home() {
 .profile__img{
     width: 2rem;
     height: 2rem;
-    background: url(img/Rectangle\ 163.svg);
+    background: url(Rectangle\ 163.svg);
     background-position: center;
     border: 3px;
     margin-right:  var(--mb-10);
