@@ -299,11 +299,11 @@ class AddToRoomView(APIView):
         room_users.append(new_user)
         return _id, room_users
 
-    def get(self, request):
+    def get(self, request,  orgid=settings.ORGANIZATON_ID, roomid=settings.ROOM_ID):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
 
-    def post(self, request):
+    def post(self, request, orgid=settings.ORGANIZATON_ID, roomid=settings.ROOM_ID):
         _id, updated_room = self.get_obj_id_and_append_user_id(request)
 
         payload = {
