@@ -9,7 +9,7 @@ from music.utils.data_access import *
 import requests
 from requests import exceptions
 from django.http import Http404
-
+# from .permissions import IsOwner
 from rest_framework.decorators import api_view
 
 
@@ -62,7 +62,7 @@ def removesong(request):
 
     song_data = read_data(settings.SONG_COLLECTION)
     _id = song_data["data"][0]["_id"]
-    # _id = song_data.GET.get("_id", None)
+    # userId = song_data.GET.get("userId", None)
 
     if request.method == 'GET':
         data = read_data(collection_name)
