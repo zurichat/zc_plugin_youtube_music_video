@@ -26,8 +26,7 @@ const addChat = async (chat: Chat) => {
 
     const { chats } = store.getState();
 
-    if (chats.length > 9)
-      chats.slice(0, chats.length - 10).forEach((chat) => deleteChat(chat.id));
+    chats.slice(0, chats.length - 8).forEach(({ id }) => deleteChat(id));
   } catch (error) {
     console.log("Chat error:", error.message);
     chatDispatch.updateChat({...chat});

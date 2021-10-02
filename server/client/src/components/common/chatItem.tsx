@@ -35,7 +35,7 @@ function ChatItem(onCancel, onResend, { id, name, avatar, time, message, userId,
           */}
           { !notSent && 
           <span className="item-time">
-            <Moment fromNow date={time ? new Date(time) : new Date()} />
+            <Moment fromNow date={new Date(time).toJSON()} />
           </span>
           }
         </div>
