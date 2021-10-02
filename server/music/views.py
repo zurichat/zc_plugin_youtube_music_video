@@ -169,33 +169,6 @@ class SongView(APIView):
 
     def post(self, request):
         media_info = get_video(request.data['url'])
-
-        payload = {
-            "title": media_info["title"],
-            "duration": media_info["duration"],
-            "albumCover": media_info["thumbnail_url"],
-            "url": media_info["track_url"],
-            "addedBy": " ",
-            "likedBy": []
-        }
-
-        data = write_data(settings.SONG_COLLECTION, payload=payload)
-
-        updated_data = read_data(settings.SONG_COLLECTION)
-
-        centrifugo_post("zuri-plugin-music", {"event": "added_song", "data": updated_data})
-        return Response(data, status=status.HTTP_202_ACCEPTED)
-        # Note: use only {"url": ""} in the payload
-
-
-class SongView(APIView):
-    def get(self, request):
-        data = read_data(settings.SONG_COLLECTION)
-
-        return Response(data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        media_info = get_video(request.data['url'])
         userId_info = request.data["userId"]
         addedBy_info = request.data["addedBy"]
         time_info = request.data["time"]
