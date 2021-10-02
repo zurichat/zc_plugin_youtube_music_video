@@ -48,6 +48,7 @@ const PasteUrl = (props: Props) => {
         addedBy,
         userId,
         likedBy: [],
+        time: `${Date.now()}`,
       });
 
       uiDispatch.showPasteUrl(false);

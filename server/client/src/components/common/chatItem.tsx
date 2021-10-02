@@ -90,22 +90,25 @@ const Wrapper = styled.div`
   }
 
   .item-name-time {
-    margin-bottom: 8px;
+    margin-bottom: 3px;
   }
 
   .item-sending {
     font-size: 14px;
+  .item-time,
+  .item-failed {
+    font-size: 12px;
+    font-weight: 500;
+    color: #616061;
   }
 
   .item-failed {
-    font-size: 12px;
-    font-weight: 400;
     color: red;
   }
 
   .item-name {
-    font-size: 17px;
-    font-weight: 900;
+    font-size: 15px;
+    font-weight: 800;
     margin-right: 10px;
   }
 
