@@ -54,6 +54,10 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
     background-color: white;
   }
 
+  .room-chat-container {
+    margin-top: 5px;
+  }
+
   .room-main::-webkit-scrollbar,
   .room-chat-container::-webkit-scrollbar {
     width: 5px;
@@ -108,7 +112,8 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
     .room-chat-container {
       position: fixed;
       top: 40px;
-      background: rgb(240, 240, 240);
+      // background: rgb(240, 240, 240);
+      background: none;
       flex-basis: 40%;
       display: flex;
       justify-content: center;

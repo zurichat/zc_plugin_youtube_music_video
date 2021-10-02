@@ -385,7 +385,7 @@ const ChatInputStyled = styled.div`
   border: 1px solid #08ffae;
   background-color: #fff;
   padding: 0 12px;
-  z-index: 111;
+
   .chat-input {
     flex-grow: 1;
     height: 48px;
@@ -422,9 +422,10 @@ const ChatInputStyled = styled.div`
   border-radius: 3px;
   background: #ffffff;
   border: 1px solid #ebebeb;
-  margin: 8px 16px 0 8px;
+  // margin: 8px 16px 0 8px;
   box-sizing: border-box;
-  overflow: hidden;
+  // overflow: hidden;
+  width: 100%;
   textarea {
     position: relative;
     height: 54px;

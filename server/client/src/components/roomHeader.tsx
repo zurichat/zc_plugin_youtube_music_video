@@ -209,10 +209,12 @@ const Wrapper = styled.div`
   .header-message-count {
     margin-left: 40px !important;
     display: block;
+    cursor: pointer;
   }
 
   .header-message-count-mobile {
     display: none;
+    cursor: pointer;
   }
 
   @media screen and (max-width: 1000px) {

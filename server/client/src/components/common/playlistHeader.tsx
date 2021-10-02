@@ -76,6 +76,7 @@ const PlaylistHeader = () => {
         <div className="playlist-img-div">
           <img src={Headset} alt="Playlist Header" className="playlist-img" />
         </div>
+        
 
         <div className="playlist-content">
           <div className="playlist-caption">
