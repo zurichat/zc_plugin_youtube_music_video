@@ -103,7 +103,7 @@ function Player() {
 }
 
 const Wrapper = styled.div`
-  height: {init ? "0" : "100%"};
+  height: "100%"
   display:${init ? "none" : "block"};
   .player-wrapper {
     position: relative;
