@@ -2,6 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from music.models import *
 
+
 class MediaSerializer(serializers.Serializer):
     media_id = serializers.CharField()
     name = serializers.CharField()
