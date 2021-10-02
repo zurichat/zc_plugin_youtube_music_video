@@ -38,7 +38,8 @@ class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
-    userId = serializers.CharField(max_length=256, required=False)
+    userId = serializers.CharField(read_only=True)
+    # userId = serializers.CharField(max_length=256, required=False)
     name = serializers.CharField(max_length=256, required=False)
     avatar = serializers.CharField(max_length=256, required=False)
     time = serializers.DateTimeField(read_only=True)
