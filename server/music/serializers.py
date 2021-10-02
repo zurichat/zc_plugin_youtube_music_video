@@ -38,11 +38,12 @@ class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
-    userId = serializers.CharField(max_length=256, required=False)
+    userId = serializers.CharField(read_only=True)
+    # userId = serializers.CharField(max_length=256, required=False)
     name = serializers.CharField(max_length=256, required=False)
     avatar = serializers.CharField(max_length=256, required=False)
-    time = serializers.DateTimeField(read_only=True)
-    #time = serializers.IntegerField()
+    #time = serializers.DateTimeField()
+    time = serializers.IntegerField()
 
     def create(self, validated_data):
         return Comment(**validated_data)
@@ -68,7 +69,7 @@ class RoomSerializer(serializers.Serializer):
     room_image = serializers.CharField(required=False)
     type_of_room = serializers.CharField(max_length=50, required=False)
     room_url = serializers.CharField(required=False)
-    user_id = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
+    userId = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
 
     def create(self, validated_data):
         return Room(**validated_data)
@@ -79,7 +80,7 @@ class RoomSerializer(serializers.Serializer):
         instance.room_image = validated_data.get('room_image', instance.room_image)
         instance.type_of_room = validated_data.get('type_of_room', instance.type_of_room)
         instance.room_url = validated_data.get('room_url', instance.room_url)
-        instance.user_id = validated_data.get('user_id', instance.user_id)
+        instance.userId = validated_data.get('userId', instance.userId)
         return instance
 
     def __str__(self):

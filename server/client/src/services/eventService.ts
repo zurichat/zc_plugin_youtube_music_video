@@ -37,6 +37,8 @@ const connect = () => {
 
       console.log({ event, data });
 
+      if (!data) return null;
+
       switch (event) {
         case "added_song": {
           if (data.length >= 0) songDispatch.initialize(data);

@@ -23,7 +23,7 @@ function ChatItem({ name, avatar, time, message, userId }: Chat) {
           <span className="item-name">{user?.name ?? name}</span>
 
           <span className="item-time">
-            <Moment fromNow date={time ? new Date(time) : new Date()} />
+            <Moment fromNow date={new Date(time).toJSON()} />
           </span>
         </div>
 
@@ -65,24 +65,23 @@ const Wrapper = styled.div`
   }
 
   .item-name-time {
-    margin-bottom: 8px;
+    margin-bottom: 3px;
   }
 
-  .item-time/status {
+  .item-time,
+  .item-failed {
     font-size: 12px;
-    font-weight: 400;
+    font-weight: 500;
     color: #616061;
   }
 
   .item-failed {
-    font-size: 12px;
-    font-weight: 400;
     color: red;
   }
 
   .item-name {
-    font-size: 17px;
-    font-weight: 900;
+    font-size: 15px;
+    font-weight: 800;
     margin-right: 10px;
   }
 
