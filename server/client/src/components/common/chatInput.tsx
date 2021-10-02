@@ -312,46 +312,8 @@ function ChatInput(props) {
   );
 }
 
-<<<<<<< HEAD
 const InputStyled = styled.div`
-=======
-const ChatInputStyled = styled.div`
-  /* display: flex;
-  border: 1px solid #08ffae;
-  background-color: #fff;
-  padding: 0 12px;
-
-  .chat-input {
-    flex-grow: 1;
-    height: 48px;
-    border-radius: 0px;
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 18px;
-    border: none;
-    outline: none;
-  }
-  .chat-icon-group {
-    flex-basis: 90px;
-    display: flex;
-    justify-content: space-between;
-  }
-  .chat-icon {
-    color: #08ffae;
-    width: 27px;
-    cursor: pointer;
-  }
-  .emoji-picker {
-    position: absolute;
-    top: 5rem;
-    right: 2rem;
-  } */
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  flex-wrap: wrap;
->>>>>>> 6f680a2139aab8ac518d3eab1bd8c97635981c00
-  height: 94px;
+  /* height: 94px;
   width: 399px;
   border-radius: 3px;
   left: 0%;
@@ -360,21 +322,29 @@ const ChatInputStyled = styled.div`
   bottom: 0%;
   background: #ffffff;
   border: 1px solid #ebebeb;
-<<<<<<< HEAD
   box-sizing: border-box;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   flex-wrap: wrap;
-  box-sizing: border-box;
-
-=======
+  box-sizing: border-box; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  height: 94px;
+  width: 380px;
+  left: 0px;
+  top: 0px;
+  border-radius: 3px;
+  background: #ffffff;
+  border: 1px solid #ebebeb;
   // margin: 8px 16px 0 8px;
   box-sizing: border-box;
   // overflow: hidden;
   width: 100%;
->>>>>>> 6f680a2139aab8ac518d3eab1bd8c97635981c00
+
   textarea {
     position: relative;
     border: none;
@@ -430,7 +400,7 @@ const ChatInputStyled = styled.div`
   }
   .emoji-picker {
     position: absolute;
-    top: 7.5rem;
+    top: 9rem;
     right: 3rem;
   }
 `;
