@@ -45,7 +45,7 @@ export const chatDispatch = {
   updateChat: (payload: Chat[]) => store.dispatch({ type: updateChat.type, payload}),
 
   removeChat: (id: string) =>
-    store.dispatch({ type: removeChat.type, payload: { id } }),
+store.dispatch({ type: removeChat.type, payload: { id } }),
 };
 
 export const chatSelect = {
