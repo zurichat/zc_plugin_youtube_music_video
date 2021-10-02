@@ -123,8 +123,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
     .room-chat-container {
       position: fixed;
       top: 40px;
-      // background: rgb(240, 240, 240);
-      background: none;
+      background: rgb(240, 240, 240);
       flex-basis: 40%;
       display: flex;
       justify-content: center;

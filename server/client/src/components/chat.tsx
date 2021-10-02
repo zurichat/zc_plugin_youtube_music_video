@@ -83,8 +83,8 @@ function Chat(props) {
 
 const Wrapper = styled.div`
   height: 100%;
-  max-width: 400px;
-  background: white;
+  width: 420px;
+  background-color: white;
   box-shadow: 1px 3px 5px #b4b2b2;
   position: relative;
   z-index: 100;
@@ -108,9 +108,14 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 1000px) {
+    background-color: transparent;
+    width: 350px;
+    margin-left: 0px;
     margin: 0 30px;
 
     .chat-item-group {
+      max-height: 450px;
+      margin-top: 2px;
       background-color: white;
     }
   }
