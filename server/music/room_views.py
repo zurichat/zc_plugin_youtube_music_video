@@ -59,8 +59,8 @@ class MusicRoom(ViewSet, OrderMixin):
         res = delete_data(ROOM_COLLECTION, object_id=room_id)
         if res.get("status") == 200:
             if res.get("data", {}).get("deleted_count") > 0:
-                delete_data(COMMENTS_COLLECTION, org_id, filter_data={"room_id": room_id})
-                delete_data(SONG_COLLECTION, org_id, filter_data={"room_id": room_id})
+                delete_data(COMMENTS_COLLECTION, filter_data={"room_id": room_id})
+                delete_data(SONG_COLLECTION, filter_data={"room_id": room_id})
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
