@@ -19,7 +19,7 @@ const addChat = async (chat: Chat) => {
   const newChat: any = { ...chat };
   delete newChat.id;
 
-  chatDispatch.addChat({ ...chat });
+  chatDispatch.addChat({ ...chat, notSent: true});
 
   try {
     await httpService.post(commentEndpoint, newChat);
@@ -30,7 +30,7 @@ const addChat = async (chat: Chat) => {
       chats.slice(0, chats.length - 10).forEach((chat) => deleteChat(chat.id));
   } catch (error) {
     console.log("Chat error:", error.message);
-    chatDispatch.removeChat(chat.id);
+    chatDispatch.updateChat({...chat});
   }
 
   return;
