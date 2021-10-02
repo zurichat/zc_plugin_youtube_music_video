@@ -14,12 +14,30 @@ import { songSelect } from "../store/songsSlice";
 import PlaylistItems from "./common/playlistItems";
 import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
 import LikeOptionCount from "./common/likeOptionCount";
+import { useEffect } from "react";
+import httpService from "../services/httpService";
+import Song from "../types/song";
 
 function Player() {
   const player = useSelector(getPlayerState);
   const songs = useSelector(songSelect.allSongs);
   const song = useSelector(playerSelector.selectCurrentSong);
   const upnext = getUpnext();
+  const { currentSongEndpoint } = httpService.endpoints;
+
+  const thumbnail = async (song: Song) => {
+    try {
+      await httpService.post(currentSongEndpoint, song);
+      console.log("Succesfully sent to current-song Endpoint");
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  };
+
+  useEffect(() => {
+    thumbnail(song);
+  }, [song]);
 
   if (!player.show) return null;
 
@@ -28,7 +46,7 @@ function Player() {
 
   function getUpnext() {
     const index = songs.indexOf(song);
-    return [...songs.slice(index + 1), ...songs.slice(0, index)];
+    return [...songs.slice(index + 1), song, ...songs.slice(0, index)];
   }
 
   const handlePlay = () => {

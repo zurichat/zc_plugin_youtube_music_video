@@ -20,38 +20,30 @@ const chatsSlice = createSlice({
     },
 
     removeChat: (state, { payload }: PayloadAction<Chat>) => {
-      const { id } = payload;
-      const existingChat = state.find((chat) => chat.id === id);
-      if (existingChat) state.filter((chat) => chat.id !== id);
-    },
-
-    updateChat: (state, { payload }: PayloadAction<Chat>) => {
-      const { id, message, time = Date.now() } = payload;
-
-      const existingChat = state.find((chat) => chat.id === id);
-
-      if (existingChat) {
-        existingChat.message = message;
-        existingChat.time = time;
-      }
+      state = state.filter((chat) => chat.id !== payload.id);
     },
   },
 });
 
-export const { addChat, setChats } = chatsSlice.actions;
+export const { addChat, setChats, removeChat } = chatsSlice.actions;
 
 export const chatDispatch = {
   set: (payload: Chat[]) => store.dispatch({ type: setChats.type, payload }),
 
   addChat: (payload: Chat) => store.dispatch({ type: addChat.type, payload }),
+
+  removeChat: (id: string) =>
+    store.dispatch({ type: removeChat.type, payload: { id } }),
 };
 
 export const chatSelect = {
   allChat: (state: RootState) => state.chats,
 
-  chatById: (state: RootState, id: string) => {
+  chatById: (id: string) => (state: RootState) => {
     return state.chats.find((chat) => chat.id === id);
   },
+
+  lastChat: (state: RootState) => state.chats[state.chats.length - 1],
 };
 
 export default chatsSlice.reducer;

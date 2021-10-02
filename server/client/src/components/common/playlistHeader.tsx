@@ -11,10 +11,13 @@ import Button from "./button";
 
 import Headset from "../../media/playlistIcon.svg";
 import { songSelect } from "../../store/songsSlice";
+import { totalDuration } from "../../utils/song";
 
 const PlaylistHeader = () => {
   const player = useSelector(getPlayerState);
   const firstSong = useSelector(songSelect.firstSong);
+  const songs = useSelector(songSelect.allSongs);
+  const count = songs.length;
 
   const [text, setText] = useState("Play");
 
@@ -45,7 +48,11 @@ const PlaylistHeader = () => {
             Music <span className="playlist-caption-hide">Room</span> Playlist
           </div>
 
-          <div className="playlist-summary">10 songs, 38 min 33 sec</div>
+          {count > 0 && (
+            <div className="playlist-summary">
+              {count} {count > 1 ? "songs" : "song"}, {totalDuration(songs)}
+            </div>
+          )}
 
           <div className="playlist-button-group">
             <Button
@@ -72,11 +79,13 @@ const PlaylistHeader = () => {
 const Wrapper = styled.div`
   position: sticky;
   top: 25px;
+  left: 0;
   padding-top: 10px;
   background: white;
   display: flex;
   justify-content: center;
   width: 100%;
+  overflow: hidden;
 
   .playlist-content-wrapper {
     display: flex;
@@ -101,6 +110,8 @@ const Wrapper = styled.div`
   .playlist-caption {
     font-weight: 500;
     font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 5px;
   }
 
   .playlist-summary {

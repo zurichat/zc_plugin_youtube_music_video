@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
+import Parcel from "single-spa-react/parcel";
+
+import { pluginHeader, headerConfig } from "../utils/config";
 
 import Playlist from "./playlist";
 import RoomHeader from "./roomHeader";
@@ -7,12 +10,14 @@ import PasteUrl from "./common/pasteUrl";
 import Chat from "./chat";
 import { useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
+import { userSelect } from "../store/usersSlice";
 
 function MusicRoom() {
   const showPasteUrl = useSelector(uiSelect.showPasteUrl);
+  const users = useSelector(userSelect.userList);
 
   return (
-    <Wrapper overflow={showPasteUrl}>
+    <Wrapper overflowMain={showPasteUrl}>
       <div className="room-main">
         <PasteUrl />
 
@@ -27,7 +32,15 @@ function MusicRoom() {
           />
         </div>
 
-        <RoomHeader />
+        <Parcel
+          config={pluginHeader}
+          wrapWith="div"
+          wrapStyle={{ width: "100%" }}
+          headerConfig={headerConfig(users)}
+        />
+
+        {/* <RoomHeader /> */}
+
         <Playlist />
       </div>
 
@@ -38,17 +51,15 @@ function MusicRoom() {
   );
 }
 
-const Wrapper = styled.div<{ overflow: boolean }>`
+const Wrapper = styled.div<{ overflowMain: boolean }>`
   position: relative;
   display: flex;
   margin: 0;
   background-color: rgb(240, 240, 240);
-  height: 100vh;
-  max-height: 100vh;
 
   .room-main {
     flex-grow: 1;
-    overflow-y: ${(props) => (props.overflow ? "hidden" : "scroll")};
+    overflow-y: ${(props) => (props.overflowMain ? "hidden" : "scroll")};
     position: relative;
     margin-right: 10px;
     background-color: white;
@@ -107,12 +118,13 @@ const Wrapper = styled.div<{ overflow: boolean }>`
 
     .room-chat-container {
       position: fixed;
-      top: 70px;
+      top: 40px;
       background: rgb(240, 240, 240);
       flex-basis: 40%;
       display: flex;
       justify-content: center;
       z-index: 111;
+      max-height: 400px;
     }
   }
 `;
