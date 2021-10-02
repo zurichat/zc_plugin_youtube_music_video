@@ -11,10 +11,10 @@ class MediaSerializer(serializers.Serializer):
 class MemberSerializer(serializers.Serializer):
     
     _id = serializers.CharField(read_only=True)
-    userId = serializers.CharField(unique=True, read_only=False)
+    userId = serializers.CharField(read_only=False)
     name = serializers.CharField(max_length=256, read_only=True)
     avatar = serializers.CharField(max_length=256, required=False, read_only=True)
-    email = serializers.CharField(unique=True, max_length=256, read_only=False)
+    email = serializers.CharField(max_length=256, read_only=False)
     job = serializers.CharField(max_length=256, required=False, read_only=False)
 
     def create(self, validated_data):
@@ -41,7 +41,7 @@ class CommentSerializer(serializers.Serializer):
     userId = serializers.CharField(max_length=256, required=False)
     name = serializers.CharField(max_length=256, required=False)
     avatar = serializers.CharField(max_length=256, required=False)
-    time = serializers.DateTimeField(auto_now_add=True, read_only=True)
+    time = serializers.DateTimeField(read_only=True)
 
     def create(self, validated_data):
         return Comment(**validated_data)
