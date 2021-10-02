@@ -106,6 +106,27 @@ def centrifugo_post(room, data):
     return response
 
 
+def publish_to_sidebar(organization_id, user_id, data):
+    headers = {'Content-type': 'application/json', 'Authorization': 'apikey ' + centrifugo}
+    room = {'org_id': organization_id, 'user_id': user_id}
+    post_data = {
+        "method": "publish",
+        "params": {
+            "channel": room,
+            "data": data
+        }
+    }
+    request_client = RequestClient()
+
+    response = request_client.request(
+        method="POST",
+        url="https://realtime.zuri.chat/api",
+        headers=headers,
+        post_data=post_data
+    )
+    return response
+
+
 def get_video(url):
     res = requests.get(url)
 
@@ -148,7 +169,7 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
         method=method,
         url="https://api.zuri.chat/data/delete",
         headers={"Authorization": "headers"},
-        data=data
+        post_data=data
     )
     return response.response_data
 

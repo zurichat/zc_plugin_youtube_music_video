@@ -1,8 +1,8 @@
 from django.urls import path
 from music.views import *
+from music.functions import *
 
 
-##note: still testing and making corrections. I'm aware that some are duplicated
 
 urlpatterns = [   
     
@@ -12,20 +12,22 @@ urlpatterns = [
 
 
     path("songs", SongView.as_view(), name="song"),
+    path("deletesong", removesong, name="deletesong"), #delete songs 
    
 
     path("comments", CommentView.as_view(), name="comments"),
-    
+    path("deletecomment", removecomment, name="deletecomment"), #remove comments
+
 
     path("createroom", CreateRoomView.as_view(), name="createroom"),
     path("room", RoomView.as_view(), name="room"),
            
 
     path("add_to_room", AddToRoomView.as_view(), name="add_to_room"),
-   
+    path("deleteuser", removemember, name="deleteuser"), #remove user
     
-    path("user", UserListView.as_view(), name="user"),
-    path("addmember", AddMember.as_view(), name="addmembers"),
+    path("user", MemberListView.as_view(), name="user"), #works for get and post
+    path("addmember", AddMember.as_view(), name="addmembers"), # not working
     path("user-count", UserCountView.as_view(), name="header-user-count"),
     path("current-song", change_room_image.as_view(), name="current-song"),
     

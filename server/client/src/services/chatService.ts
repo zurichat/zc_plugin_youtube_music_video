@@ -1,8 +1,9 @@
-import httpService from "./httpService";
+import httpService, { endpoints } from "./httpService";
 import { chatDispatch } from "../store/chatsSlice";
 import Chat from "../types/chat";
+import store from "../store";
 
-const { commentEndpoint } = httpService.endpoints;
+const { commentEndpoint } = endpoints;
 
 const getChats = async () => {
   try {
@@ -16,17 +17,31 @@ const getChats = async () => {
 
 const addChat = async (chat: Chat) => {
   const newChat: any = { ...chat };
-  delete newChat._id;
+  delete newChat.id;
+
+  chatDispatch.addChat({ ...chat });
 
   try {
     await httpService.post(commentEndpoint, newChat);
+
+    const { chats } = store.getState();
+
+    chats.slice(0, chats.length - 8).forEach(({ id }) => deleteChat(id));
   } catch (error) {
-    console.log(error);
+    console.log("Chat error:", error.message);
+    chatDispatch.removeChat(chat.id);
   }
 
   return;
 };
 
-const chatService = { addChat, getChats };
+const deleteChat = (id: string) => {
+  return httpService
+    .post(endpoints.deleteComment, { id })
+    .then(() => chatDispatch.removeChat(id))
+    .catch((e) => console.log(e.message));
+};
+
+const chatService = { addChat, getChats, deleteChat };
 
 export default chatService;
