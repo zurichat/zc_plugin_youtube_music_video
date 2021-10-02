@@ -15,6 +15,7 @@ type PublishedMessage = {
       | "join_room"
       | "entered_room"
       | "sidebar_update";
+
     data: {
       data: any;
     };

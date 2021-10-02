@@ -3,10 +3,32 @@ import { GetUserInfo, GetWorkspaceUser } from "@zuri/control";
 
 import store from "../store";
 import { userDispatch } from "../store/usersSlice";
-import User from "../types/user";
 import httpService from "./httpService";
 
 const { addToRoom: enterEndpoint, leaveEndpoint } = httpService.endpoints;
+
+async function getUsers() {
+  try {
+    const { data: res } = await httpService.get(httpService.endpoints.users);
+    const data = res.data as { userId: string; email: string }[];
+
+    const unique = [
+      ...new Set(data.filter((item) => item.email).map((item) => item.email)),
+    ];
+
+    const newList = unique.map((email) =>
+      data.find((item) => item.email === email)
+    );
+
+    console.log({ newList });
+
+    newList.forEach((item) =>
+      addUserToList({ email: item.email, id: item.userId })
+    );
+  } catch (error) {
+    console.log("Users error:", error.message);
+  }
+}
 
 async function addUserToList({ email, id }: { email: string; id: string }) {
   try {
@@ -32,7 +54,7 @@ async function addUserToRoom() {
     userDispatch.addUser(extractInfo(info));
 
     return httpService
-      .post(enterEndpoint, { _id: info._id, email: info.email })
+      .post(enterEndpoint, { userId: info._id, email: info.email })
       .then(
         (r) => r,
         (e) => console.log(e.message)
@@ -62,6 +84,7 @@ const userService = {
   addUserToRoom,
   addUserToList,
   removeUserFromRoom,
+  getUsers,
 };
 
 export default userService;

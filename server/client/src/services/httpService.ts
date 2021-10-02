@@ -14,6 +14,7 @@ export const endpoints = {
   currentSongEndpoint: "current-song",
   deleteSong: "deletesong",
   deleteComment: "deletecomment",
+  users: "user",
 };
 
 const httpService = {
