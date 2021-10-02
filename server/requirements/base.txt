@@ -19,3 +19,4 @@ drf-spectacular==0.18.2
 requests-html==0.10.0
 beautifulsoup4==4.10.0
 isodate==0.6.0
+django-cors-headers==3.9.0
