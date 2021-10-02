@@ -26,9 +26,12 @@ class change_room_image(APIView):
 
     def post(self, request):
         data = request.data
-        room_image[0] = data['albumCover']
-        return Response(room_image,status=status.HTTP_200_OK )
-    print(room_image[0])
+        if data['albumCover'] == "":
+            room_image[0] = "https://svgshare.com/i/aXm.svg"
+        else:
+             room_image[0] = data['albumCover']
+        
+        return Response({'room_image': room_image, 'curent-song':data},status=status.HTTP_200_OK )
 
 
 def get_room_info(room_id=None):
