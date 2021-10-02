@@ -64,8 +64,6 @@ class SidebarView(GenericAPIView):
 
         pub_room = get_room_info()
 
-        publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
-
         if request.GET.get('org') and request.GET.get('user'):
             url = f'https://api.zuri.chat/organizations/{org_id}/members/{user_id}'
             headers = {
@@ -79,6 +77,7 @@ class SidebarView(GenericAPIView):
                 public_url = f"https://api.zuri.chat/data/read/{plugin_id}/{room}/{org_id}"
 
                 r = requests.get(public_url)
+                publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
                 return JsonResponse(r, safe=True)
 
             else:
@@ -210,7 +209,7 @@ class SongView(APIView):
         updated_object = updated_data["data"][-1]
         # returns the updated_object alone
 
-        centrifugo_post(plugin_id, {"event": "added_song", "data": updated_object})
+        centrifugo_post(plugin_id, {"event": "added_song", "data": updated_data})
         return Response(updated_object, status=status.HTTP_202_ACCEPTED)
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":""} in the payload
 
