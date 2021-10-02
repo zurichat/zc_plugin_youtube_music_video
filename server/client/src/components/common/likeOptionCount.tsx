@@ -51,7 +51,7 @@ function LikeOptionCount(props) {
       <img
         onClick={(e) => {
           e.stopPropagation();
-          handleOption((state) => !state);
+          handleOption(true);
         }}
         data-option="option"
         src={option}
