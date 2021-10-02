@@ -83,8 +83,8 @@ function Player() {
           onEnded={handedEnded}
           pip={true}
           stopOnUnmount={false}
-          onEnablePIP={()=> setInit(true)};
-          onDisablePIP={()=> setInit(false)};
+          onEnablePIP={()=> setInit(true)}
+          onDisablePIP={()=> setInit(false)}
           // config={{ playerVars: { showinfo: 1 } }}
         />
       </div>
