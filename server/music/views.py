@@ -69,6 +69,21 @@ class SidebarView(GenericAPIView):
 
         pub_room = get_room_info()
 
+        sidebar_update_room_name = "currentWorkspace_userInfo_sidebar"
+
+        sidebar_update_payload = {
+                "event": "sidebar_update",
+                "plugin_id": "music.zuri.chat",
+                "data": {
+                    "name": "Music Plugin",
+                    "group_name": "Music",
+                    "show_group": False,
+                    "button_url": "/music",
+                    "public_rooms": [pub_room],
+                    "joined_rooms": [pub_room],
+                }
+            }
+
         if request.GET.get('org') and request.GET.get('user'):
             url = f'https://api.zuri.chat/organizations/{org_id}/members/{user_id}'
             headers = {
@@ -82,10 +97,14 @@ class SidebarView(GenericAPIView):
                 public_url = f"https://api.zuri.chat/data/read/{plugin_id}/{room}/{org_id}"
 
                 r = requests.get(public_url)
-                publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
+                # publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
+
+                centrifugo_post(sidebar_update_room_name,sidebar_update_payload)
                 return JsonResponse(r, safe=True)
 
             else:
+                centrifugo_post(sidebar_update_room_name,sidebar_update_payload)
+                
                 return JsonResponse({
                     "name": "Music Plugin",
                     "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
@@ -103,6 +122,8 @@ class SidebarView(GenericAPIView):
                     ],
                 })
         else:
+            centrifugo_post(sidebar_update_room_name,sidebar_update_payload)
+
             return JsonResponse({
                 "name": "Music Plugin",
                 "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
