@@ -1,23 +1,27 @@
+import { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+
 import store from "../store";
+import { songSelect } from "../store/songsSlice";
+
 import {
   getPlayerState,
   playerAction,
   playerSelector,
   playing,
 } from "../store/playerSlice";
-import { songSelect } from "../store/songsSlice";
-import {useState} from "react"
+
 import PlaylistItems from "./common/playlistItems";
-import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
 import LikeOptionCount from "./common/likeOptionCount";
-import { useEffect } from "react";
+
 import httpService from "../services/httpService";
+import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
 import Song from "../types/song";
-const [init, setInit] = useState (false)
+
 function Player() {
+  const [init, setInit] = useState(false);
   const player = useSelector(getPlayerState);
   const songs = useSelector(songSelect.allSongs);
   const song = useSelector(playerSelector.selectCurrentSong);
@@ -66,7 +70,7 @@ function Player() {
   };
 
   return (
-    <Wrapper>
+    <Wrapper init={init}>
       <div className="player-now">Now Playing</div>
 
       <div className="player-wrapper">
@@ -82,10 +86,8 @@ function Player() {
           onEnded={handedEnded}
           pip={true}
           stopOnUnmount={false}
-
-          onEnablePIP={()=> setInit(true)}
-          onDisablePIP={()=> setInit(false)}
-
+          onEnablePIP={() => setInit(true)}
+          onDisablePIP={() => setInit(false)}
 
           // config={{ playerVars: { showinfo: 1 } }}
         />
@@ -104,10 +106,9 @@ function Player() {
   );
 }
 
-const Wrapper = styled.div`
-  height: "100%"
-  display:${init ? "none" : "block"};
-
+const Wrapper = styled.div<{ init: boolean }>`
+  height: "100%";
+  display: ${(props) => (props.init ? "none" : "block")};
 
   .player-wrapper {
     position: relative;
