@@ -20,7 +20,6 @@ const addChat = async (chat: Chat) => {
   delete newChat.id;
 
   chatDispatch.addChat({ ...chat, notSent: true});
-  console.log("Dispatched message");
 
   try {
     await httpService.post(commentEndpoint, newChat, {timeout: 15000});
