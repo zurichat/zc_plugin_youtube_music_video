@@ -1,4 +1,5 @@
 import React from 'React'
+import styled from 'styled-Components'
 
 function filterBar () {
     return (
@@ -8,11 +9,11 @@ function filterBar () {
                 Filter
             </p>
             <div className="drop-down">
-                <button className="accordion2">
+                <button className="accordion">
                     <h3>All songs</h3>
                     <i className="fa fa-chevron-down" aria-hidden="true"></i>
                 </button>
-                <div className="panel2">
+                <div className="panel">
                     <a href="#"><p>All Songs</p></a>
                     <a href="#"><p>By Artist</p></a>
                     <a href="#"><p>By Likes</p></a>

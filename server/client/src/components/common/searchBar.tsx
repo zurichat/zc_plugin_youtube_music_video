@@ -1,4 +1,5 @@
 import React from 'React'
+import styled from 'styled-Components'
 
 function SearchBar ({placeholder, data}) {
     return (
