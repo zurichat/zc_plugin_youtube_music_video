@@ -21,12 +21,11 @@ function LikeOptionCount(props) {
 
   const { length: count } = likedBy;
   const liked = likedBy.some((id) => id === userId);
-  
+
   const countText =
     count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
 
   const countClasses = duration ? "like-count" : "like-count-player";
-  
 
   const handleLike = () => {
     songService.likeSong({ songId, userId, like: !liked });
