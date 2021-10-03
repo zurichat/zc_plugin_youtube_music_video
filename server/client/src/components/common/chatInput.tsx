@@ -340,9 +340,9 @@ const InputStyled = styled.div`
   border-radius: 3px;
   background: #ffffff;
   border: 1px solid #ebebeb;
-  // margin: 8px 16px 0 8px;
+  margin: 8px 16px 0 8px;
   box-sizing: border-box;
-  // overflow: hidden;
+  overflow: hidden;
   width: 100%;
 
   textarea {
@@ -374,6 +374,7 @@ const InputStyled = styled.div`
     flex: -1;
     margin-top: 20px;
     padding-left: 12px;
+    overflow: hidden;
 
     .line {
       position: absolute;
