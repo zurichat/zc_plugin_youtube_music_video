@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import ListCreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
@@ -46,11 +46,13 @@ class change_room_image(APIView):
 
 def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION)
-    # room_url = room_data["data"][0]["_id"]
+    orgid = settings.ORGANIZATON_ID
+    roomid = settings.ROOM_ID
 
     output = {
         "room_name": room_data["data"][0]["name"],
         "room_url": f"/music",
+        "button_url": f"/music/{orgid}/musicroom/{roomid}/users",
         "room_image": room_image[0]
     }
     return output
@@ -169,7 +171,14 @@ class PluginPingView(GenericAPIView):
         return JsonResponse({'server': server})
 
 
+# class MediaView(ListCreateAPIView):
+    
+#     queryset = Media.objects.all()
+#     serializer_class = MediaSerializer
+
+
 class MediaView(APIView):
+    
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
@@ -225,9 +234,11 @@ class SongView(APIView):
     #     # Note: use {"id": ""} to delete
 
 
-class CommentView(APIView):
+
+# class CommentView(ListCreateAPIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
+class CommentView(APIView):
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -248,6 +259,25 @@ class CommentView(APIView):
             return Response(data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    # def delete(self, request, pk, format=None):
+
+    #     comment = self.get_object(pk)
+    #     serializer = CommentSerializer(comment, data=request.data)
+
+    #     if serializer.is_valid():
+    #         payload = serializer.data
+
+    #         data = delete_data(settings.COMMENTS_COLLECTION, payload=payload)
+
+    #         updated_data = read_data(settings.COMMENTS_COLLECTION)
+
+    #         centrifugo_post(plugin_id, {"event": "chat deleted", "data": updated_data})
+
+    #         return Response(data, status=status.HTTP_200_OK)
+
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateRoomView(APIView):
@@ -380,3 +410,78 @@ class UserCountView(GenericAPIView):
         centrifugo_post(plugin_id, {"event": "header_user_count", "data": user_count})
 
         return Response(user_count)
+
+
+
+# class SongDetail(RetrieveUpdateDestroyAPIView):
+
+#     queryset = Song.objects.all()
+#     serializer_class = SongSerializer
+#     lookup_field = '_id'
+#     lookup_url_kwarg = '_id'
+
+
+# class DeleteSong(APIView):
+
+#     def get(self, request):
+#         data = read_data(settings.SONG_COLLECTION)
+#         return Response(data, status=status.HTTP_200_OK)
+    
+#     def delete(self, request, _id):
+        
+#         serializer_class = CommentSerializer
+#         lookup_field = 'pk'
+#         # serializer = SongSerializer(data=request.data)
+
+#         plugin_id = settings.PLUGIN_ID
+#         org_id = settings.ORGANIZATON_ID
+#         collection = settings.SONG_COLLECTION
+      
+#         url = "https://api.zuri.chat/data/delete"
+
+#         payload = {
+#             "plugin_id": plugin_id,
+#             "organization_id": org_id,
+#             "collection_name" : collection,
+#             "bulk_delete": False,
+#             "object_id": _id,
+#         }
+
+#         data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
+
+#         try:
+#             response = requests.request("POST", url, data=json.dumps(data))
+
+#             if response.status_code == 200:
+#                 r = response.json()
+#                 if r["data"]["deleted_count"] == 1:
+#                     return Response({"message": "Song deleted successfully"},
+#                                 status=status.HTTP_200_OK)
+#             else:
+#                 return Response(
+#                     data={"message": "Song not found"},
+#                     status=status.HTTP_400_BAD_REQUEST,
+#                 )
+
+#         except exceptions.ConnectionError as e:
+#             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
+
+
+
+        # response = requests.request("POST", url, data=json.dumps(data))
+        # if response.status_code == 200:
+        #     r = response.json()
+        #     if r["data"]["deleted_count"] == 0:
+        #         return Response(
+        #             data={"message": "Song not found"},
+        #             status=status.HTTP_400_BAD_REQUEST,
+        #         )
+
+        #     return Response(data={"message": "successful"}, status=status.HTTP_200_OK)
+        # return handle_failed_request(response=response)
+
+@api_view(['GET', 'POST'])
+def listmedia(request):
+    media_obj=Media('test obj', 'https://svgshare.com/i/aXm.svg')
+    serializer_class = MediaSerializer(media_obj)
+    return Response(serializer_class.data)

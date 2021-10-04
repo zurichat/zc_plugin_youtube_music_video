@@ -8,14 +8,16 @@ urlpatterns = [
     path("test", MediaView.as_view(), name="test"),
     path("info", PluginInfoView.as_view(), name="info"),
     path("ping", PluginPingView.as_view(), name="ping"),
+    path("media", listmedia, name="media"), #delete songs 
 
 
     path("songs", SongView.as_view(), name="song"),
+    # path("deletesong", DeleteSong.as_view(), name="deletesong"),
     path("deletesong", removesong, name="deletesong"), #delete songs 
    
 
     path("comments", CommentView.as_view(), name="comments"),
-    path("deletecomment", removecomment, name="deletecomment"), #remove comments
+    # path("deletecomment", removecomment, name="deletecomment"), #remove comments
 
 
     path("createroom", CreateRoomView.as_view(), name="createroom"),

@@ -4,9 +4,36 @@ from music.models import *
 
 
 class MediaSerializer(serializers.Serializer):
-    media_id = serializers.CharField()
+    # mediaid = serializers.CharField(read_only=True)
     name = serializers.CharField()
     url = serializers.CharField()
+    # time = serializers.DateTimeField()
+
+
+    # def create(self, validated_data):
+    #     return Media.objects.create(**validated_data)
+
+    # def update(self, instance, validated_data):
+    #     # instance.mediaid = validated_data.get('mediaid', instance.mediaid)
+    #     instance.name = validated_data.get('name', instance.name)
+    #     instance.url = validated_data.get('url', instance.url)
+    #     instance.time = validated_data.get('time', instance.time)
+    #     instance.save()
+    #     return instance
+
+    # def __str__(self):
+    #     return str()
+    
+    # def restore_object(self, attrs, instance=None):
+    #     if instance is not None:
+            
+    #         instance.media_id = attrs.get("media_id", instance.media_id)
+    #         instance.name = attrs.get("name", instance.name)
+    #         instance.url = attrs.get("url", instance.url)
+
+    #         return instance
+    #     return Media
+
     
 
 class MemberSerializer(serializers.Serializer):
@@ -19,7 +46,7 @@ class MemberSerializer(serializers.Serializer):
     job = serializers.CharField(max_length=256, required=False, read_only=False)
 
     def create(self, validated_data):
-        return Member(**validated_data)
+        return Member.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         
@@ -29,6 +56,7 @@ class MemberSerializer(serializers.Serializer):
         instance.avatar = validated_data.get('avatar', instance.avatar)
         instance.email = validated_data.get('email', instance.email)
         instance.job = validated_data.get('job', instance.job)
+        instance.save()
         return instance
 
     def __str__(self):
@@ -44,9 +72,11 @@ class CommentSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=256, required=False)
     avatar = serializers.CharField(max_length=256, required=False)
     #time = serializers.DateTimeField()
-    time = serializers.IntegerField()
+    time = serializers.IntegerField(required=False)
+
 
     def create(self, validated_data):
+        # return Comment(**validated_data)
         return Comment(**validated_data)
 
     def update(self, instance, validated_data):
@@ -100,7 +130,8 @@ class SongSerializer(serializers.Serializer):
     likedBy = serializers.CharField(required=False)
 
     def create(self, validated_data):
-        return Song(_id=None, **validated_data)
+        # return Song(_id=None, **validated_data)
+        return Song.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
@@ -109,6 +140,7 @@ class SongSerializer(serializers.Serializer):
         instance.url = validated_data.get('url', instance.url)
         instance.addedBy = validated_data.get('addedBy', instance.addedBy)
         instance.likedBy = validated_data.get('likedBy', instance.likedBy)
+        instance.save()
         return instance
 
     def __str__(self):
