@@ -22,18 +22,43 @@ const chatsSlice = createSlice({
     removeChat: (state, { payload }: PayloadAction<Chat>) => {
       state = state.filter((chat) => chat.id !== payload.id);
     },
+
+    failChat: (state, { payload }: PayloadAction<Chat>) => {
+      const { id, message } = payload;
+      state.map((chat) => {
+        if(chat.id === id && chat.message === message){
+          chat.notSent = false;
+          chat.failed = true;
+        }
+      });
+    },
+
+    sentChat: (state, { payload }: PayloadAction<Chat>) => {
+      const { id, message } = payload;
+      state.map((chat) => {
+        if(chat.id === id && chat.message === message){
+          chat.notSent = false;
+          chat.failed = false;
+        }
+      });
+    },
+
   },
 });
 
-export const { addChat, setChats, removeChat } = chatsSlice.actions;
+export const { addChat, setChats, failChat, removeChat, sentChat } = chatsSlice.actions;
 
 export const chatDispatch = {
   set: (payload: Chat[]) => store.dispatch({ type: setChats.type, payload }),
 
   addChat: (payload: Chat) => store.dispatch({ type: addChat.type, payload }),
 
+  failChat: (payload: Chat) => store.dispatch({ type: failChat.type, payload}),
+
+  sentChat: (payload: Chat) => store.dispatch({ type: sentChat.type, payload}),
+
   removeChat: (id: string) =>
-    store.dispatch({ type: removeChat.type, payload: { id } }),
+store.dispatch({ type: removeChat.type, payload: { id } }),
 };
 
 export const chatSelect = {

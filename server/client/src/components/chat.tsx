@@ -6,19 +6,22 @@ import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
 import ChatInput from "./common/chatInput";
 
-import { chatSelect } from "../store/chatsSlice";
+import { chatSelect, chatDispatch } from "../store/chatsSlice";
 import { uiSelect } from "../store/uiSlice";
 import { syncArray } from "../utils/syncArray"
+import chatService from "../services/chatService";
 
 function Chat(props) {
-  const chat = useSelector(chatSelect.allChat);
+  const chats = useSelector(chatSelect.allChat);
   const showChat = useSelector(uiSelect.showChat);
   const scroller = useRef(null);
-  const [ chats, setChats] = useState(chat);
+  //const [ chats, setChats] = useState(chat);
 
-  useEffect(() => {
+  /*useEffect( () => {
     setChats(syncArray(chats, chat));
-  }, [chat]);
+    console.log(chats);
+    console.log(chat);
+  }, [chat]);*/
 
   const scrollToBottom = () => {
     scroller.current.scrollIntoView(false);
@@ -65,13 +68,43 @@ function Chat(props) {
     }
   }
 
+  const Cancel = (id, message) => {
+    const test = chats.find((chat) => (chat.id === id) && (chat.message === message));
+    let list = [];
+    chats.map((ch) => {
+      if(ch.message !== test.message) list.push(ch);
+    });
+    //setChats(newchats);
+    chatDispatch.set(list);
+  };
+
+  const Resend = (id, message) => {
+    let test = chats.find((chat) => (chat.id === id) && (chat.message === message));
+    let list = [];
+    chats.map((ch) => {
+      if(ch.message !== test.message) list.push(ch);
+    });
+    //setChats(newchats);
+    chatDispatch.set(list);
+    chatService.addChat({...test, failed: false});
+  };
+
+  const items = (chat) => {
+    const y = {
+      onCancel: Cancel,
+       onResend: Resend,
+       ...chat,
+    }
+    return y;
+  }
+
   return (
     <Wrapper className="chat-wrapper">
       <ChatHeader />
 
       <div className="chat-item-group">
         {chats.map((chat, index) => (
-          <ChatItem key={index} {...chat} />
+          <ChatItem key={index} {...items(chat)} />
         ))}
 
         <div className="scroller" ref={scroller}></div>
