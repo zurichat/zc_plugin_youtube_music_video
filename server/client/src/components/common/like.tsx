@@ -1,5 +1,3 @@
-import React from "react";
-
 import like from "../../media/like.svg";
 import like_filled from "../../media/like-filled.svg";
 

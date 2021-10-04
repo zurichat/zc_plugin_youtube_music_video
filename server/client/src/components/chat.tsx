@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
@@ -6,13 +6,22 @@ import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
 import ChatInput from "./common/chatInput";
 
-import { chatSelect } from "../store/chatsSlice";
+import { chatSelect, chatDispatch } from "../store/chatsSlice";
 import { uiSelect } from "../store/uiSlice";
+import { syncArray } from "../utils/syncArray"
+import chatService from "../services/chatService";
 
 function Chat(props) {
   const chats = useSelector(chatSelect.allChat);
   const showChat = useSelector(uiSelect.showChat);
   const scroller = useRef(null);
+  //const [ chats, setChats] = useState(chat);
+
+  /*useEffect( () => {
+    setChats(syncArray(chats, chat));
+    console.log(chats);
+    console.log(chat);
+  }, [chat]);*/
 
   const scrollToBottom = () => {
     scroller.current.scrollIntoView(false);
@@ -59,13 +68,43 @@ function Chat(props) {
     }
   }
 
+  const Cancel = (id, message) => {
+    const test = chats.find((chat) => (chat.id === id) && (chat.message === message));
+    let list = [];
+    chats.map((ch) => {
+      if(ch.message !== test.message) list.push(ch);
+    });
+    //setChats(newchats);
+    chatDispatch.set(list);
+  };
+
+  const Resend = (id, message) => {
+    let test = chats.find((chat) => (chat.id === id) && (chat.message === message));
+    let list = [];
+    chats.map((ch) => {
+      if(ch.message !== test.message) list.push(ch);
+    });
+    //setChats(newchats);
+    chatDispatch.set(list);
+    chatService.addChat({...test, failed: false});
+  };
+
+  const items = (chat) => {
+    const y = {
+      onCancel: Cancel,
+       onResend: Resend,
+       ...chat,
+    }
+    return y;
+  }
+
   return (
     <Wrapper className="chat-wrapper">
       <ChatHeader />
 
       <div className="chat-item-group">
         {chats.map((chat, index) => (
-          <ChatItem key={index} {...chat} />
+          <ChatItem key={index} {...items(chat)} />
         ))}
 
         <div className="scroller" ref={scroller}></div>
@@ -77,8 +116,11 @@ function Chat(props) {
 
 const Wrapper = styled.div`
   height: 100%;
-  width: 420px;
-  background-color: white;
+  max-width: 400px;
+  background: white;
+  box-shadow: 1px 3px 5px #b4b2b2;
+  position: relative;
+  z-index: 100;
 
   .chat-item-group {
     flex-grow: 1;
@@ -99,15 +141,16 @@ const Wrapper = styled.div`
   }
 
   @media (max-width: 1000px) {
-    background-color: transparent;
-    width: 350px;
-    margin-left: 0px;
+    margin: 0 30px;
 
     .chat-item-group {
-      max-height: 450px;
-      margin-top: 2px;
       background-color: white;
     }
+  }
+
+  @media (max-width: 400px) {
+    width: 350px;
+    background: white;
   }
 `;
 

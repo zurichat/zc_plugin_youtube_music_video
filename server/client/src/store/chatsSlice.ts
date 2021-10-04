@@ -20,38 +20,55 @@ const chatsSlice = createSlice({
     },
 
     removeChat: (state, { payload }: PayloadAction<Chat>) => {
-      const { id } = payload;
-      const existingChat = state.find((chat) => chat.id === id);
-      if (existingChat) state.filter((chat) => chat.id !== id);
+      state = state.filter((chat) => chat.id !== payload.id);
     },
 
-    updateChat: (state, { payload }: PayloadAction<Chat>) => {
-      const { id, message, time = Date.now() } = payload;
-
-      const existingChat = state.find((chat) => chat.id === id);
-
-      if (existingChat) {
-        existingChat.message = message;
-        existingChat.time = time;
-      }
+    failChat: (state, { payload }: PayloadAction<Chat>) => {
+      const { id, message } = payload;
+      state.map((chat) => {
+        if(chat.id === id && chat.message === message){
+          chat.notSent = false;
+          chat.failed = true;
+        }
+      });
     },
+
+    sentChat: (state, { payload }: PayloadAction<Chat>) => {
+      const { id, message } = payload;
+      state.map((chat) => {
+        if(chat.id === id && chat.message === message){
+          chat.notSent = false;
+          chat.failed = false;
+        }
+      });
+    },
+
   },
 });
 
-export const { addChat, setChats } = chatsSlice.actions;
+export const { addChat, setChats, failChat, removeChat, sentChat } = chatsSlice.actions;
 
 export const chatDispatch = {
   set: (payload: Chat[]) => store.dispatch({ type: setChats.type, payload }),
 
   addChat: (payload: Chat) => store.dispatch({ type: addChat.type, payload }),
+
+  failChat: (payload: Chat) => store.dispatch({ type: failChat.type, payload}),
+
+  sentChat: (payload: Chat) => store.dispatch({ type: sentChat.type, payload}),
+
+  removeChat: (id: string) =>
+store.dispatch({ type: removeChat.type, payload: { id } }),
 };
 
 export const chatSelect = {
   allChat: (state: RootState) => state.chats,
 
-  chatById: (state: RootState, id: string) => {
+  chatById: (id: string) => (state: RootState) => {
     return state.chats.find((chat) => chat.id === id);
   },
+
+  lastChat: (state: RootState) => state.chats[state.chats.length - 1],
 };
 
 export default chatsSlice.reducer;

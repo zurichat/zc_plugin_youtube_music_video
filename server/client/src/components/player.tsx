@@ -1,25 +1,59 @@
+import { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import store from "../store";
+import { songSelect } from "../store/songsSlice";
+
 import {
   getPlayerState,
   playerAction,
   playerSelector,
   playing,
 } from "../store/playerSlice";
-import { songSelect } from "../store/songsSlice";
 
 import PlaylistItems from "./common/playlistItems";
-import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
 import LikeOptionCount from "./common/likeOptionCount";
 
+import httpService from "../services/httpService";
+import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
+import Song from "../types/song";
+
 function Player() {
+  const [init, setInit] = useState(false);
   const player = useSelector(getPlayerState);
   const songs = useSelector(songSelect.allSongs);
   const song = useSelector(playerSelector.selectCurrentSong);
   const upnext = getUpnext();
+  const { currentSongEndpoint } = httpService.endpoints;
+
+  const thumbnail = async (song: Song) => {
+    if(player.currentSongId === "") 
+    song = {
+      id: "",
+      title: "",
+      duration: "",
+      albumCover: "",
+      url: "",
+      addedBy: "",
+      userId: "",
+      likedBy: [],
+      time: "",
+    };
+    try {
+      await httpService.post(currentSongEndpoint, song);
+      console.log("Succesfully sent to current-song Endpoint");
+      console.log(song);
+    } catch (error) {
+      console.log(error);
+    }
+    return;
+  };
+
+  useEffect(() => {
+    thumbnail(song);
+  }, [song]);
 
   if (!player.show) return null;
 
@@ -28,7 +62,7 @@ function Player() {
 
   function getUpnext() {
     const index = songs.indexOf(song);
-    return [...songs.slice(index + 1), ...songs.slice(0, index)];
+    return [...songs.slice(index + 1), song, ...songs.slice(0, index)];
   }
 
   const handlePlay = () => {
@@ -49,7 +83,7 @@ function Player() {
   };
 
   return (
-    <Wrapper>
+    <Wrapper init={init}>
       <div className="player-now">Now Playing</div>
 
       <div className="player-wrapper">
@@ -65,6 +99,9 @@ function Player() {
           onEnded={handedEnded}
           pip={true}
           stopOnUnmount={false}
+          onEnablePIP={() => setInit(true)}
+          onDisablePIP={() => setInit(false)}
+
           // config={{ playerVars: { showinfo: 1 } }}
         />
       </div>
@@ -82,8 +119,9 @@ function Player() {
   );
 }
 
-const Wrapper = styled.div`
-  height: 100%;
+const Wrapper = styled.div<{ init: boolean }>`
+  height: "100%";
+  display: ${(props) => (props.init ? "none" : "block")};
 
   .player-wrapper {
     position: relative;

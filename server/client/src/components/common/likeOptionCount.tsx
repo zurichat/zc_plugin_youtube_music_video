@@ -15,18 +15,17 @@ import option from "../../media/option.svg";
 // }
 
 function LikeOptionCount(props) {
-  const { duration, likedBy, songId, handleOption } = props;
+  const { duration, likedBy = [], songId, handleOption } = props;
 
   const { id: userId } = useSelector(userSelect.currentUser);
 
   const { length: count } = likedBy;
   const liked = likedBy.some((id) => id === userId);
-  
+
   const countText =
     count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
 
   const countClasses = duration ? "like-count" : "like-count-player";
-  
 
   const handleLike = () => {
     songService.likeSong({ songId, userId, like: !liked });
@@ -52,7 +51,7 @@ function LikeOptionCount(props) {
       <img
         onClick={(e) => {
           e.stopPropagation();
-          handleOption((state) => !state);
+          handleOption(true);
         }}
         data-option="option"
         src={option}

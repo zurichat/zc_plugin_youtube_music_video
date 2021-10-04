@@ -12,8 +12,10 @@ import bold from "../../media/bold.svg";
 import chatService from "../../services/chatService";
 import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
+import { chatDispatch } from "../../store/chatsSlice";
 
 function ChatInput(props) {
+  console.log("hello");
   // states to manage the input text and also the showcasing of the emoji
   const [inputStr, setInputStr] = useState("");
   const [showPicker, setShowPicker] = useState(false);
@@ -41,79 +43,34 @@ function ChatInput(props) {
   const handleSend = () => {
     const { name, id: userId, avatar } = currentUser;
 
-    chatService.addChat({
-      id: "", // this will be taken care of by db
+    const message = {
+      id: "test", // this will be taken care of by db
       userId,
-      name,
-      avatar,
       message: inputStr,
       time: Date.now(),
-    });
+      name,
+      avatar,
+    };
 
+    //sends message to the comments endpoint
+    chatService.addChat(message);
+
+    //clears the current contents of the input box
     clearInput();
   };
 
   return (
-    // <Wrapper onClick={handleFocus}>
-    //   <input
-    //     type="text"
-    //     className="chat-input"
-    //     placeholder="Type a message..."
-    //     value={inputStr}
-    //     onChange={(e) => setInputStr(e.target.value)}
-    //   />
+    <InputStyled onClick={handleFocus}>
+      <div className="input">
+        <textarea
+          placeholder="Send a Message to John"
+          value={inputStr}
+          onKeyPress={(e) => (e.key === "Enter" ? handleSend() : undefined)}
+          onChange={(e) => setInputStr(e.target.value)}
+        />
+      </div>
 
-    //   <div className="chat-icon-group">
-    //     <img
-    //       src={chatEmoji}
-    //       alt="emoji"
-    //       className="chat-icon"
-    //       onClick={() => setShowPicker((val) => !val)}
-    //     />
-    //     {showPicker && (
-    //       <div className="emoji-picker">
-    //         <Picker
-    //           pickerStyle={{ width: "20vw", marginLeft: "0rem" }}
-    //           onEmojiClick={onEmojiClick}
-    //         />
-    //       </div>
-    //     )}
-    //     <img
-    //       src={chatGif}
-    //       alt="gif"
-    //       className="chat-icon"
-    //       onClick={() => setShowGiphy((val) => !val)}
-    //     />
-    //     {showGiphy && (
-    //       <GiphyPicker
-    //         pickerStyle={{ width: "18vw", marginLeft: "-10rem" }}
-    //         onGiphyClick={onGiphyClick}
-    //       />
-    //     )}
-    //     <img
-    //       src={chatSend}
-    //       alt="send"
-    //       className="chat-icon"
-    //       onClick={() => {
-    //         if (inputStr !== "") {
-    //           handleSend();
-    //         } else return;
-    //       }}
-    //       /*onKeyDown={() => {
-
-    //     }}*/
-    //     />
-    //   </div>
-    // </Wrapper>
-    <ChatInputStyled onClick={handleFocus}>
-      <textarea
-        // type="text"
-        value={inputStr}
-        onKeyPress={(e) => (e.key === "Enter" ? handleSend() : undefined)}
-        onChange={(e) => setInputStr(e.target.value)}
-        placeholder="Type your message here..."
-      />
-      <div className="tags">
+      <div className="buttons">
         <button>
           <svg
             width="24"
@@ -123,14 +80,14 @@ function ChatInput(props) {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M12.7768 5.40774C12.9331 5.47557 13.026 5.63832 13.0048 5.80737L12.4347 10.3682H17.6162C17.7651 10.3682 17.9006 10.4543 17.9637 10.5892C18.0269 10.724 18.0064 10.8833 17.911 10.9976L11.6708 18.4859C11.5617 18.6168 11.3794 18.6601 11.2232 18.5923C11.0669 18.5244 10.974 18.3617 10.9952 18.1926L11.5653 13.6318H6.38378C6.23487 13.6318 6.0994 13.5457 6.03624 13.4108C5.97308 13.276 5.99362 13.1168 6.08896 13.0024L12.3292 5.51409C12.4383 5.38321 12.6206 5.3399 12.7768 5.40774ZM7.20315 12.8643H12C12.1101 12.8643 12.2148 12.9115 12.2877 12.9941C12.3605 13.0766 12.3945 13.1864 12.3808 13.2957L11.9191 16.989L16.7968 11.1357H12C11.8899 11.1357 11.7851 11.0885 11.7123 11.0059C11.6394 10.9234 11.6055 10.8136 11.6192 10.7044L12.0808 7.01105L7.20315 12.8643Z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12.7768 5.40775C12.9331 5.47559 13.026 5.63834 13.0048 5.80739L12.4347 10.3682H17.6162C17.7651 10.3682 17.9006 10.4543 17.9637 10.5892C18.0269 10.724 18.0064 10.8833 17.911 10.9977L11.6708 18.4859C11.5617 18.6168 11.3794 18.6601 11.2232 18.5923C11.0669 18.5245 10.974 18.3617 10.9952 18.1927L11.5653 13.6318H6.38378C6.23487 13.6318 6.0994 13.5457 6.03624 13.4109C5.97308 13.276 5.99362 13.1168 6.08896 13.0024L12.3292 5.5141C12.4383 5.38322 12.6206 5.33991 12.7768 5.40775ZM7.20315 12.8643H12C12.1101 12.8643 12.2148 12.9116 12.2877 12.9941C12.3605 13.0766 12.3945 13.1864 12.3808 13.2957L11.9191 16.989L16.7968 11.1358H12C11.8899 11.1358 11.7851 11.0885 11.7123 11.006C11.6394 10.9234 11.6055 10.8136 11.6192 10.7044L12.0808 7.01107L7.20315 12.8643Z"
               fill="#616061"
             />
           </svg>
         </button>
-        <button>
+        {/* <div>
           <svg
             width="2"
             height="18"
@@ -138,7 +95,29 @@ function ChatInput(props) {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path d="M1 1V17" stroke="#B0AFB0" strokeLinecap="round" />
+            <path d="M1 1V17" stroke="#B0AFB0" stroke-linecap="round" />
+          </svg>
+        </div> */}
+        <button>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M2.37988 2.3333C2.37988 2.03685 2.62021 1.79652 2.91666 1.79652H7.58333C9.16845 1.79652 10.4534 3.08152 10.4534 4.66664C10.4534 6.25176 9.16845 7.53675 7.58333 7.53675H2.91666C2.62021 7.53675 2.37988 7.29643 2.37988 6.99997V2.3333ZM3.45344 2.87008V6.46319H7.58333C8.57554 6.46319 9.37988 5.65885 9.37988 4.66664C9.37988 3.67443 8.57554 2.87008 7.58333 2.87008H3.45344Z"
+              fill="#616061"
+            />
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M2.37988 6.99996C2.37988 6.70351 2.62021 6.46318 2.91666 6.46318H8.16666C9.75178 6.46318 11.0368 7.74817 11.0368 9.33329C11.0368 10.9184 9.75178 12.2034 8.16666 12.2034H2.91666C2.62021 12.2034 2.37988 11.9631 2.37988 11.6666V6.99996ZM3.45344 7.53674V11.1298H8.16666C9.15887 11.1298 9.96322 10.3255 9.96322 9.33329C9.96322 8.34108 9.15887 7.53674 8.16666 7.53674H3.45344Z"
+              fill="#616061"
+            />
           </svg>
         </button>
         <button>
@@ -150,42 +129,20 @@ function ChatInput(props) {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M2.37988 2.33317C2.37988 2.03671 2.62021 1.79639 2.91666 1.79639H7.58333C9.16845 1.79639 10.4534 3.08138 10.4534 4.6665C10.4534 6.25162 9.16845 7.53661 7.58333 7.53661H2.91666C2.62021 7.53661 2.37988 7.29629 2.37988 6.99983V2.33317ZM3.45344 2.86995V6.46305H7.58333C8.57554 6.46305 9.37988 5.65871 9.37988 4.6665C9.37988 3.67429 8.57554 2.86995 7.58333 2.86995H3.45344Z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M5.29651 2.33332C5.29651 2.03686 5.53683 1.79654 5.83329 1.79654H11.0833C11.3797 1.79654 11.6201 2.03686 11.6201 2.33332C11.6201 2.62977 11.3797 2.8701 11.0833 2.8701H5.83329C5.53683 2.8701 5.29651 2.62977 5.29651 2.33332Z"
               fill="#616061"
             />
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M2.37988 7.00016C2.37988 6.7037 2.62021 6.46338 2.91666 6.46338H8.16666C9.75178 6.46338 11.0368 7.74837 11.0368 9.33349C11.0368 10.9186 9.75178 12.2036 8.16666 12.2036H2.91666C2.62021 12.2036 2.37988 11.9633 2.37988 11.6668V7.00016ZM3.45344 7.53694V11.13H8.16666C9.15887 11.13 9.96322 10.3257 9.96322 9.33349C9.96322 8.34128 9.15887 7.53694 8.16666 7.53694H3.45344Z"
-              fill="#616061"
-            />
-          </svg>
-        </button>
-        <button>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 14 14"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M5.29651 2.33317C5.29651 2.03671 5.53683 1.79639 5.83329 1.79639H11.0833C11.3797 1.79639 11.6201 2.03671 11.6201 2.33317C11.6201 2.62962 11.3797 2.86995 11.0833 2.86995H5.83329C5.53683 2.86995 5.29651 2.62962 5.29651 2.33317Z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M2.37976 11.6666C2.37976 11.3702 2.62009 11.1299 2.91654 11.1299H8.16654C8.463 11.1299 8.70332 11.3702 8.70332 11.6666C8.70332 11.9631 8.463 12.2034 8.16654 12.2034H2.91654C2.62009 12.2034 2.37976 11.9631 2.37976 11.6666Z"
               fill="#616061"
             />
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M2.37976 11.6667C2.37976 11.3702 2.62009 11.1299 2.91654 11.1299H8.16654C8.463 11.1299 8.70332 11.3702 8.70332 11.6667C8.70332 11.9631 8.463 12.2034 8.16654 12.2034H2.91654C2.62009 12.2034 2.37976 11.9631 2.37976 11.6667Z"
-              fill="#616061"
-            />
-            <path
-              fillRule="evenodd"
-              clipRule="evenodd"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
               d="M8.93829 1.83071C9.21587 1.9348 9.35651 2.24421 9.25242 2.52179L5.75242 11.8551C5.64833 12.1327 5.33892 12.2733 5.06134 12.1692C4.78376 12.0652 4.64312 11.7557 4.74721 11.4782L8.24721 2.14484C8.35131 1.86726 8.66071 1.72662 8.93829 1.83071Z"
               fill="#616061"
             />
@@ -200,14 +157,14 @@ function ChatInput(props) {
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
               d="M8.44913 2.12448C9.96586 0.60639 12.3768 0.6281 13.8678 2.17327C15.3589 3.71844 15.3798 6.21688 13.9149 7.78867L13.9077 7.79645L11.9489 9.82621C11.9489 9.82623 11.9489 9.82618 11.9489 9.82621C11.156 10.6481 10.0576 11.0728 8.93895 10.9898C7.82026 10.9067 6.79153 10.3243 6.11974 9.39358C5.92098 9.11822 5.97526 8.72802 6.24098 8.52205C6.50669 8.31608 6.88322 8.37233 7.08198 8.64769C7.54493 9.28907 8.25386 9.69045 9.02479 9.74767C9.79571 9.80489 10.5526 9.51229 11.099 8.94583L13.054 6.91986C14.0601 5.83647 14.0445 4.11742 13.0181 3.05381C11.9916 1.98999 10.3323 1.97405 9.2869 3.01721L8.16709 4.17092C7.93177 4.41336 7.55136 4.41221 7.3174 4.16835C7.08345 3.92449 7.08456 3.53026 7.31988 3.28782L8.44913 2.12448Z"
               fill="#616061"
             />
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
               d="M4.0512 6.17371C4.8441 5.35177 5.9424 4.92722 7.06105 5.01025C8.17974 5.09327 9.20847 5.67572 9.88026 6.60642C10.079 6.88178 10.0247 7.27197 9.75902 7.47794C9.49331 7.68391 9.11678 7.62766 8.91802 7.3523C8.45507 6.71093 7.74614 6.30954 6.97521 6.25233C6.20429 6.19511 5.44739 6.4877 4.90097 7.05417L2.94597 9.08012C1.93993 10.1635 1.9555 11.8826 2.98186 12.9462C4.00822 14.0098 5.66706 14.0259 6.7125 12.9834L7.82514 11.8303C8.05977 11.5872 8.44019 11.5872 8.67483 11.8303C8.90946 12.0735 8.90946 12.4677 8.67483 12.7109L7.55093 13.8756C6.0342 15.3936 3.62322 15.3719 2.13217 13.8267C0.641128 12.2815 0.620178 9.7831 2.08509 8.21132L2.09234 8.20354L4.0512 6.17371C4.05117 6.17374 4.05122 6.17369 4.0512 6.17371Z"
               fill="#616061"
             />
@@ -215,65 +172,82 @@ function ChatInput(props) {
         </button>
         <button>
           <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
+            width="16"
+            height="15"
+            viewBox="0 0 16 15"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M8.55688 8.75023C8.55688 8.48016 8.77582 8.26123 9.04589 8.26123H17.2457C17.5157 8.26123 17.7347 8.48016 17.7347 8.75023C17.7347 9.0203 17.5157 9.23924 17.2457 9.23924H9.04589C8.77582 9.23924 8.55688 9.0203 8.55688 8.75023Z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M4.55688 3.75C4.55688 3.47994 4.77582 3.261 5.04589 3.261H13.2457C13.5157 3.261 13.7347 3.47994 13.7347 3.75C13.7347 4.02007 13.5157 4.23901 13.2457 4.23901H5.04589C4.77582 4.23901 4.55688 4.02007 4.55688 3.75Z"
               fill="#616061"
             />
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M8.55688 12.5002C8.55688 12.2302 8.77582 12.0112 9.04589 12.0112H17.2457C17.5157 12.0112 17.7347 12.2302 17.7347 12.5002C17.7347 12.7703 17.5157 12.9892 17.2457 12.9892H9.04589C8.77582 12.9892 8.55688 12.7703 8.55688 12.5002Z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M4.55688 7.49994C4.55688 7.22987 4.77582 7.01094 5.04589 7.01094H13.2457C13.5157 7.01094 13.7347 7.22987 13.7347 7.49994C13.7347 7.77001 13.5157 7.98895 13.2457 7.98895H5.04589C4.77582 7.98895 4.55688 7.77001 4.55688 7.49994Z"
               fill="#616061"
             />
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M8.55688 16.2502C8.55688 15.9802 8.77582 15.7612 9.04589 15.7612H17.2457C17.5157 15.7612 17.7347 15.9802 17.7347 16.2502C17.7347 16.5203 17.5157 16.7392 17.2457 16.7392H9.04589C8.77582 16.7392 8.55688 16.5203 8.55688 16.2502Z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M4.55688 11.2499C4.55688 10.9799 4.77582 10.7609 5.04589 10.7609H13.2457C13.5157 10.7609 13.7347 10.9799 13.7347 11.2499C13.7347 11.52 13.5157 11.7389 13.2457 11.7389H5.04589C4.77582 11.7389 4.55688 11.52 4.55688 11.2499Z"
               fill="#616061"
             />
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M7.01196 8.75023C7.01196 8.48016 6.79303 8.26123 6.52296 8.26123H5.89221C5.62214 8.26123 5.40321 8.48016 5.40321 8.75023C5.40321 9.0203 5.62214 9.23924 5.89221 9.23924H6.52296C6.79303 9.23924 7.01196 9.0203 7.01196 8.75023Z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3.01196 3.75C3.01196 3.47994 2.79303 3.261 2.52296 3.261H1.89221C1.62214 3.261 1.40321 3.47994 1.40321 3.75C1.40321 4.02007 1.62214 4.23901 1.89221 4.23901H2.52296C2.79303 4.23901 3.01196 4.02007 3.01196 3.75Z"
               fill="#616061"
             />
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M7.01196 12.5002C7.01196 12.2302 6.79303 12.0112 6.52296 12.0112H5.89221C5.62214 12.0112 5.40321 12.2302 5.40321 12.5002C5.40321 12.7703 5.62214 12.9892 5.89221 12.9892H6.52296C6.79303 12.9892 7.01196 12.7703 7.01196 12.5002Z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3.01196 7.49994C3.01196 7.22987 2.79303 7.01094 2.52296 7.01094H1.89221C1.62214 7.01094 1.40321 7.22987 1.40321 7.49994C1.40321 7.77001 1.62214 7.98895 1.89221 7.98895H2.52296C2.79303 7.98895 3.01196 7.77001 3.01196 7.49994Z"
               fill="#616061"
             />
             <path
-              d="M6.52295 16.25H5.8922"
+              d="M2.52295 11.25H1.8922"
               stroke="#616061"
-              strokeWidth="0.978006"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              stroke-width="0.978006"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </button>
-        <button className="btn-test">
+        <button className="btn-divider">
           <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M14.7734 12.0737C14.7734 13.6194 13.5317 14.8724 12.0001 14.8724C10.4685 14.8724 9.22686 13.6194 9.22686 12.0737C9.22686 10.528 10.4685 9.27497 12.0001 9.27497C13.5317 9.27497 14.7734 10.528 14.7734 12.0737ZM14.7734 12.0737L14.7734 12.7734C14.7734 13.9326 15.7047 14.8724 16.8534 14.8724C18.0021 14.8724 18.9333 13.9326 18.9333 12.7734V12.0737C18.9331 8.82222 16.7134 5.99937 13.5758 5.26043C10.4383 4.52149 7.20973 6.06121 5.78343 8.97672C4.35713 11.8922 5.10897 15.4151 7.59809 17.4796C10.0872 19.5441 13.6576 19.606 16.2155 17.6292"
+              d="M10.7734 8.07351C10.7734 9.6192 9.53174 10.8722 8.00011 10.8722C6.46849 10.8722 5.22686 9.6192 5.22686 8.07351C5.22686 6.52782 6.46849 5.27479 8.00011 5.27479C9.53174 5.27479 10.7734 6.52782 10.7734 8.07351ZM10.7734 8.07351L10.7734 8.77319C10.7734 9.93246 11.7047 10.8722 12.8534 10.8722C14.0021 10.8722 14.9333 9.93246 14.9333 8.77319V8.07351C14.9331 4.82204 12.7134 1.99919 9.57584 1.26025C6.43825 0.521304 3.20973 2.06103 1.78343 4.97654C0.35713 7.89206 1.10897 11.4149 3.59809 13.4794C6.0872 15.5439 9.65755 15.6059 12.2155 13.629"
               stroke="#616061"
-              strokeWidth="0.941892"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              stroke-width="0.941892"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <button>
+          <svg
+            width="15"
+            height="16"
+            viewBox="0 0 15 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14.2921 7.77478L8.16548 13.9014C6.60251 15.4644 4.06844 15.4644 2.50548 13.9014C0.94251 12.3385 0.94251 9.80441 2.50548 8.24145L8.63214 2.11478C9.67412 1.0728 11.3635 1.0728 12.4055 2.11478C13.4475 3.15676 13.4475 4.84614 12.4055 5.88811L6.27214 12.0148C5.75115 12.5358 4.90647 12.5358 4.38548 12.0148C3.86449 11.4938 3.86449 10.6491 4.38548 10.1281L10.0455 4.47478"
+              stroke="#616061"
+              stroke-width="0.941892"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
         </button>
@@ -303,23 +277,6 @@ function ChatInput(props) {
             />
           </svg>
         </button>
-        <button>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M18.2921 11.775L12.1655 17.9016C10.6025 19.4646 8.06844 19.4646 6.50548 17.9016C4.94251 16.3387 4.94251 13.8046 6.50548 12.2416L12.6321 6.11498C13.6741 5.073 15.3635 5.073 16.4055 6.11498C17.4475 7.15696 17.4475 8.84633 16.4055 9.88831L10.2721 16.015C9.75115 16.536 8.90647 16.536 8.38548 16.015C7.86449 15.494 7.86449 14.6493 8.38548 14.1283L14.0455 8.47498"
-              stroke="#616061"
-              strokeWidth="0.941892"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
         <button
           onClick={() => {
             if (inputStr !== "") {
@@ -328,41 +285,16 @@ function ChatInput(props) {
           }}
         >
           <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fillRule="evenodd"
-              clipRule="evenodd"
-              d="M18.3043 13.4656C18.5054 13.3821 18.6391 13.1643 18.6391 12.9207C18.6391 12.677 18.5054 12.4592 18.3043 12.3757L5.45671 7.03521C5.25546 6.95155 5.02974 7.02018 4.89191 7.20695C4.75408 7.39371 4.73357 7.6587 4.8406 7.87002L7.39857 12.9207L4.8406 17.9713C4.73357 18.1826 4.75408 18.4476 4.89191 18.6344C5.02974 18.8211 5.25546 18.8898 5.45671 18.8061L18.3043 13.4656Z"
-              fill="#616061"
-            />
-          </svg>
-        </button>
-        <button>
-          <svg
-            width="2"
-            height="24"
-            viewBox="0 0 2 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M1 0V24" stroke="#616061" />
-          </svg>
-        </button>
-        <button>
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.42857 6L9 9.75L12.5714 6L14 6.75L9 12L4 6.75L5.42857 6Z"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M14.3043 9.46564C14.5054 9.38207 14.6391 9.16435 14.6391 8.92065C14.6391 8.67696 14.5054 8.45924 14.3043 8.37567L1.45671 3.03521C1.25546 2.95155 1.02974 3.02018 0.891909 3.20695C0.754076 3.39371 0.733571 3.6587 0.8406 3.87002L3.39857 8.92065L0.8406 13.9713C0.733571 14.1826 0.754076 14.4476 0.891909 14.6344C1.02974 14.8211 1.25546 14.8898 1.45671 14.8061L14.3043 9.46564Z"
               fill="#616061"
             />
           </svg>
@@ -376,41 +308,27 @@ function ChatInput(props) {
           </div>
         )}
       </div>
-    </ChatInputStyled>
+    </InputStyled>
   );
 }
 
-const ChatInputStyled = styled.div`
-  /* display: flex;
-  border: 1px solid #08ffae;
-  background-color: #fff;
-  padding: 0 12px;
-  z-index: 111;
-  .chat-input {
-    flex-grow: 1;
-    height: 48px;
-    border-radius: 0px;
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 18px;
-    border: none;
-    outline: none;
-  }
-  .chat-icon-group {
-    flex-basis: 90px;
-    display: flex;
-    justify-content: space-between;
-  }
-  .chat-icon {
-    color: #08ffae;
-    width: 27px;
-    cursor: pointer;
-  }
-  .emoji-picker {
-    position: absolute;
-    top: 5rem;
-    right: 2rem;
-  } */
+const InputStyled = styled.div`
+  /* height: 94px;
+  width: 399px;
+  border-radius: 3px;
+  left: 0%;
+  right: -0.25%;
+  top: 0%;
+  bottom: 0%;
+  background: #ffffff;
+  border: 1px solid #ebebeb;
+  box-sizing: border-box;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  box-sizing: border-box; */
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -425,102 +343,67 @@ const ChatInputStyled = styled.div`
   margin: 8px 16px 0 8px;
   box-sizing: border-box;
   overflow: hidden;
+  width: 100%;
+
   textarea {
     position: relative;
-    height: 54px;
-    width: 385px;
-    left: 13px;
-    top: 1px;
     border: none;
-    outline: transparent;
-    flex: 1;
-    border: none;
-    overflow: hidden;
-    resize: none;
-    font-family: inherit;
-    font-size: inherit;
-    width: 90%;
+    outline: none;
+    width: 390px;
+    /* height: 54px; */
+
     ::placeholder {
-      /* position: absolute;
-      height: 18px;
-      width: 165px;
-      left: 13px;
-      top: 19px; */
-      border-radius: 3px;
+      position: absolute;
+      margin: 18px 0 18px 12px;
+      resize: none;
+      font-family: Lato;
       font-style: normal;
       font-weight: normal;
       font-size: 15px;
       line-height: 18px;
-      /* left: 3.27%;
-      right: 55.78%;
-      top: 30.21%; */
-      /* bottom: 60.64%; */
-      /* font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
-    line-height: 18px; */
     }
   }
-  .tags {
+  textarea::-webkit-scrollbar {
+    display: none;
+  }
+
+  .buttons {
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
     padding: 0;
     flex: -1;
+    margin-top: 20px;
+    padding-left: 12px;
+    overflow: hidden;
+
+    .line {
+      position: absolute;
+      height: 17px;
+      width: 0px;
+      left: 55px;
+      top: 64px;
+      border-radius: 0px;
+      border: 1px solid #b0afb0;
+    }
     button {
       border: none;
       background-color: #fff;
+      transition: all 0.3s;
+      margin-right: 8px;
     }
     button:hover {
       background-color: #e9ecef;
     }
-    .btn-test {
-      margin-left: 1.3rem;
+
+    .btn-divider {
+      margin-left: 8rem;
     }
   }
   .emoji-picker {
     position: absolute;
-    top: 5rem;
-    right: 2rem;
+    top: 9rem;
+    right: 3rem;
   }
 `;
-// const Wrapper = styled.div`
-//   display: flex;
-//   border: 1px solid #08ffae;
-//   background-color: #fff;
-//   padding: 0 12px;
-//   z-index: 111;
-
-//   .chat-input {
-//     flex-grow: 1;
-//     height: 48px;
-//     border-radius: 0px;
-//     font-weight: 500;
-//     font-size: 15px;
-//     line-height: 18px;
-//     border: none;
-//     outline: none;
-//   }
-
-//   .bold {
-//     height: 24px;
-//     width: 24px;
-//     left: 12px;
-//     top: 60px;
-//     border-radius: 3px;
-//   }
-//   .chat-icon-group {
-//     flex-basis: 90px;
-//     display: flex;
-//     justify-content: space-between;
-//   }
-
-//   .chat-icon {
-//     color: #08ffae;
-//     width: 27px;
-//     cursor: pointer;
-//   }
-
-// `;
 
 export default ChatInput;

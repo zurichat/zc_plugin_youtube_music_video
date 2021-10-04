@@ -1,6 +1,5 @@
-import React from 'React'
+import react from 'React'
 import styled from 'styled-components';
-import ReactDOM from 'react-dom';
 
 function SortBar () {
     return (

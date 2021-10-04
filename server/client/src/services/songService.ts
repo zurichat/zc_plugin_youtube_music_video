@@ -1,12 +1,11 @@
-import Song from "../types/song";
+import { SongToAdd } from "../types/song";
 import LikeSong from "../types/likeSong";
 
-import log from "./logService";
 import { songDispatch } from "../store/songsSlice";
-import httpService from "./httpService";
+import httpService, { endpoints } from "./httpService";
 import store from "../store";
 
-const { songEndpoint, likeEndpoint } = httpService.endpoints;
+const { songEndpoint, likeEndpoint } = endpoints;
 
 const getSongs = () => {
   httpService.get(songEndpoint).then(
@@ -23,36 +22,20 @@ const getSongs = () => {
   );
 };
 
-const addSongbyUrl = async (url: string) => {
-  const { name: addedBy, id: userId } = JSON.parse(
-    store.getState().users.currentUser
-  );
+const addSong = async (song: SongToAdd) => {
+  console.log("adding song", song);
 
-  return httpService
-    .post(songEndpoint, {
-      url,
-      addedBy,
-      userId,
-    })
-    .then(
-      (result) => result,
-      (error) => console.log(error)
-    );
+  return httpService.post(songEndpoint, song).then(() => {
+    const { songs } = store.getState();
+    songs.slice(6).forEach(({ id }) => deleteSong(id));
+  });
 };
 
-const addSong = async (song: Song) => {
-  try {
-    await httpService.post(songEndpoint, {
-      url: song.url,
-    });
-
-    log.success("Song added");
-  } catch (error) {
-    console.log(error.message);
-  }
-
-  songDispatch.addSong(song);
-  return;
+const deleteSong = async (id: string) => {
+  return httpService.post(endpoints.deleteSong, { id }).then((res) => {
+    songDispatch.removeSong(id);
+    return res;
+  });
 };
 
 const likeSong = async (like: LikeSong) => {
@@ -60,14 +43,11 @@ const likeSong = async (like: LikeSong) => {
 
   try {
     await httpService.post(likeEndpoint, like);
-
-    log.success("User liked a song");
   } catch (error) {
-    // log.error(error.message);
     console.log(error.message);
   }
 };
 
-const songService = { getSongs, addSong, likeSong, addSongbyUrl };
+const songService = { getSongs, addSong, likeSong, deleteSong };
 
 export default songService;

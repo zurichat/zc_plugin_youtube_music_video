@@ -4,28 +4,30 @@ import CloseIcon from "../media/close-black.svg";
 import SearchIcon from "../media/search.svg";
 import MemberItem from "./common/memberItem";
 import { uiDispatch, uiSelect } from "../store/uiSlice";
-import { useEffect, useState } from "react";
-import httpService from "../services/httpService";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import { userSelect } from "../store/usersSlice";
 
 const MemberList = () => {
   const showMemberList = useSelector(uiSelect.showMemberList);
-  const { addToRoom } = httpService.endpoints;
-  const [memberList, setMemberList] = useState([]);
+  const list = useSelector(userSelect.userList);
 
-  useEffect(() => {
-    httpService.get(addToRoom).then((res) => {
-      setMemberList(res.data.data[0].room_user_ids);
-    });
-  }, [showMemberList]);
+  const [query, setQuery] = useState("");
 
   if (!showMemberList) return null;
 
   const handleEscape = (e) => {
-    if (e.code === "Escape" || e.target.dataset.close === "close") {
+    const key = e.code || e.key;
+    if (key === "Escape" || e.target.dataset.close === "close") {
       uiDispatch.showMemberList(false);
     }
   };
+
+  const filtered = query
+    ? list.filter((user) =>
+        user.name.toLowerCase().includes(query.toLowerCase())
+      )
+    : list;
 
   return (
     <Wrapper onClick={handleEscape} data-close="close">
@@ -33,7 +35,7 @@ const MemberList = () => {
         <div className="header-container">
           <div className="title-container">
             <div className="align-center">
-              <img src={HeaderIcon} alt="" /> <h3>Music room</h3>
+              <img src={HeaderIcon} alt=" Header icon" /> <h3>Music room</h3>
             </div>
             <img
               style={{ cursor: "pointer" }}
@@ -41,31 +43,39 @@ const MemberList = () => {
                 uiDispatch.showMemberList(false);
               }}
               src={CloseIcon}
-              alt=""
+              alt="Close Icon"
             />
           </div>
 
           <div>
             <p className="member-tag">
-              Members <span>{memberList.length}</span>
+              Members <span>{filtered.length}</span>
             </p>
           </div>
         </div>
 
         <div className="list-container">
           <form action="#">
-            <img src={SearchIcon} alt="" />
+            <img src={SearchIcon} alt="search icon" />
             <input
               type="text"
               placeholder="Find People"
               autoFocus
               onKeyDown={handleEscape}
+              onChange={(e) => setQuery(e.target.value)}
+              value={query}
             />
           </form>
         </div>
         <div className="member">
-          {memberList.map((item, i) => (
-            <MemberItem key={i} display_name="" status={true} name="" desc="" />
+          {filtered.map((item, i) => (
+            <MemberItem
+              key={i}
+              status={true}
+              name={item.name}
+              desc=""
+              avatar={item.avatar}
+            />
           ))}
         </div>
       </div>
@@ -78,7 +88,6 @@ const Wrapper = styled.div`
     margin: 0;
     box-sizing: border-box;
   }
-
   position: absolute;
   top: 1;
   box-sizing: border-box;
@@ -92,7 +101,6 @@ const Wrapper = styled.div`
   top: 0px;
   left: 0px;
   z-index: 100;
-
   h3 {
     font-style: normal;
     font-weight: bold;
@@ -124,7 +132,6 @@ const Wrapper = styled.div`
     height: fit-content;
     max-height: 536px;
   }
-
   .header-container {
     display: flex;
     flex-direction: column;
@@ -132,30 +139,25 @@ const Wrapper = styled.div`
     padding: 24px 24px 0 24px;
     border-bottom: 1px solid #f6f6f6;
   }
-
   .title-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
   }
-
   .align-center {
     display: flex;
     align-items: center;
   }
-
   form {
     position: relative;
   }
-
   form > img {
     position: absolute;
     top: 12px;
     left: 16px;
     width: 16px;
   }
-
   form > input {
     border: 1px solid #00b87c;
     box-sizing: border-box;
@@ -167,22 +169,18 @@ const Wrapper = styled.div`
     color: #616061;
     padding-left: 40px;
   }
-
   form > input:focus {
     outline: none;
   }
-
   .list-container {
     padding: 19px 20px 0 20px;
   }
-
   .member {
     overflow: auto;
     padding: 24px;
     height: -webkit-fill-available;
     max-height: 371px;
   }
-
   .member::-webkit-scrollbar {
     width: 5px;
     background-color: transparent;
@@ -191,7 +189,6 @@ const Wrapper = styled.div`
     background-color: #00b87c;
     border-radius: 10px;
   }
-
   @media screen and (max-width: 480px) {
     padding: 0 24px;
     border-radius: 8px;
