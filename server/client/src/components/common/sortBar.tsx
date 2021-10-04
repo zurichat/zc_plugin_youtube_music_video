@@ -1,5 +1,6 @@
 import React from 'React'
-import { StyledComponent } from 'styled-components';
+import styled from 'styled-components';
+import ReactDOM from 'react-dom';
 
 function SortBar () {
     return (
@@ -29,71 +30,88 @@ function SortBar () {
 
     const Sortstyled = styled.div
         `
-            button.accordion2 {
-                background-color: #FFFFFF;
-                color: #1D1C1D;
-                cursor: pointer;
-                padding: 1.5rem 1rem;
-                width: 200px;
-                height: 3rem;
-                text-align: left;
-                border: none;
-                outline: none;
-                transition: 0.3s;
-                margin-bottom: var(--mb-10);
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
         
-            button.accordion2.active, button.accordion2:hover {
-                background-color: #ddd;
-            }
-        
-            .panel2.show2 {
-                display: block !important;
-            }
-        
-            .panel2 {
-                padding: 0 .75rem;
-                background-color: white;
-                max-height: 0;
-                overflow: hidden;
-                transition: 0.3s ease-in-out;
-                opacity: 0;
-                width: 175px;
-            }
-        
-            .panel2.show2 {
-                opacity: 1;
-                max-height: 800px;
-                box-shadow: 0px 2px 10px #D7D7D7;
-                border-radius: 4px;
-            }
-        
-            .panel2 p{
-                color: #1D1C1D;
-                padding: 0 .5rem;
-                height: 3rem;
-                background-color: #fff;
-                display: grid;
-                align-items: center;
-            }
-        
-            .panel2 p:hover{
-                background-color: #F6F6F6;
-            }
-        
-            .panel2 a{
-                text-decoration: none;
-                cursor: pointer;
-            }
-        
-        
-        
-            button.accordion2:after {
-                color: #777;
-            }
+        .sortBar{
+            display: flex;
+            width: 19rem;
+            justify-content: space-between;
+            box-sizing: border-box;
+            font-size: 1rem;
+            font-family: Lato sans-serif;
+        }
+    
+         button.accordion {
+            background-color: #FFFFFF;
+            color: #1D1C1D;
+            cursor: pointer;
+            padding: 1.5rem 1rem;
+            width: 200px;
+            height: 3rem;
+            text-align: left;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    
+        .sortBar button.accordion{
+            width: 239px;
+        }
+    
+        .sortBar .panel {
+            width: 215px;
+        }
+    
+        button.accordion.active, button.accordion:hover {
+            background-color: #F6F6F6;
+            border-radius: 8px 8px 0 0;
+        }
+    
+        .panel.show {
+            display: block !important;
+        }
+    
+        .panel {
+            padding: 0 .75rem;
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.3s ease-in-out;
+            opacity: 0;
+            width: 176px;
+        }
+    
+        .panel.show {
+            opacity: 1;
+            max-height: 800px;
+            box-shadow: 0px 2px 10px #D7D7D7;
+            border-radius: 0 0 4px 4px;
+        }
+    
+        .panel p{
+            color: #1D1C1D;
+            padding: 0 .5rem;
+            height: 3rem;
+            background-color: #fff;
+            display: grid;
+            align-items: center;
+        }
+    
+        .panel p:hover{
+            background-color: #F6F6F6;
+        }
+    
+        .panel a{
+            text-decoration: none;
+            cursor: pointer;
+        }
+    
+        button.accordion:after {
+            color: #F6F6F6;
+        }
         `
 
 export default SortBar;
