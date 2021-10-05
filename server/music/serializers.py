@@ -25,10 +25,10 @@ class MediaSerializer(serializers.Serializer):
 class MemberSerializer(serializers.Serializer):
     
     _id = serializers.CharField(read_only=True)
-    userId = serializers.CharField(read_only=False)
-    name = serializers.CharField(max_length=256, read_only=True)
+    userId = serializers.CharField(required=False, read_only=False)
+    name = serializers.CharField(max_length=256, required=False, read_only=True)
     avatar = serializers.CharField(max_length=256, required=False, read_only=True)
-    email = serializers.CharField(max_length=256, read_only=False)
+    email = serializers.CharField(max_length=256, required=False, read_only=False)
     job = serializers.CharField(max_length=256, required=False, read_only=False)
 
     def create(self, validated_data):

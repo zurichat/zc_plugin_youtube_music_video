@@ -240,9 +240,34 @@ class SongView(APIView):
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":"", "time":""} in the payload
 
 
+class DeleteSongView(APIView):
+
+    def get(self, request):
+        data = read_data(settings.SONG_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = SongSerializer(data=request.data)
+
+        if serializer.is_valid():
+            object_id = request.data["_id"]
+
+            data = delete_data(settings.SONG_COLLECTION, object_id=object_id)
+
+            updated_data = read_data(settings.SONG_COLLECTION)
+
+            centrifugo_post(plugin_id, {"event": "deleted_chat", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Note: use {"id": ""} to delete
+
+
 class CommentView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
+    serializer_class = CommentSerializer
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -263,6 +288,31 @@ class CommentView(APIView):
             return Response(data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteCommentView(APIView):
+    serializer_class = CommentSerializer
+
+    def get(self, request):
+        data = read_data(settings.COMMENTS_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = CommentSerializer(data=request.data)
+
+        if serializer.is_valid():
+            object_id = request.data["_id"]
+
+            data = delete_data(settings.COMMENTS_COLLECTION, object_id=object_id)
+
+            updated_data = read_data(settings.COMMENTS_COLLECTION)
+
+            centrifugo_post(plugin_id, {"event": "deleted_chat", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Note: use {"id": ""} to delete
 
 
 class CreateRoomView(APIView):
@@ -301,6 +351,34 @@ class RoomView(APIView):
     def get(self, request, format=None):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)    
+
+
+class DeleteRoomView(APIView):
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    serializer_class = RoomSerializer
+
+    def get(self, request):
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)    
+
+
+    def post(self, request):
+        serializer = RoomSerializer(data=request.data)
+
+        if serializer.is_valid():
+            object_id = request.data["_id"]
+
+            data = delete_data(settings.ROOM_COLLECTION, object_id=object_id)
+
+            updated_data = read_data(settings.ROOM_COLLECTION)
+
+            centrifugo_post(plugin_id, {"event": "room deleted", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Note: use {"id": ""} to delete
 
 
 class AddToRoomView(APIView): #working
@@ -360,6 +438,34 @@ class MemberListView(GenericAPIView):
             return Response(data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteUserView(APIView):
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    serializer_class = MemberSerializer
+
+    def get(self, request):
+        data = read_data(settings.MEMBERS_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)    
+
+
+    def post(self, request):
+        serializer = MemberSerializer(data=request.data)
+
+        if serializer.is_valid():
+            object_id = request.data["_id"]
+
+            data = delete_data(settings.MEMBERS_COLLECTION, object_id=object_id)
+
+            updated_data = read_data(settings.MEMBERS_COLLECTION)
+
+            centrifugo_post(plugin_id, {"event": "User left room", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Note: use {"id": ""} to delete
 
 
 class UserCountView(GenericAPIView):
