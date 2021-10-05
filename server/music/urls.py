@@ -1,6 +1,5 @@
 from django.urls import path
 from music.views import *
-from music.functions import *
 
 
 urlpatterns = [   
