@@ -3,7 +3,6 @@ from music.views import *
 from music.functions import *
 
 
-
 urlpatterns = [   
     
     path("test", MediaView.as_view(), name="test"),
@@ -36,5 +35,9 @@ urlpatterns = [
 
     path("user", MemberListView.as_view(), name="user"), #works for get and post
     path("deleteuser", DeleteUserView.as_view(), name="deleteuser"), #remove user
+           
+
+    # path("<int:orgid>/musicroom/<int:roomid>/users", AddToRoomView.as_view(), name="add_to_room"),
+    # path("deleteuser", removemember, name="deleteuser"), #remove user
     
 ]

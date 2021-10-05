@@ -14,7 +14,6 @@ import requests
 from requests import exceptions
 from django.http import Http404
 
-from rest_framework.decorators import api_view
 
 
 def check_if_user_is_in_room_and_return_room_id(user_id):
@@ -239,7 +238,7 @@ class SongView(APIView):
         return Response(updated_object, status=status.HTTP_202_ACCEPTED)
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":"", "time":""} in the payload
 
-
+  
 class DeleteSongView(APIView):
 
     def get(self, request):
@@ -267,7 +266,6 @@ class DeleteSongView(APIView):
 class CommentView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
-    serializer_class = CommentSerializer
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -315,6 +313,31 @@ class DeleteCommentView(APIView):
         # Note: use {"id": ""} to delete
 
 
+class CommentView(APIView):
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        data = read_data(settings.COMMENTS_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = CommentSerializer(data=request.data)
+
+        if serializer.is_valid():
+            payload = serializer.data
+
+            data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
+
+            updated_data = read_data(settings.COMMENTS_COLLECTION)
+
+            centrifugo_post(plugin_id, {"event": "added_chat", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class CreateRoomView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
@@ -350,7 +373,7 @@ class RoomView(APIView):
 
     def get(self, request, format=None):
         data = read_data(settings.ROOM_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)    
+        return Response(data, status=status.HTTP_200_OK) 
 
 
 class DeleteRoomView(APIView):
