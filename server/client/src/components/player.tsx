@@ -29,9 +29,22 @@ function Player() {
   const { currentSongEndpoint } = httpService.endpoints;
 
   const thumbnail = async (song: Song) => {
+    if(player.currentSongId === "") 
+    song = {
+      id: "",
+      title: "",
+      duration: "",
+      albumCover: "",
+      url: "",
+      addedBy: "",
+      userId: "",
+      likedBy: [],
+      time: "",
+    };
     try {
       await httpService.post(currentSongEndpoint, song);
       console.log("Succesfully sent to current-song Endpoint");
+      console.log(song);
     } catch (error) {
       console.log(error);
     }
