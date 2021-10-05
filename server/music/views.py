@@ -47,7 +47,7 @@ def get_room_info(room_id=None):
     room_image = ["https://svgshare.com/i/aXm.svg"]
 
     output = {
-        "room_name": room_data["data"][0]["name"],
+        "room_name": room_data["data"][0]["room_name"],
         "room_url": f"/music/{roomid}",
         "button_url": f"/music/{orgid}/musicroom/{roomid}/users",
         "room_image": room_image[0]
