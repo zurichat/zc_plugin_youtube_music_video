@@ -1,15 +1,11 @@
-from datetime import datetime
-
-class Media():
-    # def __init__(self, mediaid, name, url):
-    def __init__(self, name, url, time=None):        
-        # self.mediaid = mediaid
+class Media:
+    def __init__(self, media_id, name, url):
+        self.media_id = media_id
         self.name = name
         self.url = url
-        # self.time = time or datetime.now()
 
 
-class Song():
+class Song:
     def __init__(self, title, _id, duration, albumCover, url, userId, addedBy, likedBy, time):
 
         self._id = _id
@@ -23,19 +19,18 @@ class Song():
         self.time = time
 
 
-class Comment():
-    def __init__(self, _id, message, userId, name, avatar, time=None):
+class Comment:
+    def __init__(self, _id, message, userId, name, avatar, time):
 
         self._id = _id
         self.message = message
         self.userId = userId
         self.name = name
         self.avatar = avatar
-        # self.time = time
-        self.time = time or datetime.now()
+        self.time = time
 
 
-class Member():
+class Member:
     def __init__(self, _id, name, avatar):
         
         self._id = _id
@@ -43,7 +38,7 @@ class Member():
         self.avatar = avatar
           
 
-class Room():
+class Room:
     def __init__(self, _id, room_name, description, room_image, type_of_room, room_url, user_id):
 
         self._id = _id
