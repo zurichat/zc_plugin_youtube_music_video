@@ -3,18 +3,11 @@ from music.views import *
 from music.functions import *
 
 
-
 urlpatterns = [   
     
     path("test", MediaView.as_view(), name="test"),
-
     path("info", PluginInfoView.as_view(), name="info"),
-
     path("ping", PluginPingView.as_view(), name="ping"),
-
-     path("user-count", UserCountView.as_view(), name="header-user-count"),
-
-    path("current-song", change_room_image.as_view(), name="current-song"),
 
 
     path("songs", SongView.as_view(), name="song"),
@@ -27,12 +20,18 @@ urlpatterns = [
 
     path("createroom", CreateRoomView.as_view(), name="createroom"),
     path("room", RoomView.as_view(), name="room"),
-    path("deleteroom", removeroom, name="deleteroom"), #delete room 
-    path("joinroom", AddToRoomView.as_view(), name="joinroom"),
-    #  path("room/<str:_id>/user", RoomView.as_view(), name="room"),
+           
+
+    path("<int:orgid>/musicroom/<int:roomid>/users", AddToRoomView.as_view(), name="add_to_room"),
+    # path("deleteuser", removemember, name="deleteuser"), #remove user
     
 
     path("user", MemberListView.as_view(), name="user"), #works for get and post
-    path("deleteuser", removemember, name="deleteuser"), #remove user
+    path("addmember", AddMember.as_view(), name="addmembers"), # not working
+    path("user-count", UserCountView.as_view(), name="header-user-count"),
+
     
+    path("current-song", change_room_image.as_view(), name="current-song"),
+
+
 ]

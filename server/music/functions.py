@@ -60,7 +60,7 @@ def removesong(request):
     organization_id = settings.ORGANIZATON_ID
     collection_name = settings.SONG_COLLECTION
 
-    song_data = read_data(collection_name)
+    song_data = read_data(settings.SONG_COLLECTION)
     _id = song_data["data"][0]["_id"]
     userId = song_data["data"][0]["addBy"]
     # userId = song_data.GET.get("userId", None)
@@ -94,85 +94,4 @@ def removesong(request):
 
         except exceptions.ConnectionError as e:
             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
-
-
-@api_view(['GET', 'POST'])
-def removemember(request):
-
-    plugin_id = settings.PLUGIN_ID
-    organization_id = settings.ORGANIZATON_ID
-    collection_name = settings.MEMBERS_COLLECTION
-
-    user_data = read_data(collection_name)
-    _id = user_data["data"][0]["_id"]
-    # _id = song_data.GET.get("_id", None)
-
-    if request.method == 'GET':
-        data = read_data(collection_name)
-        return Response(data)
-
-    elif request.method == 'POST':
-
-        url = 'https://api.zuri.chat/data/delete'
-        payload = {
-            "plugin_id": plugin_id,
-            "organization_id": organization_id,
-            "collection_name": collection_name,
-            "bulk_delete": False,
-            "object_id": _id,
-            "filter": {}
-        }
-
-        try:
-            r = requests.post(url, data=json.dumps(payload))
-            #Note: use only {"_id": ""} in the payload
-
-            if r.status_code == 200:
-                return Response({"message": "User left room"},
-                                status=status.HTTP_200_OK)
-            else:
-                return Response({"error": r.json()['message']}, status=r.status_code)
-
-        except exceptions.ConnectionError as e:
-            return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
-
-
-@api_view(['GET', 'POST'])
-def removeroom(request):
-    plugin_id = settings.PLUGIN_ID
-    organization_id = settings.ORGANIZATON_ID
-    collection_name = settings.ROOM_COLLECTION
-
-    room_data = read_data(collection_name)
-    _id = room_data["data"][0]["_id"]
-
-    if request.method == 'GET':
-        data = read_data(collection_name)
-        return Response(data)
-
-    elif request.method == 'POST':
-
-        url = 'https://api.zuri.chat/data/delete'
-        payload = {
-            "plugin_id": plugin_id,
-            "organization_id": organization_id,
-            "collection_name": collection_name,
-            "bulk_delete": False,
-            "object_id": _id,
-            "filter": {}
-        }
-
-        try:
-            r = requests.post(url, data=json.dumps(payload))
-            #Note: use only {"_id": ""} in the payload
-
-            if r.status_code == 200:
-                return Response({"message": "room deleted successfully"},
-                                status=status.HTTP_200_OK)
-            else:
-                return Response({"error": r.json()['message']}, status=r.status_code)
-
-        except exceptions.ConnectionError as e:
-            return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
-
 

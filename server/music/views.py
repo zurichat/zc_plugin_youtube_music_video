@@ -16,6 +16,8 @@ from django.http import Http404
 
 from rest_framework.decorators import api_view
 
+plugin_id = settings.PLUGIN_ID
+
 
 def check_if_user_is_in_room_and_return_room_id(user_id):
     room_data = read_data(settings.ROOM_COLLECTION)
@@ -25,14 +27,15 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
     return room_data["data"][0]["_id"]
 
 
+room_image = ["https://svgshare.com/i/aXm.svg"]
+
+
 class change_room_image(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
-        room_image = ["https://svgshare.com/i/aXm.svg"]
-        
         if data['albumCover'] == "":
             room_image[0] = "https://svgshare.com/i/aXm.svg"
         else:
@@ -43,14 +46,11 @@ class change_room_image(APIView):
 
 def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION)
-    orgid = settings.ORGANIZATON_ID
-    roomid = settings.ROOM_ID
-    room_image = ["https://svgshare.com/i/aXm.svg"]
+    # room_url = room_data["data"][0]["_id"]
 
     output = {
         "room_name": room_data["data"][0]["name"],
-        "room_url": f"/music/{roomid}",
-        "button_url": f"/music/{orgid}/musicroom/{roomid}/users",
+        "room_url": f"/music",
         "room_image": room_image[0]
     }
     return output
@@ -239,6 +239,12 @@ class SongView(APIView):
         return Response(updated_object, status=status.HTTP_202_ACCEPTED)
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":"", "time":""} in the payload
 
+    # def delete(self, request):
+    #     object_id = request.data["_id"]
+    #     data = delete_data(settings.SONG_COLLECTION, object_id=object_id)
+    #     return Response(data, status=status.HTTP_200_OK)
+    #     # Note: use {"id": ""} to delete
+
 
 class CommentView(APIView):
     # authentication_classes = [TokenAuthentication]
@@ -275,9 +281,7 @@ class CreateRoomView(APIView):
         org_id = settings.ORGANIZATON_ID
         plugin_id = settings.PLUGIN_ID
         coll_name = settings.ROOM_COLLECTION
-
-        user_coll = settings.MEMBERS_COLLECTION
-        user_id = read_data(user_coll)
+        user_id = read_data(coll_name)
 
         plugin_id = settings.PLUGIN_ID
 
@@ -285,11 +289,10 @@ class CreateRoomView(APIView):
         serializer.is_valid(raise_exception=True)
 
         rooms = serializer.data
-        
+        rooms['user_id'] = user_id
         rooms['org_id'] = org_id
         rooms['plugin_id'] = plugin_id
-        rooms['user_id'] = user_id
-        data = write_data(coll_name, payload=rooms)
+        data = write_data(settings.ROOM_COLLECTION, payload=rooms)
         return Response(data)
 
 
@@ -300,10 +303,10 @@ class RoomView(APIView):
 
     def get(self, request, format=None):
         data = read_data(settings.ROOM_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)    
+        return Response(data, status=status.HTTP_200_OK)
 
 
-class AddToRoomView(APIView): #working
+class AddToRoomView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
@@ -360,6 +363,30 @@ class MemberListView(GenericAPIView):
             return Response(data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AddMember(GenericAPIView):
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    serializer_class = MemberSerializer
+
+    def post(self, request):
+        user_id = request.query_params.get('user')
+        user_name = request.query_params.get('display name')
+        avatar = request.query_params.get('profile picture')
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        coll_name = settings.MEMBERS_COLLECTION
+
+        member = serializer.data
+        member['_id'] = user_id
+        member['user_name'] = user_name
+        member['avatar'] = avatar
+        data = write_data(coll_name, payload=member)
+
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class UserCountView(GenericAPIView):
