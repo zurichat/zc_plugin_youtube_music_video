@@ -1,7 +1,7 @@
 from django.conf import settings
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.generics import ListCreateAPIView, GenericAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import JsonResponse
@@ -16,8 +16,6 @@ from django.http import Http404
 
 from rest_framework.decorators import api_view
 
-plugin_id = settings.PLUGIN_ID
-
 
 def check_if_user_is_in_room_and_return_room_id(user_id):
     room_data = read_data(settings.ROOM_COLLECTION)
@@ -27,15 +25,14 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
     return room_data["data"][0]["_id"]
 
 
-room_image = ["https://svgshare.com/i/aXm.svg"]
-
-
 class change_room_image(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
+        room_image = ["https://svgshare.com/i/aXm.svg"]
+        
         if data['albumCover'] == "":
             room_image[0] = "https://svgshare.com/i/aXm.svg"
         else:
@@ -48,10 +45,11 @@ def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION)
     orgid = settings.ORGANIZATON_ID
     roomid = settings.ROOM_ID
+    room_image = ["https://svgshare.com/i/aXm.svg"]
 
     output = {
         "room_name": room_data["data"][0]["name"],
-        "room_url": f"/music",
+        "room_url": f"/music/{roomid}",
         "button_url": f"/music/{orgid}/musicroom/{roomid}/users",
         "room_image": room_image[0]
     }
@@ -192,14 +190,7 @@ class PluginPingView(GenericAPIView):
         return JsonResponse({'server': server})
 
 
-# class MediaView(ListCreateAPIView):
-    
-#     queryset = Media.objects.all()
-#     serializer_class = MediaSerializer
-
-
 class MediaView(APIView):
-    
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
@@ -248,18 +239,10 @@ class SongView(APIView):
         return Response(updated_object, status=status.HTTP_202_ACCEPTED)
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":"", "time":""} in the payload
 
-    # def delete(self, request):
-    #     object_id = request.data["_id"]
-    #     data = delete_data(settings.SONG_COLLECTION, object_id=object_id)
-    #     return Response(data, status=status.HTTP_200_OK)
-    #     # Note: use {"id": ""} to delete
 
-
-
-# class CommentView(ListCreateAPIView):
+class CommentView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
-class CommentView(APIView):
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -282,25 +265,6 @@ class CommentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-    # def delete(self, request, pk, format=None):
-
-    #     comment = self.get_object(pk)
-    #     serializer = CommentSerializer(comment, data=request.data)
-
-    #     if serializer.is_valid():
-    #         payload = serializer.data
-
-    #         data = delete_data(settings.COMMENTS_COLLECTION, payload=payload)
-
-    #         updated_data = read_data(settings.COMMENTS_COLLECTION)
-
-    #         centrifugo_post(plugin_id, {"event": "chat deleted", "data": updated_data})
-
-    #         return Response(data, status=status.HTTP_200_OK)
-
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class CreateRoomView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
@@ -311,7 +275,9 @@ class CreateRoomView(APIView):
         org_id = settings.ORGANIZATON_ID
         plugin_id = settings.PLUGIN_ID
         coll_name = settings.ROOM_COLLECTION
-        user_id = read_data(coll_name)
+
+        user_coll = settings.MEMBERS_COLLECTION
+        user_id = read_data(user_coll)
 
         plugin_id = settings.PLUGIN_ID
 
@@ -319,10 +285,11 @@ class CreateRoomView(APIView):
         serializer.is_valid(raise_exception=True)
 
         rooms = serializer.data
-        rooms['user_id'] = user_id
+        
         rooms['org_id'] = org_id
         rooms['plugin_id'] = plugin_id
-        data = write_data(settings.ROOM_COLLECTION, payload=rooms)
+        rooms['user_id'] = user_id
+        data = write_data(coll_name, payload=rooms)
         return Response(data)
 
 
@@ -333,10 +300,10 @@ class RoomView(APIView):
 
     def get(self, request, format=None):
         data = read_data(settings.ROOM_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)    
 
 
-class AddToRoomView(APIView):
+class AddToRoomView(APIView): #working
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
@@ -395,30 +362,6 @@ class MemberListView(GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class AddMember(GenericAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-
-    serializer_class = MemberSerializer
-
-    def post(self, request):
-        user_id = request.query_params.get('user')
-        user_name = request.query_params.get('display name')
-        avatar = request.query_params.get('profile picture')
-
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        coll_name = settings.MEMBERS_COLLECTION
-
-        member = serializer.data
-        member['_id'] = user_id
-        member['user_name'] = user_name
-        member['avatar'] = avatar
-        data = write_data(coll_name, payload=member)
-
-        return Response(data, status=status.HTTP_200_OK)
-
-
 class UserCountView(GenericAPIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
@@ -431,78 +374,3 @@ class UserCountView(GenericAPIView):
         centrifugo_post(plugin_id, {"event": "header_user_count", "data": user_count})
 
         return Response(user_count)
-
-
-
-# class SongDetail(RetrieveUpdateDestroyAPIView):
-
-#     queryset = Song.objects.all()
-#     serializer_class = SongSerializer
-#     lookup_field = '_id'
-#     lookup_url_kwarg = '_id'
-
-
-# class DeleteSong(APIView):
-
-#     def get(self, request):
-#         data = read_data(settings.SONG_COLLECTION)
-#         return Response(data, status=status.HTTP_200_OK)
-    
-#     def delete(self, request, _id):
-        
-#         serializer_class = CommentSerializer
-#         lookup_field = 'pk'
-#         # serializer = SongSerializer(data=request.data)
-
-#         plugin_id = settings.PLUGIN_ID
-#         org_id = settings.ORGANIZATON_ID
-#         collection = settings.SONG_COLLECTION
-      
-#         url = "https://api.zuri.chat/data/delete"
-
-#         payload = {
-#             "plugin_id": plugin_id,
-#             "organization_id": org_id,
-#             "collection_name" : collection,
-#             "bulk_delete": False,
-#             "object_id": _id,
-#         }
-
-#         data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
-
-#         try:
-#             response = requests.request("POST", url, data=json.dumps(data))
-
-#             if response.status_code == 200:
-#                 r = response.json()
-#                 if r["data"]["deleted_count"] == 1:
-#                     return Response({"message": "Song deleted successfully"},
-#                                 status=status.HTTP_200_OK)
-#             else:
-#                 return Response(
-#                     data={"message": "Song not found"},
-#                     status=status.HTTP_400_BAD_REQUEST,
-#                 )
-
-#         except exceptions.ConnectionError as e:
-#             return Response(str(e), status=status.HTTP_502_BAD_GATEWAY)
-
-
-
-        # response = requests.request("POST", url, data=json.dumps(data))
-        # if response.status_code == 200:
-        #     r = response.json()
-        #     if r["data"]["deleted_count"] == 0:
-        #         return Response(
-        #             data={"message": "Song not found"},
-        #             status=status.HTTP_400_BAD_REQUEST,
-        #         )
-
-        #     return Response(data={"message": "successful"}, status=status.HTTP_200_OK)
-        # return handle_failed_request(response=response)
-
-@api_view(['GET', 'POST'])
-def listmedia(request):
-    media_obj=Media('test obj', 'https://svgshare.com/i/aXm.svg')
-    serializer_class = MediaSerializer(media_obj)
-    return Response(serializer_class.data)

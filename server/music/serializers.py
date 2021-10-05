@@ -4,37 +4,23 @@ from music.models import *
 
 
 class MediaSerializer(serializers.Serializer):
-    # mediaid = serializers.CharField(read_only=True)
+    mediaid = serializers.CharField(read_only=True)
     name = serializers.CharField()
     url = serializers.CharField()
-    # time = serializers.DateTimeField()
-
-
-    # def create(self, validated_data):
-    #     return Media.objects.create(**validated_data)
-
-    # def update(self, instance, validated_data):
-    #     # instance.mediaid = validated_data.get('mediaid', instance.mediaid)
-    #     instance.name = validated_data.get('name', instance.name)
-    #     instance.url = validated_data.get('url', instance.url)
-    #     instance.time = validated_data.get('time', instance.time)
-    #     instance.save()
-    #     return instance
-
-    # def __str__(self):
-    #     return str()
     
-    # def restore_object(self, attrs, instance=None):
-    #     if instance is not None:
-            
-    #         instance.media_id = attrs.get("media_id", instance.media_id)
-    #         instance.name = attrs.get("name", instance.name)
-    #         instance.url = attrs.get("url", instance.url)
+    def create(self, validated_data):
+        return Media(**validated_data)
 
-    #         return instance
-    #     return Media
+    def update(self, instance, validated_data):
+        instance.mediaid = validated_data.get('mediaid', instance.mediaid)
+        instance.name = validated_data.get('name', instance.name)
+        instance.url = validated_data.get('url', instance.url)
+        instance.save()
+        return instance
 
-    
+    def __str__(self):
+        return str()
+
 
 class MemberSerializer(serializers.Serializer):
     
@@ -46,7 +32,8 @@ class MemberSerializer(serializers.Serializer):
     job = serializers.CharField(max_length=256, required=False, read_only=False)
 
     def create(self, validated_data):
-        return Member.objects.create(**validated_data)
+        return Member(**validated_data)
+        
 
     def update(self, instance, validated_data):
         
@@ -67,16 +54,15 @@ class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
-    userId = serializers.CharField(read_only=True)
-    # userId = serializers.CharField(max_length=256, required=False)
-    name = serializers.CharField(max_length=256, required=False)
-    avatar = serializers.CharField(max_length=256, required=False)
-    #time = serializers.DateTimeField()
+    # userId = serializers.CharField(read_only=True)
+    # # userId = serializers.CharField(max_length=256, required=False)
+    # name = serializers.CharField(max_length=256, required=False)
+    # avatar = serializers.CharField(max_length=256, required=False)
+    commenter = MemberSerializer(many=True, required=False)
     time = serializers.IntegerField(required=False)
 
 
     def create(self, validated_data):
-        # return Comment(**validated_data)
         return Comment(**validated_data)
 
     def update(self, instance, validated_data):
@@ -99,8 +85,8 @@ class RoomSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=300, required=False)
     room_image = serializers.CharField(required=False)
     type_of_room = serializers.CharField(max_length=50, required=False)
-    room_url = serializers.CharField(required=False)
-    userId = serializers.ListField(child=serializers.CharField(max_length=128), required=False, default=[])
+    userId = MemberSerializer(many=True, required=False)
+
 
     def create(self, validated_data):
         return Room(**validated_data)
@@ -110,8 +96,7 @@ class RoomSerializer(serializers.Serializer):
         instance.description = validated_data.get('description', instance.description)
         instance.room_image = validated_data.get('room_image', instance.room_image)
         instance.type_of_room = validated_data.get('type_of_room', instance.type_of_room)
-        instance.room_url = validated_data.get('room_url', instance.room_url)
-        instance.userId = validated_data.get('userId', instance.userId)
+        # instance.userId = validated_data.get('userId', instance.userId)
         return instance
 
     def __str__(self):
@@ -120,25 +105,24 @@ class RoomSerializer(serializers.Serializer):
 
 class SongSerializer(serializers.Serializer):
     
-    # _id = serializers.IntegerField(read_only=True)
     _id = serializers.CharField(read_only=False)
     title = serializers.CharField(required=False)
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    addedBy = serializers.CharField(required=False)
+    # addedBy = serializers.CharField(required=False)
+    addedBy = MemberSerializer(many=True, required=False)
     likedBy = serializers.CharField(required=False)
 
     def create(self, validated_data):
-        # return Song(_id=None, **validated_data)
-        return Song.objects.create(**validated_data)
+        return Song(**validated_data)
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get('title', instance.title)
         instance.duration = validated_data.get('duration', instance.duration)
         instance.albumcover = validated_data.get('albumcover', instance.albumcover)
         instance.url = validated_data.get('url', instance.url)
-        instance.addedBy = validated_data.get('addedBy', instance.addedBy)
+        # instance.addedBy = validated_data.get('addedBy', instance.addedBy)
         instance.likedBy = validated_data.get('likedBy', instance.likedBy)
         instance.save()
         return instance
