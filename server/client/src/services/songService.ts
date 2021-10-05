@@ -23,18 +23,19 @@ const getSongs = () => {
 };
 
 const addSong = async (song: SongToAdd) => {
-  console.log("adding song", { song });
+  console.log("adding song", song);
 
   return httpService.post(songEndpoint, song).then(() => {
     const { songs } = store.getState();
-    if (songs.length > 7) deleteSong(songs[songs.length - 1].id);
+    songs.slice(6).forEach(({ id }) => deleteSong(id));
   });
 };
 
 const deleteSong = async (id: string) => {
-  return httpService
-    .post(endpoints.deleteSong, { id })
-    .then(() => songDispatch.removeSong(id));
+  return httpService.post(endpoints.deleteSong, { id }).then((res) => {
+    songDispatch.removeSong(id);
+    return res;
+  });
 };
 
 const likeSong = async (like: LikeSong) => {

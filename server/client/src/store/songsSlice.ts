@@ -12,14 +12,14 @@ const songsSlice = createSlice({
 
   reducers: {
     initialize: (state, { payload }: PayloadAction<Song[]>) => {
-      return payload.map(sanitize).reverse();
+      return payload.map(sanitize);
     },
 
     addSong: (state, { payload }: PayloadAction<Song>) => {
       state.unshift(sanitize(payload));
     },
 
-    removeSong: (state, { payload }) => {
+    removeSong: (state, { payload }: PayloadAction<{ id: string }>) => {
       state = state.filter((song) => song.id !== payload.id);
     },
 

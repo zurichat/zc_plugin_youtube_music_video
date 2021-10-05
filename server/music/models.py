@@ -6,23 +6,25 @@ class Media:
 
 
 class Song:
-    def __init__(self, title, _id, duration, albumcover, url, addedBy, likedBy):
+    def __init__(self, title, _id, duration, albumCover, url, userId, addedBy, likedBy, time):
 
         self._id = _id
         self.title = title
         self.duration = duration
-        self.albumcover = albumcover
+        self.albumCover = albumCover
         self.url = url
+        self.userId = userId
         self.addedBy = addedBy
         self.likedBy = likedBy
+        self.time = time
 
 
 class Comment:
-    def __init__(self, _id, message, user_id, name, avatar, time):
+    def __init__(self, _id, message, userId, name, avatar, time):
 
         self._id = _id
         self.message = message
-        self.user_id = user_id
+        self.userId = userId
         self.name = name
         self.avatar = avatar
         self.time = time
@@ -34,8 +36,7 @@ class Member:
         self._id = _id
         self.name = name
         self.avatar = avatar
-        
-        
+          
 
 class Room:
     def __init__(self, _id, room_name, description, room_image, type_of_room, room_url, user_id):
