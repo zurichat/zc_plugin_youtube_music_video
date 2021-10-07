@@ -52,13 +52,16 @@ class MemberSerializer(serializers.Serializer):
 
 class CommentSerializer(serializers.Serializer):
 
-    _id = serializers.CharField(read_only=True)
+     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
     # userId = serializers.CharField(read_only=True)
     # # userId = serializers.CharField(max_length=256, required=False)
     # name = serializers.CharField(max_length=256, required=False)
     # avatar = serializers.CharField(max_length=256, required=False)
-    commenter = MemberSerializer(many=True, required=False)
+    # commenter = MemberSerializer(many=True, required=False)
+    userId = MemberSerializer(many=True, required=False)
+    name = MemberSerializer(many=True, required=False)
+    avatar = MemberSerializer(many=True, required=False)
     time = serializers.IntegerField(required=False)
 
 
