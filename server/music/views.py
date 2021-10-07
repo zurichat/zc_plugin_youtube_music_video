@@ -257,7 +257,7 @@ class DeleteSongView(APIView):
 
             updated_data = read_data(settings.SONG_COLLECTION)
 
-            centrifugo_post(plugin_id, {"event": "deleted_chat", "data": updated_data})
+            centrifugo_post(plugin_id, {"event": "deleted_song", "data": updated_data})
 
             return Response(data, status=status.HTTP_200_OK)
 
@@ -314,6 +314,30 @@ class DeleteCommentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # Note: use {"id": ""} to delete
 
+
+
+class UpdateCommentView(APIView):
+
+    def get(self, request):
+        data = read_data(settings.COMMENTS_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
+
+    def put(self, request):
+        serializer = CommentSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            payload = serializer.data
+            object_id = request.data["_id"]
+
+            data = write_data(settings.COMMENTS_COLLECTION, object_id=object_id, payload=payload, method="PUT")
+
+            updated_data = read_data(settings.COMMENTS_COLLECTION)
+
+            centrifugo_post(plugin_id, {"event": "updated_chat", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 

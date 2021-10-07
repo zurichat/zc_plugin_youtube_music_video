@@ -22,6 +22,7 @@ urlpatterns = [
 
     path("comments", CommentView.as_view(), name="comments"),
     path("deletecomment", DeleteCommentView.as_view(), name="deletecomment"),
+    path("updatecomment", UpdateCommentView.as_view(), name="updatecomment"),
     # path("deletecomment", removecomment, name="deletecomment"), #remove comments
 
 
