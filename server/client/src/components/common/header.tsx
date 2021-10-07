@@ -3,8 +3,6 @@ import  styled  from  'styled-components';
 
 function Header() {
   
-
-
     return (
       <Headerstyled>
         <div className="Header">
