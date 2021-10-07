@@ -116,6 +116,8 @@ class SongSerializer(serializers.Serializer):
     # addedBy = serializers.CharField(required=False)
     addedBy = MemberSerializer(many=True, required=False)
     likedBy = serializers.CharField(required=False)
+    userId = MemberSerializer(many=True, required=False)
+    time = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
         return Song(**validated_data)
@@ -127,6 +129,9 @@ class SongSerializer(serializers.Serializer):
         instance.url = validated_data.get('url', instance.url)
         # instance.addedBy = validated_data.get('addedBy', instance.addedBy)
         instance.likedBy = validated_data.get('likedBy', instance.likedBy)
+        instance.userId = validated_data.get('userId', instance.userId)
+        instance.time = validated_data.get('time', instance.time)
+
         instance.save()
         return instance
 

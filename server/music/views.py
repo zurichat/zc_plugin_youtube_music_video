@@ -23,14 +23,17 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
         return None
     return room_data["data"][0]["_id"]
 
+room_image = ["https://svgshare.com/i/aXm.svg"]
 
 class change_room_image(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        return Response({'message': 'This endpoint is for editing the music room icon in the sidebar '},status=status.HTTP_200_OK)
+
     def post(self, request):
         data = request.data
-        room_image = ["https://svgshare.com/i/aXm.svg"]
         
         if data['albumCover'] == "":
             room_image[0] = "https://svgshare.com/i/aXm.svg"
@@ -44,7 +47,6 @@ def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION)
     orgid = settings.ORGANIZATON_ID
     roomid = settings.ROOM_ID
-    room_image = ["https://svgshare.com/i/aXm.svg"]
 
     output = {
         "room_name": room_data["data"][0]["room_name"],
@@ -313,29 +315,6 @@ class DeleteCommentView(APIView):
         # Note: use {"id": ""} to delete
 
 
-class CommentView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        data = read_data(settings.COMMENTS_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = CommentSerializer(data=request.data)
-
-        if serializer.is_valid():
-            payload = serializer.data
-
-            data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
-
-            updated_data = read_data(settings.COMMENTS_COLLECTION)
-
-            centrifugo_post(plugin_id, {"event": "added_chat", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class CreateRoomView(APIView):
