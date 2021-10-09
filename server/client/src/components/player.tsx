@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, connect } from "react-redux";
 
 import store from "../store";
 import { songSelect } from "../store/songsSlice";
@@ -167,4 +167,4 @@ const Wrapper = styled.div<{ init: boolean }>`
   }
 `;
 
-export default Player;
+export default connect (null, {})(Player);

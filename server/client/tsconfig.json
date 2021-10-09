@@ -3,9 +3,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "declarationDir": "dist",
-    "downlevelIteration": true
+    "downlevelIteration": true,
   },
   "files": ["src/zuri-music-plugin.tsx"],
   "include": ["src/**/*"],
-  "exclude": ["src/**/*.test*"]
 }
