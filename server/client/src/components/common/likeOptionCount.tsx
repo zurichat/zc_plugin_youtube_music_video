@@ -1,11 +1,11 @@
-import { useSelector } from "react-redux";
-import styled from "styled-components";
+import { useSelector } from "react-redux"
+import styled from "styled-components"
 
-import songService from "../../services/songService";
-import { userSelect } from "../../store/usersSlice";
+import songService from "../../services/songService"
+import { userSelect } from "../../store/usersSlice"
 
-import Like from "./like";
-import option from "../../media/option.svg";
+import Like from "./like"
+import option from "../../media/option.svg"
 
 // interface Props {
 //   duration?: string;
@@ -15,26 +15,25 @@ import option from "../../media/option.svg";
 // }
 
 function LikeOptionCount(props) {
-  const { duration, likedBy = [], songId, handleOption } = props;
+  const { duration, likedBy = [], songId, handleOption } = props
 
-  const { id: userId } = useSelector(userSelect.currentUser);
+  const { id: userId } = useSelector(userSelect.currentUser)
 
-  const { length: count } = likedBy;
-  const liked = likedBy.some((id) => id === userId);
+  const { length: count } = likedBy
+  const liked = likedBy.some(id => id === userId)
 
-  const countText =
-    count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
+  const countText = count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`
 
-  const countClasses = duration ? "like-count" : "like-count-player";
+  const countClasses = duration ? "like-count" : "like-count-player"
 
   const handleLike = () => {
-    songService.likeSong({ songId, userId, like: !liked });
-  };
+    songService.likeSong({ songId, userId, like: !liked })
+  }
 
   const formatDuration = (duration: string) => {
-    const [h, ...rest] = duration.split(":");
-    return (h === "0" ? "" : `${h}:`) + rest.join(":");
-  };
+    const [h, ...rest] = duration.split(":")
+    return (h === "0" ? "" : `${h}:`) + rest.join(":")
+  }
 
   return (
     <Wrapper duration={duration}>
@@ -49,9 +48,9 @@ function LikeOptionCount(props) {
       </div>
 
       <img
-        onClick={(e) => {
-          e.stopPropagation();
-          handleOption(true);
+        onClick={e => {
+          e.stopPropagation()
+          handleOption(true)
         }}
         data-option="option"
         src={option}
@@ -60,7 +59,7 @@ function LikeOptionCount(props) {
         className="like-option"
       />
     </Wrapper>
-  );
+  )
 }
 
 const Wrapper = styled.div<{ duration: string }>`
@@ -89,17 +88,29 @@ const Wrapper = styled.div<{ duration: string }>`
     margin-right: 0;
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 850px) {
     .like-duration {
       display: none;
     }
   }
 
-  @media screen and (max-width: 506px) {
+  @media screen and (max-width: 767px) {
+    .like-duration {
+      display: inline-block;
+    }
+  }
+
+  @media screen and (max-width: 540px) {
+    .like-duration {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 450px) {
     .like-count {
       display: none;
     }
   }
-`;
+`
 
-export default LikeOptionCount;
+export default LikeOptionCount

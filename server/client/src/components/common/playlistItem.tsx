@@ -1,15 +1,15 @@
-import styled from "styled-components";
-import Song from "../../types/song";
+import styled from "styled-components"
+import Song from "../../types/song"
 
-import { playerAction } from "../../store/playerSlice";
-import LikeOptionCount from "./likeOptionCount";
-import OptionMenu from "./optionMenu";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { userSelect } from "../../store/usersSlice";
+import { playerAction } from "../../store/playerSlice"
+import LikeOptionCount from "./likeOptionCount"
+import OptionMenu from "./optionMenu"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { userSelect } from "../../store/usersSlice"
 
 interface Props {
-  song: Song;
+  song: Song
 }
 
 function PlaylistItem(props: Props) {
@@ -21,38 +21,38 @@ function PlaylistItem(props: Props) {
     userId,
     duration,
     likedBy,
-    url,
-  } = props.song;
+    url
+  } = props.song
 
-  const [showOption, setShowOption] = useState(false);
-  const currentSongId = useSelector((_state: any) => _state.player.currentSongId) 
+  const [showOption, setShowOption] = useState(false)
+  const currentSongId = useSelector(
+    (_state: any) => _state.player.currentSongId
+  )
 
-  const user = useSelector(userSelect.userById(userId));
+  const user = useSelector(userSelect.userById(userId))
 
-  const handlePlay = (e) => {
-    if (e.target.dataset.like) return;
-    if (e.target.dataset.option) return;
+  const handlePlay = e => {
+    if (e.target.dataset.like) return
+    if (e.target.dataset.option) return
 
-    playerAction.changeSong(props.song);
-    playerAction.dispatchShowPlayer(true);
-    playerAction.dispatchPlaying(true);
-  };
+    playerAction.changeSong(props.song)
+    playerAction.dispatchShowPlayer(true)
+    playerAction.dispatchPlaying(true)
+  }
 
-  const handleOption = (e) => {
-    setShowOption(e);
-  };
+  const handleOption = e => {
+    setShowOption(e)
+  }
 
   useEffect(() => {
     const onClickOutside = () => {
-      setShowOption(false);
-    };
-    window.addEventListener("click", onClickOutside), false;
+      setShowOption(false)
+    }
+    window.addEventListener("click", onClickOutside), false
     return () => {
-      window.removeEventListener("click", onClickOutside);
-    };
-  }, []);
- 
-  
+      window.removeEventListener("click", onClickOutside)
+    }
+  }, [])
 
   return (
     <Wrapper isPlaying={currentSongId === props.song.id}>
@@ -61,7 +61,8 @@ function PlaylistItem(props: Props) {
         toggleOption={handleOption}
         {...{ url, songId, userId }}
       />
-      <div className={`item-group-1`}>
+
+      <div className="item-group-1">
         <img src={albumCover} alt="album cover" className="item-albumCover" />
         <div className="item-info">
           <div className="item-title">{title}</div>
@@ -75,23 +76,20 @@ function PlaylistItem(props: Props) {
       <LikeOptionCount {...{ songId, duration, likedBy, handleOption }} />
       <div className="handle-play" onClick={handlePlay}></div>
     </Wrapper>
-  );
+  )
 }
 
-const Wrapper = styled("div")<{isPlaying: boolean}>`
+const Wrapper = styled.div<{ isPlaying: boolean }>`
   position: relative;
   display: flex;
   justify-content: space-between;
-  background: #fff;
+  background: ${props => (props.isPlaying ? "#CBFFEE" : "#fff")};
   font-family: "Lato", sans-serif;
   transition: all 200ms ease-in-out;
   box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04);
   height: 50px;
   margin-bottom: 8px;
   cursor: pointer;
-  ${({isPlaying}) => isPlaying && `
-  background: #CBFFEE;
-`}
 
   .handle-play {
     position: absolute;
@@ -107,9 +105,7 @@ const Wrapper = styled("div")<{isPlaying: boolean}>`
     justify-items: center;
   }
   .item-group-1.now-playing {
-    background-color: #CBFFEE;
-    
-   
+    background-color: #cbffee;
   }
 
   .item-albumCover {
@@ -123,7 +119,7 @@ const Wrapper = styled("div")<{isPlaying: boolean}>`
   }
 
   .item-info {
-    width: 300px;
+    width: 220px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -161,6 +157,6 @@ const Wrapper = styled("div")<{isPlaying: boolean}>`
       margin-right: 10px;
     }
   }
-`;
+`
 
-export default PlaylistItem;
+export default PlaylistItem
