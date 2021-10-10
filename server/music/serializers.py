@@ -46,19 +46,14 @@ class MemberSerializer(serializers.Serializer):
         instance.save()
         return instance
 
-    def __str__(self):
-        return str()
-
 
 class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
-    # userId = serializers.CharField(read_only=True)
-    # # userId = serializers.CharField(max_length=256, required=False)
-    # name = serializers.CharField(max_length=256, required=False)
-    # avatar = serializers.CharField(max_length=256, required=False)
-    commenter = MemberSerializer(many=True, required=False)
+    userId = MemberSerializer(many=True, required=False)
+    name = MemberSerializer(many=True, required=False)
+    avatar = MemberSerializer(many=True, required=False)
     time = serializers.IntegerField(required=False)
 
 
@@ -81,12 +76,11 @@ class CommentSerializer(serializers.Serializer):
 class RoomSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
-    room_name = serializers.CharField(max_length=100)   
+    room_name = serializers.CharField(max_length=100, required=False)   
     description = serializers.CharField(max_length=300, required=False)
     room_image = serializers.CharField(required=False)
-    type_of_room = serializers.CharField(max_length=50, required=False)
-    userId = MemberSerializer(many=True, required=False)
-
+    private = serializers.BooleanField(default=False)
+    room_member_id = MemberSerializer(many=True, required=False)
 
     def create(self, validated_data):
         return Room(**validated_data)
@@ -95,8 +89,8 @@ class RoomSerializer(serializers.Serializer):
         instance.room_name = validated_data.get('room_name', instance.room_name)
         instance.description = validated_data.get('description', instance.description)
         instance.room_image = validated_data.get('room_image', instance.room_image)
-        instance.type_of_room = validated_data.get('type_of_room', instance.type_of_room)
-        # instance.userId = validated_data.get('userId', instance.userId)
+        instance.private = validated_data.get('private', instance.private)
+        instance.room_member_id = validated_data.get('room_member_id', instance.room_member_id)
         return instance
 
     def __str__(self):
@@ -110,7 +104,6 @@ class SongSerializer(serializers.Serializer):
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    # addedBy = serializers.CharField(required=False)
     addedBy = MemberSerializer(many=True, required=False)
     likedBy = serializers.CharField(required=False)
 

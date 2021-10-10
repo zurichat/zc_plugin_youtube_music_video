@@ -47,7 +47,7 @@ def get_room_info(room_id=None):
     room_image = ["https://svgshare.com/i/aXm.svg"]
 
     output = {
-        "room_name": room_data["data"][0]["name"],
+        "room_name": room_data["data"][0]["room_name"],
         "room_url": f"/music/{roomid}",
         "button_url": f"/music/{orgid}/musicroom/{roomid}/users",
         "room_image": room_image[0]
@@ -313,31 +313,6 @@ class DeleteCommentView(APIView):
         # Note: use {"id": ""} to delete
 
 
-class CommentView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        data = read_data(settings.COMMENTS_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = CommentSerializer(data=request.data)
-
-        if serializer.is_valid():
-            payload = serializer.data
-
-            data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
-
-            updated_data = read_data(settings.COMMENTS_COLLECTION)
-
-            centrifugo_post(plugin_id, {"event": "added_chat", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class CreateRoomView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
@@ -349,8 +324,7 @@ class CreateRoomView(APIView):
         plugin_id = settings.PLUGIN_ID
         coll_name = settings.ROOM_COLLECTION
 
-        user_coll = settings.MEMBERS_COLLECTION
-        user_id = read_data(user_coll)
+        userId = read_data(settings.MEMBERS_COLLECTION)
 
         plugin_id = settings.PLUGIN_ID
 
@@ -361,7 +335,8 @@ class CreateRoomView(APIView):
         
         rooms['org_id'] = org_id
         rooms['plugin_id'] = plugin_id
-        rooms['user_id'] = user_id
+        rooms['room_member_id'] = userId
+        
         data = write_data(coll_name, payload=rooms)
         return Response(data)
 
@@ -371,9 +346,26 @@ class RoomView(APIView):
     # permission_classes = [IsAuthenticated]
     serializer_class = RoomSerializer
 
-    def get(self, request, format=None):
+    def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK) 
+
+
+class RoomDetailView(APIView):
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request,*args, **kwargs):
+        serializer = RoomSerializer(data=request.data)
+
+        if serializer.is_valid():
+
+            pk = kwargs['_id']
+
+            data = read_data(settings.ROOM_COLLECTION, object_id=pk)
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
 
 
 class DeleteRoomView(APIView):
@@ -404,48 +396,17 @@ class DeleteRoomView(APIView):
         # Note: use {"id": ""} to delete
 
 
-class AddToRoomView(APIView): #working
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
-
-    @staticmethod
-    def get_obj_id_and_append_user_id(request):
-        room_data = read_data(settings.ROOM_COLLECTION)
-        room_users = room_data["data"][0]["room_user_ids"]
-        _id = room_data["data"][0]["_id"]
-        new_user = {"userEmail": request.data["userEmail"], "userId": request.data["userId"]}
-        # TODO: Do a check for existing user before appending
-        room_users.append(new_user)
-        return _id, room_users
-
-    def get(self, request,  orgid=settings.ORGANIZATON_ID, roomid=settings.ROOM_ID):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data)
-
-    def post(self, request, orgid=settings.ORGANIZATON_ID, roomid=settings.ROOM_ID):
-        _id, updated_room = self.get_obj_id_and_append_user_id(request)
-
-        payload = {
-            "room_user_ids": updated_room
-        }
-
-        data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
-
-        centrifugo_post(plugin_id, {"event": "entered_room", "data": data})
-        return Response(data, status=status.HTTP_202_ACCEPTED)
-
-
 class MemberListView(GenericAPIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
     serializer_class = MemberSerializer
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.MEMBERS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -503,3 +464,35 @@ class UserCountView(GenericAPIView):
         centrifugo_post(plugin_id, {"event": "header_user_count", "data": user_count})
 
         return Response(user_count)
+
+
+class AddToRoomView(APIView): #working
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def get_obj_id_and_append_user_id(request):
+        room_data = read_data(settings.ROOM_COLLECTION)
+        room_users = room_data["data"][0]["room_member_id"]
+        _id = room_data["data"][0]["_id"]
+        new_user = {"email": request.data["email"], "userId": request.data["userId"]}
+        # TODO: Do a check for existing user before appending
+        room_users.append(new_user)
+        return _id, room_users
+
+    def get(self, request,  *args, **kwargs):
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(data)
+
+    def post(self, request,  *args, **kwargs):
+        _id, updated_room = self.get_obj_id_and_append_user_id(request)
+
+        payload = {
+            "room_member_id": updated_room
+        }
+
+        data = write_data(settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT")
+
+        centrifugo_post(plugin_id, {"event": "entered_room", "data": data})
+        return Response(data, status=status.HTTP_202_ACCEPTED)
+

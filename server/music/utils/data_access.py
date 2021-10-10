@@ -41,9 +41,12 @@ def verify_token(token):
     return response.response_data
 
 
-def read_data(collection=None, filter_data=None):
+def read_data(collection=None, object_id=None, filter_data=None):
     if filter_data is None:
         filter_data = {}
+    
+    if object_id is None:
+        object_id = ""
 
     request_client = RequestClient()
 
