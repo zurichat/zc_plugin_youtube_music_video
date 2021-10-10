@@ -6,5 +6,5 @@
     "downlevelIteration": true,
   },
   "files": ["src/zuri-music-plugin.tsx"],
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "svgTransform.js"],
 }
