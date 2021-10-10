@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
-import { useSelector, connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 import store from "../store";
 import { songSelect } from "../store/songsSlice";
@@ -82,10 +82,6 @@ function Player() {
     playerAction.changeSong(songs[indexNext]);
   };
 
-  const handleNext = () => {
-    handedEnded();
-  }
-
   return (
     <Wrapper init={init}>
       <div className="player-now">Now Playing</div>
@@ -112,12 +108,8 @@ function Player() {
 
       <div className="player-title">{song.title}</div>
 
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div style={{ display: "flex", justifyContent: "flex-start" }}>
         <LikeOptionCount likedBy={song.likedBy} songId={song.id} />
-        <div 
-        className="nextsong"
-        onClick={handleNext}
-        >NEXT</div>
       </div>
 
       {upnext.length > 0 && <div className="player-next">Up next</div>}
@@ -134,17 +126,6 @@ const Wrapper = styled.div<{ init: boolean }>`
   .player-wrapper {
     position: relative;
     padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
-  }
-
-  .nextsong {
-    color: #00bb7c;
-    font-size: 18px;
-    font-weight: 700;
-  }
-
-  .nextsong:hover {
-    font-weight: 900;
-    cursor:grab;
   }
 
   .react-player {
@@ -167,4 +148,4 @@ const Wrapper = styled.div<{ init: boolean }>`
   }
 `;
 
-export default connect (null, {})(Player);
+export default Player;
