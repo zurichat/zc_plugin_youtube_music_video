@@ -5,7 +5,7 @@ import Parcel from "single-spa-react/parcel";
 import { pluginHeader, headerConfig } from "../utils/config";
 
 import Playlist from "./playlist";
-import RoomHeader from "./roomHeader";
+// import RoomHeader from "./roomHeader";
 import PasteUrl from "./common/pasteUrl";
 import Chat from "./chat";
 import { useSelector } from "react-redux";

@@ -1,11 +1,8 @@
-import React from 'react';
-import logo from './Frame 8866.svg';
+import logo from './Frame8866.svg';
 import  styled  from  'styled-components'; 
 
 function Header() {
   
-
-
     return (
       <Headerstyled>
         <div className="Header">
