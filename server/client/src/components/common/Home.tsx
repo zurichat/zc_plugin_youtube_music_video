@@ -1,4 +1,8 @@
-import React from 'react';
+import Pluginlogo from '../../media/Rectangle158.svg';
+import Rectangle159 from '../../media/Rectangle159.svg';
+import Rectangle160 from '../../media/Rectangle160.svg';
+import Rectangle163 from '../../media/Rectangle163.svg';
+import LandingScript from './landingscript';
 import  styled  from  'styled-components';
 
 function Home() {
@@ -17,7 +21,7 @@ function Home() {
             
                 <div className="plugin__dets">
                     <div className="plugin__img">
-                    <img src="Rectangle 158.svg" alt="Plugin Logo"/>
+                    <img src={Pluginlogo} alt="Plugin Logo"/>
                     </div>
 
                     <div className="plugin__dets_mb">
@@ -131,8 +135,8 @@ function Home() {
                                 </div>
                             </div>
                             
-                            <a className="prev" onclick="plusSlides(-1)">&#10094;</a>
-                            <a className="next" onclick="plusSlides(1)">&#10095;</a>
+                            <a className="prev" onClick={plusSlides(-1)}>&#10094;</a>
+                            <a className="next" onClick={plusSlides(1)}>&#10095;</a>
                             </div>
                             <br/>
                             
@@ -685,15 +689,15 @@ function Home() {
 }
 
 .img1{
-    background-image: url(img/Rectangle\ 159.svg);
+    background-image: url(${Rectangle159});
 }
 
 .img2{
-    background-image: url(img/Rectangle\ 160.svg);
+    background-image: url(${Rectangle160});
 }
 
 .img3{
-    background-image: url(img/Rectangle\ 161.svg);
+    background-image: url(${Rectangle163});
 }
 
 .display h1{
@@ -791,7 +795,7 @@ function Home() {
 .profile__img{
     width: 2rem;
     height: 2rem;
-    background: url(img/Rectangle\ 163.svg);
+    background: url(../../media/Rectangle163.svg);
     background-position: center;
     border: 3px;
     margin-right:  var(--mb-10);
@@ -1120,7 +1124,8 @@ function Home() {
 }
         `
 
-export default Home;
+    export default Home;
 
-
-
+function plusSlides(arg0: number): import("react").MouseEventHandler<HTMLAnchorElement> {
+    throw new Error('Function not implemented.');
+}
