@@ -1,8 +1,7 @@
 from django.conf import settings
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import GenericAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.http import JsonResponse
 import json
@@ -13,7 +12,7 @@ from rest_framework.views import APIView
 import requests
 from requests import exceptions
 from django.http import Http404
-
+# from rest_framework.authentication import TokenAuthentication
 
 
 def check_if_user_is_in_room_and_return_room_id(user_id):
@@ -26,8 +25,7 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
 room_image = ["https://svgshare.com/i/aXm.svg"]
 
 class change_room_image(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def get(self, request):
         return Response({'message': 'This endpoint is for editing the music room icon in the sidebar '},status=status.HTTP_200_OK)
@@ -147,8 +145,6 @@ class SidebarView(GenericAPIView):
 
 
 class PluginInfoView(GenericAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -180,8 +176,6 @@ class PluginInfoView(GenericAPIView):
 
 
 class PluginPingView(GenericAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         server = [
@@ -192,8 +186,6 @@ class PluginPingView(GenericAPIView):
 
 
 class MediaView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         payload = {"email": "hng.user01@gmail.com", "password": "password"}
@@ -205,8 +197,6 @@ class MediaView(APIView):
 
 
 class SongView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.SONG_COLLECTION)
@@ -266,8 +256,6 @@ class DeleteSongView(APIView):
 
 
 class CommentView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -342,8 +330,6 @@ class UpdateCommentView(APIView):
 
 
 class CreateRoomView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     serializer_class = RoomSerializer
 
@@ -370,8 +356,7 @@ class CreateRoomView(APIView):
 
 
 class RoomView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+
     serializer_class = RoomSerializer
 
     def get(self, request, format=None):
@@ -408,8 +393,6 @@ class DeleteRoomView(APIView):
 
 
 class AddToRoomView(APIView): #working
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get_obj_id_and_append_user_id(request):
@@ -439,8 +422,6 @@ class AddToRoomView(APIView): #working
 
 
 class MemberListView(GenericAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     serializer_class = MemberSerializer
 
@@ -467,8 +448,7 @@ class MemberListView(GenericAPIView):
 
 
 class DeleteUserView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+
     serializer_class = MemberSerializer
 
     def get(self, request):
@@ -495,8 +475,6 @@ class DeleteUserView(APIView):
 
 
 class UserCountView(GenericAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.MEMBERS_COLLECTION)
