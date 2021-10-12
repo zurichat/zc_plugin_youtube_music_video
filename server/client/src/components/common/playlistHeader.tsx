@@ -87,6 +87,7 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   overflow: hidden;
+  z-index: 11111111;
 
   .playlist-content-wrapper {
     display: flex;

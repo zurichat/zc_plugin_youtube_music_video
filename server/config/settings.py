@@ -16,7 +16,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True 
+#DEBUG = env("DEBUG")
+DEBUG = True
 
 ALLOWED_HOSTS = ["zuri.chat", "music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1", "*"]
 
@@ -168,14 +169,11 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': '%s.%f', 
  
     "DEFAULT_PERMISSION_CLASSES": (
-            "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+        # "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+        "rest_framework.permissions.AllowAny",
         
     ),
 }
-# this changes the permission classes during development
-# if DEBUG:
-#     REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = ( "rest_framework.permissions.AllowAny",)
-
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'YouTube Music Plugin API',
