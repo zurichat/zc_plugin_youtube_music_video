@@ -1,8 +1,7 @@
 from django.conf import settings
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.generics import GenericAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.http import JsonResponse
 import json
@@ -13,6 +12,7 @@ from rest_framework.views import APIView
 import requests
 from requests import exceptions
 from django.http import Http404
+# from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
 
 
@@ -23,14 +23,17 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
         return None
     return room_data["data"][0]["_id"]
 
+room_image = ["https://svgshare.com/i/aXm.svg"]
 
 class change_room_image(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response({'message': 'This endpoint is for editing the music room icon in the sidebar '},status=status.HTTP_200_OK)
 
     def post(self, request):
         data = request.data
-        room_image = ["https://svgshare.com/i/aXm.svg"]
         
         if data['albumCover'] == "":
             room_image[0] = "https://svgshare.com/i/aXm.svg"
@@ -44,7 +47,6 @@ def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION)
     orgid = settings.ORGANIZATON_ID
     roomid = settings.ROOM_ID
-    room_image = ["https://svgshare.com/i/aXm.svg"]
 
     output = {
         "room_name": room_data["data"][0]["room_name"],
@@ -145,9 +147,9 @@ class SidebarView(GenericAPIView):
 
 
 class PluginInfoView(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
+    permission_classes = [AllowAny]
+    
     def get(self, request, *args, **kwargs):
         data = {
             "message": "Plugin Information Retrieved",
@@ -178,8 +180,8 @@ class PluginInfoView(GenericAPIView):
 
 
 class PluginPingView(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+
+    permission_classes = [AllowAny]
 
     def get(self, request, *args, **kwargs):
         server = [
@@ -190,9 +192,7 @@ class PluginPingView(GenericAPIView):
 
 
 class MediaView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
+    
     def get(self, request):
         payload = {"email": "hng.user01@gmail.com", "password": "password"}
 
@@ -203,8 +203,6 @@ class MediaView(APIView):
 
 
 class SongView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.SONG_COLLECTION)
@@ -240,8 +238,6 @@ class SongView(APIView):
 
   
 class DeleteSongView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.SONG_COLLECTION)
@@ -266,8 +262,6 @@ class DeleteSongView(APIView):
 
 
 class CommentView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -291,8 +285,6 @@ class CommentView(APIView):
 
 
 class DeleteCommentView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     serializer_class = CommentSerializer
 
@@ -318,34 +310,30 @@ class DeleteCommentView(APIView):
         # Note: use {"id": ""} to delete
 
 
-class CommentView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+class UpdateCommentView(APIView):
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def put(self, request):
         serializer = CommentSerializer(data=request.data)
-
+        
         if serializer.is_valid():
             payload = serializer.data
+            object_id = request.data["_id"]
 
-            data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
+            data = write_data(settings.COMMENTS_COLLECTION, object_id=object_id, payload=payload, method="PUT")
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
-            centrifugo_post(plugin_id, {"event": "added_chat", "data": updated_data})
+            centrifugo_post(plugin_id, {"event": "updated_chat", "data": updated_data})
 
             return Response(data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
 class CreateRoomView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     serializer_class = RoomSerializer
 
@@ -372,8 +360,6 @@ class CreateRoomView(APIView):
 
 
 class RoomView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     serializer_class = RoomSerializer
 
@@ -383,8 +369,6 @@ class RoomView(APIView):
 
 
 class DeleteRoomView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     serializer_class = RoomSerializer
 
@@ -412,9 +396,7 @@ class DeleteRoomView(APIView):
 
 
 class AddToRoomView(APIView): #working
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
+    
     @staticmethod
     def get_obj_id_and_append_user_id(request):
         room_data = read_data(settings.ROOM_COLLECTION)
@@ -443,8 +425,6 @@ class AddToRoomView(APIView): #working
 
 
 class MemberListView(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     serializer_class = MemberSerializer
 
@@ -471,8 +451,6 @@ class MemberListView(GenericAPIView):
 
 
 class DeleteUserView(APIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     serializer_class = MemberSerializer
 
@@ -500,8 +478,6 @@ class DeleteUserView(APIView):
 
 
 class UserCountView(GenericAPIView):
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.MEMBERS_COLLECTION)
