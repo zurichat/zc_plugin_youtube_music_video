@@ -1,6 +1,6 @@
 from django.conf import settings
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -25,8 +25,8 @@ def check_if_user_is_in_room_and_return_room_id(user_id):
 
 
 class change_room_image(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
@@ -145,8 +145,8 @@ class SidebarView(GenericAPIView):
 
 
 class PluginInfoView(GenericAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         data = {
@@ -178,8 +178,8 @@ class PluginInfoView(GenericAPIView):
 
 
 class PluginPingView(GenericAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         server = [
@@ -190,8 +190,8 @@ class PluginPingView(GenericAPIView):
 
 
 class MediaView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         payload = {"email": "hng.user01@gmail.com", "password": "password"}
@@ -203,8 +203,8 @@ class MediaView(APIView):
 
 
 class SongView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.SONG_COLLECTION)
@@ -240,6 +240,8 @@ class SongView(APIView):
 
   
 class DeleteSongView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.SONG_COLLECTION)
@@ -264,8 +266,8 @@ class DeleteSongView(APIView):
 
 
 class CommentView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -289,6 +291,9 @@ class CommentView(APIView):
 
 
 class DeleteCommentView(APIView):
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     serializer_class = CommentSerializer
 
     def get(self, request):
@@ -314,8 +319,8 @@ class DeleteCommentView(APIView):
 
 
 class CommentView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.COMMENTS_COLLECTION)
@@ -339,8 +344,8 @@ class CommentView(APIView):
 
 
 class CreateRoomView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     serializer_class = RoomSerializer
 
@@ -367,8 +372,9 @@ class CreateRoomView(APIView):
 
 
 class RoomView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     serializer_class = RoomSerializer
 
     def get(self, request, format=None):
@@ -377,8 +383,9 @@ class RoomView(APIView):
 
 
 class DeleteRoomView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     serializer_class = RoomSerializer
 
     def get(self, request):
@@ -405,8 +412,8 @@ class DeleteRoomView(APIView):
 
 
 class AddToRoomView(APIView): #working
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get_obj_id_and_append_user_id(request):
@@ -436,8 +443,8 @@ class AddToRoomView(APIView): #working
 
 
 class MemberListView(GenericAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     serializer_class = MemberSerializer
 
@@ -464,8 +471,9 @@ class MemberListView(GenericAPIView):
 
 
 class DeleteUserView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     serializer_class = MemberSerializer
 
     def get(self, request):
@@ -492,8 +500,8 @@ class DeleteUserView(APIView):
 
 
 class UserCountView(GenericAPIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         data = read_data(settings.MEMBERS_COLLECTION)
