@@ -18,6 +18,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 SYSTEM_ENV = env("SYSTEM_ENV")
 
+# switches DEBUG to true or false based on the Environment variable
 if SYSTEM_ENV == "Development":
 
     DEBUG = True
