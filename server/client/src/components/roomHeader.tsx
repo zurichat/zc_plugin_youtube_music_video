@@ -83,8 +83,8 @@ const roomHeader = () => {
 };
 
 const Wrapper = styled.header`
-  position: fixed;
-  top: 5px;
+  position: sticky;
+  top: -1px;
   left: 0;
   display: flex;
   align-items: center;
