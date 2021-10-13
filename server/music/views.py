@@ -68,6 +68,7 @@ def get_room_info(roomid=None):
 
 class SidebarView(GenericAPIView):
     permission_classes = [AllowAny]
+
     def get(self, request, *args, **kwargs):
 
         org_id = request.GET.get("org", None)
