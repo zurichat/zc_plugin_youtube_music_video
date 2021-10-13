@@ -271,7 +271,62 @@ class DeleteSongView(APIView):
         # Note: use {"_id": ""} to delete
 
 
+class SongSearchView(APIView):
 
+    def get(self,request, *args, org_id, member_id, **kwargs):
+
+        collection_name = settings.SONG_COLLECTION
+
+        key_word = request.query_params.get("key") or []
+        if key_word:
+            key_word = re.split('[;,\s]+', key_word)
+
+        songs = read_data(collection_name)['data']
+        search_result = []
+
+        for word in key_word:
+            word = word.lower()
+            for song in songs:
+                title = str(song['title']).lower()
+                if word in title and song not in search_result:
+                    # print(title)
+                    search_result.append(song)
+
+
+        for item in search_result:
+            item['image_url'] = item['albumCover']
+            item['created_at'] = item['time']
+            item['content'] = ""
+            item['url'] = f"https://zuri.chat/music/{collection_name}"
+            item['email'] = "",
+            item['description'] = "",
+            item.pop('albumCover')
+            item.pop('time')
+
+        paginate_by = request.query_params.get('paginate_by', 20)
+        paginator = Paginator(search_result, paginate_by)
+        page_num = request.query_params.get('page', 1)
+        page_obj = paginator.get_page(page_num)
+        Query = request.query_params.get("key") or []
+        paginated_data = {
+                "status": 'ok',
+                'pagination': {
+                      "total_count": paginator.count,
+                      "current_page": page_obj.number,
+                      "per_page" : paginate_by,
+                      "page_count":paginator.num_pages,
+                      "first_page" : 1,
+                      "last_page": paginator.num_pages
+                },
+                
+                "plugin": "Music",
+                "Query": Query,
+                "data": list(page_obj),
+               }
+
+
+ 
+        return Response({"data": paginated_data}, status=status.HTTP_200_OK )
 
 
 
