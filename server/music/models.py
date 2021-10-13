@@ -32,7 +32,6 @@ class Song:
     userId: dict = field(default_factory=dict)
     addedBy: dict = field(default_factory=dict)
     likedBy: dict = field(default_factory=dict)
-    
 
 
 @dataclass
@@ -50,7 +49,7 @@ class Comment:
 
     _id: str
     message: str
-    time: int    
+    time: int
     userId: dict = field(default_factory=dict)
     name: dict = field(default_factory=dict)
     avatar: dict = field(default_factory=dict)

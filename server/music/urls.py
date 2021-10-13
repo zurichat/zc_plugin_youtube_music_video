@@ -10,6 +10,11 @@ urlpatterns = [
     path("current-song", change_room_image.as_view(), name="current-song"),
     path("songs", SongView.as_view(), name="song"),
     path("deletesong", DeleteSongView.as_view(), name="deletesong"),
+    path(
+        "org/<str:org_id>/members/<str:member_id>/search",
+        SongSearchView.as_view(),
+        name="songsearch",
+    ),
     path("comments", CommentView.as_view(), name="comments"),
     path("deletecomment", DeleteCommentView.as_view(), name="deletecomment"),
     path("updatecomment", UpdateCommentView.as_view(), name="updatecomment"),
