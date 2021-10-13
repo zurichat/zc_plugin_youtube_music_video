@@ -25,11 +25,13 @@ class MediaSerializer(serializers.Serializer):
 class MemberSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
-    userId = serializers.CharField(read_only=False)
-    name = serializers.CharField(max_length=256, read_only=True)
-    avatar = serializers.CharField(max_length=256, required=False, read_only=True)
-    email = serializers.CharField(max_length=256, read_only=False)
-    job = serializers.CharField(max_length=256, required=False, read_only=False)
+    userId = serializers.ListField(
+        child=serializers.CharField(max_length=128), required=False, default=[]
+    )
+    name = serializers.ListField(child=serializers.CharField(read_only=True))
+    avatar = serializers.ListField(child=serializers.CharField(read_only=True))
+    # email = serializers.CharField(max_length=256, read_only=False)
+    job = serializers.ListField(child=serializers.CharField(read_only=True))
 
     def create(self, validated_data):
         return Member(**validated_data)
@@ -40,7 +42,7 @@ class MemberSerializer(serializers.Serializer):
         instance.userId = validated_data.get("userId", instance.userId)
         instance.name = validated_data.get("name", instance.name)
         instance.avatar = validated_data.get("avatar", instance.avatar)
-        instance.email = validated_data.get("email", instance.email)
+        # instance.email = validated_data.get("email", instance.email)
         instance.job = validated_data.get("job", instance.job)
         instance.save()
         return instance
@@ -56,14 +58,14 @@ class SongSerializer(serializers.Serializer):
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    userId = serializers.DictField(
-        child=MemberSerializer(many=True), required=False, default=[]
+    userId = serializers.ListField(
+        child=serializers.CharField(max_length=128), required=False, default=[]
     )
-    addedBy = serializers.DictField(
-        child=MemberSerializer(many=True), required=False, default=[]
+    addedBy = serializers.ListField(
+        child=serializers.CharField(max_length=128), required=False, default=[]
     )
-    likedBy = serializers.DictField(
-        child=MemberSerializer(many=True), required=False, default=[]
+    likedBy = serializers.ListField(
+        child=serializers.CharField(max_length=128), required=False, default=[]
     )
     time = serializers.IntegerField(required=False)
 
@@ -92,14 +94,14 @@ class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
-    userId = serializers.DictField(
-        child=MemberSerializer(many=True), required=False, default=[]
+    userId = serializers.ListField(
+        child=serializers.CharField(max_length=128), required=False, default=[]
     )
-    name = serializers.DictField(
-        child=MemberSerializer(many=True), required=False, default=[]
+    name = serializers.ListField(
+        child=serializers.CharField(max_length=128), required=False, default=[]
     )
-    avatar = serializers.DictField(
-        child=MemberSerializer(many=True), required=False, default=[]
+    avatar = serializers.ListField(
+        child=serializers.CharField(max_length=128), required=False, default=[]
     )
     time = serializers.IntegerField(required=False)
 
@@ -126,7 +128,7 @@ class RoomSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=300, required=False)
     private = serializers.BooleanField(default=False, required=False)
     memberId = serializers.ListField(
-        child=serializers.CharField(max_length=128), allow_empty=False, required=True
+        child=serializers.CharField(max_length=128), required=False, default=[]
     )
 
     def create(self, validated_data):
