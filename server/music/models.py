@@ -5,8 +5,21 @@ class Media:
         self.url = url
 
 
+class Member:
+    def __init__(self, _id, userId, name, avatar, email, job):
+
+        self._id = _id
+        self.userId = userId
+        self.name = name
+        self.avatar = avatar
+        self.email = email
+        self.job = job
+
+
 class Song:
-    def __init__(self, title, _id, duration, albumCover, url, userId, addedBy, likedBy, time):
+    def __init__(
+        self, title, _id, duration, albumCover, url, userId, addedBy, likedBy, time
+    ):
 
         self._id = _id
         self.title = title
@@ -30,23 +43,15 @@ class Comment:
         self.time = time
 
 
-class Member:
-    def __init__(self, _id, name, avatar):
-        
-        self._id = _id
-        self.name = name
-        self.avatar = avatar
-          
-
 class Room:
-    def __init__(self, _id, room_name, description, room_image, type_of_room, room_url, user_id):
+    def __init__(
+        self, _id, room_name, description, room_image, private, room_url, memberId
+    ):
 
         self._id = _id
-        self.room_name = room_name 
+        self.room_name = room_name
         self.description = description
         self.room_image = room_image
-        self.type_of_room = type_of_room
+        self.private = private
         self.room_url = room_url
-        self.user_id = user_id
-
-        
+        self.memberId = memberId

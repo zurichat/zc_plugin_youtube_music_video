@@ -16,9 +16,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
+# DEBUG = False
 
-ALLOWED_HOSTS = ["zuri.chat", "music.zuri.chat", "159.65.123.65", "localhost", "127.0.0.1", "*"]
+ALLOWED_HOSTS = [
+    "zuri.chat",
+    "music.zuri.chat",
+    "159.65.123.65",
+    "localhost",
+    "127.0.0.1",
+    "*",
+]
 
 # Application definition
 CORS_ALLOW_ALL_ORIGINS = True
@@ -72,8 +80,8 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [
-            os.path.join(BASE_DIR, '../root/dist'),
+        "DIRS": [
+            os.path.join(BASE_DIR, "../root/dist"),
         ],  # Django look for templates folder in root directory
         "APP_DIRS": True,  # Django look for templates folder in app directory
         "OPTIONS": {
@@ -134,8 +142,8 @@ USE_TZ = True
 STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '../root/dist'),
-    os.path.join(BASE_DIR, 'client/dist'),
+    os.path.join(BASE_DIR, "../root/dist"),
+    os.path.join(BASE_DIR, "client/dist"),
 ]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 MEDIA_ROOT = "./media"
@@ -163,21 +171,18 @@ REST_FRAMEWORK = {
     # ],
     # "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-
-    #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S", 
-    'DATETIME_FORMAT': '%s.%f', 
- 
+    #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S",
+    "DATETIME_FORMAT": "%s.%f",
     "DEFAULT_PERMISSION_CLASSES": (
         # "rest_framework.permissions.IsAuthenticatedOrReadOnly",
         "rest_framework.permissions.AllowAny",
-        
     ),
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'YouTube Music Plugin API',
-    'DESCRIPTION': 'YouTube Music Plugin for Zuri.Chat',
-    'VERSION': '1.0.0',
+    "TITLE": "YouTube Music Plugin API",
+    "DESCRIPTION": "YouTube Music Plugin for Zuri.Chat",
+    "VERSION": "1.0.0",
     # OTHER SETTINGS
 }
 
@@ -193,14 +198,14 @@ ACCOUNT_UNIQUE_EMAIL = True
 ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""))
 
 
-#CORS_ALLOWED_ORIGINS = [
-    
- #   "https://sub.example.com",
-  #  "http://localhost:8080",
-   # "http://localhost:8000",
-    #"http://localhost:9000",
-    #"http://localhost:3000",  # if you have seprate react app
-#]
+# CORS_ALLOWED_ORIGINS = [
+
+# "https://sub.example.com",
+# "http://localhost:8080",
+# "http://localhost:8000",
+# "http://localhost:9000",
+# "http://localhost:3000",  # if you have seprate react app
+# ]
 
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True

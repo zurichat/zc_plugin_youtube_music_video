@@ -1,11 +1,9 @@
 # import pytest
-from music.views import PluginInfo
+from music.views import SidebarView, PluginInfoView
 from django.test.client import Client
 from django.urls import resolve, reverse
 from rest_framework.test import APITestCase
 from rest_framework import status
-from music.api import SidebarView
-from frontend.views import IndexView
 
 
 class TestUrls(APITestCase):
@@ -72,7 +70,7 @@ class TestUrls(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         # test view name
-        self.assertEqual(resolved.func.view_class, PluginInfo)
+        self.assertEqual(resolved.func.view_class, PluginInfoView)
 
         # test response data
         self.assertEqual(
@@ -88,17 +86,17 @@ class TestUrls(APITestCase):
             },
         )
 
-    def test_homePage(self):
+    # def test_homePage(self):
 
-        response = self.client.get(self.home_url)
+    #     response = self.client.get(self.home_url)
 
-        resolved = resolve(self.home_url)
+    #     resolved = resolve(self.home_url)
 
-        # test response status code
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     # test response status code
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        # test view name
-        self.assertEqual(resolved.func.view_class, IndexView)
+    #     # test view name
+    #     self.assertEqual(resolved.func.view_class, IndexView)
 
-        # test Template Used
-        self.assertTemplateUsed(response, "frontend/index.html")
+    #     # test Template Used
+    #     self.assertTemplateUsed(response, "frontend/index.html")
