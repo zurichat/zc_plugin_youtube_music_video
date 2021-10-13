@@ -14,11 +14,11 @@ function Home() {
                 Market Place
                 </h2>
             </div>
-            
+
         <main className="main__wrapper content_wrapper">
 
             <section className="grid__one">
-            
+
                 <div className="plugin__dets">
                     <div className="plugin__img">
                     <img src={Pluginlogo} alt="Plugin Logo"/>
@@ -82,7 +82,7 @@ function Home() {
                                 </button>
                             </a>
                         </div>
-                        
+
                     </div>
                 </aside>
             </section>
@@ -92,21 +92,21 @@ function Home() {
                     Youtube Plugin
                 </h1>
                 TAB MENU
-                <div className="tabs"> 
+                <div className="tabs">
                     <ul className="tab-header">
                         <li data-tab-target="#description" className="active tab">Description</li>
                         <li data-tab-target="#review" className="tab">Review</li>
-                        <li data-tab-target="#faq" className="tab">FAQ</li>   
+                        <li data-tab-target="#faq" className="tab">FAQ</li>
                     </ul>
                     <div className="slide_bar">
                         <div className="tab-indicator"></div>
                     </div>
-                    
-                    
+
+
                     <div className="tab-body">
                         Tab Active Description
                         <div id="description" data-tab-content className="active">
-                            
+
                             <div className="slideshow-container">
                                 <div className="mySlides fade">
                                     <div className="display bx1">
@@ -116,7 +116,7 @@ function Home() {
                                     </h1>
                                 </div>
                             </div>
-                            
+
                             <div className="mySlides fade">
                                 <div className="display bx2">
                                     <div className="img__display img2"></div>
@@ -125,24 +125,24 @@ function Home() {
                                     </h1>
                                 </div>
                             </div>
-                            
+
                             <div className="mySlides fade">
                                 <div className="display bx3">
                                     <div className="img__display img3"></div>
                                     <h1>
-                                        Paste both audio and video url Link to play audio and video. 
+                                        Paste both audio and video url Link to play audio and video.
                                     </h1>
                                 </div>
                             </div>
-                            
+
                             <a className="prev" onClick={plusSlides(-1)}>&#10094;</a>
                             <a className="next" onClick={plusSlides(1)}>&#10095;</a>
                             </div>
                             <br/>
-                            
+
                             <div className="display__txt">
                                 <p>
-                                    The Zuri Youtube plugin lets you share youtube videos and audio with your team. Once installed, 
+                                    The Zuri Youtube plugin lets you share youtube videos and audio with your team. Once installed,
                                     you can share youtube links that can be played on the platform without being redirected to youtube.
                                     You can also create songs playlists and also add songs to the general music library where other
                                     users can have access to at any time. With the plugin,
@@ -165,7 +165,7 @@ function Home() {
                             </div>
                         </div>
 
-                        <div id="review" data-tab-content> 
+                        <div id="review" data-tab-content>
                             <div className="review__bx">
                                 <div className="user__profile review__dets">
                                     <div className="profile__img"></div>
@@ -189,8 +189,8 @@ function Home() {
                                     </h3>
 
                                     <p className="large">
-                                        This is exactly what i was looking for, I love 
-                                        the feature where i could play videos on the 
+                                        This is exactly what i was looking for, I love
+                                        the feature where i could play videos on the
                                         platform without getting redirected to Youtube.
                                     </p>
                                 </div>
@@ -219,8 +219,8 @@ function Home() {
                                     </h3>
 
                                     <p className="large">
-                                        This is exactly what i was looking for, I love 
-                                        the feature where i could play videos on the 
+                                        This is exactly what i was looking for, I love
+                                        the feature where i could play videos on the
                                         platform without getting redirected to Youtube.
                                     </p>
                                 </div>
@@ -249,8 +249,8 @@ function Home() {
                                     </h3>
 
                                     <p className="large">
-                                        This is exactly what i was looking for, I love 
-                                        the feature where i could play videos on the 
+                                        This is exactly what i was looking for, I love
+                                        the feature where i could play videos on the
                                         platform without getting redirected to Youtube.
                                     </p>
                                 </div>
@@ -279,8 +279,8 @@ function Home() {
                                     </h3>
 
                                     <p className="large">
-                                        This is exactly what i was looking for, I love 
-                                        the feature where i could play videos on the 
+                                        This is exactly what i was looking for, I love
+                                        the feature where i could play videos on the
                                         platform without getting redirected to Youtube.
                                     </p>
                                 </div>
@@ -309,8 +309,8 @@ function Home() {
                                     </h3>
 
                                     <p className="large">
-                                        This is exactly what i was looking for, I love 
-                                        the feature where i could play videos on the 
+                                        This is exactly what i was looking for, I love
+                                        the feature where i could play videos on the
                                         platform without getting redirected to Youtube.
                                     </p>
                                 </div>
@@ -339,8 +339,8 @@ function Home() {
                                     </h3>
 
                                     <p className="large">
-                                        This is exactly what i was looking for, I love 
-                                        the feature where i could play videos on the 
+                                        This is exactly what i was looking for, I love
+                                        the feature where i could play videos on the
                                         platform without getting redirected to Youtube.
                                     </p>
                                 </div>
@@ -384,9 +384,9 @@ function Home() {
                                 </p>
                             </div>
                         </div>
-                    </div>       
+                    </div>
                 </div>
-            </section>   
+            </section>
 
             <section className="drop__down content_wrapper">
                 <button className="accordion">
@@ -396,7 +396,7 @@ function Home() {
                 <div className="panel">
                 <p>English</p>
                 </div>
-                
+
                 <button className="accordion">
                     <h3>Pricing</h3>
                     <i className="fa fa-chevron-down" aria-hidden="true"></i>
@@ -404,7 +404,7 @@ function Home() {
                 <div className="panel">
                 <p>N10,000 (7 days free trial)</p>
                 </div>
-                
+
                 <button className="accordion">
                     <h3>Support</h3>
                     <i className="fa fa-chevron-down" aria-hidden="true"></i>
@@ -439,7 +439,7 @@ function Home() {
 
     const Homestyled = styled.div
         `
-                        
+
 /*========================================*/
 /*--------------- [_Main] -------------*/
 /*========================================*/
@@ -580,7 +580,7 @@ function Home() {
     font-weight: var(--font-bold);
     color: var(--text-secondary-color);
     margin: 0 1.25rem 0 .5rem;
-    padding: .5625rem 0; 
+    padding: .5625rem 0;
     cursor: pointer;
     z-index: 2;
 }
@@ -725,7 +725,7 @@ function Home() {
     position: relative;
     margin: auto;
 }
-  
+
   /* Next & previous buttons */
 .prev, .next {
     cursor: pointer;
@@ -740,19 +740,19 @@ function Home() {
     border-radius: 0 3px 3px 0;
     background: #a5a5a58e;
 }
-  
+
 
 .next {
     right: 0;
     border-radius: 3px 0 0 3px;
 }
-  
+
 
 .prev:hover, .next:hover {
     background-color: rgba(255, 255, 255, 0.514);
     color: var(--white-color);
 }
-  
+
   /* Fading animation */
 .fade {
     -webkit-animation-name: fade;
@@ -760,12 +760,12 @@ function Home() {
     animation-name: fade;
     animation-duration: 1.5s;
 }
-  
+
 @-webkit-keyframes fade {
     from {opacity: .4}
     to {opacity: 1}
 }
-  
+
 @keyframes fade {
     from {opacity: .4}
     to {opacity: 1}
@@ -1048,8 +1048,8 @@ function Home() {
     button.accordion:after {
         color: #777;
     }
-    
-    
+
+
 }
 
 @media screen and (min-width: 425px) and (max-width:900px) {
@@ -1112,7 +1112,7 @@ function Home() {
     button.accordion:after {
         color: #777;
     }
-    
+
 }
 
 @media screen and (min-width: 900px) {
@@ -1120,7 +1120,7 @@ function Home() {
         display: none;
     }
 
-   
+
 }
         `
 

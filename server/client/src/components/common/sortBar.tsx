@@ -25,7 +25,7 @@ function Sortdiv () {
         </div>
         </SortStyled>
 
-    );  
+    );
 
 }
 
@@ -39,7 +39,7 @@ function Sortdiv () {
             font-size: 1rem;
             font-family: Lato sans-serif;
         }
-    
+
          button.accordion {
             background-color: #FFFFFF;
             color: #1D1C1D;
@@ -56,24 +56,24 @@ function Sortdiv () {
             align-items: center;
             justify-content: space-between;
         }
-    
+
         .sortBar button.accordion{
             width: 239px;
         }
-    
+
         .sortBar .panel {
             width: 215px;
         }
-    
+
         button.accordion.active, button.accordion:hover {
             background-color: #F6F6F6;
             border-radius: 8px 8px 0 0;
         }
-    
+
         .panel.show {
             display: block !important;
         }
-    
+
         .panel {
             padding: 0 .75rem;
             background-color: white;
@@ -83,14 +83,14 @@ function Sortdiv () {
             opacity: 0;
             width: 176px;
         }
-    
+
         .panel.show {
             opacity: 1;
             max-height: 800px;
             box-shadow: 0px 2px 10px #D7D7D7;
             border-radius: 0 0 4px 4px;
         }
-    
+
         .panel p{
             color: #1D1C1D;
             padding: 0 .5rem;
@@ -99,16 +99,16 @@ function Sortdiv () {
             display: grid;
             align-items: center;
         }
-    
+
         .panel p:hover{
             background-color: #F6F6F6;
         }
-    
+
         .panel a{
             text-decoration: none;
             cursor: pointer;
         }
-    
+
         button.accordion:after {
             color: #F6F6F6;
         }
