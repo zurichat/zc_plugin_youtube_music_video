@@ -14,6 +14,7 @@ from rest_framework.views import APIView
 import requests
 from requests import exceptions
 from django.http import Http404
+from music.dataStorage import *
 
 # from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -569,3 +570,61 @@ class AddToRoomView(APIView):  # working
 
         centrifugo_post(plugin_id, {"event": "entered_room", "data": data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
+
+
+class AddUserToRoomView(APIView):
+    def post(self, request, org_id, room_id, member_id):
+        helper = DataStorage()
+        helper.organization_id = org_id
+        serializer = AddToRoomSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.data
+            room_id = data["room_id"]
+            member_id = data["member_id"]
+            music_rooms = helper.read("music_room", {"_id": room_id})
+            if music_rooms and music_rooms.get("status_code", None) == None:
+                users_id = music_rooms.get("memberId")
+                if member_id not in users_id:
+                    users_id.append(member_id)
+                    response = helper.update(
+                        "music_room", room_id, {"memberId": users_id}
+                    )
+                    if response.get("status") == 200:
+                        response_output = {
+                            "event": "add_user_to_room",
+                            "message": response.get("message"),
+                            "data": {
+                                "room_id": data["room_id"],
+                                "new_member_id": data["member_id"],
+                                "action": "user added successfully",
+                            },
+                        }
+                        try:
+                            centrifugo_data = centrifugo_publish(
+                                room_id, response_output
+                            )
+                            if (
+                                centrifugo_data
+                                and centrifugo_data.get("status_code") == 200
+                            ):
+                                return Response(
+                                    data=response_output, status=status.HTTP_201_CREATED
+                                )
+                            else:
+                                return Response(
+                                    data="User added but centrifugo not available",
+                                    status=status.HTTP_424_FAILED_DEPENDENCY,
+                                )
+                        except Exception:
+                            return Response(
+                                data="centrifugo server not available",
+                                status=status.HTTP_424_FAILED_DEPENDENCY,
+                            )
+                    return Response(
+                        "User not added", status=status.HTTP_424_FAILED_DEPENDENCY
+                    )
+                return Response("Member already in room", status=status.HTTP_302_FOUND)
+            return Response(
+                "Data not availabe on ZC core", status=status.HTTP_424_FAILED_DEPENDENCY
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

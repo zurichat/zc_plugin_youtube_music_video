@@ -143,3 +143,8 @@ class RoomSerializer(serializers.Serializer):
 
     def __str__(self):
         return str()
+
+
+class AddToRoomSerializer(serializers.Serializer):
+    room_id = serializers.CharField(max_length=100)
+    member_id = serializers.CharField(max_length=100)
