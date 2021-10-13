@@ -16,8 +16,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+# DEBUG = env("DEBUG")
 # DEBUG = False
+SYSTEM_ENV = env("SYSTEM_ENV")
+
+# switches DEBUG to true or false based on the Environment variable
+if SYSTEM_ENV == "Development":
+
+    DEBUG = True
+else:
+    DEBUG = False
+# print(DEBUG)
 
 ALLOWED_HOSTS = [
     "zuri.chat",
@@ -159,7 +168,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Configure django-rest-framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.TokenAuthentication",
+        "music.authentication.Zuri_Token_Auth",
         "rest_framework.authentication.SessionAuthentication",
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
@@ -173,11 +182,13 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S",
     "DATETIME_FORMAT": "%s.%f",
-    "DEFAULT_PERMISSION_CLASSES": (
-        # "rest_framework.permissions.IsAuthenticatedOrReadOnly",
-        "rest_framework.permissions.AllowAny",
-    ),
+    "DEFAULT_PERMISSION_CLASSES": ("music.permissions.Is_Authenticated",),
 }
+
+if DEBUG:
+    REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
+        "rest_framework.permissions.AllowAny",
+    )
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "YouTube Music Plugin API",

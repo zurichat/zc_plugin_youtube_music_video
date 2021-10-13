@@ -12,6 +12,7 @@ urlpatterns = [
     path("deletesong", DeleteSongView.as_view(), name="deletesong"),
     path("comments", CommentView.as_view(), name="comments"),
     path("deletecomment", DeleteCommentView.as_view(), name="deletecomment"),
+    path("updatecomment", UpdateCommentView.as_view(), name="updatecomment"),
     path("createroom", CreateRoomView.as_view(), name="createroom"),
     path("room", RoomView.as_view(), name="room"),
     path("room/<str:_id>", RoomDetailView.as_view(), name="roomdetail"),

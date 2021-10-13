@@ -1,6 +1,7 @@
 # By Justice
 /venv
 node_modules/
+/test-coverage
 static/
 staticfiles/
 /pythagorasenv
