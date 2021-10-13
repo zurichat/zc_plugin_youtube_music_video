@@ -281,9 +281,7 @@ class CommentView(APIView):
             payload = serializer.data
 
             data = write_data(
-                settings.COMMENTS_COLLECTION,
-                payload=payload,
-                method="POST"
+                settings.COMMENTS_COLLECTION, payload=payload, method="POST"
             )
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
@@ -385,7 +383,6 @@ class RoomView(APIView):  # view room
 
 
 class RoomDetailView(APIView):
-
     def get(self, request, *args, **kwargs):
         serializer = RoomSerializer(data=request.data)
 
@@ -491,7 +488,6 @@ class UserCountView(GenericAPIView):
 
 
 class AddToRoomView(APIView):  # working
-
     @staticmethod
     def get_obj_id_and_append_user_id(request):
         room_data = read_data(settings.ROOM_COLLECTION)
@@ -517,5 +513,3 @@ class AddToRoomView(APIView):  # working
 
         centrifugo_post(plugin_id, {"event": "entered_room", "data": data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
-
-

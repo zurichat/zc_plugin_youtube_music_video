@@ -56,9 +56,15 @@ class SongSerializer(serializers.Serializer):
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    userId = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
-    addedBy = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
-    likedBy = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
+    userId = serializers.DictField(
+        child=MemberSerializer(many=True), required=False, default=[]
+    )
+    addedBy = serializers.DictField(
+        child=MemberSerializer(many=True), required=False, default=[]
+    )
+    likedBy = serializers.DictField(
+        child=MemberSerializer(many=True), required=False, default=[]
+    )
     time = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
@@ -86,9 +92,15 @@ class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
-    userId = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
-    name = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
-    avatar = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
+    userId = serializers.DictField(
+        child=MemberSerializer(many=True), required=False, default=[]
+    )
+    name = serializers.DictField(
+        child=MemberSerializer(many=True), required=False, default=[]
+    )
+    avatar = serializers.DictField(
+        child=MemberSerializer(many=True), required=False, default=[]
+    )
     time = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
@@ -113,7 +125,9 @@ class RoomSerializer(serializers.Serializer):
     room_name = serializers.CharField(max_length=100, required=False)
     description = serializers.CharField(max_length=300, required=False)
     private = serializers.BooleanField(default=False, required=False)
-    memberId = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
+    memberId = serializers.DictField(
+        child=MemberSerializer(many=True), required=False, default=[]
+    )
 
     def create(self, validated_data):
         return Room(**validated_data)
@@ -127,5 +141,3 @@ class RoomSerializer(serializers.Serializer):
 
     def __str__(self):
         return str()
-
-

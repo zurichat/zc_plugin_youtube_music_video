@@ -1,6 +1,4 @@
-
 from dataclasses import dataclass, field
-from music.utils.data_access import *
 
 @dataclass
 class Media:
@@ -12,7 +10,7 @@ class Media:
 
 @dataclass
 class Member:
-    
+
     _id: str
     userId: str
     name: str
@@ -23,7 +21,7 @@ class Member:
 
 @dataclass
 class Song:
-    
+
     _id: str
     title: str
     duration: str
@@ -43,8 +41,8 @@ class Room:
     description: str
     private: bool = False
     memberId: dict = field(default_factory=dict)
-    
-    
+
+
 @dataclass
 class Comment:
 
@@ -54,4 +52,3 @@ class Comment:
     name: dict = field(default_factory=dict)
     avatar: dict = field(default_factory=dict)
     time: dict = int
-    
