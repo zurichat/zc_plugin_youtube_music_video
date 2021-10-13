@@ -17,6 +17,7 @@ urlpatterns = [
 
     path("songs", SongView.as_view(), name="song"),
     path("deletesong", DeleteSongView.as_view(), name="deletesong"),
+    path("org/<int:org_id>/members/<int:member_id>/search", SongSearchView.as_view(), name = "songsearch"),
     # path("deletesong", removesong, name="deletesong"), #delete songs 
    
 

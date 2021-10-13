@@ -159,7 +159,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Configure django-rest-framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        #"music.authentication.Zuri_Token_Auth",
+        "music.authentication.Zuri_Token_Auth",
         "rest_framework.authentication.SessionAuthentication",
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
@@ -176,8 +176,7 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': '%s.%f', 
  
     "DEFAULT_PERMISSION_CLASSES": (
-    #   "music.permissions.Is_Authenticated",
-        "rest_framework.permissions.AllowAny",
+       "music.permissions.Is_Authenticated",
     ),
 }
 
