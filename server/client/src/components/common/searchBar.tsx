@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 function SearchBar() {
-  
+
     return (
       <SearchStyled>
         <div className="searchBar">
@@ -11,7 +11,7 @@ function SearchBar() {
     );
   }
 
-  
+
 const SearchStyled = styled.div
         `
         .songsTab{
@@ -20,7 +20,7 @@ const SearchStyled = styled.div
             justify-content: space-evenly;
             margin: 2rem 0;
         }
-    
+
         input {
             padding-left: 10px;
             border: 0;
@@ -33,21 +33,21 @@ const SearchStyled = styled.div
             box-sizing: border-box;
             border-radius: 8px;
         }
-    
+
         input:focus
         { outline: 0; }
-    
+
         input:focus {
             width: 20rem;
             -webkit-transition: all 0.075s ease;
             transition: all 0.075s ease;
         }
-    
+
         input::placeholder{
         font-size: 15px;
         color: #A5ABB6;
         }
-    
+
         input {
             width: 20rem;
         }

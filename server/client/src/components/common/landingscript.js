@@ -65,5 +65,5 @@ function LandingScript() {
         this.nextElementSibling.classList.toggle("show");
     };
     }
-    
+
 export default LandingScript;

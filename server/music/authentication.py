@@ -10,7 +10,7 @@ import requests
 #     def has_permission(self, request, view):
 #         return bool(request.user and request.user["is_authenticated"])
 
-#Custom token authentication
+# Custom token authentication
 class Zuri_Token_Auth(authentication.TokenAuthentication):
 
     keyword = "Bearer"
@@ -19,38 +19,38 @@ class Zuri_Token_Auth(authentication.TokenAuthentication):
     def verifyToken(self, token):
 
         url = "https://api.zuri.chat/auth/verify-token"
-        b = "Bearer "+token
-        headers = {"Authorization":b}
-        #print(headers)
+        b = "Bearer " + token
+        headers = {"Authorization": b}
+        # print(headers)
         res = requests.get(url, headers=headers)
-        
+
         data = res.json()
         if res.status_code == 200:
-            if data['data']['is_verified']:
+            if data["data"]["is_verified"]:
 
-                user = data['data']['user']
-                user['is_authenticated'] = True
-                
+                user = data["data"]["user"]
+                user["is_authenticated"] = True
+
                 return (user, token)
 
         else:
-            #print(res)
-            msg = 'Invalid or expired token header. Login again.'
+            # print(res)
+            msg = "Invalid or expired token header. Login again."
             raise exceptions.AuthenticationFailed(msg)
 
     def authenticate(self, request):
 
-        auth = request.META.get('HTTP_AUTHORIZATION', b'').split()
+        auth = request.META.get("HTTP_AUTHORIZATION", b"").split()
 
         if not auth or auth[0].lower() != self.keyword.lower():
             return None
 
         if len(auth) == 1:
-            msg = 'Invalid token header. No credentials provided.'
+            msg = "Invalid token header. No credentials provided."
             raise exceptions.AuthenticationFailed(msg)
 
         elif len(auth) > 2:
-            msg = 'Invalid token header.'
+            msg = "Invalid token header."
             raise exceptions.AuthenticationFailed(msg)
 
         return self.verifyToken(auth[1])
