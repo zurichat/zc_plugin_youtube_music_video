@@ -79,6 +79,7 @@ class SidebarView(GenericAPIView):
                     "name": "Music Plugin",
                     "group_name": "Music",
                     "show_group": False,
+                    "category": "entertainment",
                     "button_url": "/music",
                     "public_rooms": [pub_room],
                     "joined_rooms": [pub_room],
@@ -115,6 +116,7 @@ class SidebarView(GenericAPIView):
                     "user_id": user_id,
                     "group_name": "Music",
                     "show_group": True,
+                    "category": "entertainment",
                     "public_rooms": [
                         pub_room
                     ],
@@ -134,6 +136,7 @@ class SidebarView(GenericAPIView):
                 "user_id": user_id,
                 "group_name": "Music",
                 "show_group": True,
+                "category": "entertainment",
                 "public_rooms": [
                     pub_room
                 ],
