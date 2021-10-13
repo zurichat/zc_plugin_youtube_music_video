@@ -18,10 +18,12 @@ urlpatterns = [
     path("room/<str:_id>", RoomDetailView.as_view(), name="roomdetail"),
     path("deleteroom", DeleteRoomView.as_view(), name="deleteroom"),  # delete room
     path(
-        "room/<str:_id>/user", MemberListView.as_view(), name="user"
-    ),  # works for get and post
+        "room/<str:_id>/adduser", AddToRoomView.as_view(), name="adduser"
+    ),
+    path("room/<str:_id>/removeuser", DeleteRoomUserView.as_view(), name="removeuser"),
     path(
-        "room/<str:_id>/user", AddToRoomView.as_view(), name="joinroom"
-    ),  # works for get and post
-    path("deleteuser", DeleteUserView.as_view(), name="deleteuser"),  # remove user
+        "room/<str:_id>/user", RoomUserView.as_view(), name="user"
+    ),  # user list
+    
+    
 ]
