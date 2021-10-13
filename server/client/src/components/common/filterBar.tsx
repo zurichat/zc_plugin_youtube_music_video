@@ -36,7 +36,7 @@ const Filterstyled = styled.div
         font-size: 1rem;
         font-family: Lato sans-serif;
     }
-    
+
     button.accordion {
         background-color: #FFFFFF;
         color: #1D1C1D;
@@ -103,4 +103,3 @@ const Filterstyled = styled.div
     }
     `
 export default Filterbar;
-  

@@ -32,12 +32,14 @@ function MusicRoom() {
           />
         </div>
 
-        <Parcel
-          config={pluginHeader}
-          wrapWith="div"
-          wrapStyle={{ width: "100%" }}
-          headerConfig={headerConfig(users)}
-        />
+        <div className="plugin-header">
+          <Parcel
+            config={pluginHeader}
+            wrapWith="div"
+            wrapStyle={{ width: "100%" }}
+            headerConfig={headerConfig(users)}
+          />
+        </div>
 
         {/* <RoomHeader /> */}
 
@@ -56,6 +58,12 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
   display: flex;
   margin: 0;
   background-color: rgb(240, 240, 240);
+
+  .plugin-header {
+    position: sticky;
+    top: 0px;
+    z-index: 1111111111;
+  }
 
   .room-main {
     flex-grow: 1;

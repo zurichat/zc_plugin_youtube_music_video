@@ -42,7 +42,7 @@ const PlaylistHeader = () => {
         <div className="playlist-img-div">
           <img src={Headset} alt="Playlist Header" className="playlist-img" />
         </div>
-        
+
 
         <div className="playlist-content">
           <div className="playlist-caption">
@@ -87,6 +87,7 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100%;
   overflow: hidden;
+  z-index: 11111111;
 
   .playlist-content-wrapper {
     display: flex;

@@ -29,7 +29,7 @@ function Player() {
   const { currentSongEndpoint } = httpService.endpoints;
 
   const thumbnail = async (song: Song) => {
-    if(player.currentSongId === "") 
+    if(player.currentSongId === "")
     song = {
       id: "",
       title: "",
@@ -114,7 +114,7 @@ function Player() {
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <LikeOptionCount likedBy={song.likedBy} songId={song.id} />
-        <div 
+        <div
         className="nextsong"
         onClick={handleNext}
         >NEXT</div>

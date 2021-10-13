@@ -10,6 +10,6 @@ function SortBar () {
             <Sortdiv></Sortdiv>
             <Filterbar></Filterbar>
         </div>
-    );  
+    );
 
 }
