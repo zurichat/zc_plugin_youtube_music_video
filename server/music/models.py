@@ -1,57 +1,57 @@
+
+from dataclasses import dataclass, field
+from music.utils.data_access import *
+
+@dataclass
 class Media:
-    def __init__(self, media_id, name, url):
-        self.media_id = media_id
-        self.name = name
-        self.url = url
+
+    media_id: str
+    name: str
+    url: str
 
 
+@dataclass
 class Member:
-    def __init__(self, _id, userId, name, avatar, email, job):
+    
+    _id: str
+    userId: str
+    name: str
+    avatar: str
+    email: str
+    job: str
 
-        self._id = _id
-        self.userId = userId
-        self.name = name
-        self.avatar = avatar
-        self.email = email
-        self.job = job
 
-
+@dataclass
 class Song:
-    def __init__(
-        self, title, _id, duration, albumCover, url, userId, addedBy, likedBy, time
-    ):
-
-        self._id = _id
-        self.title = title
-        self.duration = duration
-        self.albumCover = albumCover
-        self.url = url
-        self.userId = userId
-        self.addedBy = addedBy
-        self.likedBy = likedBy
-        self.time = time
+    
+    _id: str
+    title: str
+    duration: str
+    albumCover: str
+    url: str
+    userId: dict = field(default_factory=dict)
+    addedBy: dict = field(default_factory=dict)
+    likedBy: dict = field(default_factory=dict)
+    time: dict = int
 
 
-class Comment:
-    def __init__(self, _id, message, userId, name, avatar, time):
-
-        self._id = _id
-        self.message = message
-        self.userId = userId
-        self.name = name
-        self.avatar = avatar
-        self.time = time
-
-
+@dataclass
 class Room:
-    def __init__(
-        self, _id, room_name, description, room_image, private, room_url, memberId
-    ):
 
-        self._id = _id
-        self.room_name = room_name
-        self.description = description
-        self.room_image = room_image
-        self.private = private
-        self.room_url = room_url
-        self.memberId = memberId
+    _id: str
+    room_name: str
+    description: str
+    private: bool = False
+    memberId: dict = field(default_factory=dict)
+    
+    
+@dataclass
+class Comment:
+
+    _id: str
+    message: str
+    userId: dict = field(default_factory=dict)
+    name: dict = field(default_factory=dict)
+    avatar: dict = field(default_factory=dict)
+    time: dict = int
+    

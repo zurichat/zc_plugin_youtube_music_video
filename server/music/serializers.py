@@ -56,22 +56,17 @@ class SongSerializer(serializers.Serializer):
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    userId = serializers.ListField(
-        child=MemberSerializer(max_length=128), many=True, required=False, default=[]
-    )
-    # addedBy = serializers.CharField(required=False)
-    addedBy = serializers.ListField(
-        child=MemberSerializer(max_length=128), many=True, required=False, default=[]
-    )
-    likedBy = serializers.ListField(
-        child=MemberSerializer(max_length=128), many=True, required=False, default=[]
-    )
+    userId = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
+    addedBy = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
+    likedBy = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
     time = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
         return Song(**validated_data)
 
     def update(self, instance, validated_data):
+
+        instance._id = validated_data.get("_id", instance._id)
         instance.title = validated_data.get("title", instance.title)
         instance.duration = validated_data.get("duration", instance.duration)
         instance.albumcover = validated_data.get("albumcover", instance.albumcover)
@@ -91,16 +86,9 @@ class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
-    # userId = serializers.CharField(read_only=True)
-    userId = serializers.ListField(
-        child=MemberSerializer(max_length=128), many=True, required=False, default=[]
-    )
-    name = serializers.ListField(
-        child=MemberSerializer(max_length=128), many=True, required=False, default=[]
-    )
-    avatar = serializers.ListField(
-        child=MemberSerializer(max_length=128), many=True, required=False, default=[]
-    )
+    userId = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
+    name = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
+    avatar = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
     time = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
@@ -122,15 +110,10 @@ class CommentSerializer(serializers.Serializer):
 class RoomSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
-    room_name = serializers.CharField(max_length=100)
-    topic = serializers.CharField(max_length=300, required=False)
+    room_name = serializers.CharField(max_length=100, required=False)
     description = serializers.CharField(max_length=300, required=False)
-    room_image = serializers.CharField(required=False)
     private = serializers.BooleanField(default=False, required=False)
-    room_url = serializers.CharField(max_length=50, required=False)
-    memberId = serializers.ListField(
-        child=MemberSerializer(max_length=128), many=True, required=False, default=[]
-    )
+    memberId = serializers.DictField(child=MemberSerializer(many=True), required=False, default=[])
 
     def create(self, validated_data):
         return Room(**validated_data)
@@ -138,11 +121,11 @@ class RoomSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.room_name = validated_data.get("room_name", instance.room_name)
         instance.description = validated_data.get("description", instance.description)
-        instance.room_image = validated_data.get("room_image", instance.room_image)
         instance.private = validated_data.get("private", instance.private)
-        instance.room_url = validated_data.get("room_url", instance.room_url)
         instance.memberId = validated_data.get("memberId", instance.memberId)
         return instance
 
     def __str__(self):
         return str()
+
+

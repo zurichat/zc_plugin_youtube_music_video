@@ -59,14 +59,16 @@ def get_room_info(roomid=None):
 
     output = {
         "room_name": room_data["data"][0]["room_name"],
-        "room_url": f"/music/{roomid}",
-        "button_url": f"/music/{orgid}/musicroom/{roomid}/users",
+        "room_id": f"/music/{roomid}",
+        "button_url": f"/music",
         "room_image": room_image[0],
     }
     return output
 
 
 class SidebarView(GenericAPIView):
+    permission_classes = [AllowAny]
+
     def get(self, request, *args, **kwargs):
 
         org_id = request.GET.get("org", None)
@@ -84,11 +86,12 @@ class SidebarView(GenericAPIView):
             "event": "sidebar_update",
             "plugin_id": "music.zuri.chat",
             "data": {
-                "name": "Music Plugin",
                 "group_name": [],
-                "show_group": False,
+                "ID": f"/music/{roomid}",
+                "name": "Music Plugin",
                 "category": "entertainment",
-                "button_url": "/music",
+                "show_group": False,
+                "button_url": f"/music",
                 "public_rooms": [pub_room],
                 "joined_rooms": [pub_room],
             },
@@ -120,7 +123,7 @@ class SidebarView(GenericAPIView):
                         "name": "Music Plugin",
                         "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                         "plugin_id": plugin_id,
-                        "organisation_id": orgid,
+                        "organisation_id": org_id,
                         "room_id": roomid,
                         "user_id": user_id,
                         "group_name": [],
@@ -138,7 +141,7 @@ class SidebarView(GenericAPIView):
                     "name": "Music Plugin",
                     "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                     "plugin_id": plugin_id,
-                    "organisation_id": orgid,
+                    "organisation_id": org_id,
                     "room_id": roomid,
                     "user_id": user_id,
                     "group_name": [],
@@ -277,7 +280,11 @@ class CommentView(APIView):
         if serializer.is_valid():
             payload = serializer.data
 
-            data = write_data(settings.COMMENTS_COLLECTION, payload=payload)
+            data = write_data(
+                settings.COMMENTS_COLLECTION,
+                payload=payload,
+                method="POST"
+            )
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
@@ -351,7 +358,7 @@ class CreateRoomView(APIView):
         plugin_id = settings.PLUGIN_ID
         coll_name = settings.ROOM_COLLECTION
 
-        userId = read_data(settings.MEMBERS_COLLECTION)
+        # memberId = read_data(settings.MEMBERS_COLLECTION)
 
         plugin_id = settings.PLUGIN_ID
 
@@ -362,7 +369,7 @@ class CreateRoomView(APIView):
 
         rooms["org_id"] = org_id
         rooms["plugin_id"] = plugin_id
-        rooms["room_member_id"] = userId
+        # rooms["memberId"] = memberId
 
         data = write_data(coll_name, payload=rooms)
         return Response(data)
@@ -378,8 +385,6 @@ class RoomView(APIView):  # view room
 
 
 class RoomDetailView(APIView):
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         serializer = RoomSerializer(data=request.data)
@@ -454,7 +459,7 @@ class DeleteUserView(APIView):
         data = read_data(settings.MEMBERS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def delete(self, request):
         serializer = MemberSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -486,8 +491,6 @@ class UserCountView(GenericAPIView):
 
 
 class AddToRoomView(APIView):  # working
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
 
     @staticmethod
     def get_obj_id_and_append_user_id(request):
@@ -514,3 +517,5 @@ class AddToRoomView(APIView):  # working
 
         centrifugo_post(plugin_id, {"event": "entered_room", "data": data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
+
+

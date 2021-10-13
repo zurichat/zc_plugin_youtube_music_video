@@ -20,6 +20,6 @@ urlpatterns = [
     path(
         "room/<str:_id>/user", MemberListView.as_view(), name="user"
     ),  # works for get and post
-    # path("room/<str:_id>/user", AddToRoomView.as_view(), name="joinroom"), #works for get and post
+    path("room/<str:_id>/user", AddToRoomView.as_view(), name="joinroom"), #works for get and post
     path("deleteuser", DeleteUserView.as_view(), name="deleteuser"),  # remove user
 ]

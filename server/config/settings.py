@@ -17,7 +17,7 @@ SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = env("DEBUG")
-# DEBUG = False
+# DEBUG = True
 SYSTEM_ENV = env("SYSTEM_ENV")
 
 # switches DEBUG to true or false based on the Environment variable
@@ -26,7 +26,7 @@ if SYSTEM_ENV == "Development":
     DEBUG = True
 else:
     DEBUG = False
-# print(DEBUG)
+print(DEBUG)
 
 ALLOWED_HOSTS = [
     "zuri.chat",
@@ -168,7 +168,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Configure django-rest-framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "music.authentication.Zuri_Token_Auth",
+        #"music.authentication.Zuri_Token_Auth",
         "rest_framework.authentication.SessionAuthentication",
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
@@ -182,7 +182,8 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S",
     "DATETIME_FORMAT": "%s.%f",
-    "DEFAULT_PERMISSION_CLASSES": ("music.permissions.Is_Authenticated",),
+    # "DEFAULT_PERMISSION_CLASSES": ("music.permissions.Is_Authenticated",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
 }
 
 if DEBUG:
@@ -225,7 +226,7 @@ ORGANIZATON_ID = "614679ee1a5607b13c00bcb7"  # given by mark.
 PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
 CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
 # ROOM_ID = "615029bacf2c0f1ad75854ec"
-ROOM_ID = "615d7f88c31065b1bd797556"
+ROOM_ID = "6166afff533276f1a384b8c6"
 
 
 # new collections created
