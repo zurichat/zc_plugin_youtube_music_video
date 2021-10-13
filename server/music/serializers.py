@@ -125,8 +125,8 @@ class RoomSerializer(serializers.Serializer):
     room_name = serializers.CharField(max_length=100, required=False)
     description = serializers.CharField(max_length=300, required=False)
     private = serializers.BooleanField(default=False, required=False)
-    memberId = serializers.DictField(
-        child=MemberSerializer(many=True), required=False, default=[]
+    memberId = serializers.ListField(
+        child=serializers.CharField(max_length=128), allow_empty=False, required=True
     )
 
     def create(self, validated_data):
@@ -141,3 +141,8 @@ class RoomSerializer(serializers.Serializer):
 
     def __str__(self):
         return str()
+
+
+class AddToRoomSerializer(serializers.Serializer):
+    room_id = serializers.CharField(max_length=100)
+    member_id = serializers.CharField(max_length=100)
