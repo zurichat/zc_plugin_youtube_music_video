@@ -3,25 +3,6 @@ from rest_framework import serializers
 from music.models import *
 
 
-class MediaSerializer(serializers.Serializer):
-    mediaid = serializers.CharField(read_only=True)
-    name = serializers.CharField()
-    url = serializers.CharField()
-
-    def create(self, validated_data):
-        return Media(**validated_data)
-
-    def update(self, instance, validated_data):
-        instance.mediaid = validated_data.get("mediaid", instance.mediaid)
-        instance.name = validated_data.get("name", instance.name)
-        instance.url = validated_data.get("url", instance.url)
-        instance.save()
-        return instance
-
-    def __str__(self):
-        return str()
-
-
 class MemberSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
@@ -143,3 +124,8 @@ class RoomSerializer(serializers.Serializer):
 
     def __str__(self):
         return str()
+
+
+class AddToRoomSerializer(serializers.Serializer):
+    room_id = serializers.CharField(max_length=100)
+    member_id = serializers.CharField(max_length=100)

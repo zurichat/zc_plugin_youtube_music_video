@@ -1,3 +1,5 @@
+import re
+from django.core.paginator import Paginator
 from django.conf import settings
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
@@ -12,6 +14,7 @@ from rest_framework.views import APIView
 import requests
 from requests import exceptions
 from django.http import Http404
+from music.dataStorage import *
 
 # from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -202,16 +205,6 @@ class PluginPingView(GenericAPIView):
         return JsonResponse({"server": server})
 
 
-class MediaView(APIView):
-    def get(self, request):
-        payload = {"email": "hng.user01@gmail.com", "password": "password"}
-
-        data = read_data("test_collection")
-
-        centrifugo_post(plugin_id, {"event": "join_room"})
-        return Response(data)
-
-
 class SongView(APIView):
     def get(self, request):
         data = read_data(settings.SONG_COLLECTION)
@@ -267,6 +260,60 @@ class DeleteSongView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # Note: use {"_id": ""} to delete
+
+
+class SongSearchView(APIView):
+    def get(self, request, *args, org_id, member_id, **kwargs):
+
+        collection_name = settings.SONG_COLLECTION
+
+        key_word = request.query_params.get("key") or []
+        if key_word:
+            key_word = re.split("[;,\s]+", key_word)
+
+        songs = read_data(collection_name)["data"]
+        search_result = []
+
+        for word in key_word:
+            word = word.lower()
+            for song in songs:
+                title = str(song["title"]).lower()
+                if word in title and song not in search_result:
+                    # print(title)
+                    search_result.append(song)
+
+        for item in search_result:
+            item["image_url"] = item["albumCover"]
+            item["created_at"] = item["time"]
+            item["content"] = ""
+            item["url"] = f"https://zuri.chat/music/{collection_name}"
+            item["email"] = ([],)
+            item["description"] = ([],)
+            item.pop("albumCover")
+            item.pop("time")
+
+        paginate_by = request.query_params.get("paginate_by", 20)
+        paginator = Paginator(search_result, paginate_by)
+        page_num = request.query_params.get("page", 1)
+        page_obj = paginator.get_page(page_num)
+        Query = request.query_params.get("key") or []
+        paginated_data = {
+            "status": "ok",
+            "pagination": {
+                "total_count": paginator.count,
+                "current_page": page_obj.number,
+                "per_page": paginate_by,
+                "page_count": paginator.num_pages,
+                "first_page": 1,
+                "last_page": paginator.num_pages,
+            },
+            "plugin": "Music",
+            "Query": Query,
+            "data": list(page_obj),
+            "filter_sugestions": {"in": [], "from": []},
+        }
+
+        return Response({"data": paginated_data}, status=status.HTTP_200_OK)
 
 
 class CommentView(APIView):
@@ -347,9 +394,7 @@ class UpdateCommentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RoomDetailView(
-    APIView
-):  # room detailview (if the organization has multiple music rooms)
+class RoomDetailView(APIView):  # room detailview (if the organization has multiple music rooms)
     def get(self, request, *args, **kwargs):
         serializer = RoomSerializer(data=request.data)
 
@@ -400,8 +445,6 @@ class UserCountView(GenericAPIView):
         return Response(user_count)
 
 
-
-
 class CreateRoomView(APIView):
 
     serializer_class = RoomSerializer
@@ -435,35 +478,6 @@ class RoomView(APIView):  # view room
     def get(self, request):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
-
-
-class AddToRoomView(APIView):  # working
-    @staticmethod
-    def adduser_id(request):
-        room_data = read_data(settings.ROOM_COLLECTION)
-        room_users = room_data["data"][0]["memberId"]
-        _id = room_data["data"][0]["_id"]
-        new_user = request.data["memberId"]
-        # TODO: Do a check for existing user before appending
-        room_users.append(new_user)
-        return _id, room_users
-
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data)
-
-    def post(self, request, *args, **kwargs):
-        _id, updated_room = self.adduser_id(request)
-
-        payload = {"memberId": updated_room}
-
-        data = write_data(
-            settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT"
-        )
-
-        centrifugo_post(plugin_id, {"event": "entered_room", "data": data})
-        return Response(data, status=status.HTTP_202_ACCEPTED)
-        # Note: use {"memberId": ""} to add 
 
 
 class DeleteRoomUserView(APIView):  # working
@@ -509,3 +523,61 @@ class RoomUserView(APIView):  # working
         room_users = room_data["data"][0]["memberId"]
 
         return Response(room_users)
+
+
+class AddUserToRoomView(APIView):
+    def post(self, request, org_id, room_id, member_id):
+        helper = DataStorage()
+        helper.organization_id = org_id
+        serializer = AddToRoomSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.data
+            room_id = data["room_id"]
+            member_id = data["member_id"]
+            music_rooms = helper.read("music_room", {"_id": room_id})
+            if music_rooms and music_rooms.get("status_code", None) == None:
+                users_id = music_rooms.get("memberId")
+                if member_id not in users_id:
+                    users_id.append(member_id)
+                    response = helper.update(
+                        "music_room", room_id, {"memberId": users_id}
+                    )
+                    if response.get("status") == 200:
+                        response_output = {
+                            "event": "add_user_to_room",
+                            "message": response.get("message"),
+                            "data": {
+                                "room_id": data["room_id"],
+                                "new_member_id": data["member_id"],
+                                "action": "user added successfully",
+                            },
+                        }
+                        try:
+                            centrifugo_data = centrifugo_publish(
+                                room_id, response_output
+                            )
+                            if (
+                                centrifugo_data
+                                and centrifugo_data.get("status_code") == 200
+                            ):
+                                return Response(
+                                    data=response_output, status=status.HTTP_201_CREATED
+                                )
+                            else:
+                                return Response(
+                                    data="User added but centrifugo not available",
+                                    status=status.HTTP_424_FAILED_DEPENDENCY,
+                                )
+                        except Exception:
+                            return Response(
+                                data="centrifugo server not available",
+                                status=status.HTTP_424_FAILED_DEPENDENCY,
+                            )
+                    return Response(
+                        "User not added", status=status.HTTP_424_FAILED_DEPENDENCY
+                    )
+                return Response("Member already in room", status=status.HTTP_302_FOUND)
+            return Response(
+                "Data not availabe on ZC core", status=status.HTTP_424_FAILED_DEPENDENCY
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
