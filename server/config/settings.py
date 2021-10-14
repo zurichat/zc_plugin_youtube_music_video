@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "django_extensions",
-    "drf_spectacular",
+    # "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -227,8 +227,7 @@ if bool(os.environ.get("PRODUCTION_SERVER", default="")):
 ORGANIZATON_ID = "614679ee1a5607b13c00bcb7"  # given by mark.
 PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
 CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
-# ROOM_ID = "615029bacf2c0f1ad75854ec"
-ROOM_ID = "6166afff533276f1a384b8c6"
+ROOM_ID = "616714d49f7a790c08d222ee"
 
 
 # new collections created
