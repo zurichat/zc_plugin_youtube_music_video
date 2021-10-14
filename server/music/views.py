@@ -528,7 +528,7 @@ class RoomUserView(APIView):  # working
 
 
 class AddUserToRoomView(APIView):
-    def post(self, request, org_id, room_id, member_id):
+    def post(self, request, org_id, room_id):
         helper = DataStorage()
         helper.organization_id = org_id
         serializer = AddToRoomSerializer(data=request.data)
