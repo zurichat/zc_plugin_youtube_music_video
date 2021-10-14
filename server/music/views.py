@@ -517,19 +517,23 @@ class AddToRoomView(APIView):  # working
 
 
 class AddUserToRoomView(APIView):
-    def post(self, request, org_id, room_id, member_id):
+    def post(self, request, org_id, room_id):
         helper = DataStorage()
         helper.organization_id = org_id
         serializer = AddToRoomSerializer(data=request.data)
         if serializer.is_valid():
             data = serializer.data
             room_id = data["room_id"]
-            member_id = data["member_id"]
-            music_rooms = helper.read("music_room", {"_id": room_id})
-            if music_rooms and music_rooms.get("status_code", None) == None:
-                users_id = music_rooms.get("memberId")
-                if member_id not in users_id:
-                    users_id.append(member_id)
+            member_ids = data["member_ids"]
+            music_room = helper.read("music_room", {"_id": room_id})
+            if music_room and music_room.get("status_code", None) == None:
+                users_id = music_room.get("memberId")
+                new_user_count = 0
+                for member in member_ids:
+                    if member not in users_id:
+                        users_id.append(member)
+                        new_user_count += 1
+                if new_user_count != 0:
                     response = helper.update(
                         "music_room", room_id, {"memberId": users_id}
                     )
@@ -539,8 +543,8 @@ class AddUserToRoomView(APIView):
                             "message": response.get("message"),
                             "data": {
                                 "room_id": data["room_id"],
-                                "new_member_id": data["member_id"],
-                                "action": "user added successfully",
+                                "new_member_id": data["member_ids"],
+                                "action": "user/users added successfully",
                             },
                         }
                         try:
@@ -556,7 +560,7 @@ class AddUserToRoomView(APIView):
                                 )
                             else:
                                 return Response(
-                                    data="User added but centrifugo not available",
+                                    data="User/users added but centrifugo not available",
                                     status=status.HTTP_424_FAILED_DEPENDENCY,
                                 )
                         except Exception:
@@ -565,10 +569,10 @@ class AddUserToRoomView(APIView):
                                 status=status.HTTP_424_FAILED_DEPENDENCY,
                             )
                     return Response(
-                        "User not added", status=status.HTTP_424_FAILED_DEPENDENCY
+                        "User/users not added", status=status.HTTP_424_FAILED_DEPENDENCY
                     )
-                return Response("Member already in room", status=status.HTTP_302_FOUND)
+                return Response("Member/members already in room", status=status.HTTP_302_FOUND)
             return Response(
-                "Data not availabe on ZC core", status=status.HTTP_424_FAILED_DEPENDENCY
+                "Data not available on ZC core", status=status.HTTP_424_FAILED_DEPENDENCY
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

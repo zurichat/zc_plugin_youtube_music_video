@@ -1,28 +1,12 @@
 from urllib.parse import urlencode
 from requests.exceptions import RequestException
-import requests, json
+import requests
 
-
-def login_user():
-    data = {
-        "email": "sam@gmail.com",
-        "password": "Owhondah"
-    }
-    try:
-        response = requests.post(url="https://api.zuri.chat/auth/login", json=data)
-    except requests.exceptions.RequestException as e:
-        return e
-    if response.status_code==200:
-        return response.json()["data"]["user"]["token"]
-    else:
-        return None
 
 centrifugo = "58c2400b-831d-411d-8fe8-31b6e337738b"
 PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
 ORG_ID = "614679ee1a5607b13c00bcb7"
-header={
-    'Authorization': f'Bearer {login_user()}'
-}
+
 class DataStorage:
     def __init__(self, request=None):
         self.read_api = (

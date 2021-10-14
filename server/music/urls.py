@@ -25,7 +25,7 @@ urlpatterns = [
     ),  # works for get and post
     path("deleteuser", DeleteUserView.as_view(), name="deleteuser"),  # remove user
     path(
-        "org/<str:org_id>/rooms/<str:room_id>/members/<str:member_id>",
+        "org/<str:org_id>/rooms/<str:room_id>/members/add",
         AddUserToRoomView.as_view(),
         name="add_user_to_room",
     ),
