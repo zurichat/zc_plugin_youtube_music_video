@@ -29,6 +29,7 @@ const httpService = {
 	post: axios.post,
 	put: axios.put,
 	room_id,
+	org_id,
 	endpoints
 };
 

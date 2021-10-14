@@ -5,36 +5,35 @@ import httpService from "./httpService";
 
 import {
 	GetUserInfo,
-	GetWorkspaceUser,
-	GetWorkspaceUsers
+	GetWorkspaceUser
 	// @ts-ignore
 } from "@zuri/control";
 
-function getWorkspaceUsers(): Promise<User[]> {
-	return GetWorkspaceUsers()
-		.then(data => {
-			console.log(data[0]);
+async function getWorkspaceUsers(): Promise<User[]> {
+	try {
+		const result = await httpService.get(
+			`https://api.zuri.chat/organizations/${httpService.org_id}/members`
+		);
 
-			return [...new Array(data.totalUsers).keys()].map(index => {
-				const {
-					_id: id,
-					user_name,
-					image_url: avatar,
-					display_name,
-					email
-				} = data[index];
+		return result.data.map(data => {
+			const {
+				_id: id,
+				user_name,
+				image_url: avatar,
+				display_name,
+				email
+			} = data;
 
-				return {
-					id,
-					name: display_name || user_name,
-					avatar,
-					email
-				};
-			});
-		})
-		.catch(error => {
-			throw Error(error.message);
+			return {
+				id,
+				name: display_name || user_name,
+				avatar,
+				email
+			};
 		});
+	} catch (error) {
+		throw Error(error.message);
+	}
 }
 
 async function getUsers() {
