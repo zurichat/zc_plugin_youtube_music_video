@@ -1,19 +1,31 @@
 from rest_framework import permissions
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, BasePermission,SAFE_METHODS
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import exceptions
 
 
 # Custom permission class
-class Is_Authenticated(IsAuthenticated):
+class Is_Authenticated_Or_Read_Only(IsAuthenticated):
     def has_permission(self, request, view):
         user_type = type(request.user)
         # print(user_type)
         if user_type is dict:
             return bool(request.user and request.user["is_authenticated"])
         else:
-            msg = "No Bearer Token provided."
-            raise exceptions.AuthenticationFailed(msg)
+            return request.method in SAFE_METHODS
+            # msg = "No Bearer Token provided."
+            # raise exceptions.AuthenticationFailed(msg)
+
+class ReadOnly(BasePermission):
+    def has_permission(self, request, view):
+         return request.method in SAFE_METHODS
+        # user_type = type(request.user)
+        # # print(user_type)
+        # if user_type is dict:
+        #     return request.method in SAFE_METHODS
+        # else:
+        #     msg = "No Bearer Token provided."
+        #     raise exceptions.AuthenticationFailed(msg)
 
 
 # class IsOwner(permissions.BasePermission):

@@ -263,14 +263,13 @@ class DeleteSongView(APIView):
 
 
 class SongSearchView(APIView):
-    # def get(self, request, *args, org_id, member_id, **kwargs):
     def get(self, request, *args, **kwargs):
 
         collection_name = settings.SONG_COLLECTION
 
         key_word = request.query_params.get("key") or []
         if key_word:
-            key_word = re.split("[;,\s]+", key_word)
+            key_word = re.split("[;,-]+", key_word)
 
         songs = read_data(collection_name)["data"]
         search_result = []
@@ -286,10 +285,10 @@ class SongSearchView(APIView):
         for item in search_result:
             item["image_url"] = item["albumCover"]
             item["created_at"] = item["time"]
-            item["content"] = ""
+            item["content"] = None
             item["url"] = f"https://zuri.chat/music/{collection_name}"
-            item["email"] = ([],)
-            item["description"] = ([],)
+            item["email"] = None
+            item["description"] = None
             item.pop("albumCover")
             item.pop("time")
 
@@ -299,22 +298,21 @@ class SongSearchView(APIView):
         page_obj = paginator.get_page(page_num)
         Query = request.query_params.get("key") or []
         paginated_data = {
-            "status": "ok",
-            "pagination": {
                 "total_count": paginator.count,
                 "current_page": page_obj.number,
                 "per_page": paginate_by,
                 "page_count": paginator.num_pages,
                 "first_page": 1,
                 "last_page": paginator.num_pages,
-            },
+            }
+
+        return Response({"status": "ok",
+            "pagination": paginated_data,
             "plugin": "Music",
             "Query": Query,
             "data": list(page_obj),
-            "filter_sugestions": {"in": [], "from": []},
-        }
-
-        return Response({"data": paginated_data}, status=status.HTTP_200_OK)
+            "filter_sugestions": {"in": [], "from": []}
+            }, status=status.HTTP_200_OK)
 
 
 class CommentView(APIView):

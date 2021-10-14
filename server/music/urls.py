@@ -17,7 +17,7 @@ urlpatterns = [
         name="deletesong",
     ),
     path(
-        "org/<str:org_id>/members/<str:member_id>/search",
+        "search/<str:org_id>/<str:member_id>",
         SongSearchView.as_view(),
         name="songsearch",
     ),
