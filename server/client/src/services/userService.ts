@@ -10,8 +10,6 @@ import {
 	// @ts-ignore
 } from "@zuri/control";
 
-const { adduser: enterEndpoint, leaveEndpoint } = httpService.endpoints;
-
 function getWorkspaceUsers(): Promise<User[]> {
 	return GetWorkspaceUsers()
 		.then(data => {
@@ -107,7 +105,7 @@ const extractInfo = info => ({
 function removeUserFromRoom() {
 	const { id } = store.getState().users.currentUser;
 
-	return httpService.post(leaveEndpoint, { id }).then(
+	return httpService.post(httpService.endpoints.removeuser, { id }).then(
 		r => userDispatch.removeUser({ id }),
 		e => e
 	);
