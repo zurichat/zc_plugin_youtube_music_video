@@ -2,14 +2,6 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class Media:
-
-    media_id: str
-    name: str
-    url: str
-
-
-@dataclass
 class Member:  # for the users
 
     _id: str
