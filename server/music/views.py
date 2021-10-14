@@ -92,7 +92,7 @@ class SidebarView(GenericAPIView):
                 "group_name": [],
                 "ID": f"/music/{roomid}",
                 "name": "Music Plugin",
-                "category": "entertainment",
+                "category": "utility",
                 "show_group": False,
                 "button_url": f"/music",
                 "public_rooms": [pub_room],
