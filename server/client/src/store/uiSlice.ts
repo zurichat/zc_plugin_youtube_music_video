@@ -38,7 +38,7 @@ const slice = createSlice({
     showMemberList: (state, action) => {
       state.showMemberList = action.payload;
     },
-    
+
     showDeleteModal: (state, action) => {
       state.showDeleteModal = action.payload;
     },

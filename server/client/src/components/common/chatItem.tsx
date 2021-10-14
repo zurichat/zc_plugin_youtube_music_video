@@ -33,7 +33,7 @@ function ChatItem({onCancel, onResend, id, name, avatar, time, message, userId, 
           {/* failed &&
           <span className="item-failed">mesage not sent</span>
           */}
-          { !notSent && 
+          { !notSent &&
           <span className="item-time">
             <Moment fromNow date={new Date(time).toJSON()} />
           </span>
@@ -45,8 +45,8 @@ function ChatItem({onCancel, onResend, id, name, avatar, time, message, userId, 
           {failed && <div className="lower-text">zuri.chat couldn't send this message
           <span id="start" onClick={() => onResend(id, message)}>
           Try again
-          </span> 
-          <span id="line">|</span> 
+          </span>
+          <span id="line">|</span>
           <span onClick={() => onCancel(id, message)}>
           Cancel
           </span>

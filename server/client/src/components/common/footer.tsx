@@ -1,5 +1,4 @@
-import React from 'react';
-import logo from './Frame 8866.svg';
+import logo from './Frame8866.svg';
 import  styled  from  'styled-components';
 
 function Footer() {
@@ -67,7 +66,7 @@ function Footer() {
                             <li><a href="#">Plugins</a></li>
                         </ul>
                     </div>
-                
+
                 </div>
 
                 <div className="footer__col">
@@ -102,28 +101,28 @@ function Footer() {
             padding: 0 1rem .5rem 0;
             background-color: var(--white-color);
         }
-        
+
         .footer__items{
             display: flex;
             justify-content: space-between;
             padding: 2rem;
         }
-        
+
         .footer__links {
             padding: 0;
             margin: 0;
         }
-        
+
         .footer__links i{
             color: var(--bluelite-color);
             font-size: var(--font-size-reg);
         }
-        
+
         .footer__links a{
             color: var(--text-secondary-color);
             font-size: var(--font-size-tiny);
         }
-        
+
         .footer__col{
             display: flex;
             justify-content: space-evenly;
@@ -131,22 +130,22 @@ function Footer() {
             font-size: var(--font-size-mini);
             color: var(--text-secondary-color);
         }
-        
+
         .footer__items_2{
             display: flex;
             padding: 0;
         }
-        
+
         .footer__items_2 a{
             font-size: var(--font-size-mini);
             color: var(--text-secondary-color);
             padding: 1em;
         }
-        
+
         .footer__col p{
             font-size: var(--font-size-mini);
         }
-        
+
         .footer__logo_dwn{
             display: none;
         }
@@ -157,50 +156,50 @@ function Footer() {
                 justify-content: space-evenly;
                 padding: 0;
             }
-        
+
             .footer__items_2 a{
                 padding: 0 .5rem;
             }
-        
+
             .footer__lists{
                 width: 5rem;
                 padding: 1rem;
             }
-        
+
             .footer__links a{
                 font-size: var(--mfont-size-mini);
             }
-        
+
             .footer__col{
                 flex-direction: column;
                 align-items: center;
             }
-        
+
             .footer__col p{
                 font-size: var(--mfont-size-mini);
             }
-        
+
             .footer__col a{
                 font-size: var(--mfont-size-mini);
-            }    
-        
+            }
+
             .footer__logo_up{
                 display: none;
             }
-        
+
             .footer__logo_dwn{
                 display: block;
             }
         }
-        
+
         @media screen and (min-width:700px){
             .footer__col{
                 flex-direction: row;
             }
         }
-        
-        
-        
+
+
+
         `
-  
+
   export default Footer;

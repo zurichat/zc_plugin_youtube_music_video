@@ -41,9 +41,12 @@ def verify_token(token):
     return response.response_data
 
 
-def read_data(collection=None, filter_data=None):
+def read_data(collection=None, object_id=None, filter_data=None):
     if filter_data is None:
         filter_data = {}
+
+    if object_id is None:
+        object_id = ""
 
     request_client = RequestClient()
 
@@ -51,12 +54,19 @@ def read_data(collection=None, filter_data=None):
         method="GET",
         url=f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}",
         headers={"Authorization": "headers"},
-        post_data=filter_data
+        post_data=filter_data,
     )
     return response.response_data
 
 
-def write_data(collection, object_id=None, filter_data=None, payload=None, bulk_write=False, method="POST"):
+def write_data(
+    collection,
+    object_id=None,
+    filter_data=None,
+    payload=None,
+    bulk_write=False,
+    method="POST",
+):
     if filter_data is None:
         filter_data = {}
 
@@ -73,7 +83,7 @@ def write_data(collection, object_id=None, filter_data=None, payload=None, bulk_
         "bulk_write": bulk_write,
         "object_id": object_id,
         "filter": filter_data,
-        "payload": payload
+        "payload": payload,
     }
     request_client = RequestClient()
 
@@ -81,48 +91,42 @@ def write_data(collection, object_id=None, filter_data=None, payload=None, bulk_
         method=method,
         url="https://api.zuri.chat/data/write",
         headers={"Authorization": "headers"},
-        post_data=post_data
+        post_data=post_data,
     )
     return response.response_data
 
 
 def centrifugo_post(room, data):
-    headers = {'Content-type': 'application/json', 'Authorization': 'apikey ' + centrifugo}
-    post_data = {
-        "method": "publish",
-        "params": {
-            "channel": room,
-            "data": data
-        }
+    headers = {
+        "Content-type": "application/json",
+        "Authorization": "apikey " + centrifugo,
     }
+    post_data = {"method": "publish", "params": {"channel": room, "data": data}}
     request_client = RequestClient()
 
     response = request_client.request(
         method="POST",
         url="https://realtime.zuri.chat/api",
         headers=headers,
-        post_data=post_data
+        post_data=post_data,
     )
     return response
 
 
 def publish_to_sidebar(organization_id, user_id, data):
-    headers = {'Content-type': 'application/json', 'Authorization': 'apikey ' + centrifugo}
-    room = {'org_id': organization_id, 'user_id': user_id}
-    post_data = {
-        "method": "publish",
-        "params": {
-            "channel": room,
-            "data": data
-        }
+    headers = {
+        "Content-type": "application/json",
+        "Authorization": "apikey " + centrifugo,
     }
+    room = {"org_id": organization_id, "user_id": user_id}
+    post_data = {"method": "publish", "params": {"channel": room, "data": data}}
     request_client = RequestClient()
 
     response = request_client.request(
         method="POST",
         url="https://realtime.zuri.chat/api",
         headers=headers,
-        post_data=post_data
+        post_data=post_data,
     )
     return response
 
@@ -135,16 +139,27 @@ def get_video(url):
     soup = BeautifulSoup(content, "html.parser")
 
     result = {
-        "title": soup.select_one('meta[itemprop="name"][content]')['content'],
-        "track_url": soup.select_one('link[itemprop="url"]')['href'],
-        "thumbnail_url": soup.select_one('link[itemprop="thumbnailUrl"]')['href'],
-        "duration": str(parse_duration(soup.select_one('meta[itemprop="duration"][content]')['content']))
+        "title": soup.select_one('meta[itemprop="name"][content]')["content"],
+        "track_url": soup.select_one('link[itemprop="url"]')["href"],
+        "thumbnail_url": soup.select_one('link[itemprop="thumbnailUrl"]')["href"],
+        "duration": str(
+            parse_duration(
+                soup.select_one('meta[itemprop="duration"][content]')["content"]
+            )
+        ),
     }
 
     return result
 
 
-def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk_write=False, method="POST"):
+def delete_data(
+    collection,
+    object_id=None,
+    filter_data=None,
+    payload=None,
+    bulk_write=False,
+    method="POST",
+):
     if filter_data is None:
         filter_data = {}
 
@@ -161,7 +176,7 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
         "bulk_write": bulk_write,
         "object_id": object_id,
         "filter": filter_data,
-        "payload": payload
+        "payload": payload,
     }
     request_client = RequestClient()
 
@@ -169,7 +184,44 @@ def delete_data(collection, object_id=None, filter_data=None, payload=None, bulk
         method=method,
         url="https://api.zuri.chat/data/delete",
         headers={"Authorization": "headers"},
-        post_data=data
+        post_data=data,
     )
     return response.response_data
 
+
+def patch_data(
+    collection,
+    object_id=None,
+    filter_data=None,
+    payload=None,
+    bulk_write=False,
+    method="PATCH",
+):
+    if filter_data is None:
+        filter_data = {}
+
+    if payload is None:
+        payload = {}
+
+    if object_id is None:
+        object_id = ""
+
+    patch_data = {
+        "plugin_id": plugin_id,
+        "organization_id": org_id,
+        "collection_name": collection,
+        "bulk_write": bulk_write,
+        "object_id": object_id,
+        "filter": filter_data,
+        "payload": payload,
+    }
+    request_client = RequestClient()
+
+    response = request_client.request(
+        method=method,
+        # url="https://api.zuri.chat/data/write",
+        url="https://api.zuri.chat/data/delete",
+        headers={"Authorization": "headers"},
+        post_data=patch_data,
+    )
+    return response.response_data
