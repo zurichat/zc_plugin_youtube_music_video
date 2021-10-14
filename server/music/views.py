@@ -131,7 +131,7 @@ class SidebarView(GenericAPIView):
                         "user_id": user_id,
                         "group_name": [],
                         "show_group": True,
-                        "category": "entertainment",
+                        "category": "utility",
                         "public_rooms": [pub_room],
                         "joined_rooms": [pub_room],
                     }
@@ -149,7 +149,7 @@ class SidebarView(GenericAPIView):
                     "user_id": user_id,
                     "group_name": [],
                     "show_group": True,
-                    "category": "entertainment",
+                    "category": "utility",
                     "public_rooms": [pub_room],
                     "joined_rooms": [pub_room],
                 }
