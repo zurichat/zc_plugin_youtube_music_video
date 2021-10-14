@@ -272,13 +272,14 @@ class DeleteSongView(APIView):
 
 
 class SongSearchView(APIView):
-    def get(self, request, *args, org_id, member_id, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         collection_name = settings.SONG_COLLECTION
 
         key_word = request.query_params.get("key") or []
         if key_word:
-            key_word = re.split("[;,\s]+", key_word)
+            key_word = re.split("[;,-]+", key_word)
+        # print(key_word)
 
         songs = read_data(collection_name)["data"]
         search_result = []
