@@ -66,10 +66,10 @@ urlpatterns = [
         AddUserToRoomView.as_view(),
         name="adduser",
     ),
-    # path(
-    #     "users/<str:member_id>/createroom", CreateRoomView.as_view(), name="createroom"
-    # ),
     path(
-        "createroom", CreateRoomView.as_view(), name="createroom"
+        "users/<str:member_id>/createroom", CreateRoomView.as_view(), name="createroom"
     ),
+    # path(
+    #     "createroom", CreateRoomView.as_view(), name="createroom"
+    # ),
 ]
