@@ -3,44 +3,44 @@ import { chatDispatch } from "../store/chatsSlice";
 import Chat from "../types/chat";
 import store from "../store";
 
-const { commentEndpoint } = endpoints;
+const { comments: commentEndpoint } = endpoints;
 
 const getChats = async () => {
-  try {
-    const result = await httpService.get(commentEndpoint);
-    const data = result.data.data ?? [];
-    chatDispatch.set(data);
-  } catch (e) {
-    console.log(e.message);
-  }
+	try {
+		const result = await httpService.get(commentEndpoint);
+		const data = result.data.data ?? [];
+		chatDispatch.set(data);
+	} catch (e) {
+		console.log(e.message);
+	}
 };
 
 const addChat = async (chat: Chat) => {
-  const newChat: any = { ...chat };
-  delete newChat.id;
+	const newChat: any = { ...chat };
+	delete newChat.id;
 
-  chatDispatch.addChat({ ...chat, notSent: true});
+	chatDispatch.addChat({ ...chat, notSent: true });
 
-  try {
-    await httpService.post(commentEndpoint, newChat, { timeout: 15000 });
-    chatDispatch.sentChat({ ...chat });
+	try {
+		await httpService.post(commentEndpoint, newChat, { timeout: 15000 });
+		chatDispatch.sentChat({ ...chat });
 
-    const { chats } = store.getState();
+		const { chats } = store.getState();
 
-    chats.slice(0, chats.length - 8).forEach(({ id }) => deleteChat(id));
-  } catch (error) {
-    console.log("Chat error:", error.message);
-    chatDispatch.failChat({ ...chat });
-  }
+		chats.slice(0, chats.length - 8).forEach(({ id }) => deleteChat(id));
+	} catch (error) {
+		console.log("Chat error:", error.message);
+		chatDispatch.failChat({ ...chat });
+	}
 
-  return;
+	return;
 };
 
 const deleteChat = (id: string) => {
-  return httpService
-    .post(endpoints.deleteComment, { id })
-    .then(() => chatDispatch.removeChat(id))
-    .catch((e) => console.log(e.message));
+	return httpService
+		.post(endpoints.deletecomment, { id })
+		.then(() => chatDispatch.removeChat(id))
+		.catch(e => console.log(e.message));
 };
 
 const chatService = { addChat, getChats, deleteChat };
