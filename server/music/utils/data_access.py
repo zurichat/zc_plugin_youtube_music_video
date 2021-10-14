@@ -219,7 +219,8 @@ def patch_data(
 
     response = request_client.request(
         method=method,
-        url="https://api.zuri.chat/data/write",
+        # url="https://api.zuri.chat/data/write",
+        url="https://api.zuri.chat/data/delete",
         headers={"Authorization": "headers"},
         post_data=patch_data,
     )

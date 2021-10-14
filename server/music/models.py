@@ -10,7 +10,7 @@ class Media:
 
 
 @dataclass
-class Member:
+class Member:  # for the users
 
     _id: str
     userId: str
@@ -21,7 +21,7 @@ class Member:
 
 
 @dataclass
-class Song:
+class Song:  # for the songs
 
     _id: str
     title: str
@@ -35,7 +35,7 @@ class Song:
 
 
 @dataclass
-class Room:
+class Room:  # for the rooms
 
     _id: str
     room_name: str
@@ -45,7 +45,7 @@ class Room:
 
 
 @dataclass
-class Comment:
+class Comment:  # for the comments
 
     _id: str
     message: str
