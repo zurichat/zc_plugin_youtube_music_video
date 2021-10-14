@@ -8,7 +8,7 @@ urlpatterns = [
     path(
         "org/<str:org_id>/room/<str:_id>/songs/current",
         change_room_image.as_view(),
-        name="currentsong", 
+        name="currentsong",
     ),
     path("info", PluginInfoView.as_view(), name="info"),
     path("ping", PluginPingView.as_view(), name="ping"),
@@ -21,6 +21,11 @@ urlpatterns = [
     path(
         "search/<str:org_id>/<str:member_id>",
         SongSearchView.as_view(),
+        name="songsearch",
+    ),
+    path(
+        "search-suggestions/<str:org_id>/<str:member_id>",
+        SongSearchSuggestions.as_view(),
         name="songsearch",
     ),
     path(

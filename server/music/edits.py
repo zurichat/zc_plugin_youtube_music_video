@@ -20,7 +20,7 @@
 # #edits in progress
 
 # class CreateRoomView(APIView):
-           
+
 #     # def post(self,request,org_id,memberId,collection,*args, **kwargs):
 #     def post(self, request, org_id, memberId, collection,*args, **kwargs):
 #         serializer = RoomSerializer(data=request.data)
@@ -32,13 +32,13 @@
 #         description = request.data.get('description')
 
 #         if serializer.is_valid():
-                        
+
 #             room_url = f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
 
 #             x = requests.request("GET", url=room_url)
 
 #             if x.status_code == 200:
-                
+
 #                 data = {
 #                     "plugin_id": plugin_id,
 #                     "organization_id": org_id,
@@ -51,16 +51,16 @@
 #                         "memberId": [memberId],
 #                     }
 #                 }
-                
+
 #                 post_url = 'https://api.zuri.chat/data/write'
 
 #                 x = requests.request("POST", url=post_url, data=json.dumps(data))
 
 #                 if x.status_code in [201, 200]:
-                
+
 #                     responses = x.json()
 #                     room_url_data = responses['data']
-                
+
 #                     room_url = room_url_data['object_id']
 
 #                     payload = {
@@ -76,7 +76,7 @@
 #                     #add the room url to the room for the side bar to see
 
 #                     x_url = requests.request("PATCH", url=post_url, data=json.dumps(payload))
-                
+
 #                     if x_url.status_code in [201, 200]:
 #                         response = {
 #                             "room_id":room_url,
@@ -84,7 +84,7 @@
 #                             "memberId": memberId,
 #                             "room_url": f"/music/{room_url}"
 #                         }
-                        
+
 #                     return Response(data=response, status=status.HTTP_200_OK)
 #                 return Response(data={"message":"url error"}, status=status.HTTP_200_OK)
 #             return Response(data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST)
@@ -102,7 +102,7 @@
 #         plugin_id = settings.PLUGIN_ID
 
 #         serializer = self.serializer_class(data=request.data)
-        
+
 #         if serializer.is_valid(raise_exception=True)
 
 #             rooms = serializer.data
@@ -112,4 +112,4 @@
 #             # rooms["memberId"] = memberId
 
 #             data = write_data(coll_name, payload=rooms)
-#             return Response(data)            
+#             return Response(data)
