@@ -34,7 +34,7 @@ class change_room_image(APIView):
 
     permission_classes = [AllowAny]
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         return Response(
             {
                 "message": "This endpoint is for editing the music room icon in the sidebar "
@@ -42,7 +42,7 @@ class change_room_image(APIView):
             status=status.HTTP_200_OK,
         )
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         data = request.data
 
         if data["albumCover"] == "":
@@ -206,12 +206,12 @@ class PluginPingView(GenericAPIView):
 
 
 class SongView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
 
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         media_info = get_video(request.data["url"])
         userId_info = request.data["userId"]
         addedBy_info = request.data["addedBy"]
@@ -240,11 +240,11 @@ class SongView(APIView):
 
 
 class DeleteSongView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = SongSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -263,7 +263,8 @@ class DeleteSongView(APIView):
 
 
 class SongSearchView(APIView):
-    def get(self, request, *args, org_id, member_id, **kwargs):
+    # def get(self, request, *args, org_id, member_id, **kwargs):
+    def get(self, request, *args, **kwargs):
 
         collection_name = settings.SONG_COLLECTION
 
@@ -317,11 +318,11 @@ class SongSearchView(APIView):
 
 
 class CommentView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -344,11 +345,11 @@ class DeleteCommentView(APIView):
 
     serializer_class = CommentSerializer
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -367,7 +368,7 @@ class DeleteCommentView(APIView):
 
 
 class UpdateCommentView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
@@ -394,7 +395,9 @@ class UpdateCommentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class RoomDetailView(APIView):  # room detailview (if the organization has multiple music rooms)
+class RoomDetailView(
+    APIView
+):  # room detailview (if the organization has multiple music rooms)
     def get(self, request, *args, **kwargs):
         serializer = RoomSerializer(data=request.data)
 
@@ -412,11 +415,11 @@ class DeleteRoomView(APIView):
 
     serializer_class = RoomSerializer
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = RoomSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -435,7 +438,7 @@ class DeleteRoomView(APIView):
 
 
 class UserCountView(GenericAPIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.MEMBERS_COLLECTION)
         header_user_count = data["data"][0]
         user_count = len(header_user_count)
@@ -449,7 +452,7 @@ class CreateRoomView(APIView):
 
     serializer_class = RoomSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         org_id = settings.ORGANIZATON_ID
         plugin_id = settings.PLUGIN_ID
         coll_name = settings.ROOM_COLLECTION
@@ -475,7 +478,7 @@ class RoomView(APIView):  # view room
 
     serializer_class = RoomSerializer
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
@@ -483,35 +486,36 @@ class RoomView(APIView):  # view room
 class DeleteRoomUserView(APIView):  # working
 
     serializer_class = RoomSerializer
-    
-    # @staticmethod
-    def remove_user_id(request):
+
+    def remove_user(request):
+
         room_data = read_data(settings.ROOM_COLLECTION)
         room_users = room_data["data"][0]["memberId"]
-        _id = room_data["data"][0]["_id"]
+        room_id = room_data["data"][0]["_id"]
         user = request.data["memberId"]
-        
+
         for x in room_users:
             if x == user:
                 room_users.remove(x)
-        return _id, room_users  
+        return room_id, room_users
 
     def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
 
     def post(self, request, *args, **kwargs):
-        _id, updated_room = self.remove_user_id(request)
+
+        room_id, updated_room = self.remove_user(request)
 
         payload = {"memberId": updated_room}
 
         data = write_data(
-            settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT"
+            settings.ROOM_COLLECTION, object_id=room_id, payload=payload, method="PUT"
         )
 
         centrifugo_post(plugin_id, {"event": "User left room", "data": data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
-        # Note: use {"memberId": ""} to delete        
+        # Note: use {"memberId": ""} to delete
 
 
 class RoomUserView(APIView):  # working
