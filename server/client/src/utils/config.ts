@@ -4,6 +4,7 @@ import { uiDispatch } from "../store/uiSlice";
 import User from "../types/user";
 import icon from "../media/musicRoomIcon.svg";
 import httpService from "../services/httpService";
+import { toast } from "react-toastify";
 
 export { pluginHeader };
 
@@ -40,7 +41,13 @@ export const addModalConfig = (options: AddModalConfig) => {
 	return {
 		title: "Add users",
 		type: "addmodal",
-		userList: users.map(user => ({ value: user.id, label: user.name })),
+
+		userList: users.map(user => ({
+			value: user.id,
+			label: user.name,
+			email: user.email
+		})),
+
 		show: true,
 
 		addMembersEvent: users => {
@@ -50,11 +57,14 @@ export const addModalConfig = (options: AddModalConfig) => {
 				users.forEach(user =>
 					httpService.post(httpService.endpoints.adduser, {
 						room_id: httpService.room_id,
-						member_id: user.value
+						member_id: user.value,
+						email: user.email
 					})
 				);
+				toast.success("Added successfully");
 			} catch (error) {
 				console.log(error.message);
+				toast.error(error.message);
 			}
 		},
 		handleClose: function () {

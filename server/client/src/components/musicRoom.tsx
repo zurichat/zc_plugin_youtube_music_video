@@ -62,7 +62,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	.plugin-header {
 		position: sticky;
 		top: 0px;
-		z-index: 1111111111;
+		z-index: 100;
 	}
 
 	.room-main {

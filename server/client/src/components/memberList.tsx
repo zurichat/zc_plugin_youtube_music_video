@@ -20,7 +20,7 @@ const MemberList = () => {
 			.get(httpService.endpoints.members)
 			.then(data => console.log(data))
 			.catch(console.log);
-	}, []);
+	}, [showMemberList]);
 
 	if (!showMemberList) return null;
 
