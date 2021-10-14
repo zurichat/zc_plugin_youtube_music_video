@@ -263,13 +263,14 @@ class DeleteSongView(APIView):
 
 
 class SongSearchView(APIView):
+    # def get(self, request, *args, org_id, member_id, **kwargs):
     def get(self, request, *args, **kwargs):
 
         collection_name = settings.SONG_COLLECTION
 
         key_word = request.query_params.get("key") or []
         if key_word:
-            key_word = re.split("[;,-]+", key_word)
+            key_word = re.split("[;,\s]+", key_word)
 
         songs = read_data(collection_name)["data"]
         search_result = []
@@ -285,10 +286,10 @@ class SongSearchView(APIView):
         for item in search_result:
             item["image_url"] = item["albumCover"]
             item["created_at"] = item["time"]
-            item["content"] = None
+            item["content"] = ""
             item["url"] = f"https://zuri.chat/music/{collection_name}"
-            item["email"] = None
-            item["description"] = None
+            item["email"] = ([],)
+            item["description"] = ([],)
             item.pop("albumCover")
             item.pop("time")
 
@@ -298,21 +299,22 @@ class SongSearchView(APIView):
         page_obj = paginator.get_page(page_num)
         Query = request.query_params.get("key") or []
         paginated_data = {
+            "status": "ok",
+            "pagination": {
                 "total_count": paginator.count,
                 "current_page": page_obj.number,
                 "per_page": paginate_by,
                 "page_count": paginator.num_pages,
                 "first_page": 1,
                 "last_page": paginator.num_pages,
-            }
-
-        return Response({"status": "ok",
-            "pagination": paginated_data,
+            },
             "plugin": "Music",
             "Query": Query,
             "data": list(page_obj),
-            "filter_sugestions": {"in": [], "from": []}
-            }, status=status.HTTP_200_OK)
+            "filter_sugestions": {"in": [], "from": []},
+        }
+
+        return Response({"data": paginated_data}, status=status.HTTP_200_OK)
 
 
 class CommentView(APIView):
@@ -584,25 +586,27 @@ class AddUserToRoomView(APIView):
 
 
 class CreateRoom(APIView):
-           
+
     # def post(self,request,org_id,memberId,collection,*args, **kwargs):
-    def post(self, request, org_id, memberId, collection,*args, **kwargs):
+    def post(self, request, org_id, memberId, collection, *args, **kwargs):
         serializer = RoomSerializer(data=request.data)
 
-        org_id = request.data.get('org_id')
-        memberId = request.data.get('memberId')
-        collection = request.data.get('collection')
-        room_name = request.data.get('room_name')
-        description = request.data.get('description')
+        org_id = request.data.get("org_id")
+        memberId = request.data.get("memberId")
+        collection = request.data.get("collection")
+        room_name = request.data.get("room_name")
+        description = request.data.get("description")
 
         if serializer.is_valid():
-                        
-            room_url = f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
+
+            room_url = (
+                f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
+            )
 
             x = requests.request("GET", url=room_url)
 
             if x.status_code == 200:
-                
+
                 data = {
                     "plugin_id": plugin_id,
                     "organization_id": org_id,
@@ -613,42 +617,46 @@ class CreateRoom(APIView):
                         "description": description,
                         "private": False,
                         "memberId": [memberId],
-                    }
+                    },
                 }
-                
-                post_url = 'https://api.zuri.chat/data/write'
+
+                post_url = "https://api.zuri.chat/data/write"
 
                 x = requests.request("POST", url=post_url, data=json.dumps(data))
 
                 if x.status_code in [201, 200]:
-                
+
                     responses = x.json()
-                    room_url_data = responses['data']
-                
-                    room_url = room_url_data['object_id']
+                    room_url_data = responses["data"]
+
+                    room_url = room_url_data["object_id"]
 
                     payload = {
-                    "plugin_id": plugin_id,
-                    "organization_id": org_id,
-                    "collection_name": collection,
-                    "object_id": room_url,
-                    "bulk_write": False,
-                    "payload": {
-                        "room_url": f"/music/{room_url}"
-                        }
+                        "plugin_id": plugin_id,
+                        "organization_id": org_id,
+                        "collection_name": collection,
+                        "object_id": room_url,
+                        "bulk_write": False,
+                        "payload": {"room_url": f"/music/{room_url}"},
                     }
-                    #add the room url to the room for the side bar to see
+                    # add the room url to the room for the side bar to see
 
-                    x_url = requests.request("PATCH", url=post_url, data=json.dumps(payload))
-                
+                    x_url = requests.request(
+                        "PATCH", url=post_url, data=json.dumps(payload)
+                    )
+
                     if x_url.status_code in [201, 200]:
                         response = {
-                            "room_id":room_url,
+                            "room_id": room_url,
                             "room_name": room_name,
                             "memberId": memberId,
-                            "room_url": f"/music/{room_url}"
+                            "room_url": f"/music/{room_url}",
                         }
-                        
+
                     return Response(data=response, status=status.HTTP_200_OK)
-                return Response(data={"message":"url error"}, status=status.HTTP_200_OK)
-            return Response(data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    data={"message": "url error"}, status=status.HTTP_200_OK
+                )
+            return Response(
+                data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST
+            )
