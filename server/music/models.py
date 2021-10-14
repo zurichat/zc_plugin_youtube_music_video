@@ -2,15 +2,7 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class Media:
-
-    media_id: str
-    name: str
-    url: str
-
-
-@dataclass
-class Member:
+class Member:  # for the users
 
     _id: str
     userId: str
@@ -21,7 +13,7 @@ class Member:
 
 
 @dataclass
-class Song:
+class Song:  # for the songs
 
     _id: str
     title: str
@@ -32,11 +24,10 @@ class Song:
     userId: dict = field(default_factory=dict)
     addedBy: dict = field(default_factory=dict)
     likedBy: dict = field(default_factory=dict)
-    
 
 
 @dataclass
-class Room:
+class Room:  # for the rooms
 
     _id: str
     room_name: str
@@ -46,11 +37,11 @@ class Room:
 
 
 @dataclass
-class Comment:
+class Comment:  # for the comments
 
     _id: str
     message: str
-    time: int    
+    time: int
     userId: dict = field(default_factory=dict)
     name: dict = field(default_factory=dict)
     avatar: dict = field(default_factory=dict)

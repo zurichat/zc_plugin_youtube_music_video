@@ -1,16 +1,8 @@
 from rest_framework import authentication
-from rest_framework.permissions import IsAuthenticated
 from rest_framework import exceptions
 import requests
 
 
-# #Custom permission class
-# class Is_Authenticated(IsAuthenticated):
-
-#     def has_permission(self, request, view):
-#         return bool(request.user and request.user["is_authenticated"])
-
-# Custom token authentication
 class Zuri_Token_Auth(authentication.TokenAuthentication):
 
     keyword = "Bearer"

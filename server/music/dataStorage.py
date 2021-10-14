@@ -17,7 +17,7 @@ class DataStorage:
         self.delete_api = "https://api.zuri.chat/data/delete"
         self.upload_api = "https://api.zuri.chat/upload/file/{pgn_id}"
         self.upload_multiple_api = "https://api.zuri.chat/upload/files/{pgn_id}"
-        self.delete_file_api ="https://api.zuri.chat/delete/file/{pgn_id}"
+        self.delete_file_api = "https://api.zuri.chat/delete/file/{pgn_id}"
 
         if request is None:
             self.plugin_id = PLUGIN_ID
@@ -102,10 +102,8 @@ class DataStorage:
         else:
             return {"status_code": response.status_code, "message": response.reason}
 
- 
 
 DB = DataStorage()
-
 
 
 def centrifugo_publish(room, data):
@@ -113,12 +111,10 @@ def centrifugo_publish(room, data):
         "Content-type": "application/json",
         "Authorization": "apikey " + centrifugo,
     }
-    url="https://realtime.zuri.chat/api"
+    url = "https://realtime.zuri.chat/api"
     command = {"method": "publish", "params": {"channel": room, "data": data}}
     try:
-        response = requests.post(
-            url=url, headers=headers, json=command
-        )
+        response = requests.post(url=url, headers=headers, json=command)
     except requests.RequestException as error:
         raise RequestException(error)
 

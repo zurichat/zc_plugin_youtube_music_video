@@ -16,7 +16,7 @@ class AddToRoomTest(APITestCase):
             "member_ids": ["1111"]
         }
 
-        url = "music:add_user_to_room"
+        url = "music:adduser"
         response = self.client.post(reverse(url, 
         kwargs={
             "org_id": "61424456576",
@@ -51,7 +51,7 @@ class AddToRoomTest(APITestCase):
         mock_centrifugo.return_value = {"status_code": 200}
 
 
-        url = "music:add_user_to_room"
+        url = "music:adduser"
         response = self.client.post(reverse(url, 
             kwargs={
                 "org_id": "614679ee1a5607b13c00bcb7",
@@ -83,7 +83,7 @@ class AddToRoomTest(APITestCase):
         }
         mock_update.return_value = {"status_code": 503}
 
-        url = "music:add_user_to_room"
+        url = "music:adduser"
         response = self.client.post(reverse(url, 
             kwargs={
                 "org_id": "614679ee1a5607b13c00bcb7",
@@ -112,7 +112,7 @@ class AddToRoomTest(APITestCase):
             "room_name":"Music room"
         }
 
-        url = "music:add_user_to_room"
+        url = "music:adduser"
         response = self.client.post(reverse(url, 
             kwargs={
                 "org_id": "614679ee1a5607b13c00bcb7",
@@ -149,7 +149,7 @@ class AddToRoomTest(APITestCase):
         mock_centrifugo.return_value = {"status_code": 503}
 
 
-        url = "music:add_user_to_room"
+        url = "music:adduser"
         response = self.client.post(reverse(url, 
             kwargs={
                 "org_id": "614679ee1a5607b13c00bcb7",
@@ -170,7 +170,7 @@ class AddToRoomTest(APITestCase):
             "member_ids": "1111"
         }
         
-        url = "music:add_user_to_room"
+        url = "music:adduser"
         response = self.client.post(reverse(url, 
             kwargs={
                 "org_id": "614679ee1a5607b13c00bcb7",
@@ -189,7 +189,7 @@ class AddToRoomTest(APITestCase):
             "member_ids": []
         }
         
-        url = "music:add_user_to_room"
+        url = "music:adduser"
         response = self.client.post(reverse(url, 
             kwargs={
                 "org_id": "614679ee1a5607b13c00bcb7",
@@ -207,7 +207,7 @@ class AddToRoomTest(APITestCase):
             "room_id": "616714d49f7a790c08d222ee"
         }
         
-        url = "music:add_user_to_room"
+        url = "music:adduser"
         response = self.client.post(reverse(url, 
             kwargs={
                 "org_id": "614679ee1a5607b13c00bcb7",

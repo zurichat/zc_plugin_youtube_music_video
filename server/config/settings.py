@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "django_extensions",
-    "drf_spectacular",
+    # "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -168,7 +168,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Configure django-rest-framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        # "music.authentication.Zuri_Token_Auth",
+       # "music.authentication.Zuri_Token_Auth",
         "rest_framework.authentication.SessionAuthentication",
     ),
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
@@ -183,14 +183,14 @@ REST_FRAMEWORK = {
     #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S",
     "DATETIME_FORMAT": "%s.%f",
     "DEFAULT_PERMISSION_CLASSES": (
-        #   "music.permissions.Is_Authenticated",
+          # "music.permissions.Is_Authenticated_Or_Read_Only",
         "rest_framework.permissions.AllowAny",
     ),
 }
 
 if DEBUG:
     REST_FRAMEWORK["DEFAULT_PERMISSION_CLASSES"] = (
-        "rest_framework.permissions.AllowAny",
+         "rest_framework.permissions.AllowAny",
     )
 
 SPECTACULAR_SETTINGS = {
@@ -227,8 +227,7 @@ if bool(os.environ.get("PRODUCTION_SERVER", default="")):
 ORGANIZATON_ID = "614679ee1a5607b13c00bcb7"  # given by mark.
 PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
 CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
-# ROOM_ID = "615029bacf2c0f1ad75854ec"
-ROOM_ID = "6166afff533276f1a384b8c6"
+ROOM_ID = "616714d49f7a790c08d222ee"
 
 
 # new collections created
@@ -236,6 +235,6 @@ ROOM_COLLECTION = "music_room"
 SONG_COLLECTION = "songs"
 COMMENTS_COLLECTION = "chats"
 # MEMBERS_COLLECTION = "users"
-MEMBERS_COLLECTION = "member"
+# MEMBERS_COLLECTION = "member"
 
 APPEND_SLASH = False

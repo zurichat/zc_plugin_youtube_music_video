@@ -1,3 +1,5 @@
+import re
+from django.core.paginator import Paginator
 from django.conf import settings
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
@@ -32,7 +34,7 @@ class change_room_image(APIView):
 
     permission_classes = [AllowAny]
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         return Response(
             {
                 "message": "This endpoint is for editing the music room icon in the sidebar "
@@ -40,7 +42,7 @@ class change_room_image(APIView):
             status=status.HTTP_200_OK,
         )
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         data = request.data
 
         if data["albumCover"] == "":
@@ -203,23 +205,13 @@ class PluginPingView(GenericAPIView):
         return JsonResponse({"server": server})
 
 
-class MediaView(APIView):
-    def get(self, request):
-        payload = {"email": "hng.user01@gmail.com", "password": "password"}
-
-        data = read_data("test_collection")
-
-        centrifugo_post(plugin_id, {"event": "join_room"})
-        return Response(data)
-
-
 class SongView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
 
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         media_info = get_video(request.data["url"])
         userId_info = request.data["userId"]
         addedBy_info = request.data["addedBy"]
@@ -248,11 +240,11 @@ class SongView(APIView):
 
 
 class DeleteSongView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = SongSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -270,12 +262,67 @@ class DeleteSongView(APIView):
         # Note: use {"_id": ""} to delete
 
 
+class SongSearchView(APIView):
+    # def get(self, request, *args, org_id, member_id, **kwargs):
+    def get(self, request, *args, **kwargs):
+
+        collection_name = settings.SONG_COLLECTION
+
+        key_word = request.query_params.get("key") or []
+        if key_word:
+            key_word = re.split("[;,\s]+", key_word)
+
+        songs = read_data(collection_name)["data"]
+        search_result = []
+
+        for word in key_word:
+            word = word.lower()
+            for song in songs:
+                title = str(song["title"]).lower()
+                if word in title and song not in search_result:
+                    # print(title)
+                    search_result.append(song)
+
+        for item in search_result:
+            item["image_url"] = item["albumCover"]
+            item["created_at"] = item["time"]
+            item["content"] = ""
+            item["url"] = f"https://zuri.chat/music/{collection_name}"
+            item["email"] = ([],)
+            item["description"] = ([],)
+            item.pop("albumCover")
+            item.pop("time")
+
+        paginate_by = request.query_params.get("paginate_by", 20)
+        paginator = Paginator(search_result, paginate_by)
+        page_num = request.query_params.get("page", 1)
+        page_obj = paginator.get_page(page_num)
+        Query = request.query_params.get("key") or []
+        paginated_data = {
+            "status": "ok",
+            "pagination": {
+                "total_count": paginator.count,
+                "current_page": page_obj.number,
+                "per_page": paginate_by,
+                "page_count": paginator.num_pages,
+                "first_page": 1,
+                "last_page": paginator.num_pages,
+            },
+            "plugin": "Music",
+            "Query": Query,
+            "data": list(page_obj),
+            "filter_sugestions": {"in": [], "from": []},
+        }
+
+        return Response({"data": paginated_data}, status=status.HTTP_200_OK)
+
+
 class CommentView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -298,11 +345,11 @@ class DeleteCommentView(APIView):
 
     serializer_class = CommentSerializer
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -321,7 +368,7 @@ class DeleteCommentView(APIView):
 
 
 class UpdateCommentView(APIView):
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
@@ -348,16 +395,67 @@ class UpdateCommentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class RoomDetailView(
+    APIView
+):  # room detailview (if the organization has multiple music rooms)
+    def get(self, request, *args, **kwargs):
+        serializer = RoomSerializer(data=request.data)
+
+        if serializer.is_valid():
+
+            pk = kwargs["_id"]
+
+            data = read_data(settings.ROOM_COLLECTION, object_id=pk)
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteRoomView(APIView):
+
+    serializer_class = RoomSerializer
+
+    def get(self, request, *args, **kwargs):
+        data = read_data(settings.ROOM_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        serializer = RoomSerializer(data=request.data)
+
+        if serializer.is_valid():
+            object_id = request.data["_id"]
+
+            data = delete_data(settings.ROOM_COLLECTION, object_id=object_id)
+
+            updated_data = read_data(settings.ROOM_COLLECTION)
+
+            centrifugo_post(plugin_id, {"event": "room deleted", "data": updated_data})
+
+            return Response(data, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Note: use {"id": ""} to delete
+
+
+class UserCountView(GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        data = read_data(settings.ROOM_COLLECTION)
+        header_user_count = data["data"][0]
+        user_count = len(header_user_count)
+
+        centrifugo_post(plugin_id, {"event": "header_user_count", "data": user_count})
+
+        return Response(user_count)
+
+
 class CreateRoomView(APIView):
 
     serializer_class = RoomSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         org_id = settings.ORGANIZATON_ID
         plugin_id = settings.PLUGIN_ID
         coll_name = settings.ROOM_COLLECTION
-
-        # memberId = read_data(settings.MEMBERS_COLLECTION)
 
         plugin_id = settings.PLUGIN_ID
 
@@ -378,142 +476,55 @@ class RoomView(APIView):  # view room
 
     serializer_class = RoomSerializer
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
 
-class RoomDetailView(APIView):
-    def get(self, request, *args, **kwargs):
-        serializer = RoomSerializer(data=request.data)
-
-        if serializer.is_valid():
-
-            pk = kwargs["_id"]
-
-            data = read_data(settings.ROOM_COLLECTION, object_id=pk)
-            return Response(data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteRoomView(APIView):
+class DeleteRoomUserView(APIView):  # working
 
     serializer_class = RoomSerializer
 
-    def get(self, request):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
+    def remove_user(request):
 
-    def post(self, request):
-        serializer = RoomSerializer(data=request.data)
-
-        if serializer.is_valid():
-            object_id = request.data["_id"]
-
-            data = delete_data(settings.ROOM_COLLECTION, object_id=object_id)
-
-            updated_data = read_data(settings.ROOM_COLLECTION)
-
-            centrifugo_post(plugin_id, {"event": "room deleted", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # Note: use {"id": ""} to delete
-
-
-class MemberListView(GenericAPIView):
-
-    serializer_class = MemberSerializer
-
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.MEMBERS_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        if serializer.is_valid():
-            payload = serializer.data
-
-            data = write_data(settings.MEMBERS_COLLECTION, payload=payload)
-
-            updated_data = read_data(settings.MEMBERS_COLLECTION)
-
-            centrifugo_post(plugin_id, {"event": "added_user", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class DeleteUserView(APIView):
-
-    serializer_class = MemberSerializer
-
-    def get(self, request):
-        data = read_data(settings.MEMBERS_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
-
-    def delete(self, request):
-        serializer = MemberSerializer(data=request.data)
-
-        if serializer.is_valid():
-            object_id = request.data["_id"]
-
-            data = delete_data(settings.MEMBERS_COLLECTION, object_id=object_id)
-
-            updated_data = read_data(settings.MEMBERS_COLLECTION)
-
-            centrifugo_post(
-                plugin_id, {"event": "User left room", "data": updated_data}
-            )
-
-            return Response(data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # Note: use {"id": ""} to delete
-
-
-class UserCountView(GenericAPIView):
-    def get(self, request):
-        data = read_data(settings.MEMBERS_COLLECTION)
-        header_user_count = data["data"][0]
-        user_count = len(header_user_count)
-
-        centrifugo_post(plugin_id, {"event": "header_user_count", "data": user_count})
-
-        return Response(user_count)
-
-
-class AddToRoomView(APIView):  # working
-    @staticmethod
-    def get_obj_id_and_append_user_id(request):
         room_data = read_data(settings.ROOM_COLLECTION)
-        room_users = room_data["data"][0]["room_member_id"]
-        _id = room_data["data"][0]["_id"]
-        new_user = {"email": request.data["email"], "userId": request.data["userId"]}
-        # TODO: Do a check for existing user before appending
-        room_users.append(new_user)
-        return _id, room_users
+        room_users = room_data["data"][0]["memberId"]
+        room_id = room_data["data"][0]["_id"]
+        user = request.data["memberId"]
+
+        for x in room_users:
+            if x == user:
+                room_users.remove(x)
+        return room_id, room_users
 
     def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
 
     def post(self, request, *args, **kwargs):
-        _id, updated_room = self.get_obj_id_and_append_user_id(request)
 
-        payload = {"room_member_id": updated_room}
+        room_id, updated_room = self.remove_user(request)
+
+        payload = {"memberId": updated_room}
 
         data = write_data(
-            settings.ROOM_COLLECTION, object_id=_id, payload=payload, method="PUT"
+            settings.ROOM_COLLECTION, object_id=room_id, payload=payload, method="PUT"
         )
 
-        centrifugo_post(plugin_id, {"event": "entered_room", "data": data})
+        centrifugo_post(plugin_id, {"event": "User left room", "data": data})
         return Response(data, status=status.HTTP_202_ACCEPTED)
+        # Note: use {"memberId": ""} to delete
+
+
+class RoomUserView(APIView):  # working
+
+    serializer_class = RoomSerializer
+
+    def get(self, request, *args, **kwargs):
+        room_data = read_data(settings.ROOM_COLLECTION)
+        room_users = room_data["data"][0]["memberId"]
+
+        return Response(room_users)
 
 
 class AddUserToRoomView(APIView):
@@ -576,3 +587,80 @@ class AddUserToRoomView(APIView):
                 "Data not available on ZC core", status=status.HTTP_424_FAILED_DEPENDENCY
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CreateRoom(APIView):
+
+    # def post(self,request,org_id,memberId,collection,*args, **kwargs):
+    def post(self, request, org_id, memberId, collection, *args, **kwargs):
+        serializer = RoomSerializer(data=request.data)
+
+        org_id = request.data.get("org_id")
+        memberId = request.data.get("memberId")
+        collection = request.data.get("collection")
+        room_name = request.data.get("room_name")
+        description = request.data.get("description")
+
+        if serializer.is_valid():
+
+            room_url = (
+                f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
+            )
+
+            x = requests.request("GET", url=room_url)
+
+            if x.status_code == 200:
+
+                data = {
+                    "plugin_id": plugin_id,
+                    "organization_id": org_id,
+                    "collection_name": collection,
+                    "bulk_write": False,
+                    "payload": {
+                        "room_name": room_name,
+                        "description": description,
+                        "private": False,
+                        "memberId": [memberId],
+                    },
+                }
+
+                post_url = "https://api.zuri.chat/data/write"
+
+                x = requests.request("POST", url=post_url, data=json.dumps(data))
+
+                if x.status_code in [201, 200]:
+
+                    responses = x.json()
+                    room_url_data = responses["data"]
+
+                    room_url = room_url_data["object_id"]
+
+                    payload = {
+                        "plugin_id": plugin_id,
+                        "organization_id": org_id,
+                        "collection_name": collection,
+                        "object_id": room_url,
+                        "bulk_write": False,
+                        "payload": {"room_url": f"/music/{room_url}"},
+                    }
+                    # add the room url to the room for the side bar to see
+
+                    x_url = requests.request(
+                        "PATCH", url=post_url, data=json.dumps(payload)
+                    )
+
+                    if x_url.status_code in [201, 200]:
+                        response = {
+                            "room_id": room_url,
+                            "room_name": room_name,
+                            "memberId": memberId,
+                            "room_url": f"/music/{room_url}",
+                        }
+
+                    return Response(data=response, status=status.HTTP_200_OK)
+                return Response(
+                    data={"message": "url error"}, status=status.HTTP_200_OK
+                )
+            return Response(
+                data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST
+            )
