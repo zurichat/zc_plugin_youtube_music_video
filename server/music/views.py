@@ -138,7 +138,7 @@ class SidebarView(GenericAPIView):
                         "user_id": user_id,
                         "group_name": [],
                         "show_group": True,
-                        "category": "entertainment",
+                        "category": "utility",
                         "public_rooms": [pub_room],
                         "joined_rooms": [pub_room],
                     }
@@ -158,7 +158,7 @@ class SidebarView(GenericAPIView):
                     "user_id": user_id,
                     "group_name": [],
                     "show_group": True,
-                    "category": "entertainment",
+                    "category": "utility",
                     "public_rooms": [pub_room],
                     "joined_rooms": [pub_room],
                 }
@@ -513,7 +513,7 @@ class RoomUserView(APIView):  # working
 
 
 class AddUserToRoomView(APIView):
-    def post(self, request, org_id, room_id, member_id):
+    def post(self, request, org_id, room_id):
         helper = DataStorage()
         helper.organization_id = org_id
         serializer = AddToRoomSerializer(data=request.data)
