@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 import User from "./types/user";
+import httpService from "./services/httpService";
 
 function App() {
 	const [users, setUsers] = useState([] as User[]);
