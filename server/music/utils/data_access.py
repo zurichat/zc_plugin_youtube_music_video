@@ -189,13 +189,13 @@ def delete_data(
     return response.response_data
 
 
-def patch_data(
+def put_data(
     collection,
     object_id=None,
     filter_data=None,
     payload=None,
     bulk_write=False,
-    method="PATCH",
+    method="PUT",
 ):
     if filter_data is None:
         filter_data = {}
@@ -219,8 +219,8 @@ def patch_data(
 
     response = request_client.request(
         method=method,
-        # url="https://api.zuri.chat/data/write",
-        url="https://api.zuri.chat/data/delete",
+        url="https://api.zuri.chat/data/write",
+        # url="https://api.zuri.chat/data/delete",
         headers={"Authorization": "headers"},
         post_data=patch_data,
     )
