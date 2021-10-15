@@ -45,3 +45,12 @@ class Comment:  # for the comments
     userId: dict = field(default_factory=dict)
     name: dict = field(default_factory=dict)
     avatar: dict = field(default_factory=dict)
+
+
+@dataclass
+class Fave:  # for the comments
+
+    _id: str
+    userId: str
+    songId: int
+    like: bool = False

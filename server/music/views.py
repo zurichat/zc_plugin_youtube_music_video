@@ -83,18 +83,21 @@ class SidebarView(GenericAPIView):
 
         pub_room = get_room_info()
 
-        sidebar_update_room_name = "currentWorkspace_userInfo_sidebar"
+        sidebar_update = "currentWorkspace_userInfo_sidebar"
+
+        # subscription_channel: org_id_memberid_sidebar
+        subscription_channel = "{org_id}_{user_id}_sidebar"
 
         sidebar_update_payload = {
             "event": "sidebar_update",
             "plugin_id": "music.zuri.chat",
             "data": {
-                "group_name": [],
-                "ID": f"/music/{roomid}",
                 "name": "Music Plugin",
-                "category": "utility",
+                "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
+                "group_name": [],
+                "category": "entertainment",
                 "show_group": False,
-                "button_url": f"/music",
+                "button_url": f"/music/{org_id}/{roomid}",
                 "public_rooms": [pub_room],
                 "joined_rooms": [pub_room],
             },
@@ -115,11 +118,15 @@ class SidebarView(GenericAPIView):
                 r = requests.get(public_url)
                 # publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
 
-                centrifugo_post(sidebar_update_room_name, sidebar_update_payload)
+                centrifugo_post(
+                    sidebar_update, sidebar_update_payload, subscription_channel
+                )
                 return JsonResponse(r, safe=True)
 
             else:
-                centrifugo_post(sidebar_update_room_name, sidebar_update_payload)
+                centrifugo_post(
+                    sidebar_update, sidebar_update_payload, subscription_channel
+                )
 
                 return JsonResponse(
                     {
@@ -137,7 +144,9 @@ class SidebarView(GenericAPIView):
                     }
                 )
         else:
-            centrifugo_post(sidebar_update_room_name, sidebar_update_payload)
+            centrifugo_post(
+                sidebar_update, sidebar_update_payload, subscription_channel
+            )
 
             return JsonResponse(
                 {
@@ -470,30 +479,6 @@ class UserCountView(GenericAPIView):
         return Response(user_count)
 
 
-class CreateRoomView(APIView):
-
-    serializer_class = RoomSerializer
-
-    def post(self, request, *args, **kwargs):
-        org_id = settings.ORGANIZATON_ID
-        plugin_id = settings.PLUGIN_ID
-        coll_name = settings.ROOM_COLLECTION
-
-        plugin_id = settings.PLUGIN_ID
-
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        rooms = serializer.data
-
-        rooms["org_id"] = org_id
-        rooms["plugin_id"] = plugin_id
-        # rooms["memberId"] = memberId
-
-        data = write_data(coll_name, payload=rooms)
-        return Response(data)
-
-
 class RoomView(APIView):  # view room
 
     serializer_class = RoomSerializer
@@ -507,7 +492,7 @@ class DeleteRoomUserView(APIView):  # working
 
     serializer_class = RoomSerializer
 
-    def remove_user(request):
+    def remove_user(self, request, *args, **kwargs):
 
         room_data = read_data(settings.ROOM_COLLECTION)
         room_users = room_data["data"][0]["memberId"]
@@ -523,7 +508,7 @@ class DeleteRoomUserView(APIView):  # working
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data)
 
-    def post(self, request, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
 
         room_id, updated_room = self.remove_user(request)
 
@@ -608,9 +593,7 @@ class AddUserToRoomView(APIView):
 
 
 class CreateRoom(APIView):
-
-    # def post(self,request,org_id,memberId,collection,*args, **kwargs):
-    def post(self, request, org_id, memberId, collection, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = RoomSerializer(data=request.data)
 
         org_id = request.data.get("org_id")
@@ -651,7 +634,7 @@ class CreateRoom(APIView):
                     responses = x.json()
                     room_url_data = responses["data"]
 
-                    room_url = room_url_data["object_id"]
+                    room_url = room_url_data["_id"]
 
                     payload = {
                         "plugin_id": plugin_id,
@@ -671,7 +654,9 @@ class CreateRoom(APIView):
                         response = {
                             "room_id": room_url,
                             "room_name": room_name,
-                            "memberId": memberId,
+                            "description": description,
+                            "private": False,
+                            "memberId": [memberId],
                             "room_url": f"/music/{room_url}",
                         }
 
@@ -682,3 +667,4 @@ class CreateRoom(APIView):
             return Response(
                 data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST
             )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
