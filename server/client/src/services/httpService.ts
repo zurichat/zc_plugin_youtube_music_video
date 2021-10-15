@@ -8,16 +8,23 @@ const room_id = "616714d49f7a790c08d222ee";
 axios.defaults.baseURL = `https://music.zuri.chat/music/api/v1/org/${org_id}/room/${room_id}/`;
 
 export const endpoints = {
+	// Songs endpoints
 	songs: "songs",
 	currentsong: "songs/current",
 	deletesong: "songs/delete",
 	songsearch: "songsearch",
 	likesong: "songs/like",
+
+	// Comments endpoints
 	comments: "comments",
 	deletecomment: "comments/delete",
 	updatecomment: "comments/update",
+
+	// Room endpoints
 	roomdetail: "roomdetail",
 	deleteroom: "deleteroom",
+
+	// Members endpoins
 	members: "members",
 	adduser: "members/add",
 	removeuser: "members/remove",

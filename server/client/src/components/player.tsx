@@ -127,8 +127,9 @@ function Player() {
 }
 
 const Wrapper = styled.div<{ init: boolean }>`
-	height: "100%";
 	display: ${props => (props.init ? "none" : "block")};
+	height: "100%";
+	/* z-index: 100; */
 
 	.player-wrapper {
 		position: relative;

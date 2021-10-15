@@ -20,10 +20,10 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "./App.css";
 import User from "./types/user";
-import httpService from "./services/httpService";
 
 function App() {
-	const [users, setUsers] = useState([] as User[]);
+	const [workspaceUsers, setWorkspaceUsers] = useState([] as User[]);
+	const [members, setMembers] = useState([] as User[]);
 	const [addUserModal, setAddUserModal] = useState(true);
 
 	useEffect(() => {
@@ -32,11 +32,13 @@ function App() {
 				eventService.connect();
 				chatMediaQuery(); // toggle chat display based on screen size.
 
-				// userService.getUsers();
-				// userService.addUserToRoom();
+				userService.autoAddMember();
 
-				const users = await userService.getWorkspaceUsers();
-				setUsers(users);
+				const workspaceUsers = await userService.getWorkspaceUsers();
+				const members = await userService.getMembers(workspaceUsers);
+
+				setWorkspaceUsers(workspaceUsers);
+				setMembers(members);
 			} catch (error) {
 				console.log(error.message);
 			}
@@ -47,20 +49,20 @@ function App() {
 		<Wrapper>
 			<DeleteModal />
 
-			<MemberList />
+			<MemberList members={members} />
 
-			{addUserModal && users.length > 0 && (
+			{addUserModal && workspaceUsers.length > 0 && (
 				<Parcel
 					config={AddUserModal}
 					wrapWith="div"
 					parcelConfig={addModalConfig({
-						users,
+						users: workspaceUsers,
 						togglePopup: () => setAddUserModal(false)
 					})}
 				/>
 			)}
 
-			<MusicRoom />
+			<MusicRoom members={members} />
 		</Wrapper>
 	);
 }
