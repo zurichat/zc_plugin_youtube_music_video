@@ -492,7 +492,7 @@ class RoomView(APIView):  # view room
 
     serializer_class = RoomSerializer
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
 
