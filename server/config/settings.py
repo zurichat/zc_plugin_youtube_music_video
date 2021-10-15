@@ -224,8 +224,10 @@ ALLOW_GUEST_ACCESS = bool(os.environ.get("DJANGO_ALLOW_GUEST_ACCESS", default=""
 if bool(os.environ.get("PRODUCTION_SERVER", default="")):
     SECURE_SSL_REDIRECT = True
 
-ORGANIZATON_ID = "614679ee1a5607b13c00bcb7"  # given by mark.
-PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
+#ORGANIZATON_ID = "614679ee1a5607b13c00bcb7"  # given by mark.
+ORGANIZATON_ID = "61694a889ea5d3be97df2918"
+#PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
+PLUGIN_ID = "616991e5ef1c19335a2869f4"
 CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
 ROOM_ID = "616714d49f7a790c08d222ee"
 
