@@ -489,7 +489,7 @@ class DeleteRoomUserView(APIView):  # working
     serializer_class = RoomSerializer
 
     def remove_user(self, request, *args, **kwargs):
-    
+
         room_data = read_data(settings.ROOM_COLLECTION)
         room_users = room_data["data"][0]["memberId"]
         room_id = room_data["data"][0]["_id"]
@@ -562,7 +562,7 @@ class AddUserToRoomView(APIView):
                             for new_member_id in new_members:
                                 music_data = {
                                     "room_image": "https://svgshare.com/i/aXm.svg",
-                                    "room_url": f"/music/{room_id}"
+                                    "room_url": f"/music/{room_id}",
                                 }
 
                                 sidebar_data = {
@@ -576,13 +576,15 @@ class AddUserToRoomView(APIView):
                                         "show_group": True,
                                         "button_url": "/music",
                                         "public_rooms": [music_data],
-                                        "joined_rooms": [music_data]
-                                    }
+                                        "joined_rooms": [music_data],
+                                    },
                                 }
 
                                 channel = f"{org_id}_{new_member_id}_sidebar"
-                                centrifugo_data = centrifugo_publish(channel, sidebar_data)
-                            
+                                centrifugo_data = centrifugo_publish(
+                                    channel, sidebar_data
+                                )
+
                             if (
                                 centrifugo_data
                                 and centrifugo_data.get("status_code") == 200
@@ -603,9 +605,12 @@ class AddUserToRoomView(APIView):
                     return Response(
                         "User/users not added", status=status.HTTP_424_FAILED_DEPENDENCY
                     )
-                return Response("Member/members already in room", status=status.HTTP_302_FOUND)
+                return Response(
+                    "Member/members already in room", status=status.HTTP_302_FOUND
+                )
             return Response(
-                "Data not available on ZC core", status=status.HTTP_424_FAILED_DEPENDENCY
+                "Data not available on ZC core",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
