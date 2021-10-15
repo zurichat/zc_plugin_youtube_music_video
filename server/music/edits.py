@@ -90,35 +90,6 @@
 #             return Response(data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# class CreateRoomView(APIView):
-
-#     serializer_class = RoomSerializer
-
-#     def post(self, request, *args, **kwargs):
-#         org_id = settings.ORGANIZATON_ID
-#         plugin_id = settings.PLUGIN_ID
-#         coll_name = settings.ROOM_COLLECTION
-
-#         plugin_id = settings.PLUGIN_ID
-
-#         serializer = self.serializer_class(data=request.data)
-
-#         if serializer.is_valid(raise_exception=True)
-
-#             rooms = serializer.data
-
-#             rooms["org_id"] = org_id
-#             rooms["plugin_id"] = plugin_id
-#             # rooms["memberId"] = memberId
-
-#             data = write_data(coll_name, payload=rooms)
-#             return Response(data)
-#
-#
-# "org/<str:org_id>/
-#
-#
-#
 #
 # class DeleteRoomUserView(APIView):  # fully functional working
 
@@ -155,7 +126,7 @@
 #         # Note: use {"memberId": ""} to delete
 
 
-# class CreateRoomView(APIView):
+# class CreateRoomView(APIView):  # fully functional working
 
 #     serializer_class = RoomSerializer
 
@@ -177,3 +148,154 @@
 
 #         data = write_data(coll_name, payload=rooms)
 #         return Response(data)
+
+
+# class DeleteRoomUserView(APIView):
+
+#     serializer_class = RoomSerializer
+
+#     def remove_user(self, request, *args, **kwargs):
+
+#         room_data = read_data(settings.ROOM_COLLECTION)
+#         room_users = room_data["data"][0]["memberId"]
+#         room_id = room_data["data"][0]["_id"]
+#         user = request.data["memberId"]
+
+#         for x in room_users:
+#             if x == user:
+#                 room_users.remove(x)
+#         return room_id, room_users
+
+#     def get(self, request, *args, **kwargs):
+#         data = read_data(settings.ROOM_COLLECTION)
+#         return Response(data)
+
+#     def put(self, request, *args, **kwargs):
+
+#         room_id, updated_room = self.remove_user(request)
+
+#         serializer = RoomSerializer(data=request.data)
+
+#         if serializer.is_valid():
+
+#             url = "https://api.zuri.chat/data/write"
+
+#             payload = {"memberId": updated_room}
+
+#             data = write_data(
+#                 settings.ROOM_COLLECTION, object_id=room_id, payload=payload, method="PUT"
+#             )
+
+#             response = requests.put(url, data=json.dumps(data))
+
+#             if response.status_code in [200, 201]:
+#                 r = response.json()
+#                 if r["data"]["matched_documents"] == 0:
+#                     return Response(
+#                         data={"message": "There is no user with that id"},
+#                         status=status.HTTP_400_BAD_REQUEST,
+#                     )
+
+#                 if r["data"]["modified_documents"] == 0:
+#                     return Response(
+#                         data={"message": "Update failed"},
+#                         status=status.HTTP_400_BAD_REQUEST,
+#                     )
+#                 centrifugo_post(
+#                     plugin_id,
+#                     {
+#                         "event": "User no longer in room",
+#                         "data": data,
+#                     },
+#                 )
+#                 return Response(data=r, status=status.HTTP_200_OK)
+
+#             return Response(
+#                 data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST
+#             )
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#         # # centrifugo_post(plugin_id, {"event": "User left room", "data": data})
+#         # return Response(data, status=status.HTTP_202_ACCEPTED)
+#         # Note: use {"memberId": ""} to delete
+
+
+# class DeleteRoomUserView(APIView):  # working
+
+#     serializer_class = RoomSerializer
+
+#     def remove_user(self, request, *args, **kwargs):
+
+#         room_data = read_data(settings.ROOM_COLLECTION)
+#         room_users = room_data["data"][0]["memberId"]
+#         room_id = room_data["data"][0]["_id"]
+#         user = request.data["memberId"]
+
+#         for x in room_users:
+#             if x == user:
+#                 room_users.remove(x)
+#         return room_id, room_users
+
+#     def get(self, request, *args, **kwargs):
+#         data = read_data(settings.ROOM_COLLECTION)
+#         return Response(data)
+
+#     def put(self, request, *args, **kwargs):
+
+#         serializer = RoomSerializer(data=request.data)
+
+#         if serializer.is_valid():
+#             room_id, updated_room = self.remove_user(request)
+
+#             url = "https://api.zuri.chat/data/write"
+
+#             payload = {"memberId": updated_room}
+
+#             data = write_data(
+#                 settings.ROOM_COLLECTION, object_id=room_id, payload=payload, method="PUT"
+#             )
+
+#             response = requests.put(url, data=json.dumps(data))
+
+#             if response.status_code in [200, 201]:
+#                 return Response(
+#                     data = {
+#                         "event": "User removed",
+#                         "message": response.get("message"),
+#                         "data": {
+#                             "room_id": data["_id"],
+#                             "new_member_id": data["memberId"],
+#                             "action": "user left room",
+#                         },
+#                 )
+#                 # r = response.json()
+#                 if r["data"]["matched_documents"] == 0:
+#                     return Response(
+#                         data={"message": "There is no user with that id"},
+#                         status=status.HTTP_400_BAD_REQUEST,
+#                     )
+
+#                     if r["data"]["modified_documents"] == 0:
+#                         return Response(
+#                             data={"message": "Update failed"},
+#                             status=status.HTTP_400_BAD_REQUEST,
+#                         )
+#                         centrifugo_post(
+#                             plugin_id,
+#                             {
+#                                 "event": "User no longer in room",
+#                                 "data": data,
+#                             },
+#                         )
+#                 return Response(data=r, status=status.HTTP_200_OK)
+
+#             return Response(
+#                 data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST
+#             )
+
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#         # # centrifugo_post(plugin_id, {"event": "User left room", "data": data})
+#         # return Response(data, status=status.HTTP_202_ACCEPTED)
+#         # Note: use {"memberId": ""} to delete

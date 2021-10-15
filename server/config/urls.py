@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 # from drf_spectacular.views import (
 #     SpectacularAPIView,
 #     SpectacularSwaggerView,
@@ -27,4 +28,5 @@ urlpatterns = [
     # ),
     # path("music/redoc", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path("sidebar", SidebarView.as_view(), name="sidebar"),
+    # path("music/docs", include("documentation.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,47 +2,48 @@ from django.urls import path
 from music.views import *
 
 # current url with orgid and roomid:
-# https://music.zuri.chat/music/api/v1/org/614679ee1a5607b13c00bcb7/room/616714d49f7a790c08d222ee/
+# https://music.zuri.chat/music/api/v1/org/61695d8bb2cc8a9af4833d46/room/6169d8b54bfde011fe582e65/
 
-# 6146d1e1845b436ea04d1031
 
 urlpatterns = [
     path(
         "org/<str:org_id>/room/<str:_id>/songs/current",
         change_room_image.as_view(),
         name="currentsong",
-    ),
+    ),  # current song
     path("info", PluginInfoView.as_view(), name="info"),
     path("ping", PluginPingView.as_view(), name="ping"),
-    path("org/<str:org_id>/room/<str:_id>/songs", SongView.as_view(), name="song"),
+    path(
+        "org/<str:org_id>/room/<str:_id>/songs", SongView.as_view(), name="song"
+    ),  # song
     path(
         "org/<str:org_id>/room/<str:_id>/songs/delete",
         DeleteSongView.as_view(),
         name="deletesong",
-    ),
+    ),  # delete song
     path(
         "search/<str:org_id>/<str:member_id>",
         SongSearchView.as_view(),
         name="songsearch",
-    ),
+    ),  # search
     path(
         "org/<str:org_id>/room/<str:_id>/comments",
         CommentView.as_view(),
         name="comments",
-    ),
+    ),  # comments
     path(
         "org/<str:org_id>/room/<str:_id>/comments/delete",
         DeleteCommentView.as_view(),
         name="deletecomment",
-    ),
+    ),  # delete comment
     path(
         "org/<str:org_id>/room/<str:_id>/comments/update",
         UpdateCommentView.as_view(),
         name="updatecomment",
-    ),
+    ),  # update comment
     path(
         "org/<str:org_id>/room/<str:_id>", RoomDetailView.as_view(), name="roomdetail"
-    ),
+    ),  # room detail
     path(
         "org/<str:org_id>/room/<str:_id>/delete",
         DeleteRoomView.as_view(),
@@ -52,14 +53,14 @@ urlpatterns = [
         "org/<str:org_id>/room/<str:_id>/members/count",
         UserCountView.as_view(),
         name="usercount",
-    ),
+    ),  # user count
     # path("createroom", CreateRoomView.as_view(), name="createroom"),
-    path("org/<str:org_id>/room", RoomView.as_view(), name="room"),
+    path("org/<str:org_id>/room", RoomView.as_view(), name="room"),  # view the room
     path(
         "org/<str:org_id>/room/<str:_id>/members/remove",
         DeleteRoomUserView.as_view(),
         name="removeuser",
-    ),  # works for get and post
+    ),  # remove user (works for get and post)
     path(
         "org/<str:org_id>/room/<str:_id>/members", RoomUserView.as_view(), name="user"
     ),  # user list
@@ -67,13 +68,13 @@ urlpatterns = [
         "org/<str:org_id>/room/<str:room_id>/members/add",
         AddUserToRoomView.as_view(),
         name="adduser",
-    ),
+    ),  # add user
     # path(
     #     "org/<str:org_id>/users/<str:member_id>/create", CreateRoomView.as_view(), name="create"
     # ),
     path(
-        "org/<str:org_id>/users/<str:member_id>/create",
+        "org/<str:org_id>/members/<str:member_id>/create",
         CreateRoom.as_view(),
         name="create",
-    ),
+    ),  # create room
 ]

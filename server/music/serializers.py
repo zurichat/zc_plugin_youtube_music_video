@@ -39,12 +39,8 @@ class SongSerializer(serializers.Serializer):
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    userId = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
-    addedBy = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
+    userId = serializers.CharField(required=False)
+    addedBy = serializers.CharField(required=False)
     likedBy = serializers.ListField(
         child=serializers.CharField(max_length=128), required=False, default=[]
     )
@@ -75,15 +71,9 @@ class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
-    userId = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
-    name = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
-    avatar = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
+    userId = serializers.CharField(max_length=100, required=False)
+    name = serializers.CharField(max_length=256, required=False)
+    avatar = serializers.CharField(max_length=256, required=False)
     time = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
@@ -102,7 +92,7 @@ class CommentSerializer(serializers.Serializer):
         return str()
 
 
-class RoomSerializer(serializers.Serializer):
+class RoomSerializer(serializers.Serializer):  # pauline
 
     _id = serializers.CharField(read_only=True)
     room_name = serializers.CharField(max_length=100, required=False)
@@ -128,9 +118,12 @@ class RoomSerializer(serializers.Serializer):
         return str()
 
 
-class AddToRoomSerializer(serializers.Serializer):
-    room_id = serializers.CharField(max_length=100)
-    member_id = serializers.CharField(max_length=100)
+class AddToRoomSerializer(serializers.Serializer):  # man of mind
+    room_id = serializers.CharField(max_length=100, required=False)
+    # member_id = serializers.CharField(max_length=100)
+    memberId = serializers.ListField(
+        child=MemberSerializer(), required=False, default=[]
+    )
 
 
 class FaveSerializer(serializers.Serializer):

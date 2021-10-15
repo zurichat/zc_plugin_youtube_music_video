@@ -95,7 +95,7 @@ class SidebarView(GenericAPIView):
                 "name": "Music Plugin",
                 "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                 "group_name": [],
-                "category": "entertainment",
+                # "category": "entertainment",
                 "show_group": False,
                 "button_url": f"/music/{org_id}/{roomid}",
                 "public_rooms": [pub_room],
@@ -138,7 +138,7 @@ class SidebarView(GenericAPIView):
                         "user_id": user_id,
                         "group_name": [],
                         "show_group": True,
-                        "category": "utility",
+                        # "category": "utility",
                         "public_rooms": [pub_room],
                         "joined_rooms": [pub_room],
                     }
@@ -158,7 +158,7 @@ class SidebarView(GenericAPIView):
                     "user_id": user_id,
                     "group_name": [],
                     "show_group": True,
-                    "category": "utility",
+                    # "category": "utility",
                     "public_rooms": [pub_room],
                     "joined_rooms": [pub_room],
                 }
@@ -466,7 +466,7 @@ class RoomView(APIView):  # view room
         return Response(data, status=status.HTTP_200_OK)
 
 
-class DeleteRoomUserView(APIView):  # working
+class DeleteRoomUserView(APIView):  # fully functional working
 
     serializer_class = RoomSerializer
 
@@ -570,79 +570,106 @@ class AddUserToRoomView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CreateRoom(APIView):
+class CreateRoom(APIView):  # fully functional working
+
+    serializer_class = RoomSerializer
+
     def post(self, request, *args, **kwargs):
-        serializer = RoomSerializer(data=request.data)
+        org_id = settings.ORGANIZATON_ID
+        plugin_id = settings.PLUGIN_ID
+        coll_name = settings.ROOM_COLLECTION
 
-        org_id = request.data.get("org_id")
-        memberId = request.data.get("memberId")
-        collection = request.data.get("collection")
-        room_name = request.data.get("room_name")
-        description = request.data.get("description")
+        plugin_id = settings.PLUGIN_ID
 
-        if serializer.is_valid():
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-            room_url = (
-                f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
-            )
+        rooms = serializer.data
 
-            x = requests.request("GET", url=room_url)
+        rooms["org_id"] = org_id
+        rooms["plugin_id"] = plugin_id
+        # rooms["memberId"] = memberId
 
-            if x.status_code == 200:
+        data = write_data(coll_name, payload=rooms)
+        return Response(data)
 
-                data = {
-                    "plugin_id": plugin_id,
-                    "organization_id": org_id,
-                    "collection_name": collection,
-                    "bulk_write": False,
-                    "payload": {
-                        "room_name": room_name,
-                        "description": description,
-                        "private": False,
-                        "memberId": [memberId],
-                    },
-                }
 
-                post_url = "https://api.zuri.chat/data/write"
 
-                x = requests.request("POST", url=post_url, data=json.dumps(data))
+# class CreateRoom(APIView):
+#     def post(self, request, *args, **kwargs):
+#         serializer = RoomSerializer(data=request.data)
 
-                if x.status_code in [201, 200]:
+#         org_id = request.data.get("org_id")
+#         memberId = request.data.get("memberId")
+#         collection = request.data.get("collection")
+#         room_name = request.data.get("room_name")
+#         description = request.data.get("description")
 
-                    responses = x.json()
-                    room_url_data = responses["data"]
+#         if serializer.is_valid():
 
-                    room_url = room_url_data["_id"]
+#             room_url = (
+#                 f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
+#             )
 
-                    payload = {
-                        "plugin_id": plugin_id,
-                        "organization_id": org_id,
-                        "collection_name": collection,
-                        "object_id": room_url,
-                        "bulk_write": False,
-                        "payload": {"room_url": f"/music/{room_url}"},
-                    }
-                    # add the room url to the room for the side bar to see
+#             x = requests.request("GET", url=room_url)
 
-                    x_url = requests.request(
-                        "PATCH", url=post_url, data=json.dumps(payload)
-                    )
+#             if x.status_code == 200:
 
-                    if x_url.status_code in [201, 200]:
-                        response = {
-                            "room_id": room_url,
-                            "room_name": room_name,
-                            "description": description,
-                            "private": False,
-                            "memberId": [memberId],
-                            "room_url": f"/music/{room_url}",
-                        }
+#                 data = {
+#                     "plugin_id": plugin_id,
+#                     "organization_id": org_id,
+#                     "collection_name": collection,
+#                     "bulk_write": False,
+#                     "payload": {
+#                         "room_name": room_name,
+#                         "description": description,
+#                         "private": False,
+#                         "memberId": [memberId],
+#                     },
+#                 }
 
-                    return Response(data=response, status=status.HTTP_200_OK)
-                return Response(
-                    data={"message": "url error"}, status=status.HTTP_200_OK
-                )
-            return Response(
-                data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST
-            )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#                 post_url = "https://api.zuri.chat/data/write"
+
+#                 x = requests.request("POST", url=post_url, data=json.dumps(data))
+
+#                 if x.status_code in [201, 200]:
+
+#                     responses = x.json()
+#                     room_url_data = responses["data"]
+
+#                     room_url = room_url_data["_id"]
+
+#                     payload = {
+#                         "plugin_id": plugin_id,
+#                         "organization_id": org_id,
+#                         "collection_name": collection,
+#                         "object_id": "",
+#                         "bulk_write": False,
+#                         "payload": {"room_url": f"/music/{room_url}"},
+#                     }
+#                     # add the room url to the room for the side bar to see
+
+#                     x_url = requests.request(
+#                         "PATCH", url=post_url, data=json.dumps(payload)
+#                     )
+
+#                     if x_url.status_code in [201, 200]:
+#                         response = {
+#                             "room_id": room_url,
+#                             "room_name": room_name,
+#                             "description": description,
+#                             "private": False,
+#                             "memberId": [memberId],
+#                             "room_url": f"/music/{room_url}",
+#                         }
+
+#                     return Response(data=response, status=status.HTTP_200_OK)
+#                 return Response(
+#                     data={"message": "url error"}, status=status.HTTP_200_OK
+#                 )
+#             return Response(
+#                 data={"message": "failed"}, status=status.HTTP_400_BAD_REQUEST
+#             )
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
