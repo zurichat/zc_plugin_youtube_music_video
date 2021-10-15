@@ -8,7 +8,6 @@ from rest_framework import exceptions
 class Is_Authenticated_Or_Read_Only(IsAuthenticated):
     def has_permission(self, request, view):
         user_type = type(request.user)
-        # print(user_type)
         if user_type is dict:
             return bool(request.user and request.user["is_authenticated"])
         else:
