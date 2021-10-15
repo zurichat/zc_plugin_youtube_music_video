@@ -539,14 +539,14 @@ class AddUserToRoomView(APIView):
             data = serializer.data
             room_id = data["room_id"]
             member_ids = data["memberId"]
-            music_room = helper.read("music_room", {"_id": room_id})
+            music_room = helper.read("musicroom", {"_id": room_id})
             if music_room and music_room.get("status_code", None) == None:
                 users_id = music_room.get("memberId")
                 new_members = list(set(member_ids).difference(set(users_id)))
                 list(map(lambda x: users_id.append(x), new_members))
                 if new_members:
                     response = helper.update(
-                        "music_room", room_id, {"memberId": users_id}
+                        "musicroom", room_id, {"memberId": users_id}
                     )
                     if response.get("status") == 200:
                         response_output = {
