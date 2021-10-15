@@ -4,10 +4,8 @@ import httpService from "./httpService";
 import {
 	GetUserInfo,
 	GetWorkspaceUser
-	// GetWorkspaceUsers
 	// @ts-ignore
 } from "@zuri/control";
-import { toast } from "react-toastify";
 
 async function getCurrentUser(): Promise<User> {
 	try {
@@ -66,27 +64,21 @@ async function getWorkspaceUsers(): Promise<User[]> {
 	}
 }
 
-async function autoAddMember() {
+async function addMember(ids?: string[]) {
 	try {
-		const { id, email, name } = await getCurrentUser();
-		addMember(id, email, name);
-	} catch (error) {
-		console.log(error);
-	}
-}
+		if (!ids) {
+			const { id } = await getCurrentUser();
+			ids = [id];
+		}
 
-function addMember(id: string, email: string, name = "user") {
-	return httpService
-		.post(httpService.endpoints.adduser, {
+		return httpService.post(httpService.endpoints.adduser, {
 			room_id: httpService.room_id,
-			member_id: id,
-			email: email
-		})
-		.catch(reason => {
-			toast.error(`Could not add ${name}`);
-			console.log(reason);
-			throw Error(reason.message);
+			member_id: ids
 		});
+	} catch (reason) {
+		console.log(reason);
+		throw Error(reason.message);
+	}
 }
 
 async function removeMember(id: string, name = "user") {
@@ -112,13 +104,23 @@ async function getMembers(workspaceUsers?: User[]): Promise<User[]> {
 	}
 }
 
+async function isMember(): Promise<boolean> {
+	try {
+		const users = await getMembers();
+		const currentUser = await getCurrentUser();
+		return users.some(user => user.id === currentUser.id);
+	} catch (error) {
+		throw Error(error.message);
+	}
+}
+
 const userService = {
-	autoAddMember,
 	addMember,
 	removeMember,
 	getCurrentUser,
 	getMembers,
-	getWorkspaceUsers
+	getWorkspaceUsers,
+	isMember
 };
 
 export default userService;
