@@ -295,10 +295,10 @@ class SongSearchView(APIView):
         for item in search_result:
             item["image_url"] = item["albumCover"]
             item["created_at"] = item["time"]
-            item["content"] = ""
+            item["content"] = null
             item["url"] = f"https://zuri.chat/music/{collection_name}"
-            item["email"] = ([],)
-            item["description"] = ([],)
+            item["email"] = null
+            item["description"] = null
             item.pop("albumCover")
             item.pop("time")
 
@@ -308,22 +308,40 @@ class SongSearchView(APIView):
         page_obj = paginator.get_page(page_num)
         Query = request.query_params.get("key") or []
         paginated_data = {
-            "status": "ok",
-            "pagination": {
-                "total_count": paginator.count,
-                "current_page": page_obj.number,
-                "per_page": paginate_by,
-                "page_count": paginator.num_pages,
-                "first_page": 1,
-                "last_page": paginator.num_pages,
-            },
-            "plugin": "Music",
-            "Query": Query,
-            "data": list(page_obj),
-            "filter_sugestions": {"in": [], "from": []},
+            "total_count": paginator.count,
+            "current_page": page_obj.number,
+            "per_page": paginate_by,
+            "page_count": paginator.num_pages,
+            "first_page": 1,
+            "last_page": paginator.num_pages,
         }
 
-        return Response({"data": paginated_data}, status=status.HTTP_200_OK)
+        return Response(
+            {
+                "status": "ok",
+                "plugin": "Music",
+                "Query": Query,
+                "pagination": paginated_data,
+                "data": list(page_obj),
+                "filter_sugestions": {"in": [], "from": []},
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class SongSearchSuggestions(APIView):
+    def get(self, request, *args, **kwargs):
+        songs = read_data(settings.SONG_COLLECTION)["data"]
+        title_list = set([song["title"] for song in songs])
+        return Response(
+            {
+                "status": "ok",
+                "type": "suggestions",
+                "total_count": len(title_list),
+                "data": title_list,
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 class CommentView(APIView):
