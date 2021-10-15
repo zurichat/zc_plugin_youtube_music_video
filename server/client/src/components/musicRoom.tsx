@@ -2,28 +2,48 @@ import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
 
+// @ts-ignore
+// import { AddUserModal } from "@zuri/manage-user-modal";
+// import { addModalConfig } from "../utils/config";
+
 import { pluginHeader, headerConfig } from "../utils/config";
 
 // import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
 import Chat from "./chat";
 import PasteUrl from "./common/pasteUrl";
+import EnterRoomModal from "./modals/enterRoom";
 
 import { useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
 import User from "../types/user";
+import { useEffect, useState } from "react";
+import userService from "../services/userService";
 
-interface Props {
-	members: User[];
-}
-
-function MusicRoom({ members }: Props) {
+function MusicRoom() {
 	const showPasteUrl = useSelector(uiSelect.showPasteUrl);
+	const [workspaceUsers, setWorkspaceUsers] = useState([] as User[]);
+	const [members, setMembers] = useState([] as User[]);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const workspaceUsers = await userService.getWorkspaceUsers();
+				const members = await userService.getMembers(workspaceUsers);
+
+				setWorkspaceUsers(workspaceUsers);
+			} catch (error) {
+				console.log(error.message);
+			}
+		})();
+	}, []);
 
 	return (
 		<Wrapper overflowMain={showPasteUrl}>
 			<div className="room-main">
+				{/* Modals */}
 				<PasteUrl />
+				<EnterRoomModal />
 
 				<div className="toast-holder">
 					<ToastContainer
@@ -59,9 +79,11 @@ function MusicRoom({ members }: Props) {
 
 const Wrapper = styled.div<{ overflowMain: boolean }>`
 	position: relative;
+	box-sizing: border-box;
 	display: flex;
 	margin: 0;
 	background-color: rgb(240, 240, 240);
+	height: 100%;
 
 	.plugin-header {
 		position: sticky;
