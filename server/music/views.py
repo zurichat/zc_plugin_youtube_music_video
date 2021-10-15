@@ -545,6 +545,7 @@ class AddUserToRoomView(APIView):
                     response = helper.update(
                         "music_room", room_id, {"memberId": users_id}
                     )
+                    print(response)
                     if response.get("status") == 200:
                         response_output = {
                             "event": "add_users_to_room",
