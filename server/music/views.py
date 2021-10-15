@@ -15,6 +15,8 @@ import requests
 from requests import exceptions
 from django.http import Http404
 from music.dataStorage import *
+from music.pagination import *
+
 
 # from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -277,71 +279,82 @@ class SongSearchView(APIView):
 
         collection_name = settings.SONG_COLLECTION
 
-        key_word = request.query_params.get("key") or []
-        if key_word:
-            key_word = re.split("[;,\s]+", key_word)
+        key = request.query_params.get("q") or []
+        filters = request.query_params.getlist("filter", [])
+        paginate_by = request.query_params.get("limit", 20)
+        paginator = SearchPagination()
+        paginator.page_size = paginate_by
 
-        songs = read_data(collection_name)["data"]
+        key_word = key
+        if key_word:
+            key_word = re.split("[;,-]+", key_word)
+
+        songs = query_data(collection_name)["data"]
         search_result = []
 
-        for word in key_word:
-            word = word.lower()
-            for song in songs:
-                title = str(song["title"]).lower()
-                if word in title and song not in search_result:
-                    # print(title)
-                    search_result.append(song)
+        try:
+            for word in key_word:
+                word = word.lower()
+                for song in songs:
+                    title = str(song["title"]).lower()
+                    if word in title and song not in search_result:
+                        search_result.append(song)
 
-        for item in search_result:
-            item["image_url"] = item["albumCover"]
-            item["created_at"] = item["time"]
-            item["content"] = null
-            item["url"] = f"https://zuri.chat/music/{collection_name}"
-            item["email"] = null
-            item["description"] = null
-            item.pop("albumCover")
-            item.pop("time")
+            for item in search_result:
+                item["image_url"] = [item["albumCover"]]
+                item["created_at"] = item["time"]
+                item["created_by"] = item["addedBy"]
+                item["content"] = null
+                item["url"] = f"https://zuri.chat/music/{collection_name}"
+                item["email"] = null
+                item["description"] = null
+                item.pop("albumCover")
+                item.pop("time")
+                item.pop("addedBy")
 
-        paginate_by = request.query_params.get("paginate_by", 20)
-        paginator = Paginator(search_result, paginate_by)
-        page_num = request.query_params.get("page", 1)
-        page_obj = paginator.get_page(page_num)
-        Query = request.query_params.get("key") or []
-        paginated_data = {
-            "total_count": paginator.count,
-            "current_page": page_obj.number,
-            "per_page": paginate_by,
-            "page_count": paginator.num_pages,
-            "first_page": 1,
-            "last_page": paginator.num_pages,
-        }
+            result = paginator.paginate_queryset(search_result, request)
+            print(result)
+            return paginator.get_paginated_response(
+                result, key, filters, request, entity_type="others"
+            )
 
-        return Response(
-            {
-                "status": "ok",
-                "plugin": "Music",
-                "Query": Query,
-                "pagination": paginated_data,
-                "data": list(page_obj),
-                "filter_sugestions": {"in": [], "from": []},
-            },
-            status=status.HTTP_200_OK,
-        )
+        except Exception as e:
+            print(e)
+            result = paginator.paginate_queryset([], request)
+            return paginator.get_paginated_response(
+                result, key, filters, request, entity_type="others"
+            )
 
 
 class SongSearchSuggestions(APIView):
     def get(self, request, *args, **kwargs):
-        songs = read_data(settings.SONG_COLLECTION)["data"]
-        title_list = set([song["title"] for song in songs])
-        return Response(
-            {
-                "status": "ok",
-                "type": "suggestions",
-                "total_count": len(title_list),
-                "data": title_list,
-            },
-            status=status.HTTP_200_OK,
-        )
+        songs = query_data(settings.SONG_COLLECTION)["data"]
+        data = {}
+        try:
+            for song in songs:
+                data[song["title"]] = song["title"]
+
+            return Response(
+                {
+                    "status": "ok",
+                    "type": "suggestions",
+                    "total_count": len(data),
+                    "data": data,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        except Exception as e:
+            print(e)
+            return Response(
+                {
+                    "status": "ok",
+                    "type": "suggestions",
+                    "total_count": len(data),
+                    "data": data,
+                },
+                status=status.HTTP_200_OK,
+            )
 
 
 class CommentView(APIView):
