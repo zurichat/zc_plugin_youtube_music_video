@@ -421,10 +421,6 @@ class UpdateCommentView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ViewRoom(APIView):
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.ROOM_COLLECTION)['data'][0]['memberId']
-        return Response(data, status=status.HTTP_200_OK)
 
 class RoomDetailView(
     APIView

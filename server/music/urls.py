@@ -12,7 +12,6 @@ urlpatterns = [
         change_room_image.as_view(),
         name="currentsong",
     ),
-    path("viewroom", ViewRoom.as_view(), name="viewroom"),
     path("info", PluginInfoView.as_view(), name="info"),
     path("ping", PluginPingView.as_view(), name="ping"),
     path("org/<str:org_id>/room/<str:_id>/songs", SongView.as_view(), name="song"),
