@@ -61,7 +61,7 @@ class AddToRoomTest(APITestCase):
 
         self.assertTrue(response.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data["event"], "add_user_to_room")
+        self.assertEqual(response.data["event"], "add_users_to_room")
 
 
     @mock.patch("music.views.DataStorage.read")

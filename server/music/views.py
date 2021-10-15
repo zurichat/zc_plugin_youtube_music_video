@@ -485,7 +485,7 @@ class DeleteRoomUserView(APIView):  # working
 
     serializer_class = RoomSerializer
 
-    def remove_user(request):
+    def remove_user(self, request):
 
         room_data = read_data(settings.ROOM_COLLECTION)
         room_users = room_data["data"][0]["memberId"]
@@ -539,29 +539,47 @@ class AddUserToRoomView(APIView):
             music_room = helper.read("music_room", {"_id": room_id})
             if music_room and music_room.get("status_code", None) == None:
                 users_id = music_room.get("memberId")
-                new_user_count = 0
-                for member in member_ids:
-                    if member not in users_id:
-                        users_id.append(member)
-                        new_user_count += 1
-                if new_user_count != 0:
+                new_members = list(set(member_ids).difference(set(users_id)))
+                list(map(lambda x: users_id.append(x), new_members))
+                if new_members:
                     response = helper.update(
                         "music_room", room_id, {"memberId": users_id}
                     )
                     if response.get("status") == 200:
                         response_output = {
-                            "event": "add_user_to_room",
+                            "event": "add_users_to_room",
                             "message": response.get("message"),
                             "data": {
                                 "room_id": data["room_id"],
-                                "new_member_id": data["member_ids"],
+                                "new_member_ids": new_members,
                                 "action": "user/users added successfully",
                             },
                         }
                         try:
-                            centrifugo_data = centrifugo_publish(
-                                room_id, response_output
-                            )
+                            for new_member_id in new_members:
+                                music_data = {
+                                    "room_image": "https://svgshare.com/i/aXm.svg",
+                                    "room_url": f"/music/{room_id}"
+                                }
+
+                                sidebar_data = {
+                                    "event": "sidebar_update",
+                                    "plugin_id": settings.PLUGIN_ID,
+                                    "data": {
+                                        "name": "Music Plugin",
+                                        "description": "User joins the music room",
+                                        "group_name": "Music",
+                                        "category": "Entertainment",
+                                        "show_group": True,
+                                        "button_url": "/music",
+                                        "public_rooms": [music_data],
+                                        "joined_rooms": [music_data]
+                                    }
+                                }
+
+                                channel = f"{org_id}_{new_member_id}_sidebar"
+                                centrifugo_data = centrifugo_publish(channel, sidebar_data)
+                            
                             if (
                                 centrifugo_data
                                 and centrifugo_data.get("status_code") == 200
