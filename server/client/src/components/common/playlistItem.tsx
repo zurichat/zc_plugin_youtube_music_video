@@ -7,9 +7,11 @@ import OptionMenu from "./optionMenu";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
+import User from "../../types/user";
 
 interface Props {
 	song: Song;
+	users: User[];
 }
 
 function PlaylistItem(props: Props) {
@@ -21,15 +23,15 @@ function PlaylistItem(props: Props) {
 		userId,
 		duration,
 		likedBy,
-		url,
+		url
 	} = props.song;
 
 	const [showOption, setShowOption] = useState(false);
 	const currentSongId = useSelector(
-		(_state: any) => _state.player.currentSongId,
+		(_state: any) => _state.player.currentSongId
 	);
 
-	const user = useSelector(userSelect.userById(userId));
+	const user = props.users.find(user => user.id === userId);
 
 	const handlePlay = e => {
 		if (e.target.dataset.like) return;

@@ -4,11 +4,13 @@ from music.views import *
 # current url with orgid and roomid:
 # https://music.zuri.chat/music/api/v1/org/614679ee1a5607b13c00bcb7/room/616714d49f7a790c08d222ee/
 
+# 6146d1e1845b436ea04d1031
+
 urlpatterns = [
     path(
         "org/<str:org_id>/room/<str:_id>/songs/current",
         change_room_image.as_view(),
-        name="currentsong", 
+        name="currentsong",
     ),
     path("info", PluginInfoView.as_view(), name="info"),
     path("ping", PluginPingView.as_view(), name="ping"),
@@ -21,6 +23,11 @@ urlpatterns = [
     path(
         "search/<str:org_id>/<str:member_id>",
         SongSearchView.as_view(),
+        name="songsearch",
+    ),
+    path(
+        "search-suggestions/<str:org_id>/<str:member_id>",
+        SongSearchSuggestions.as_view(),
         name="songsearch",
     ),
     path(
@@ -66,10 +73,12 @@ urlpatterns = [
         AddUserToRoomView.as_view(),
         name="adduser",
     ),
-    path(
-        "users/<str:member_id>/createroom", CreateRoomView.as_view(), name="createroom"
-    ),
     # path(
-    #     "createroom", CreateRoomView.as_view(), name="createroom"
+    #     "org/<str:org_id>/users/<str:member_id>/create", CreateRoomView.as_view(), name="create"
     # ),
+    path(
+        "org/<str:org_id>/users/<str:member_id>/create",
+        CreateRoom.as_view(),
+        name="create",
+    ),
 ]

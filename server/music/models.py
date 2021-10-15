@@ -21,8 +21,8 @@ class Song:  # for the songs
     albumCover: str
     url: str
     time: int
-    userId: dict = field(default_factory=dict)
-    addedBy: dict = field(default_factory=dict)
+    userId: str
+    addedBy: str
     likedBy: dict = field(default_factory=dict)
 
 
@@ -42,6 +42,15 @@ class Comment:  # for the comments
     _id: str
     message: str
     time: int
-    userId: dict = field(default_factory=dict)
-    name: dict = field(default_factory=dict)
-    avatar: dict = field(default_factory=dict)
+    userId: str
+    name: str
+    avatar: str
+
+
+@dataclass
+class Fave:  # for the comments
+
+    _id: str
+    userId: str
+    songId: int
+    like: bool = False
