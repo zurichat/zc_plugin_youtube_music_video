@@ -538,7 +538,7 @@ class AddUserToRoomView(APIView):
         if serializer.is_valid():
             data = serializer.data
             room_id = data["room_id"]
-            member_ids = data["member_ids"]
+            member_ids = data["memberId"]
             music_room = helper.read("music_room", {"_id": room_id})
             if music_room and music_room.get("status_code", None) == None:
                 users_id = music_room.get("memberId")

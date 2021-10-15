@@ -13,7 +13,7 @@ class AddToRoomTest(APITestCase):
     def test_add_user_to_room_on_server_down(self, mock_read):
         payload = {
             "room_id": "12345",
-            "member_ids": ["1111"]
+            "memberId": ["1111"]
         }
 
         url = "music:adduser"
@@ -36,7 +36,7 @@ class AddToRoomTest(APITestCase):
         
         payload = {
             "room_id": "616714d49f7a790c08d222ee",
-            "member_ids": ["1111"]
+            "memberId": ["1111"]
         }
         mock_read.return_value = {
             "_id":"12345",
@@ -70,7 +70,7 @@ class AddToRoomTest(APITestCase):
         
         payload = {
             "room_id": "616714d49f7a790c08d222ee",
-            "member_ids": ["1111"]
+            "memberId": ["1111"]
         }
         mock_read.return_value = {
             "_id":"12345",
@@ -100,7 +100,7 @@ class AddToRoomTest(APITestCase):
         
         payload = {
             "room_id": "616714d49f7a790c08d222ee",
-            "member_ids": ["1111", "2323"]
+            "memberId": ["1111", "2323"]
         }
         mock_read.return_value = {
             "_id":"12345",
@@ -134,7 +134,7 @@ class AddToRoomTest(APITestCase):
         
         payload = {
             "room_id": "616714d49f7a790c08d222ee",
-            "member_ids": ["1111", "122334"]
+            "memberId": ["1111", "122334"]
         }
         mock_read.return_value = {
             "_id":"12345",
@@ -167,7 +167,7 @@ class AddToRoomTest(APITestCase):
         
         payload = {
             "room_id": "616714d49f7a790c08d222ee",
-            "member_ids": "1111"
+            "memberId": "1111"
         }
         
         url = "music:adduser"
@@ -186,7 +186,7 @@ class AddToRoomTest(APITestCase):
         
         payload = {
             "room_id": "616714d49f7a790c08d222ee",
-            "member_ids": []
+            "memberId": []
         }
         
         url = "music:adduser"
