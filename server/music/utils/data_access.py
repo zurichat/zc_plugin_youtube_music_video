@@ -59,6 +59,36 @@ def read_data(collection=None, object_id=None, filter_data=None):
     return response.response_data
 
 
+def query_data(collection=None, object_id=None, filter_data=None, options=None):
+    if filter_data is None:
+        filter_data = {}
+
+    if object_id is None:
+        object_id = ""
+
+    if options is None:
+        options = {}
+
+    post_data = {
+        "collection_name": collection,
+        "filter": filter_data,
+        "object_id": object_id,
+        "organization_id": org_id,
+        "plugin_id": plugin_id,
+        "options": options,
+    }
+
+    request_client = RequestClient()
+
+    response = request_client.request(
+        method="POST",
+        url="https://api.zuri.chat/data/read",
+        headers={"Authorization": "headers"},
+        post_data=post_data,
+    )
+    return response.response_data
+
+
 def write_data(
     collection,
     object_id=None,
