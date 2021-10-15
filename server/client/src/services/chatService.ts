@@ -2,6 +2,7 @@ import httpService, { endpoints } from "./httpService";
 import { chatDispatch } from "../store/chatsSlice";
 import Chat from "../types/chat";
 import store from "../store";
+import userService from "./userService";
 
 const { comments: commentEndpoint } = endpoints;
 
@@ -22,7 +23,14 @@ const addChat = async (chat: Chat) => {
 	chatDispatch.addChat({ ...chat, notSent: true });
 
 	try {
-		await httpService.post(commentEndpoint, newChat, { timeout: 15000 });
+		const { name, id: userId, avatar } = await userService.getCurrentUser();
+
+		await httpService.post(
+			commentEndpoint,
+			{ ...newChat, name, userId, avatar },
+			{ timeout: 15000 }
+		);
+
 		chatDispatch.sentChat({ ...chat });
 
 		const { chats } = store.getState();

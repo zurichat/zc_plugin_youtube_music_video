@@ -15,6 +15,8 @@ import requests
 from requests import exceptions
 from django.http import Http404
 from music.dataStorage import *
+from music.pagination import *
+
 
 # from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -277,53 +279,82 @@ class SongSearchView(APIView):
 
         collection_name = settings.SONG_COLLECTION
 
-        key_word = request.query_params.get("key") or []
-        if key_word:
-            key_word = re.split("[;,\s]+", key_word)
+        key = request.query_params.get("q") or []
+        filters = request.query_params.getlist("filter", [])
+        paginate_by = request.query_params.get("limit", 20)
+        paginator = SearchPagination()
+        paginator.page_size = paginate_by
 
-        songs = read_data(collection_name)["data"]
+        key_word = key
+        if key_word:
+            key_word = re.split("[;,-]+", key_word)
+
+        songs = query_data(collection_name)["data"]
         search_result = []
 
-        for word in key_word:
-            word = word.lower()
+        try:
+            for word in key_word:
+                word = word.lower()
+                for song in songs:
+                    title = str(song["title"]).lower()
+                    if word in title and song not in search_result:
+                        search_result.append(song)
+
+            for item in search_result:
+                item["image_url"] = [item["albumCover"]]
+                item["created_at"] = item["time"]
+                item["created_by"] = item["addedBy"]
+                item["content"] = null
+                item["url"] = f"https://zuri.chat/music/{collection_name}"
+                item["email"] = null
+                item["description"] = null
+                item.pop("albumCover")
+                item.pop("time")
+                item.pop("addedBy")
+
+            result = paginator.paginate_queryset(search_result, request)
+            print(result)
+            return paginator.get_paginated_response(
+                result, key, filters, request, entity_type="others"
+            )
+
+        except Exception as e:
+            print(e)
+            result = paginator.paginate_queryset([], request)
+            return paginator.get_paginated_response(
+                result, key, filters, request, entity_type="others"
+            )
+
+
+class SongSearchSuggestions(APIView):
+    def get(self, request, *args, **kwargs):
+        songs = query_data(settings.SONG_COLLECTION)["data"]
+        data = {}
+        try:
             for song in songs:
-                title = str(song["title"]).lower()
-                if word in title and song not in search_result:
-                    # print(title)
-                    search_result.append(song)
+                data[song["title"]] = song["title"]
 
-        for item in search_result:
-            item["image_url"] = item["albumCover"]
-            item["created_at"] = item["time"]
-            item["content"] = ""
-            item["url"] = f"https://zuri.chat/music/{collection_name}"
-            item["email"] = ([],)
-            item["description"] = ([],)
-            item.pop("albumCover")
-            item.pop("time")
+            return Response(
+                {
+                    "status": "ok",
+                    "type": "suggestions",
+                    "total_count": len(data),
+                    "data": data,
+                },
+                status=status.HTTP_200_OK,
+            )
 
-        paginate_by = request.query_params.get("paginate_by", 20)
-        paginator = Paginator(search_result, paginate_by)
-        page_num = request.query_params.get("page", 1)
-        page_obj = paginator.get_page(page_num)
-        Query = request.query_params.get("key") or []
-        paginated_data = {
-            "status": "ok",
-            "pagination": {
-                "total_count": paginator.count,
-                "current_page": page_obj.number,
-                "per_page": paginate_by,
-                "page_count": paginator.num_pages,
-                "first_page": 1,
-                "last_page": paginator.num_pages,
-            },
-            "plugin": "Music",
-            "Query": Query,
-            "data": list(page_obj),
-            "filter_sugestions": {"in": [], "from": []},
-        }
-
-        return Response({"data": paginated_data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response(
+                {
+                    "status": "ok",
+                    "type": "suggestions",
+                    "total_count": len(data),
+                    "data": data,
+                },
+                status=status.HTTP_200_OK,
+            )
 
 
 class CommentView(APIView):
@@ -520,29 +551,53 @@ class AddUserToRoomView(APIView):
         if serializer.is_valid():
             data = serializer.data
             room_id = data["room_id"]
-            member_id = data["member_id"]
-            music_rooms = helper.read("music_room", {"_id": room_id})
-            if music_rooms and music_rooms.get("status_code", None) == None:
-                users_id = music_rooms.get("memberId")
-                if member_id not in users_id:
-                    users_id.append(member_id)
+            member_ids = data["memberId"]
+            music_room = helper.read("musicroom", {"_id": room_id})
+            if music_room and music_room.get("status_code", None) == None:
+                users_id = music_room.get("memberId")
+                new_members = list(set(member_ids).difference(set(users_id)))
+                list(map(lambda x: users_id.append(x), new_members))
+                if new_members:
                     response = helper.update(
-                        "music_room", room_id, {"memberId": users_id}
+                        "musicroom", room_id, {"memberId": users_id}
                     )
                     if response.get("status") == 200:
                         response_output = {
-                            "event": "add_user_to_room",
+                            "event": "add_users_to_room",
                             "message": response.get("message"),
                             "data": {
                                 "room_id": data["room_id"],
-                                "new_member_id": data["member_id"],
-                                "action": "user added successfully",
+                                "new_member_ids": new_members,
+                                "action": "user/users added successfully",
                             },
                         }
                         try:
-                            centrifugo_data = centrifugo_publish(
-                                room_id, response_output
-                            )
+                            for new_member_id in new_members:
+                                music_data = {
+                                    "room_image": "https://svgshare.com/i/aXm.svg",
+                                    "room_url": f"/music/{room_id}",
+                                }
+
+                                sidebar_data = {
+                                    "event": "sidebar_update",
+                                    "plugin_id": settings.PLUGIN_ID,
+                                    "data": {
+                                        "name": "Music Plugin",
+                                        "description": "User joins the music room",
+                                        "group_name": "Music",
+                                        "category": "Entertainment",
+                                        "show_group": True,
+                                        "button_url": "/music",
+                                        "public_rooms": [music_data],
+                                        "joined_rooms": [music_data],
+                                    },
+                                }
+
+                                channel = f"{org_id}_{new_member_id}_sidebar"
+                                centrifugo_data = centrifugo_publish(
+                                    channel, sidebar_data
+                                )
+
                             if (
                                 centrifugo_data
                                 and centrifugo_data.get("status_code") == 200
@@ -552,7 +607,7 @@ class AddUserToRoomView(APIView):
                                 )
                             else:
                                 return Response(
-                                    data="User added but centrifugo not available",
+                                    data="User/users added but centrifugo not available",
                                     status=status.HTTP_424_FAILED_DEPENDENCY,
                                 )
                         except Exception:
@@ -561,11 +616,14 @@ class AddUserToRoomView(APIView):
                                 status=status.HTTP_424_FAILED_DEPENDENCY,
                             )
                     return Response(
-                        "User not added", status=status.HTTP_424_FAILED_DEPENDENCY
+                        "User/users not added", status=status.HTTP_424_FAILED_DEPENDENCY
                     )
-                return Response("Member already in room", status=status.HTTP_302_FOUND)
+                return Response(
+                    "Member/members already in room", status=status.HTTP_302_FOUND
+                )
             return Response(
-                "Data not availabe on ZC core", status=status.HTTP_424_FAILED_DEPENDENCY
+                "Data not available on ZC core",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -118,11 +118,10 @@ class RoomSerializer(serializers.Serializer):  # pauline
         return str()
 
 
-class AddToRoomSerializer(serializers.Serializer):  # man of mind
-    room_id = serializers.CharField(max_length=100, required=False)
-    # member_id = serializers.CharField(max_length=100)
+class AddToRoomSerializer(serializers.Serializer):
+    room_id = serializers.CharField(max_length=100)
     memberId = serializers.ListField(
-        child=MemberSerializer(), required=False, default=[]
+        child=serializers.CharField(max_length=100), allow_empty=False
     )
 
 

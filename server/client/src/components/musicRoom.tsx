@@ -2,24 +2,48 @@ import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
 
+// @ts-ignore
+// import { AddUserModal } from "@zuri/manage-user-modal";
+// import { addModalConfig } from "../utils/config";
+
 import { pluginHeader, headerConfig } from "../utils/config";
 
-import Playlist from "./playlist";
 // import RoomHeader from "./roomHeader";
-import PasteUrl from "./common/pasteUrl";
+import Playlist from "./playlist";
 import Chat from "./chat";
+import PasteUrl from "./common/pasteUrl";
+import EnterRoomModal from "./modals/enterRoom";
+
 import { useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
-import { userSelect } from "../store/usersSlice";
+import User from "../types/user";
+import { useEffect, useState } from "react";
+import userService from "../services/userService";
 
 function MusicRoom() {
 	const showPasteUrl = useSelector(uiSelect.showPasteUrl);
-	const users = useSelector(userSelect.userList);
+	const [workspaceUsers, setWorkspaceUsers] = useState([] as User[]);
+	const [members, setMembers] = useState([] as User[]);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const workspaceUsers = await userService.getWorkspaceUsers();
+				const members = await userService.getMembers(workspaceUsers);
+
+				setWorkspaceUsers(workspaceUsers);
+			} catch (error) {
+				console.log(error.message);
+			}
+		})();
+	}, []);
 
 	return (
 		<Wrapper overflowMain={showPasteUrl}>
 			<div className="room-main">
+				{/* Modals */}
 				<PasteUrl />
+				<EnterRoomModal />
 
 				<div className="toast-holder">
 					<ToastContainer
@@ -37,7 +61,7 @@ function MusicRoom() {
 						config={pluginHeader}
 						wrapWith="div"
 						wrapStyle={{ width: "100%" }}
-						headerConfig={headerConfig(users)}
+						headerConfig={headerConfig(members)}
 					/>
 				</div>
 
@@ -55,9 +79,11 @@ function MusicRoom() {
 
 const Wrapper = styled.div<{ overflowMain: boolean }>`
 	position: relative;
+	box-sizing: border-box;
 	display: flex;
 	margin: 0;
 	background-color: rgb(240, 240, 240);
+	height: 100%;
 
 	.plugin-header {
 		position: sticky;

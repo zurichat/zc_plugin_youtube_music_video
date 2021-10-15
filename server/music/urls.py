@@ -27,6 +27,11 @@ urlpatterns = [
         name="songsearch",
     ),  # search
     path(
+        "search-suggestions/<str:org_id>/<str:member_id>",
+        SongSearchSuggestions.as_view(),
+        name="songsearch",
+    ),
+    path(
         "org/<str:org_id>/room/<str:_id>/comments",
         CommentView.as_view(),
         name="comments",
