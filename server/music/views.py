@@ -295,10 +295,10 @@ class SongSearchView(APIView):
         for item in search_result:
             item["image_url"] = item["albumCover"]
             item["created_at"] = item["time"]
-            item["content"] = ""
+            item["content"] = null
             item["url"] = f"https://zuri.chat/music/{collection_name}"
-            item["email"] = ([],)
-            item["description"] = ([],)
+            item["email"] = null
+            item["description"] = null
             item.pop("albumCover")
             item.pop("time")
 
