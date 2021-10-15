@@ -39,12 +39,8 @@ class SongSerializer(serializers.Serializer):
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    userId = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
-    addedBy = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
+    userId = serializers.CharField(required=False)
+    addedBy = serializers.CharField(required=False)
     likedBy = serializers.ListField(
         child=serializers.CharField(max_length=128), required=False, default=[]
     )
@@ -75,15 +71,9 @@ class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     message = serializers.CharField(max_length=256, required=False)
-    userId = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
-    name = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
-    avatar = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
+    userId = serializers.CharField(max_length=100, required=False)
+    name = serializers.CharField(max_length=256, required=False)
+    avatar = serializers.CharField(max_length=256, required=False)
     time = serializers.IntegerField(required=False)
 
     def create(self, validated_data):
