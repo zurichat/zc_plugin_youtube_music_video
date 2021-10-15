@@ -551,29 +551,53 @@ class AddUserToRoomView(APIView):
         if serializer.is_valid():
             data = serializer.data
             room_id = data["room_id"]
-            member_id = data["member_id"]
-            music_rooms = helper.read("music_room", {"_id": room_id})
-            if music_rooms and music_rooms.get("status_code", None) == None:
-                users_id = music_rooms.get("memberId")
-                if member_id not in users_id:
-                    users_id.append(member_id)
+            member_ids = data["memberId"]
+            music_room = helper.read("musicroom", {"_id": room_id})
+            if music_room and music_room.get("status_code", None) == None:
+                users_id = music_room.get("memberId")
+                new_members = list(set(member_ids).difference(set(users_id)))
+                list(map(lambda x: users_id.append(x), new_members))
+                if new_members:
                     response = helper.update(
-                        "music_room", room_id, {"memberId": users_id}
+                        "musicroom", room_id, {"memberId": users_id}
                     )
                     if response.get("status") == 200:
                         response_output = {
-                            "event": "add_user_to_room",
+                            "event": "add_users_to_room",
                             "message": response.get("message"),
                             "data": {
                                 "room_id": data["room_id"],
-                                "new_member_id": data["member_id"],
-                                "action": "user added successfully",
+                                "new_member_ids": new_members,
+                                "action": "user/users added successfully",
                             },
                         }
                         try:
-                            centrifugo_data = centrifugo_publish(
-                                room_id, response_output
-                            )
+                            for new_member_id in new_members:
+                                music_data = {
+                                    "room_image": "https://svgshare.com/i/aXm.svg",
+                                    "room_url": f"/music/{room_id}",
+                                }
+
+                                sidebar_data = {
+                                    "event": "sidebar_update",
+                                    "plugin_id": settings.PLUGIN_ID,
+                                    "data": {
+                                        "name": "Music Plugin",
+                                        "description": "User joins the music room",
+                                        "group_name": "Music",
+                                        "category": "Entertainment",
+                                        "show_group": True,
+                                        "button_url": "/music",
+                                        "public_rooms": [music_data],
+                                        "joined_rooms": [music_data],
+                                    },
+                                }
+
+                                channel = f"{org_id}_{new_member_id}_sidebar"
+                                centrifugo_data = centrifugo_publish(
+                                    channel, sidebar_data
+                                )
+
                             if (
                                 centrifugo_data
                                 and centrifugo_data.get("status_code") == 200
@@ -583,7 +607,7 @@ class AddUserToRoomView(APIView):
                                 )
                             else:
                                 return Response(
-                                    data="User added but centrifugo not available",
+                                    data="User/users added but centrifugo not available",
                                     status=status.HTTP_424_FAILED_DEPENDENCY,
                                 )
                         except Exception:
@@ -592,11 +616,14 @@ class AddUserToRoomView(APIView):
                                 status=status.HTTP_424_FAILED_DEPENDENCY,
                             )
                     return Response(
-                        "User not added", status=status.HTTP_424_FAILED_DEPENDENCY
+                        "User/users not added", status=status.HTTP_424_FAILED_DEPENDENCY
                     )
-                return Response("Member already in room", status=status.HTTP_302_FOUND)
+                return Response(
+                    "Member/members already in room", status=status.HTTP_302_FOUND
+                )
             return Response(
-                "Data not availabe on ZC core", status=status.HTTP_424_FAILED_DEPENDENCY
+                "Data not available on ZC core",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
