@@ -4,17 +4,21 @@ import Parcel from "single-spa-react/parcel";
 
 import { pluginHeader, headerConfig } from "../utils/config";
 
-import Playlist from "./playlist";
 // import RoomHeader from "./roomHeader";
-import PasteUrl from "./common/pasteUrl";
+import Playlist from "./playlist";
 import Chat from "./chat";
+import PasteUrl from "./common/pasteUrl";
+
 import { useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
-import { userSelect } from "../store/usersSlice";
+import User from "../types/user";
 
-function MusicRoom() {
+interface Props {
+	members: User[];
+}
+
+function MusicRoom({ members }: Props) {
 	const showPasteUrl = useSelector(uiSelect.showPasteUrl);
-	const users = useSelector(userSelect.userList);
 
 	return (
 		<Wrapper overflowMain={showPasteUrl}>
@@ -37,7 +41,7 @@ function MusicRoom() {
 						config={pluginHeader}
 						wrapWith="div"
 						wrapStyle={{ width: "100%" }}
-						headerConfig={headerConfig(users)}
+						headerConfig={headerConfig(members)}
 					/>
 				</div>
 

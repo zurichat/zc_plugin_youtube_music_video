@@ -1,26 +1,23 @@
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+
+import MemberItem from "./common/memberItem";
+import { uiDispatch, uiSelect } from "../store/uiSlice";
+import User from "../types/user";
+
 import HeaderIcon from "../media/member-list-icon.svg";
 import CloseIcon from "../media/close-black.svg";
 import SearchIcon from "../media/search.svg";
-import MemberItem from "./common/memberItem";
-import { uiDispatch, uiSelect } from "../store/uiSlice";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { userSelect } from "../store/usersSlice";
-import httpService from "../services/httpService";
 
-const MemberList = () => {
+interface Props {
+	members: User[];
+}
+
+const MemberList = ({ members }: Props) => {
 	const showMemberList = useSelector(uiSelect.showMemberList);
-	const list = useSelector(userSelect.userList);
 
 	const [query, setQuery] = useState("");
-
-	useEffect(() => {
-		httpService
-			.get(httpService.endpoints.members)
-			.then(data => console.log(data))
-			.catch(console.log);
-	}, [showMemberList]);
 
 	if (!showMemberList) return null;
 
@@ -32,8 +29,10 @@ const MemberList = () => {
 	};
 
 	const filtered = query
-		? list.filter(user => user.name.toLowerCase().includes(query.toLowerCase()))
-		: list;
+		? members.filter(user =>
+				user.name.toLowerCase().includes(query.toLowerCase())
+		  )
+		: members;
 
 	return (
 		<Wrapper onClick={handleEscape} data-close="close">

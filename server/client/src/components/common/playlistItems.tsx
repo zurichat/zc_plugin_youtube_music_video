@@ -2,24 +2,32 @@ import Song from "../../types/song";
 
 import PlaylistItem from "./playlistItem";
 
-import styled from 'styled-components';
+import styled from "styled-components";
+import { useEffect, useState } from "react";
+import userService from "../../services/userService";
 
 interface Props {
-  songs: Song[];
+	songs: Song[];
 }
 
 function PlaylistItems({ songs }: Props) {
-  return (
-    <Wrapper className="playlist-item-group" style={{ paddingBottom: "10px" }}>
-      {songs.map((song, index) => (
-        <PlaylistItem key={index} song={song} />
-      ))}
-    </Wrapper>
-  );
+	const [users, setUsers] = useState([]);
+
+	useEffect(() => {
+		userService.getWorkspaceUsers().then(setUsers).catch(console.log);
+	}, []);
+
+	return (
+		<Wrapper className="playlist-item-group" style={{ paddingBottom: "10px" }}>
+			{songs.map((song, index) => (
+				<PlaylistItem key={index} song={song} users={users} />
+			))}
+		</Wrapper>
+	);
 }
 
 const Wrapper = styled.div`
-  background: white;
-`
+	background: white;
+`;
 
 export default PlaylistItems;
