@@ -83,6 +83,7 @@ function PlaylistItem(props: Props) {
 
 const Wrapper = styled.div<{ isPlaying: boolean }>`
 	position: relative;
+	box-sizing: border-box;
 	display: flex;
 	justify-content: space-between;
 	background: ${props => (props.isPlaying ? "#CBFFEE" : "#fff")};
