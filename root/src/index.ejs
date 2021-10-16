@@ -69,26 +69,28 @@
     <% } %>
 
     <!-- For Production -->
-    <script type="systemjs-importmap">
+    <!-- <script type="systemjs-importmap">
       {
         "imports": {
           "@zuri/control": "https://zuri.chat/zuri-control.js",
           "@zuri/plugin-header": "https://zuri.chat/zuri-plugin-header.js",
-          "@zuri/manage-user-modal": "https://zuri.chat/zuri-manageUser.js"
+          "@zuri/manage-user-modal": "https://zuri.chat/zuri-manageUser.js",
+          "@zuri/zuri-ui": "https://zuri.chat/zuri-zuri-ui.js"
         }
       }
-    </script>
+    </script> -->
     
     <!-- For Development -->
-    <!-- <script type="systemjs-importmap">
+    <script type="systemjs-importmap">
       {
         "imports": {
           "@zuri/control": "//localhost:8082/zuri-control.js",
           "@zuri/plugin-header": "//localhost:8083/zuri-plugin-header.js",
-          "@zuri/manage-user-modal": "//localhost:8087/zuri-manageUser.js"
+          "@zuri/manage-user-modal": "//localhost:8087/zuri-manageUser.js",
+          "@zuri/zuri-ui": "//localhost:8084/zuri-zuri-ui.js"
         }
       }
-    </script> -->
+    </script>
 
     <link
       rel="preload"

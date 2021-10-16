@@ -7,7 +7,7 @@ import store from "../store";
 
 export { pluginHeader };
 
-export const headerConfig = (users: User[]) => {
+export const headerConfig = (users: User[], members: User[]) => {
 	const userList = users.map(user => ({ _id: user.id, email: user.email }));
 
 	console.log(users);
@@ -20,10 +20,10 @@ export const headerConfig = (users: User[]) => {
 		thumbnailUrl: users.filter(user => user.avatar).map(user => user.avatar), //Replace with images of users
 		hasThumbnail: true, //set false if you don't want thumbnail on the header
 
-		userCount: users.length, //User count on header
+		userCount: members.length, //User count on header
 
 		roomInfo: {
-			membersList: [],
+			membersList: userList,
 
 			addmembersevent: values => {
 				console.log(values, "adding");
