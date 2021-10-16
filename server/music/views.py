@@ -129,6 +129,7 @@ class SidebarView(GenericAPIView):
 
                 return JsonResponse(
                     {
+                        "event": "sidebar_update",
                         "name": "Music Plugin",
                         "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                         "plugin_id": plugin_id,
@@ -312,7 +313,7 @@ class SongSearchView(APIView):
         if key_word:
             key_word = re.split("[;,-]+", key_word)
 
-        songs = query_data(collection_name)["data"]
+        songs = read_data(collection_name)["data"]
         search_result = []
 
         try:
@@ -324,19 +325,19 @@ class SongSearchView(APIView):
                         search_result.append(song)
 
             for item in search_result:
-                item["image_url"] = [item["albumCover"]]
+                item["images_url"] = [item["albumCover"]]
                 item["created_at"] = item["time"]
                 item["created_by"] = item["addedBy"]
-                item["content"] = null
+                item["content"] = None
                 item["url"] = f"https://zuri.chat/music/{collection_name}"
-                item["email"] = null
-                item["description"] = null
+                item["email"] = None
+                item["description"] = None
                 item.pop("albumCover")
                 item.pop("time")
                 item.pop("addedBy")
 
             result = paginator.paginate_queryset(search_result, request)
-            print(result)
+            # print(result)
             return paginator.get_paginated_response(
                 result, key, filters, request, entity_type="others"
             )
@@ -359,7 +360,7 @@ class SongSearchSuggestions(APIView):
     ) 
 
     def get(self, request, *args, **kwargs):
-        songs = query_data(settings.SONG_COLLECTION)["data"]
+        songs = read_data(settings.SONG_COLLECTION)["data"]
         data = {}
         try:
             for song in songs:
