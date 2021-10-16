@@ -2,10 +2,6 @@ import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
 
-// @ts-ignore
-// import { AddUserModal } from "@zuri/manage-user-modal";
-// import { addModalConfig } from "../utils/config";
-
 import { pluginHeader, headerConfig } from "../utils/config";
 
 // @ts-ignore

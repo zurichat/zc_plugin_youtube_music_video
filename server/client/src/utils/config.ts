@@ -3,7 +3,6 @@ import { pluginHeader } from "@zuri/plugin-header";
 import User from "../types/user";
 import icon from "../media/musicRoomIcon.svg";
 import userService from "../services/userService";
-import { userDispatch } from "../store/usersSlice";
 
 export { pluginHeader };
 
