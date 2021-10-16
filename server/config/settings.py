@@ -197,7 +197,6 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "YouTube Music Plugin API",
     "DESCRIPTION": "YouTube Music Plugin for Zuri.Chat",
     "VERSION": "1.0.0",
-    
     # OTHER SETTINGS
 }
 

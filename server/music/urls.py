@@ -80,5 +80,4 @@ urlpatterns = [
     ),  # create room
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
-    
 ]

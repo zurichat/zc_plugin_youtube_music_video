@@ -13,7 +13,7 @@ class SearchPagination(pagination.PageNumberPagination):
         pagination_data = OrderedDict(
             [
                 ("total_results", self.page.paginator.count),
-                ("page_size", self.get_page_size(request)),
+                ("page_size", len(data)),
                 ("current_page", self.get_page_number(request, self.page.paginator)),
                 ("first_page", 1),
                 (
