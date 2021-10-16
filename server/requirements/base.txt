@@ -25,3 +25,4 @@ requests-html==0.10.0
 shortuuid==1.0.1
 sqlparse==0.4.1
 whitenoise==5.3.0
+drf-spectacular==0.20.2

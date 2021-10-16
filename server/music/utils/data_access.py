@@ -41,25 +41,25 @@ def verify_token(token):
     return response.response_data
 
 
-def read_data(collection=None, object_id=None, filter_data=None):
-    if filter_data is None:
-        filter_data = {}
+# def read_data(collection=None, object_id=None, filter_data=None):
+#     if filter_data is None:
+#         filter_data = {}
 
-    if object_id is None:
-        object_id = ""
+#     if object_id is None:
+#         object_id = ""
 
-    request_client = RequestClient()
+#     request_client = RequestClient()
 
-    response = request_client.request(
-        method="GET",
-        url=f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}",
-        headers={"Authorization": "headers"},
-        post_data=filter_data,
-    )
-    return response.response_data
+#     response = request_client.request(
+#         method="GET",
+#         url=f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}",
+#         headers={"Authorization": "headers"},
+#         post_data=filter_data,
+#     )
+#     return response.response_data
 
 
-def query_data(collection=None, object_id=None, filter_data=None, options=None):
+def read_data(collection=None, object_id=None, filter_data=None, options=None):
     if filter_data is None:
         filter_data = {}
 

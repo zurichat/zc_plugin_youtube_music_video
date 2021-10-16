@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "django_extensions",
-    # "drf_spectacular",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -197,6 +197,7 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "YouTube Music Plugin API",
     "DESCRIPTION": "YouTube Music Plugin for Zuri.Chat",
     "VERSION": "1.0.0",
+    
     # OTHER SETTINGS
 }
 
@@ -234,7 +235,6 @@ ROOM_ID = "6169d8b54bfde011fe582e65"
 ROOM_COLLECTION = "musicroom"
 SONG_COLLECTION = "songs"
 COMMENTS_COLLECTION = "chats"
-# MEMBERS_COLLECTION = "users"
-# MEMBERS_COLLECTION = "member"
+
 
 APPEND_SLASH = False
