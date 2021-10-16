@@ -730,4 +730,101 @@ class CreateRoom(APIView):  # fully functional working
 #             )
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class InstallView(APIView):
+    def post(self, request):
+        plugin_id = settings.PLUGIN_ID
+        user_id = request.data["user_id"]
+        org_id = request.data["organisation_id"]
+        token = request.headers["Authorization"]
+        print(token)
+        payload = {
+            "plugin_id": plugin_id,
+            "user_id": user_id,
+            "organisation_id": org_id,
+        }
+        request_client = RequestClient()
+
+        response = request_client.request(
+            method="POST",
+            url=f"https://api.zuri.chat/organizations/{org_id}/plugins",
+            headers={"Authorization": token, "Content-Type": "application/json"},
+            post_data=payload,
+        )
+
+        installed = response.response_data
+        print(installed)
+        if installed["status"] == 200:
+            data = {
+                "message": "Plugin successfully installed!",
+                "success": True,
+                "data": {"redirect_url": "/music"},
+            }
+            return Response(data=data, status=status.HTTP_201_CREATED)
+
+        elif installed["status"] == 400:
+            data = {
+                "message": "Plugin has already been installed!",
+                "success": False,
+                "data": None,
+            }
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            data = {
+                "message": "There is an Error with this installation! Please contact Admin",
+                "success": False,
+                "data": None,
+            }
+            return Response(data=data, status=status.HTTP_424_FAILED_DEPENDENCY)
+
+
+class UninstallView(APIView):
+    def delete(self, request):
+        plugin_id = settings.PLUGIN_ID
+        user_id = request.data["user_id"]
+        org_id = request.data["organisation_id"]
+        token = request.headers["Authorization"]
+        print(token)
+        payload = {
+            "plugin_id": plugin_id,
+            "user_id": user_id,
+            "organisation_id": org_id,
+        }
+        request_client = RequestClient()
+
+        response = request_client.request(
+            method="DELETE",
+            url=f"https://api.zuri.chat/organizations/{org_id}/plugins/{plugin_id}",
+            headers={"Authorization": token, "Content-Type": "application/json"},
+            post_data=payload,
+        )
+
+        uninstalled = response.response_data
+        print(uninstalled)
+        if uninstalled["status"] == 200:
+            data = {
+                "message": "Uninstalled successfully!",
+                "success": True,
+                "data": None,
+            }
+            return Response(data=data, status=status.HTTP_201_CREATED)
+
+        elif uninstalled["status"] == 400:
+            data = {
+                "message": "Oops! plugin does not exist",
+                "success": False,
+                "data": None,
+            }
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            data = {
+                "message": "There is an Error with this uninstallation! Please contact Admin",
+                "success": False,
+                "data": None,
+            }
+            return Response(data=data, status=status.HTTP_424_FAILED_DEPENDENCY)
+
+
+
 
