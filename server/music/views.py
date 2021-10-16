@@ -355,7 +355,10 @@ class SongSearchSuggestions(APIView):
                 },
                 status=status.HTTP_200_OK,
             )
-
+class Viewsongs(APIView):
+    def get(self, request, *args, **kwargs):
+        data = query_data(settings.SONG_COLLECTION)
+        return Response(data, status=status.HTTP_200_OK)
 
 class CommentView(APIView):
     def get(self, request, *args, **kwargs):
