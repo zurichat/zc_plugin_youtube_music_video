@@ -304,10 +304,10 @@ class SongSearchView(APIView):
                 item["image_url"] = [item["albumCover"]]
                 item["created_at"] = item["time"]
                 item["created_by"] = item["addedBy"]
-                item["content"] = null
+                item["content"] = None
                 item["url"] = f"https://zuri.chat/music/{collection_name}"
-                item["email"] = null
-                item["description"] = null
+                item["email"] = None
+                item["description"] = None
                 item.pop("albumCover")
                 item.pop("time")
                 item.pop("addedBy")
@@ -355,10 +355,6 @@ class SongSearchSuggestions(APIView):
                 },
                 status=status.HTTP_200_OK,
             )
-class Viewsongs(APIView):
-    def get(self, request, *args, **kwargs):
-        data = query_data(settings.SONG_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
 
 class CommentView(APIView):
     def get(self, request, *args, **kwargs):
