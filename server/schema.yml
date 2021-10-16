@@ -1,0 +1,855 @@
+openapi: 3.0.3
+info:
+  title: YouTube Music Plugin API
+  version: 1.0.0
+  description: YouTube Music Plugin for Zuri.Chat
+paths:
+  /music/api/v1/info:
+    get:
+      operationId: music_api_v1_info_retrieve
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/install:
+    post:
+      operationId: music_api_v1_install_create
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/org/{org_id}/members/{member_id}/create:
+    post:
+      operationId: music_api_v1_org_members_create_create
+      parameters:
+      - in: path
+        name: member_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Room'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Room'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Room'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+          description: ''
+  /music/api/v1/org/{org_id}/room:
+    get:
+      operationId: music_api_v1_org_room_retrieve
+      parameters:
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+          description: ''
+  /music/api/v1/org/{org_id}/room/{_id}:
+    get:
+      operationId: music_api_v1_org_room_retrieve_2
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/org/{org_id}/room/{_id}/comments:
+    get:
+      operationId: music_api_v1_org_room_comments_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: music_api_v1_org_room_comments_create
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/org/{org_id}/room/{_id}/comments/delete:
+    get:
+      operationId: music_api_v1_org_room_comments_delete_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+    post:
+      operationId: music_api_v1_org_room_comments_delete_create
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Comment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: ''
+  /music/api/v1/org/{org_id}/room/{_id}/comments/update:
+    get:
+      operationId: music_api_v1_org_room_comments_update_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    put:
+      operationId: music_api_v1_org_room_comments_update_update
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/org/{org_id}/room/{_id}/delete:
+    get:
+      operationId: music_api_v1_org_room_delete_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+          description: ''
+    post:
+      operationId: music_api_v1_org_room_delete_create
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Room'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Room'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Room'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+          description: ''
+  /music/api/v1/org/{org_id}/room/{_id}/members:
+    get:
+      operationId: music_api_v1_org_room_members_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+          description: ''
+  /music/api/v1/org/{org_id}/room/{_id}/members/count:
+    get:
+      operationId: music_api_v1_org_room_members_count_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/org/{org_id}/room/{_id}/members/remove:
+    get:
+      operationId: music_api_v1_org_room_members_remove_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+          description: ''
+    put:
+      operationId: music_api_v1_org_room_members_remove_update
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Room'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Room'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Room'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+          description: ''
+  /music/api/v1/org/{org_id}/room/{_id}/songs:
+    get:
+      operationId: music_api_v1_org_room_songs_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: music_api_v1_org_room_songs_create
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/org/{org_id}/room/{_id}/songs/current:
+    get:
+      operationId: music_api_v1_org_room_songs_current_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: music_api_v1_org_room_songs_current_create
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/org/{org_id}/room/{_id}/songs/delete:
+    get:
+      operationId: music_api_v1_org_room_songs_delete_retrieve
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: music_api_v1_org_room_songs_delete_create
+      parameters:
+      - in: path
+        name: _id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/org/{org_id}/room/{room_id}/members/add:
+    post:
+      operationId: music_api_v1_org_room_members_add_create
+      parameters:
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: room_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/ping:
+    get:
+      operationId: music_api_v1_ping_retrieve
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/search-suggestions/{org_id}/{member_id}:
+    get:
+      operationId: music_api_v1_search_suggestions_retrieve
+      parameters:
+      - in: path
+        name: member_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/search/{org_id}/{member_id}:
+    get:
+      operationId: music_api_v1_search_retrieve
+      parameters:
+      - in: path
+        name: member_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: org_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /music/api/v1/uninstall:
+    delete:
+      operationId: music_api_v1_uninstall_destroy
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /music/schema:
+    get:
+      operationId: music_schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - music
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /sidebar:
+    get:
+      operationId: sidebar_retrieve
+      tags:
+      - sidebar
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    Comment:
+      type: object
+      properties:
+        _id:
+          type: string
+          readOnly: true
+          title: ' id'
+        message:
+          type: string
+          maxLength: 256
+        userId:
+          type: string
+          maxLength: 100
+        name:
+          type: string
+          maxLength: 256
+        avatar:
+          type: string
+          maxLength: 256
+        time:
+          type: integer
+      required:
+      - _id
+    Room:
+      type: object
+      properties:
+        _id:
+          type: string
+          readOnly: true
+          title: ' id'
+        room_name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 300
+        private:
+          type: boolean
+          default: false
+        room_url:
+          type: string
+          maxLength: 300
+        memberId:
+          type: array
+          items:
+            type: string
+            maxLength: 128
+          default: []
+      required:
+      - _id
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
