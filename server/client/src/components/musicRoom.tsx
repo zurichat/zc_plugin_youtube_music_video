@@ -9,7 +9,7 @@ import Parcel from "single-spa-react/parcel";
 import { pluginHeader, headerConfig } from "../utils/config";
 
 // @ts-ignore
-import { MessageBoard } from "@zuri/zuri-ui";
+// import { MessageBoard } from "@zuri/zuri-ui";
 
 // import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
@@ -23,27 +23,21 @@ import User from "../types/user";
 import { useEffect, useMemo, useState } from "react";
 import userService from "../services/userService";
 import { chatData } from "../utils/mockdata";
+import { userDispatch, userSelect } from "../store/usersSlice";
 
 function MusicRoom() {
-	const showPasteUrl = useSelector(uiSelect.showPasteUrl);
-	const [workspaceUsers, setWorkspaceUsers] = useState([] as User[]);
 	const [members, setMembers] = useState([] as User[]);
+	const [reload, setReload] = useState(false);
+
+	const showPasteUrl = useSelector(uiSelect.showPasteUrl);
+	const isMember = useSelector(userSelect.isMember);
 
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		(async () => {
-			try {
-				const workspaceUsers = await userService.getWorkspaceUsers();
-				const members = await userService.getMembers(workspaceUsers);
-
-				setWorkspaceUsers(workspaceUsers);
-				setMembers(members);
-			} catch (error) {
-				console.log(error.message);
-			}
-		})();
-	}, []);
+		userService.getMembers().then(setMembers).catch(console.log);
+		userService.isMember().then(userDispatch.setMembership).catch(console.log);
+	}, [reload, isMember]);
 
 	const handleCreateRoomMessages = message => {
 		console.log("creating a message", message);
@@ -71,7 +65,7 @@ function MusicRoom() {
 			<div className="room-main">
 				{/* Modals */}
 				<PasteUrl />
-				<EnterRoomModal />
+				<EnterRoomModal isMember={isMember} />
 
 				<div className="toast-holder">
 					<ToastContainer
@@ -89,7 +83,7 @@ function MusicRoom() {
 						config={pluginHeader}
 						wrapWith="div"
 						wrapStyle={{ width: "100%" }}
-						headerConfig={headerConfig(workspaceUsers, members)}
+						headerConfig={headerConfig(members, () => setReload(!reload))}
 					/>
 				</div>
 
@@ -99,8 +93,8 @@ function MusicRoom() {
 			</div>
 
 			<div className="room-chat-container">
-				{/* <Chat /> */}
-				<MessageBoard chatsConfig={chatSidebarConfig} />
+				<Chat />
+				{/* <MessageBoard chatsConfig={chatSidebarConfig} /> */}
 			</div>
 		</Wrapper>
 	);
@@ -112,7 +106,8 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	display: flex;
 	margin: 0;
 	background-color: rgb(240, 240, 240);
-	height: 100%;
+	min-height: 94vh;
+	max-height: 94vh;
 
 	.plugin-header {
 		position: sticky;

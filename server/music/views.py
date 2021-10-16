@@ -131,7 +131,7 @@ class SidebarView(GenericAPIView):
                 )
 
                 return JsonResponse(
-                    {
+                    {"event": "sidebar_update", 
                         "name": "Music Plugin",
                         "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                         "plugin_id": plugin_id,
@@ -147,7 +147,7 @@ class SidebarView(GenericAPIView):
                 )
         else:
             centrifugo_post(
-                sidebar_update, sidebar_update_payload, subscription_channel
+                sidebar_update_payload, subscription_channel
             )
 
             return JsonResponse(
