@@ -5,22 +5,20 @@ from music.models import *
 
 class MemberSerializer(serializers.Serializer):
 
-    _id = serializers.CharField(read_only=True)
-    userId = serializers.ListField(
-        child=serializers.CharField(max_length=128), required=False, default=[]
-    )
-    name = serializers.ListField(child=serializers.CharField(read_only=True))
-    avatar = serializers.ListField(child=serializers.CharField(read_only=True))
+    # _id = serializers.CharField(read_only=True)
+    memberId = serializers.CharField(read_only=True)
+    name = serializers.CharField(max_length=256, read_only=False)
+    avatar = serializers.CharField(max_length=256, read_only=True,required=False)
     email = serializers.CharField(max_length=256, read_only=False)
-    job = serializers.ListField(child=serializers.CharField(read_only=True))
+    job = serializers.CharField(max_length=256, read_only=True, required=False)
 
     def create(self, validated_data):
         return Member(**validated_data)
 
     def update(self, instance, validated_data):
 
-        instance._id = validated_data.get("_id", instance._id)
-        instance.userId = validated_data.get("userId", instance.userId)
+        # instance._id = validated_data.get("_id", instance._id)
+        instance.memberId = validated_data.get("memberId", instance.memberId)
         instance.name = validated_data.get("name", instance.name)
         instance.avatar = validated_data.get("avatar", instance.avatar)
         instance.email = validated_data.get("email", instance.email)
@@ -119,7 +117,7 @@ class RoomSerializer(serializers.Serializer):  # pauline
 
 
 class AddToRoomSerializer(serializers.Serializer):
-    room_id = serializers.CharField(max_length=100)
+    room_id = serializers.CharField(max_length=100, required=False)
     memberId = serializers.ListField(
         child=serializers.CharField(max_length=100), allow_empty=False
     )

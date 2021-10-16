@@ -59,7 +59,6 @@ urlpatterns = [
         UserCountView.as_view(),
         name="usercount",
     ),  # user count
-    # path("createroom", CreateRoomView.as_view(), name="createroom"),
     path("org/<str:org_id>/room", RoomView.as_view(), name="room"),  # view the room
     path(
         "org/<str:org_id>/room/<str:_id>/members/remove",
@@ -67,25 +66,19 @@ urlpatterns = [
         name="removeuser",
     ),  # remove user (works for get and post)
     path(
-        "org/<str:org_id>/room/<str:_id>/members", RoomUserView.as_view(), name="user"
+        "org/<str:org_id>/room/<str:_id>/members", RoomUserList.as_view(), name="user"
     ),  # user list
     path(
         "org/<str:org_id>/room/<str:room_id>/members/add",
         AddUserToRoomView.as_view(),
         name="adduser",
     ),  # add user
-    # path(
-    #     "org/<str:org_id>/users/<str:member_id>/create", CreateRoomView.as_view(), name="create"
-    # ),
     path(
         "org/<str:org_id>/members/<str:member_id>/create",
         CreateRoom.as_view(),
         name="create",
     ),  # create room
-
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
-    # path(
-    #     "org/<str:org_id>/users/<str:member_id>/create", CreateRoomView.as_view(), name="create"
-    # ),
+    
 ]
