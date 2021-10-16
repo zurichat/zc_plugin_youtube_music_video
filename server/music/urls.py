@@ -74,6 +74,8 @@ urlpatterns = [
         AddUserToRoomView.as_view(),
         name="adduser",
     ),
+    path("install", InstallView.as_view(), name="install"),
+    path("uninstall", UninstallView.as_view(), name="uninstall"),
     # path(
     #     "org/<str:org_id>/users/<str:member_id>/create", CreateRoomView.as_view(), name="create"
     # ),

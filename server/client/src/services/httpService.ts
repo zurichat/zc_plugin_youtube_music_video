@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const org_id = "614679ee1a5607b13c00bcb7";
-const room_id = "616714d49f7a790c08d222ee";
+const org_id = "61695d8bb2cc8a9af4833d46";
+const room_id = "6169d8b54bfde011fe582e65";
 
 // axios.defaults.baseURL = "http://localhost:8000/music/api/v1";
 // axios.defaults.baseURL = "https://music.zuri.chat/music/api/v1/";

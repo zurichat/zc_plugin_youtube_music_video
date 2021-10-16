@@ -128,7 +128,7 @@ const Wrapper = styled.div`
 	background: white;
 	box-shadow: 1px 3px 5px #b4b2b2;
 	position: relative;
-	z-index: 100;
+	/* z-index: 100; */
 
 	.chat-item-group {
 		flex-grow: 1;

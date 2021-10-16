@@ -1,25 +1,11 @@
 from urllib.parse import urlencode
 from requests.exceptions import RequestException
-import requests, json
-
-
-def login_user():
-    data = {"email": "sam@gmail.com", "password": "Owhondah"}
-    try:
-        response = requests.post(url="https://api.zuri.chat/auth/login", json=data)
-    except requests.exceptions.RequestException as e:
-        return e
-    if response.status_code == 200:
-        return response.json()["data"]["user"]["token"]
-    else:
-        return None
+import requests
 
 
 centrifugo = "58c2400b-831d-411d-8fe8-31b6e337738b"
-PLUGIN_ID = "613ceb50ceee2ab59d44df2f"
+PLUGIN_ID = "616991e5ef1c19335a2869f4"
 ORG_ID = "614679ee1a5607b13c00bcb7"
-header = {"Authorization": f"Bearer {login_user()}"}
-
 
 class DataStorage:
     def __init__(self, request=None):
@@ -29,9 +15,6 @@ class DataStorage:
         # self.upload_test_api = "http://127.0.0.1:8000/api/v1/testapi/{pgn_id}"
         self.write_api = "https://api.zuri.chat/data/write"
         self.delete_api = "https://api.zuri.chat/data/delete"
-        self.upload_api = "https://api.zuri.chat/upload/file/{pgn_id}"
-        self.upload_multiple_api = "https://api.zuri.chat/upload/files/{pgn_id}"
-        self.delete_file_api = "https://api.zuri.chat/delete/file/{pgn_id}"
 
         if request is None:
             self.plugin_id = PLUGIN_ID
