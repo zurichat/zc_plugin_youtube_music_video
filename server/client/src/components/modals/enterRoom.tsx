@@ -1,38 +1,26 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import userService from "../../services/userService";
-import { uiDispatch, uiSelect } from "../../store/uiSlice";
-import { userDispatch, userSelect } from "../../store/usersSlice";
+import { userDispatch } from "../../store/usersSlice";
 import Button from "../common/button";
 
-interface Props {}
+interface Props {
+	isMember: boolean;
+}
 
 function EnterRoom(props: Props) {
-	const isMember = useSelector(userSelect.isMember);
-	// const show = useSelector(uiSelect.enterModal);
-
-	// if (!show) return null;
-
-	console.log({ isMember });
-
-	if (isMember) return null;
-
-	useEffect(() => {
-		userService
-			.isMember()
-			.then(value => userDispatch.setMembership(value))
-			.catch(console.log);
-	}, []);
+	if (props.isMember) return null;
 
 	const handleJoin = () => {
 		userService
 			.addMember()
-			.then(() => userDispatch.setMembership(true))
+			.then(() => {
+				userDispatch.setMembership(true);
+				toast.success("Successfully joined plugin");
+			})
 			.catch(error => {
 				toast.error("An error occured. Please try again later.");
-				console.error(error.message);
+				console.log(error);
 			});
 	};
 
@@ -40,7 +28,7 @@ function EnterRoom(props: Props) {
 
 	return (
 		<Wrapper>
-			<div>You are viewing Music Plugin</div>
+			<div className="enter-text">You are viewing Music Plugin</div>
 
 			<div className="enter-btns">
 				<Button
@@ -55,10 +43,6 @@ function EnterRoom(props: Props) {
 					See More Details
 				</Button>
 			</div>
-
-			<div>
-				Back to <a href="#">Plugin Browser</a>
-			</div>
 		</Wrapper>
 	);
 }
@@ -71,11 +55,15 @@ const Wrapper = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	height: 120px;
+	height: 100px;
 	width: 100%;
 	padding: 50px;
 	background: #ececec;
-	z-index: 10;
+
+	.enter-text {
+		font-size: 15px;
+		font-weight: 500;
+	}
 
 	.enter-btns {
 		display: flex;
