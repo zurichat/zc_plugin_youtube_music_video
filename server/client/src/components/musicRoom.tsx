@@ -4,134 +4,188 @@ import Parcel from "single-spa-react/parcel";
 
 import { pluginHeader, headerConfig } from "../utils/config";
 
+// @ts-ignore
+// import { MessageBoard } from "@zuri/zuri-ui";
+
+// import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
-import RoomHeader from "./roomHeader";
-import PasteUrl from "./common/pasteUrl";
 import Chat from "./chat";
-import { useSelector } from "react-redux";
+import PasteUrl from "./common/pasteUrl";
+import EnterRoomModal from "./modals/enterRoom";
+
+import { useDispatch, useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
-import { userSelect } from "../store/usersSlice";
+import User from "../types/user";
+import { useEffect, useMemo, useState } from "react";
+import userService from "../services/userService";
+import { chatData } from "../utils/mockdata";
+import { userDispatch, userSelect } from "../store/usersSlice";
 
 function MusicRoom() {
-  const showPasteUrl = useSelector(uiSelect.showPasteUrl);
-  const users = useSelector(userSelect.userList);
+	const [members, setMembers] = useState([] as User[]);
+	const [reload, setReload] = useState(false);
 
-  return (
-    <Wrapper overflowMain={showPasteUrl}>
-      <div className="room-main">
-        <PasteUrl />
+	const showPasteUrl = useSelector(uiSelect.showPasteUrl);
+	const isMember = useSelector(userSelect.isMember);
 
-        <div className="toast-holder">
-          <ToastContainer
-            position="top-center"
-            theme="colored"
-            autoClose={3000}
-            hideProgressBar={true}
-            toastClassName="toast-wrapper"
-            bodyClassName="toast-body"
-          />
-        </div>
+	const dispatch = useDispatch();
 
-        <Parcel
-          config={pluginHeader}
-          wrapWith="div"
-          wrapStyle={{ width: "100%" }}
-          headerConfig={headerConfig(users)}
-        />
+	useEffect(() => {
+		userService.getMembers().then(setMembers).catch(console.log);
+		userService.isMember().then(userDispatch.setMembership).catch(console.log);
+	}, [reload, isMember]);
 
-        {/* <RoomHeader /> */}
+	const handleCreateRoomMessages = message => {
+		console.log("creating a message", message);
+	};
 
-        <Playlist />
-      </div>
+	const chatSidebarConfig = useMemo(
+		() => ({
+			sendChatMessageHandler: msg => {
+				dispatch(handleCreateRoomMessages(msg));
+			},
+			currentUserData: {
+				username: "Aleey",
+				imageUrl: ""
+			},
+			messages: chatData(),
 
-      <div className="room-chat-container">
-        <Chat />
-      </div>
-    </Wrapper>
-  );
+			showChatSideBar: true,
+			chatHeader: "Chats"
+		}),
+		[]
+	);
+
+	return (
+		<Wrapper overflowMain={showPasteUrl}>
+			<div className="room-main">
+				{/* Modals */}
+				<PasteUrl />
+				<EnterRoomModal isMember={isMember} />
+
+				<div className="toast-holder">
+					<ToastContainer
+						position="top-center"
+						theme="colored"
+						autoClose={3000}
+						hideProgressBar={true}
+						toastClassName="toast-wrapper"
+						bodyClassName="toast-body"
+					/>
+				</div>
+
+				<div className="plugin-header">
+					<Parcel
+						config={pluginHeader}
+						wrapWith="div"
+						wrapStyle={{ width: "100%" }}
+						headerConfig={headerConfig(members, () => setReload(!reload))}
+					/>
+				</div>
+
+				{/* <RoomHeader /> */}
+
+				<Playlist />
+			</div>
+
+			<div className="room-chat-container">
+				<Chat />
+				{/* <MessageBoard chatsConfig={chatSidebarConfig} /> */}
+			</div>
+		</Wrapper>
+	);
 }
 
 const Wrapper = styled.div<{ overflowMain: boolean }>`
-  position: relative;
-  display: flex;
-  margin: 0;
-  background-color: rgb(240, 240, 240);
+	position: relative;
+	box-sizing: border-box;
+	display: flex;
+	margin: 0;
+	background-color: rgb(240, 240, 240);
+	min-height: 94vh;
+	max-height: 94vh;
 
-  .room-main {
-    flex-grow: 1;
-    overflow-y: ${(props) => (props.overflowMain ? "hidden" : "scroll")};
-    position: relative;
-    margin-right: 10px;
-    background-color: white;
-  }
+	.plugin-header {
+		position: sticky;
+		top: 0px;
+		z-index: 100;
+	}
 
-  .room-chat-container {
-    margin-top: 5px;
-  }
+	.room-main {
+		flex-grow: 1;
+		overflow-y: ${props => (props.overflowMain ? "hidden" : "scroll")};
+		position: relative;
+		margin-right: 10px;
+		background-color: white;
+	}
 
-  .room-main::-webkit-scrollbar,
-  .room-chat-container::-webkit-scrollbar {
-    width: 5px;
-  }
+	.room-chat-container {
+		margin-top: 5px;
+	}
 
-  .room-main::-webkit-scrollbar-thumb,
-  .room-chat-container::-webkit-scrollbar-thumb {
-    width: 6px;
-    background-color: #00b87c;
-  }
+	.room-main::-webkit-scrollbar,
+	.room-chat-container::-webkit-scrollbar {
+		width: 5px;
+	}
 
-  .toast-holder {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    flex-grow: 1;
-  }
+	.room-main::-webkit-scrollbar-thumb,
+	.room-chat-container::-webkit-scrollbar-thumb {
+		width: 6px;
+		background-color: #00b87c;
+	}
 
-  .Toastify__toast-container {
-    position: absolute;
-    top: 1px;
-    width: 100%;
-    right: 1px;
+	.toast-holder {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		flex-grow: 1;
+	}
 
-    .Toastify__toast--success {
-      background-color: #cbffee;
-      color: black;
-      display: flex;
-      justify-content: center;
-    }
+	.Toastify__toast-container {
+		position: absolute;
+		top: 1px;
+		width: 100%;
+		right: 1px;
 
-    .Toastify__toast--error {
-      background: #fff1f3;
-      color: red;
-      display: flex;
-      justify-content: center;
-    }
+		.Toastify__toast--success {
+			background-color: #cbffee;
+			color: black;
+			display: flex;
+			justify-content: center;
+		}
 
-    .toast-body {
-      display: flex;
-      justify-content: center;
-    }
-  }
+		.Toastify__toast--error {
+			background: #fff1f3;
+			color: red;
+			display: flex;
+			justify-content: center;
+		}
 
-  @media screen and (max-width: 1120px) {
-    justify-content: center;
+		.toast-body {
+			display: flex;
+			justify-content: center;
+		}
+	}
 
-    .room-main {
-      margin: 0;
-    }
+	@media screen and (max-width: 1120px) {
+		justify-content: center;
 
-    .room-chat-container {
-      position: fixed;
-      top: 40px;
-      // background: rgb(240, 240, 240);
-      background: none;
-      flex-basis: 40%;
-      display: flex;
-      justify-content: center;
-      z-index: 111;
-      max-height: 400px;
-    }
-  }
+		.room-main {
+			margin: 0;
+		}
+
+		.room-chat-container {
+			position: fixed;
+			top: 40px;
+			// background: rgb(240, 240, 240);
+			background: none;
+			flex-basis: 40%;
+			display: flex;
+			justify-content: center;
+			z-index: 111;
+			max-height: 400px;
+		}
+	}
 `;
 
 export default MusicRoom;

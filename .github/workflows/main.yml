@@ -14,14 +14,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        
-        
+
+
         # This job is to cache the node modules in order to reduce the time it would take to run
       - name: Use cached node_modules
         uses: c-hive/gha-yarn-cache@v2
         with:
-         directory: server/client         
-         
+         directory: server/client
+
          #this job installs intalls yarn dependencies on the github runner
          #and also to build the static files that would be transferred to server later
       - name: install Dependencies
@@ -29,20 +29,20 @@ jobs:
           yarn install
           cd server/client
           yarn
-          yarn build          
-          
+          yarn build
+
       - name: Use cached node_modules for root dir
         uses: c-hive/gha-yarn-cache@v2
         with:
          directory: root
-     
+
       - name: install Dependencies
         run: |
           yarn install
           cd root
           yarn
           yarn build
-         
+
        # in the server your normal workflow except omitting yarn build
       - name: Git Pull on Server
         uses: appleboy/ssh-action@master
@@ -64,16 +64,16 @@ jobs:
             python3 manage.py migrate
             cd /var/www/music.zuri.chat/server/client
             yarn
-            
+
       - name: copy build to server
         uses: Creepios/sftp-action@v1.0.1
         with:
           host: ${{ secrets.ZURI_HOST }}
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}          
+          password: ${{ secrets.PASSWORD }}
           localPath: './server/client/dist'
           remotePath: '/var/www/music.zuri.chat/server/client/dist'
-                    
+
       - name: copy build to server
         uses: Creepios/sftp-action@v1.0.1
         with:
@@ -82,7 +82,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           localPath: './root/dist'
           remotePath: '/var/www/music.zuri.chat/root/dist'
-          
+
         # this job ensures your processes are restarted after the process to serve your app
       - name: collect static and restart gunicorn
         uses: appleboy/ssh-action@master
@@ -90,10 +90,10 @@ jobs:
           host: ${{ secrets.ZURI_HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: |         
+          script: |
             cd /var/www/music.zuri.chat
             source .venv/bin/activate
-            cd /var/www/music.zuri.chat/server            
+            cd /var/www/music.zuri.chat/server
             pip3 install -r requirements/local.txt --upgrade
             pip3 install -r requirements/base.txt --upgrade
             python3 manage.py collectstatic --noinput

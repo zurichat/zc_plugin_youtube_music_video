@@ -10,43 +10,45 @@ import PlaylistItems from "./common/playlistItems";
 import EmptyScreen from "./common/emptyScreen";
 
 function Playlist() {
-  const songs = useSelector(songSelect.allSongs);
-  const { show } = useSelector(getPlayerState);
+	const songs = useSelector(songSelect.allSongs);
+	const { show } = useSelector(getPlayerState);
 
-  return (
-    <Wrapper>
-      <PlaylistHeader />
+	return (
+		<Wrapper>
+			<PlaylistHeader />
 
-      {songs.length === 0 && <EmptyScreen />}
+			{songs.length === 0 && <EmptyScreen />}
 
-      <Player />
+			<Player />
 
-      {!show && <PlaylistItems songs={songs} />}
-    </Wrapper>
-  );
+			{!show && <PlaylistItems songs={songs} />}
+		</Wrapper>
+	);
 }
 
 const Wrapper = styled.div`
-  /* overflow-y: scroll; */
-  background: #fff;
-  padding: 20px;
-  height: 83vh;
+	box-sizing: border-box;
+	background: #fff;
+	padding: 20px;
+	margin-top: 40px;
+	height: 80%;
+	min-height: 80%;
 
-  &::-webkit-scrollbar {
-    width: 3px;
-  }
+	&::-webkit-scrollbar {
+		width: 3px;
+	}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: #00b87c;
-  }
+	&::-webkit-scrollbar-thumb {
+		background-color: #00b87c;
+	}
 
-  @media (max-width: 500px) {
-    height: 100%;
-  }
+	@media (max-width: 500px) {
+		height: 100%;
+	}
 
-  @media (max-width: 400px) {
-    padding: 5px;
-  }
+	@media (max-width: 400px) {
+		padding: 5px;
+	}
 `;
 
 export default Playlist;

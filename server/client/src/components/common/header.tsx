@@ -1,10 +1,7 @@
-import React from 'react';
-import logo from './Frame 8866.svg';
-import  styled  from  'styled-components'; 
+import logo from './Frame8866.svg';
+import  styled  from  'styled-components';
 
 function Header() {
-  
-
 
     return (
       <Headerstyled>
@@ -30,19 +27,19 @@ function Header() {
     /*========================================*/
     /*--------------- [_Header Nav] -------------*/
     /*========================================*/
-    
+
     .header__wrap{
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         margin: 2em;
     }
-    
+
     .nav__menu{
         display: none;
     }
-    
-    
+
+
     @media screen and (min-width:320px) and (max-width:770px) {
         .nav__menu{
             width: 4rem;
@@ -52,13 +49,13 @@ function Header() {
             justify-content: space-between;
             align-items: center;
             padding: 0px;
-        }   
-        
+        }
+
         .nav__menu i{
             cursor: pointer;
-        } 
+        }
     }
-    
+
     `
-  
+
   export default Header;

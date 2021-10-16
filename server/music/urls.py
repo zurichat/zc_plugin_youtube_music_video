@@ -1,42 +1,84 @@
 from django.urls import path
 from music.views import *
 
+# current url with orgid and roomid:
+# https://music.zuri.chat/music/api/v1/org/61695d8bb2cc8a9af4833d46/room/6169d8b54bfde011fe582e65/
 
-urlpatterns = [   
-    
-    path("test", MediaView.as_view(), name="test"),
 
+urlpatterns = [
+    path(
+        "org/<str:org_id>/room/<str:_id>/songs/current",
+        change_room_image.as_view(),
+        name="currentsong",
+    ),  # current song
     path("info", PluginInfoView.as_view(), name="info"),
-
     path("ping", PluginPingView.as_view(), name="ping"),
-
-    path("user-count", UserCountView.as_view(), name="header-user-count"),
-
-    path("current-song", change_room_image.as_view(), name="current-song"),
-
-
-    path("songs", SongView.as_view(), name="song"),
-    path("deletesong", DeleteSongView.as_view(), name="deletesong"),
-    # path("deletesong", removesong, name="deletesong"), #delete songs 
-   
-
-    path("comments", CommentView.as_view(), name="comments"),
-    path("deletecomment", DeleteCommentView.as_view(), name="deletecomment"),
-    # path("deletecomment", removecomment, name="deletecomment"), #remove comments
-
-
-    path("createroom", CreateRoomView.as_view(), name="createroom"),
-    path("room", RoomView.as_view(), name="room"),
-    path("deleteroom", DeleteRoomView.as_view, name="deleteroom"), #delete room 
-    path("joinroom", AddToRoomView.as_view(), name="joinroom"),
-    #  path("room/<str:_id>/user", RoomView.as_view(), name="room"),
-    
-
-    path("user", MemberListView.as_view(), name="user"), #works for get and post
-    path("deleteuser", DeleteUserView.as_view(), name="deleteuser"), #remove user
-           
-
-    # path("<int:orgid>/musicroom/<int:roomid>/users", AddToRoomView.as_view(), name="add_to_room"),
-    # path("deleteuser", removemember, name="deleteuser"), #remove user
+    path(
+        "org/<str:org_id>/room/<str:_id>/songs", SongView.as_view(), name="song"
+    ),  # song
+    path(
+        "org/<str:org_id>/room/<str:_id>/songs/delete",
+        DeleteSongView.as_view(),
+        name="deletesong",
+    ),  # delete song
+    path(
+        "search/<str:org_id>/<str:member_id>",
+        SongSearchView.as_view(),
+        name="songsearch",
+    ),  # search
+    path(
+        "search-suggestions/<str:org_id>/<str:member_id>",
+        SongSearchSuggestions.as_view(),
+        name="songsearch",
+    ),
+    path(
+        "org/<str:org_id>/room/<str:_id>/comments",
+        CommentView.as_view(),
+        name="comments",
+    ),  # comments
+    path(
+        "org/<str:org_id>/room/<str:_id>/comments/delete",
+        DeleteCommentView.as_view(),
+        name="deletecomment",
+    ),  # delete comment
+    path(
+        "org/<str:org_id>/room/<str:_id>/comments/update",
+        UpdateCommentView.as_view(),
+        name="updatecomment",
+    ),  # update comment
+    path(
+        "org/<str:org_id>/room/<str:_id>", RoomDetailView.as_view(), name="roomdetail"
+    ),  # room detail
+    path(
+        "org/<str:org_id>/room/<str:_id>/delete",
+        DeleteRoomView.as_view(),
+        name="deleteroom",
+    ),  # delete room
+    path(
+        "org/<str:org_id>/room/<str:_id>/members/count",
+        UserCountView.as_view(),
+        name="usercount",
+    ),  # user count
+    path("org/<str:org_id>/room", RoomView.as_view(), name="room"),  # view the room
+    path(
+        "org/<str:org_id>/room/<str:_id>/members/remove",
+        DeleteRoomUserView.as_view(),
+        name="removeuser",
+    ),  # remove user (works for get and post)
+    path(
+        "org/<str:org_id>/room/<str:_id>/members", RoomUserList.as_view(), name="user"
+    ),  # user list
+    path(
+        "org/<str:org_id>/room/<str:room_id>/members/add",
+        AddUserToRoomView.as_view(),
+        name="adduser",
+    ),  # add user
+    path(
+        "org/<str:org_id>/members/<str:member_id>/create",
+        CreateRoom.as_view(),
+        name="create",
+    ),  # create room
+    path("install", InstallView.as_view(), name="install"),
+    path("uninstall", UninstallView.as_view(), name="uninstall"),
     
 ]

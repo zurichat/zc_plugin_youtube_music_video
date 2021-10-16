@@ -1,9 +1,9 @@
 import { registerApplication, start } from "single-spa";
 
 declare global {
-  interface Window {
-    local: boolean;
-  }
+	interface Window {
+		local: boolean;
+	}
 }
 
 // registerApplication({
@@ -25,24 +25,24 @@ declare global {
 customRegister(window.local ? "dev" : "prod");
 
 function customRegister(env: "dev" | "prod") {
-  console.log({ local: window.local, env });
+	console.log("env check:", { local: window.local, env });
 
-  if (env === "dev") {
-    registerApplication({
-      name: "@zuri/zuri-music-plugin",
-      app: () => System.import("//localhost:8000/static/zuri-music-plugin.js"),
-      activeWhen: ["/"],
-    });
-  } else {
-    registerApplication({
-      name: "@zuri/zuri-plugin-music",
-      app: () =>
-        System.import("https://music.zuri.chat/static/zuri-music-plugin.js"),
-      activeWhen: ["/"],
-    });
-  }
+	if (env === "dev") {
+		registerApplication({
+			name: "@zuri/zuri-music-plugin",
+			app: () => System.import("//localhost:8001/zuri-music-plugin.js"),
+			activeWhen: ["/"]
+		});
+	} else {
+		registerApplication({
+			name: "@zuri/zuri-plugin-music",
+			app: () =>
+				System.import("https://music.zuri.chat/static/zuri-music-plugin.js"),
+			activeWhen: ["/"]
+		});
+	}
 
-  start({
-    urlRerouteOnly: true,
-  });
+	start({
+		urlRerouteOnly: true
+	});
 }
