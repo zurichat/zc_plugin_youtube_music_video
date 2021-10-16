@@ -120,7 +120,9 @@ class RoomSerializer(serializers.Serializer):
 
 class AddToRoomSerializer(serializers.Serializer):
     room_id = serializers.CharField(max_length=100)
-    member_id = serializers.CharField(max_length=100)
+    memberId = serializers.ListField(
+        child=serializers.CharField(max_length=100), allow_empty=False
+    )
 
 
 class FaveSerializer(serializers.Serializer):
