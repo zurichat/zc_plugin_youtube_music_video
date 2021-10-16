@@ -31,7 +31,7 @@ class SearchPagination(pagination.PageNumberPagination):
             [
                 ("query", query),
                 ("filter", filters),
-                ("plugin", "Music Plugin"),
+                ("plugin", "Music"),
             ]
         )
 
@@ -42,7 +42,7 @@ class SearchPagination(pagination.PageNumberPagination):
                 [
                     ("status", "ok"),
                     ("title", "Music Plugin Search"),
-                    ("description", ""),
+                    ("description", f"Search Results for {query} in Music Plugin"),
                     ("pagination", pagination_data),
                     ("search_parameters", search_parameters),
                     ("results", results),
