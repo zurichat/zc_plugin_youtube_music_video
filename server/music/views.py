@@ -97,10 +97,11 @@ class SidebarView(GenericAPIView):
                 "name": "Music Plugin",
                 "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                 "group_name": [],
-                # "category": "entertainment",
+                "category": "entertainment",
                 "show_group": False,
                 "button_url": f"/music/{org_id}/{roomid}",
                 "public_rooms": [pub_room],
+                "starred"
                 "joined_rooms": [pub_room],
             },
         }
@@ -121,13 +122,13 @@ class SidebarView(GenericAPIView):
                 # publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
 
                 centrifugo_post(
-                    sidebar_update, sidebar_update_payload, subscription_channel
+                    sidebar_update_payload, subscription_channel
                 )
                 return JsonResponse(r, safe=True)
 
             else:
                 centrifugo_post(
-                    sidebar_update, sidebar_update_payload, subscription_channel
+                    sidebar_update_payload, subscription_channel
                 )
 
                 return JsonResponse(
@@ -140,7 +141,7 @@ class SidebarView(GenericAPIView):
                         "user_id": user_id,
                         "group_name": [],
                         "show_group": True,
-                        # "category": "utility",
+                        "category": "utility",
                         "public_rooms": [pub_room],
                         "joined_rooms": [pub_room],
                     }
@@ -160,7 +161,7 @@ class SidebarView(GenericAPIView):
                     "user_id": user_id,
                     "group_name": [],
                     "show_group": True,
-                    # "category": "utility",
+                    "category": "utility",
                     "public_rooms": [pub_room],
                     "joined_rooms": [pub_room],
                 }
@@ -824,7 +825,3 @@ class UninstallView(APIView):
                 "data": None,
             }
             return Response(data=data, status=status.HTTP_424_FAILED_DEPENDENCY)
-
-
-
-
