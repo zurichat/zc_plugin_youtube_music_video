@@ -52,5 +52,5 @@ class Fave:  # for the comments
 
     _id: str
     userId: str
-    songId: int
+    songId: str
     like: bool = False

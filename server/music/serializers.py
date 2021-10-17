@@ -125,8 +125,8 @@ class AddToRoomSerializer(serializers.Serializer):
 
 class FaveSerializer(serializers.Serializer):
     _id = serializers.CharField(read_only=True)
-    userId = serializers.CharField(max_length=100)
     songId = serializers.CharField(max_length=100)
+    memberId = serializers.CharField(max_length=100)
     like = serializers.BooleanField(default=False, required=False)
 
     def create(self, validated_data):
@@ -135,7 +135,7 @@ class FaveSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
 
         instance._id = validated_data.get("_id", instance._id)
-        instance.userId = validated_data.get("userId", instance.userId)
+        instance.memberId = validated_data.get("memberId", instance.memberId)
         instance.songId = validated_data.get("songId", instance.songId)
         instance.like = validated_data.get("like", instance.like)
         instance.save()
