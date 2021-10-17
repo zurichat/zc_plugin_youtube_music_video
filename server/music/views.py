@@ -104,7 +104,7 @@ class SidebarView(GenericAPIView):
             "room_id": roomid,
             "user_id": user_id,
             "show_group": False,
-            "button_url": f"/music/{org_id}/{roomid}",
+            "button_url": f"/music",
             "public_rooms": [pub_room],
             # "starred" : [],
             "joined_rooms": [pub_room],
@@ -131,9 +131,10 @@ class SidebarView(GenericAPIView):
                         "user_id": user_id,
                         "group_name": [],
                         "show_group": False,
+                        "button_url": f"/music",
                         "category": "entertainment",
                         "public_rooms": [pub_room],
-                            "joined_rooms": [pub_room],
+                        "joined_rooms": [pub_room],
                         }             
                 )
             
