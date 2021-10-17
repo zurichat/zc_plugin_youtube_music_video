@@ -8,7 +8,7 @@ class MemberSerializer(serializers.Serializer):
     # _id = serializers.CharField(read_only=True)
     memberId = serializers.CharField(read_only=True)
     name = serializers.CharField(max_length=256, read_only=False)
-    avatar = serializers.CharField(max_length=256, read_only=True,required=False)
+    avatar = serializers.CharField(max_length=256, read_only=True, required=False)
     email = serializers.CharField(max_length=256, read_only=False)
     job = serializers.CharField(max_length=256, read_only=True, required=False)
 
