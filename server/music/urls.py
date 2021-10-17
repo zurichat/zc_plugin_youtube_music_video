@@ -3,6 +3,8 @@ from music.views import *
 
 # current url with orgid and roomid:
 # https://music.zuri.chat/music/api/v1/org/61695d8bb2cc8a9af4833d46/room/6169d8b54bfde011fe582e65/
+# https://music.zuri.chat/music/api/v1/org/61695d8bb2cc8a9af4833d46/members/6169cafb2a3204f3be4a271f/create
+# https://music.zuri.chat/music/api/v1/org/61695d8bb2cc8a9af4833d46/room/6169d8b54bfde011fe582e65/members/remove
 
 
 urlpatterns = [
@@ -80,5 +82,4 @@ urlpatterns = [
     ),  # create room
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
-    
 ]

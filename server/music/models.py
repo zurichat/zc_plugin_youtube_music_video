@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 
 
-@dataclass  
+@dataclass
 class Member:  # for the users
 
     # _id: str
@@ -12,7 +12,7 @@ class Member:  # for the users
     job: str
 
 
-@dataclass  
+@dataclass
 class Song:  # for the songs
 
     _id: str
@@ -26,7 +26,7 @@ class Song:  # for the songs
     likedBy: dict = field(default_factory=dict)
 
 
-@dataclass  
+@dataclass
 class Room:  # for the rooms
 
     _id: str
@@ -36,7 +36,7 @@ class Room:  # for the rooms
     memberId: dict = field(default_factory=dict)
 
 
-@dataclass  
+@dataclass
 class Comment:  # for the comments
 
     _id: str
@@ -47,10 +47,10 @@ class Comment:  # for the comments
     avatar: str
 
 
-@dataclass  
+@dataclass
 class Fave:  # for the comments
 
     _id: str
     userId: str
-    songId: int
+    songId: str
     like: bool = False

@@ -104,7 +104,7 @@ class SidebarView(GenericAPIView):
                 "show_group": False,
                 "button_url": f"/music/{org_id}/{roomid}",
                 "public_rooms": [pub_room],
-                #"starred" : [],
+                # "starred" : [],
                 "joined_rooms": [pub_room],
             },
         }
@@ -144,9 +144,7 @@ class SidebarView(GenericAPIView):
                     }
                 )
         else:
-            centrifugo_post(
-                sidebar_update_payload, subscription_channel
-            )
+            centrifugo_post(sidebar_update_payload, subscription_channel)
 
             return JsonResponse(
                 {
@@ -222,9 +220,9 @@ class SongView(APIView):
     @extend_schema(
         request=SongSerializer,
         responses={200: SongSerializer},
-        methods=["GET", "POST"]
-    ) 
-    
+        description="Add and view songs",
+        methods=["GET", "POST"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
 
@@ -264,9 +262,9 @@ class DeleteSongView(APIView):
     @extend_schema(
         request=SongSerializer,
         responses={200: SongSerializer},
-        methods=["GET", "POST"]
-    ) 
-
+        description="view and delete songs",
+        methods=["GET", "POST"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -290,15 +288,15 @@ class DeleteSongView(APIView):
 
 
 class SongSearchView(APIView):
-    
+
     serializer_class = SongSerializer
 
     @extend_schema(
         request=SongSerializer,
         responses={200: SongSerializer},
-        methods=["GET"]
-    ) 
-
+        description="search for songs",
+        methods=["GET"],
+    )
     def get(self, request, *args, **kwargs):
 
         collection_name = settings.SONG_COLLECTION
@@ -356,9 +354,9 @@ class SongSearchSuggestions(APIView):
     @extend_schema(
         request=SongSerializer,
         responses={200: SongSerializer},
-        methods=["GET"]
-    ) 
-
+        description="Song search",
+        methods=["GET"],
+    )
     def get(self, request, *args, **kwargs):
         songs = read_data(settings.SONG_COLLECTION)["data"]
         data = {}
@@ -396,9 +394,9 @@ class CommentView(APIView):
     @extend_schema(
         request=CommentSerializer,
         responses={200: CommentSerializer},
-        methods=["GET", "POST"]
-    ) 
-
+        description="view and add comments",
+        methods=["GET", "POST"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -429,9 +427,9 @@ class DeleteCommentView(APIView):
     @extend_schema(
         request=CommentSerializer,
         responses={200: CommentSerializer},
-        methods=["GET", "POST"]
-    )     
-
+        description="view and delete comments",
+        methods=["GET", "POST"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -460,9 +458,9 @@ class UpdateCommentView(APIView):
     @extend_schema(
         request=CommentSerializer,
         responses={200: CommentSerializer},
-        methods=["GET", "PUT"]
-    )    
-
+        description="view and update comments",
+        methods=["GET", "PUT"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -490,7 +488,7 @@ class UpdateCommentView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-#room views
+# room views
 class RoomDetailView(
     APIView
 ):  # room detailview (if the organization has multiple music rooms)
@@ -515,9 +513,9 @@ class DeleteRoomView(APIView):
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        methods=["GET", "POST"]
+        description="view and delete rooms",
+        methods=["GET", "POST"],
     )
-
     def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -540,17 +538,17 @@ class DeleteRoomView(APIView):
         # Note: use {"id": ""} to delete
 
 
-class CreateRoom(APIView):  #to create a new room(functional)
+class CreateRoom(APIView):  # to create a new room(functional)
     serializer_class = RoomSerializer
 
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        methods=["POST"]
+        description="create a new room",
+        methods=["POST"],
     )
-
     def post(self, request, *args, **kwargs):
-        
+
         org_id = request.data.get("org_id")
         memberId = request.data.get("memberId")
         collection = request.data.get("collection")
@@ -560,15 +558,14 @@ class CreateRoom(APIView):  #to create a new room(functional)
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            
+
             rooms = serializer.data
 
             rooms["org_id"] = org_id
             rooms["plugin_id"] = plugin_id
-            
-          
+
             data = write_data(settings.ROOM_COLLECTION, payload=rooms)
-            if data and data.get("status_code", None) == None:        
+            if data and data.get("status_code", None) == None:
 
                 room_url = (
                     f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
@@ -598,7 +595,7 @@ class CreateRoom(APIView):  #to create a new room(functional)
                     if x.status_code in [201, 200]:
 
                         responses = x.json()
-  
+
                         return Response(data=responses, status=status.HTTP_200_OK)
                     return Response(
                         data={"message": "url error"}, status=status.HTTP_200_OK
@@ -616,9 +613,9 @@ class RoomView(APIView):  # view room
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        methods=["GET"]
+        description="view information about a room",
+        methods=["GET"],
     )
-
     def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -643,9 +640,9 @@ class DeleteRoomUserView(APIView):  # fully functional working
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        methods=["GET", "PUT"]
+        description="view and remove users from the room list",
+        methods=["GET", "PUT"],
     )
-
     def remove_user(self, request, *args, **kwargs):
 
         room_data = read_data(settings.ROOM_COLLECTION)
@@ -663,7 +660,7 @@ class DeleteRoomUserView(APIView):  # fully functional working
         return Response(data)
 
     def put(self, request, *args, **kwargs):
-        
+
         room_id, updated_room = self.remove_user(request)
 
         payload = {"memberId": updated_room}
@@ -684,16 +681,16 @@ class RoomUserList(APIView):  # working
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        methods=["GET"]
+        description="view information about members in a room",
+        methods=["GET"],
     )
-    
     def get(self, request, *args, **kwargs):
         room_data = read_data(settings.ROOM_COLLECTION)
 
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            
+
             rooms = serializer.data
 
             room_users = room_data["data"][0]["memberId"]
@@ -701,14 +698,13 @@ class RoomUserList(APIView):  # working
             return Response(room_users)
 
 
-class AddUserToRoomView(APIView): # to add a user to the room
-
+class AddUserToRoomView(APIView):  # to add a user to the room
     @extend_schema(
         request=AddToRoomSerializer,
         responses={200: AddToRoomSerializer},
-        methods=["POST"]
+        description="add new user to a room",
+        methods=["POST"],
     )
-
     def post(self, request, org_id, room_id):
         helper = DataStorage()
         helper.organization_id = org_id
@@ -888,5 +884,3 @@ class UninstallView(APIView):
                 "data": None,
             }
             return Response(data=data, status=status.HTTP_424_FAILED_DEPENDENCY)
-
-
