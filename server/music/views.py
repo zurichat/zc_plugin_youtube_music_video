@@ -94,73 +94,50 @@ class SidebarView(GenericAPIView):
         subscription_channel = "{org_id}_{user_id}_sidebar"
 
         sidebar_update_payload = {
-            "event": "sidebar_update",
+            
+            "name": "Music Plugin",
+            "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
+            "group_name": [],
+            "category": "entertainment",
             "plugin_id": "music.zuri.chat",
-            "data": {
-                "name": "Music Plugin",
-                "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                "group_name": [],
-                "category": "entertainment",
-                "show_group": False,
-                "button_url": f"/music/{org_id}/{roomid}",
-                "public_rooms": [pub_room],
-                # "starred" : [],
-                "joined_rooms": [pub_room],
-            },
-        }
-
+            "organisation_id": org_id,
+            "room_id": roomid,
+            "user_id": user_id,
+            "show_group": False,
+            "button_url": f"/music",
+            "public_rooms": [pub_room],
+            # "starred" : [],
+            "joined_rooms": [pub_room],
+            }
+        
         if request.GET.get("org") and request.GET.get("user"):
-            url = f"https://api.zuri.chat/organizations/{org_id}/members/{user_id}"
-            headers = token
-            r = requests.get(url, headers=headers)
-            print(r.status_code)
-
+            url = f"https://api.zuri.chat/sidebar?org={org_id}&user={user_id}"
+           
+            r = requests.get(url)
             if r.status_code == 200:
-                public_url = f"https://api.zuri.chat/data/read/{org_id}/{plugin_id}/{room}/{roomid}"
-
-                r = requests.get(public_url)
-                # publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
-
-                centrifugo_post(sidebar_update_payload, subscription_channel)
-                return JsonResponse(r, safe=True)
-
+               
+                return Response(r)
+                
             else:
-                centrifugo_post(sidebar_update_payload, subscription_channel)
-
-                return JsonResponse(
+                
+                return Response(
                     {
-                        "event": "sidebar_update",
+                    
                         "name": "Music Plugin",
                         "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                        "plugin_id": plugin_id,
+                        "plugin_id": "music.zuri.chat",
                         "organisation_id": org_id,
                         "room_id": roomid,
                         "user_id": user_id,
                         "group_name": [],
                         "show_group": False,
+                        "button_url": f"/music",
                         "category": "entertainment",
                         "public_rooms": [pub_room],
                         "joined_rooms": [pub_room],
-                    }
+                        }             
                 )
-        else:
-            centrifugo_post(sidebar_update_payload, subscription_channel)
-
-            return JsonResponse(
-                {
-                    "name": "Music Plugin",
-                    "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                    "plugin_id": plugin_id,
-                    "organisation_id": org_id,
-                    "room_id": roomid,
-                    "user_id": user_id,
-                    "group_name": [],
-                    "show_group": False,
-                    "category": "entertainment",
-                    "public_rooms": [pub_room],
-                    "joined_rooms": [pub_room],
-                }
-            )
+            
 
     def is_valid(param):
         return param != "" and param is not None
@@ -218,7 +195,10 @@ class SongView(APIView):
     serializer_class = SongSerializer
 
     @extend_schema(
-        request=SongSerializer, responses={200: SongSerializer}, methods=["GET", "POST"]
+        request=SongSerializer,
+        responses={200: SongSerializer},
+        description="Add and view songs",
+        methods=["GET", "POST"],
     )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
@@ -257,7 +237,10 @@ class DeleteSongView(APIView):
     serializer_class = SongSerializer
 
     @extend_schema(
-        request=SongSerializer, responses={200: SongSerializer}, methods=["GET", "POST"]
+        request=SongSerializer,
+        responses={200: SongSerializer},
+        description="view and delete songs",
+        methods=["GET", "POST"],
     )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
@@ -286,7 +269,10 @@ class SongSearchView(APIView):
     serializer_class = SongSerializer
 
     @extend_schema(
-        request=SongSerializer, responses={200: SongSerializer}, methods=["GET"]
+        request=SongSerializer,
+        responses={200: SongSerializer},
+        description="search for songs",
+        methods=["GET"],
     )
     def get(self, request, *args, **kwargs):
 
@@ -350,7 +336,10 @@ class SongSearchSuggestions(APIView):
     serializer_class = SongSerializer
 
     @extend_schema(
-        request=SongSerializer, responses={200: SongSerializer}, methods=["GET"]
+        request=SongSerializer,
+        responses={200: SongSerializer},
+        description="Song search",
+        methods=["GET"],
     )
     def get(self, request, *args, **kwargs):
         songs = read_data(settings.SONG_COLLECTION)["data"]
@@ -389,6 +378,7 @@ class CommentView(APIView):
     @extend_schema(
         request=CommentSerializer,
         responses={200: CommentSerializer},
+        description="view and add comments",
         methods=["GET", "POST"],
     )
     def get(self, request, *args, **kwargs):
@@ -421,6 +411,7 @@ class DeleteCommentView(APIView):
     @extend_schema(
         request=CommentSerializer,
         responses={200: CommentSerializer},
+        description="view and delete comments",
         methods=["GET", "POST"],
     )
     def get(self, request, *args, **kwargs):
@@ -451,6 +442,7 @@ class UpdateCommentView(APIView):
     @extend_schema(
         request=CommentSerializer,
         responses={200: CommentSerializer},
+        description="view and update comments",
         methods=["GET", "PUT"],
     )
     def get(self, request, *args, **kwargs):
@@ -481,9 +473,8 @@ class UpdateCommentView(APIView):
 
 
 # room views
-class RoomDetailView(
-    APIView
-):  # room detailview (if the organization has multiple music rooms)
+class RoomDetailView(APIView):  
+    # room detailview (if the organization has multiple music rooms)
     def get(self, request, *args, **kwargs):
 
         serializer = RoomSerializer(data=request.data)
@@ -503,7 +494,10 @@ class DeleteRoomView(APIView):
     serializer_class = RoomSerializer
 
     @extend_schema(
-        request=RoomSerializer, responses={200: RoomSerializer}, methods=["GET", "POST"]
+        request=RoomSerializer,
+        responses={200: RoomSerializer},
+        description="view and delete rooms",
+        methods=["GET", "POST"],
     )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
@@ -531,7 +525,10 @@ class CreateRoom(APIView):  # to create a new room(functional)
     serializer_class = RoomSerializer
 
     @extend_schema(
-        request=RoomSerializer, responses={200: RoomSerializer}, methods=["POST"]
+        request=RoomSerializer,
+        responses={200: RoomSerializer},
+        description="create a new room",
+        methods=["POST"],
     )
     def post(self, request, *args, **kwargs):
 
@@ -597,7 +594,10 @@ class RoomView(APIView):  # view room
     serializer_class = RoomSerializer
 
     @extend_schema(
-        request=RoomSerializer, responses={200: RoomSerializer}, methods=["GET"]
+        request=RoomSerializer,
+        responses={200: RoomSerializer},
+        description="view information about a room",
+        methods=["GET"],
     )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
@@ -621,7 +621,10 @@ class DeleteRoomUserView(APIView):  # fully functional working
     serializer_class = RoomSerializer
 
     @extend_schema(
-        request=RoomSerializer, responses={200: RoomSerializer}, methods=["GET", "PUT"]
+        request=RoomSerializer,
+        responses={200: RoomSerializer},
+        description="view and remove users from the room list",
+        methods=["GET", "PUT"],
     )
     def remove_user(self, request, *args, **kwargs):
 
@@ -659,7 +662,10 @@ class RoomUserList(APIView):  # working
     serializer_class = RoomSerializer
 
     @extend_schema(
-        request=RoomSerializer, responses={200: RoomSerializer}, methods=["GET"]
+        request=RoomSerializer,
+        responses={200: RoomSerializer},
+        description="view information about members in a room",
+        methods=["GET"],
     )
     def get(self, request, *args, **kwargs):
         room_data = read_data(settings.ROOM_COLLECTION)
@@ -679,6 +685,7 @@ class AddUserToRoomView(APIView):  # to add a user to the room
     @extend_schema(
         request=AddToRoomSerializer,
         responses={200: AddToRoomSerializer},
+        description="add new user to a room",
         methods=["POST"],
     )
     def post(self, request, org_id, room_id):
