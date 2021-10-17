@@ -37,26 +37,7 @@
 				"imports": {
 					"single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js",
 					"react": "https://cdn.jsdelivr.net/npm/react@16.13.1/umd/react.production.min.js",
-					"react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.13.1/umd/react-dom.production.min.js"
-				}
-			}
-		</script>
-
-		<% if (isLocal) { %>
-		<script type="systemjs-importmap">
-			{
-				"imports": {
-					"@zuri/control": "//localhost:8082/zuri-control.js",
-					"@zuri/plugin-header": "//localhost:8083/zuri-plugin-header.js",
-					"@zuri/manage-user-modal": "//localhost:8087/zuri-manageUser.js",
-					"@zuri/zuri-ui": "//localhost:8084/zuri-zuri-ui.js"
-				}
-			}
-		</script>
-		<% } else { %>
-		<script type="systemjs-importmap">
-			{
-				"imports": {
+					"react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.13.1/umd/react-dom.production.min.js",
 					"@zuri/control": "https://zuri.chat/zuri-control.js",
 					"@zuri/plugin-header": "https://zuri.chat/zuri-plugin-header.js",
 					"@zuri/manage-user-modal": "https://zuri.chat/zuri-manageUser.js",
@@ -65,9 +46,8 @@
 				}
 			}
 		</script>
-		<% } %>
 
-		<!--  -->
+		<!-- imports for the app -->
 
 		<% if (isLocal) { %>
 		<script type="systemjs-importmap">

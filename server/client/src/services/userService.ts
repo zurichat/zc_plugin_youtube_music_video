@@ -71,8 +71,6 @@ async function addMember(ids?: string[]) {
 			ids = [id];
 		}
 
-		console.log([ids]);
-
 		return httpService.post(httpService.endpoints.adduser, {
 			room_id: httpService.room_id,
 			memberId: ids
@@ -97,13 +95,18 @@ async function getMembers(workspaceUsers?: User[]): Promise<User[]> {
 
 		const uniqueIds = [...new Set(ids)];
 
-		console.log({ uniqueIds, ids });
-
 		const currentUser = await getCurrentUser();
-		const isMember = uniqueIds.some(id => id === currentUser.id);
 
 		const members = users.filter(user => uniqueIds.find(id => id === user.id));
-		return isMember ? [...members, currentUser] : members;
+
+		// This is temporary and may be removed in the future
+		// In some cases, the currentUser is not in the workspace users list.
+
+		const isMember = uniqueIds.some(id => id === currentUser.id);
+		const inList = members.some(member => member.id === currentUser.id);
+
+		// Include currentUser in the members list if its a member and not in the list
+		return isMember && !inList ? [...members, currentUser] : members;
 	} catch (error) {
 		console.log("Members error:", error);
 		throw Error(error.message);
