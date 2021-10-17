@@ -91,16 +91,18 @@ async function removeMember(id: string, name = "user") {
 
 async function getMembers(workspaceUsers?: User[]): Promise<User[]> {
 	try {
-		console.time("workspaceUsers");
 		const users = workspaceUsers || (await getWorkspaceUsers());
-		console.timeEnd("workspaceUsers");
 
 		const { data: ids } = await httpService.get(httpService.endpoints.members);
 
-		const currentUser = await getCurrentUser();
-		const isMember = ids.some(id => id === currentUser.id);
+		const uniqueIds = [...new Set(ids)];
 
-		const members = users.filter(user => ids.find(id => id === user.id));
+		console.log({ uniqueIds, ids });
+
+		const currentUser = await getCurrentUser();
+		const isMember = uniqueIds.some(id => id === currentUser.id);
+
+		const members = users.filter(user => uniqueIds.find(id => id === user.id));
 		return isMember ? [...members, currentUser] : members;
 	} catch (error) {
 		console.log("Members error:", error);
