@@ -63,6 +63,6 @@ Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a
 
 Server running on <a href='http://localhost:8000'>http://localhost:8000/music</a>
 
-API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
+<!-- API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
 
-Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a>
+Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a> -->
