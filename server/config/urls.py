@@ -27,5 +27,6 @@ urlpatterns = [
     ),
     path("music/redoc", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path("sidebar", SidebarView.as_view(), name="sidebar"),
+    # path("sidebar?org=<str:org_id>&user=<str:user_id>", SidebarView.as_view(), name="sidebar"),
     # path("music/docs", include("documentation.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

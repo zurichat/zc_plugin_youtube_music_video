@@ -7,4 +7,4 @@ dist
 coverage
 pnpm-lock.yaml
 LICENSE
-*.ejs
+# *.ejs

@@ -24,6 +24,7 @@ from drf_spectacular.types import OpenApiTypes
 # from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
 
+
 def check_if_user_is_in_room_and_return_room_id(user_id):
     room_data = read_data(settings.ROOM_COLLECTION)
     room_user_ids = room_data["data"][0]["userId"]
@@ -62,7 +63,6 @@ class change_room_image(APIView):
 
 def get_room_info(roomid=None):
     room_data = read_data(settings.ROOM_COLLECTION)
-    orgid = settings.ORGANIZATON_ID
     roomid = settings.ROOM_ID
 
     output = {
@@ -88,82 +88,90 @@ class SidebarView(GenericAPIView):
 
         pub_room = get_room_info()
 
-        sidebar_update = "currentWorkspace_userInfo_sidebar"
-
         # subscription_channel: org_id_memberid_sidebar
-        subscription_channel = "{org_id}_{user_id}_sidebar"
-
-        sidebar_update_payload = {
-            "event": "sidebar_update",
-            "plugin_id": "music.zuri.chat",
-            "data": {
-                "name": "Music Plugin",
-                "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                "group_name": [],
-                "category": "entertainment",
-                "show_group": False,
-                "button_url": f"/music/{org_id}/{roomid}",
-                "public_rooms": [pub_room],
-                # "starred" : [],
-                "joined_rooms": [pub_room],
-            },
-        }
-
         if request.GET.get("org") and request.GET.get("user"):
-            url = f"https://api.zuri.chat/organizations/{org_id}/members/{user_id}"
-            headers = token
-            r = requests.get(url, headers=headers)
-            print(r.status_code)
 
-            if r.status_code == 200:
-                public_url = f"https://api.zuri.chat/data/read/{org_id}/{plugin_id}/{room}/{roomid}"
-
-                r = requests.get(public_url)
-                # publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
-
-                centrifugo_post(sidebar_update_payload, subscription_channel)
-                return JsonResponse(r, safe=True)
-
-            else:
-                centrifugo_post(sidebar_update_payload, subscription_channel)
-
-                return JsonResponse(
-                    {
-                        "event": "sidebar_update",
-                        "name": "Music Plugin",
-                        "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                        "plugin_id": plugin_id,
-                        "organisation_id": org_id,
-                        "room_id": roomid,
-                        "user_id": user_id,
-                        "group_name": [],
-                        "show_group": False,
-                        "category": "entertainment",
-                        "public_rooms": [pub_room],
-                        "joined_rooms": [pub_room],
-                    }
-                )
-        else:
-            centrifugo_post(sidebar_update_payload, subscription_channel)
-
-            return JsonResponse(
-                {
+            subscription_channel = "{org_id}_{user_id}_sidebar"
+            #sidebar_update = "currentWorkspace_userInfo_sidebar"
+            sidebar_update_payload = {
+                "event": "sidebar_update",
+                "plugin_id": "music.zuri.chat",
+                "data": {
                     "name": "Music Plugin",
                     "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
                     "plugin_id": plugin_id,
                     "organisation_id": org_id,
                     "room_id": roomid,
                     "user_id": user_id,
-                    "group_name": [],
-                    "show_group": False,
                     "category": "entertainment",
+                    "group_name": "music",
+                    "show_group": False,
+                    "button_url": f"/music/{org_id}/{roomid}",
                     "public_rooms": [pub_room],
+                    # "starred" : [],
                     "joined_rooms": [pub_room],
-                }
-            )
+                   
+    
+                },
+            }
+            centrifugo_post(sidebar_update_payload, subscription_channel)
+            return Response(sidebar_update_payload)
 
-    def is_valid(param):
-        return param != "" and param is not None
+            # url = f"https://api.zuri.chat/organizations/{org_id}/members/{user_id}"
+            # headers = token
+            # r = requests.get(url, headers=headers)
+            # print(r.status_code)
+
+            # if r.status_code == 200:
+            #     public_url = f"https://api.zuri.chat/data/read/{org_id}/{plugin_id}/{room}/{roomid}"
+
+            #     r = requests.get(public_url)
+                # publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
+
+                # centrifugo_post(sidebar_update_payload, subscription_channel)
+                # return JsonResponse(r, safe=True)
+
+        #     else:
+        #         centrifugo_post(sidebar_update_payload, subscription_channel)
+
+        #         return JsonResponse(
+        #             {
+        #                 "event": "sidebar_update",
+        #                 "name": "Music Plugin",
+        #                 "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
+        #                 "plugin_id": plugin_id,
+        #                 "organisation_id": org_id,
+        #                 "room_id": roomid,
+        #                 "user_id": user_id,
+        #                 "group_name": [],
+        #                 "show_group": False,
+        #                 "category": "entertainment",
+        #                 "public_rooms": [pub_room],
+        #                 "joined_rooms": [pub_room],
+                        
+        #             }
+        #         )
+        # else:
+        #     centrifugo_post(sidebar_update_payload, subscription_channel)
+
+        #     return JsonResponse(
+        #         {
+        #             "name": "Music Plugin",
+        #             "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
+        #             "plugin_id": plugin_id,
+        #             "organisation_id": org_id,
+        #             "room_id": roomid,
+        #             "user_id": user_id,
+        #             "group_name": [],
+        #             "show_group": False,
+        #             "category": "entertainment",
+        #             "public_rooms": [pub_room],
+        #             "joined_rooms": [pub_room],
+        #         }
+        #     )
+
+    # def is_valid(param):
+    #     return param != "" and param is not None
 
 
 class PluginInfoView(GenericAPIView):
@@ -326,13 +334,20 @@ class SongSearchView(APIView):
                 item["images_url"] = [item["albumCover"]]
                 item["created_at"] = item["time"]
                 item["created_by"] = item["addedBy"]
-                item["content"] = None
-                item["url"] = f"https://zuri.chat/music/{collection_name}"
-                item["email"] = None
-                item["description"] = None
-                item.pop("albumCover")
-                item.pop("time")
-                item.pop("addedBy")
+                item["content"] = item["title"]
+                item[
+                    "destination_url"
+                ] = f"/music/{collection_name}/{item['_id']}"
+                for field in [
+                    "duration",
+                    "likedBy",
+                    "time",
+                    "addedBy",
+                    "albumCover",
+                    "userId",
+                    "url",
+                ]:
+                    item.pop(field)
 
             result = paginator.paginate_queryset(search_result, request)
             # print(result)
@@ -489,9 +504,8 @@ class UpdateCommentView(APIView):
 
 
 # room views
-class RoomDetailView(
-    APIView
-):  # room detailview (if the organization has multiple music rooms)
+class RoomDetailView(APIView):  
+    # room detailview (if the organization has multiple music rooms)
     def get(self, request, *args, **kwargs):
 
         serializer = RoomSerializer(data=request.data)
