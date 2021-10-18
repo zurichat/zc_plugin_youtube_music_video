@@ -7,21 +7,33 @@
 - Django
 - React
 
-# To Run Client (standalone)
+# To Run Client
+
+### Start the client
 
     $ cd server/client
     $ yarn - to install dependencies if you haven't
-    $ yarn start:standalone
+    $ yarn start
 
-Client server running @ <a href='http://localhost:8080'>http://localhost:8080</a>
+### Start the single-spa root
 
-## Note to the Backend devs and to the DevOps
+    $ cd root
+    $ yarn - to install dependencies if you haven't
+    $ yarn start
 
-    Please build first before starting django server
+Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a>
+
+### Note to the frontend devs
+
+    You don't need to start django server. Only start the client and single-spa root
+
+## Note to the DevOps
+
+    Build first before starting django server
 
 # To Build
 
-### Build the Client
+### Build the client
 
     $ cd server/client
     $ yarn
@@ -51,6 +63,6 @@ Client server running @ <a href='http://localhost:8080'>http://localhost:8080</a
 
 Server running on <a href='http://localhost:8000'>http://localhost:8000/music</a>
 
-API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
+<!-- API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
 
-Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a>
+Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a> -->

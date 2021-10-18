@@ -1,90 +1,136 @@
-// @ts-ignore
-import { GetUserInfo, GetWorkspaceUser } from "@zuri/control";
-
-import store from "../store";
-import { userDispatch } from "../store/usersSlice";
+import User from "../types/user";
 import httpService from "./httpService";
 
-const { addToRoom: enterEndpoint, leaveEndpoint } = httpService.endpoints;
+import {
+	GetUserInfo,
+	GetWorkspaceUser
+	// @ts-ignore
+} from "@zuri/control";
 
-async function getUsers() {
-  try {
-    const { data: res } = await httpService.get(httpService.endpoints.users);
-    const data = res.data as { userId: string; email: string }[];
+async function getCurrentUser(): Promise<User> {
+	try {
+		const {
+			0: { email: identifier }
+		} = await GetUserInfo();
 
-    const unique = [
-      ...new Set(data.filter((item) => item.email).map((item) => item.email)),
-    ];
+		const {
+			_id: id,
+			email,
+			display_name,
+			user_name,
+			image_url: avatar
+		} = await GetWorkspaceUser(identifier);
 
-    const newList = unique.map((email) =>
-      data.find((item) => item.email === email)
-    );
-
-    // console.log({ newList });
-
-    newList.forEach((item) =>
-      addUserToList({ email: item.email, id: item.userId })
-    );
-  } catch (error) {
-    console.log("Users error:", error.message);
-  }
+		return {
+			id,
+			email,
+			name: display_name || user_name,
+			avatar
+		};
+	} catch (error) {
+		throw Error("");
+	}
 }
 
-async function addUserToList({ email, id }: { email: string; id: string }) {
-  try {
-    const info = await GetWorkspaceUser(email);
+async function getWorkspaceUsers(): Promise<User[]> {
+	try {
+		const {
+			data: { data: users }
+		} = await httpService.get(
+			`https://api.zuri.chat/organizations/${httpService.org_id}/members`
+		);
 
-    // console.log({ workspaceInfo: info });
+		// const { totalUsers, ...rest } = await GetWorkspaceUsers();
+		// const users = [...new Array(totalUsers).keys()].map(index => rest[index]);
 
-    userDispatch.addUser({ ...extractInfo(info), id });
-  } catch (error) {
-    console.log("Error: add to list", error.message);
-  }
+		return users.map(data => {
+			const {
+				_id: id,
+				user_name,
+				image_url: avatar,
+				display_name,
+				email
+			} = data;
+
+			return {
+				id,
+				name: display_name || user_name,
+				avatar,
+				email
+			};
+		});
+	} catch (error) {
+		throw Error(error.message);
+	}
 }
 
-async function addUserToRoom() {
-  try {
-    const data = await GetUserInfo();
+async function addMember(ids?: string[]) {
+	try {
+		if (!ids) {
+			const { id } = await getCurrentUser();
+			ids = [id];
+		}
 
-    // console.log({ userInfo: data });
-
-    const { 0: info } = data;
-
-    userDispatch.setCurrentUser(extractInfo(info));
-    userDispatch.addUser(extractInfo(info));
-
-    return httpService
-      .post(enterEndpoint, { userId: info._id, email: info.email })
-      .then(
-        (r) => r,
-        (e) => console.log(e.message)
-      );
-  } catch (error) {
-    console.log("Error: add to room:", error.message);
-  }
+		return httpService.post(httpService.endpoints.adduser, {
+			room_id: httpService.room_id,
+			memberId: ids
+		});
+	} catch (reason) {
+		console.log(reason);
+		throw Error(reason.message);
+	}
 }
 
-const extractInfo = (info) => ({
-  id: info._id,
-  avatar: info.image_url,
-  name: info.display_name || info.user_name,
-  email: info.email,
-});
+async function removeMember(id: string, name = "user") {
+	httpService.put(httpService.endpoints.removeuser, {
+		memberId: id
+	});
+}
 
-function removeUserFromRoom() {
-  const { id } = store.getState().users.currentUser;
+async function getMembers(workspaceUsers?: User[]): Promise<User[]> {
+	try {
+		const users = workspaceUsers || (await getWorkspaceUsers());
 
-  return httpService.post(leaveEndpoint, { id }).then(
-    (r) => userDispatch.removeUser({ id }),
-    (e) => e
-  );
+		const { data: ids } = await httpService.get(httpService.endpoints.members);
+
+		const uniqueIds = [...new Set(ids)];
+
+		const currentUser = await getCurrentUser();
+
+		const members = users.filter(user => uniqueIds.find(id => id === user.id));
+
+		// This is temporary and may be removed in the future
+		// In some cases, the currentUser is not in the workspace users list.
+
+		const isMember = uniqueIds.some(id => id === currentUser.id);
+		const inList = members.some(member => member.id === currentUser.id);
+
+		// Include currentUser in the members list if its a member and not in the list
+		return isMember && !inList ? [...members, currentUser] : members;
+	} catch (error) {
+		console.log("Members error:", error);
+		throw Error(error.message);
+	}
+}
+
+async function isMember(): Promise<boolean> {
+	try {
+		const users = await getMembers();
+		const currentUser = await getCurrentUser();
+		console.log({ users, currentUser });
+		return users.some(user => user.id === currentUser.id);
+	} catch (error) {
+		throw Error(error.message);
+	}
 }
 
 const userService = {
-  addUserToRoom,
-  addUserToList,
-  removeUserFromRoom,
-  getUsers,
+	addMember,
+	removeMember,
+	getCurrentUser,
+	getMembers,
+	getWorkspaceUsers,
+	isMember
 };
 
 export default userService;

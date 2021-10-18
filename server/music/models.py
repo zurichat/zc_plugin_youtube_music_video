@@ -1,52 +1,56 @@
-class Media:
-    def __init__(self, media_id, name, url):
-        self.media_id = media_id
-        self.name = name
-        self.url = url
+from dataclasses import dataclass, field
 
 
-class Song:
-    def __init__(self, title, _id, duration, albumCover, url, userId, addedBy, likedBy, time):
+@dataclass
+class Member:  # for the users
 
-        self._id = _id
-        self.title = title
-        self.duration = duration
-        self.albumCover = albumCover
-        self.url = url
-        self.userId = userId
-        self.addedBy = addedBy
-        self.likedBy = likedBy
-        self.time = time
+    # _id: str
+    memberId: str
+    name: str
+    avatar: str
+    email: str
+    job: str
 
 
-class Comment:
-    def __init__(self, _id, message, userId, name, avatar, time):
+@dataclass
+class Song:  # for the songs
 
-        self._id = _id
-        self.message = message
-        self.userId = userId
-        self.name = name
-        self.avatar = avatar
-        self.time = time
+    _id: str
+    title: str
+    duration: str
+    albumCover: str
+    url: str
+    time: int
+    userId: str
+    addedBy: str
+    likedBy: dict = field(default_factory=dict)
 
 
-class Member:
-    def __init__(self, _id, name, avatar):
-        
-        self._id = _id
-        self.name = name
-        self.avatar = avatar
-          
+@dataclass
+class Room:  # for the rooms
 
-class Room:
-    def __init__(self, _id, room_name, description, room_image, type_of_room, room_url, user_id):
+    _id: str
+    room_name: str
+    description: str
+    private: bool = False
+    memberId: dict = field(default_factory=dict)
 
-        self._id = _id
-        self.room_name = room_name 
-        self.description = description
-        self.room_image = room_image
-        self.type_of_room = type_of_room
-        self.room_url = room_url
-        self.user_id = user_id
 
-        
+@dataclass
+class Comment:  # for the comments
+
+    _id: str
+    message: str
+    time: int
+    userId: str
+    name: str
+    avatar: str
+
+
+@dataclass
+class Fave:  # for the comments
+
+    _id: str
+    userId: str
+    songId: str
+    like: bool = False
