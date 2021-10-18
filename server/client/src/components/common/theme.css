@@ -1,0 +1,13 @@
+:root {
+    --music-bg-color: #fff;
+    --music-black: #000000;
+    --music-background: #f6f6f6;
+    --music-text-color-1: #1d1c1d;
+    --music-border-color-1: #616061;
+
+
+}
+
+[data-theme="dark"] {}
+
+[data-theme="light"] {}
