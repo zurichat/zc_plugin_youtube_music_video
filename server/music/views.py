@@ -119,13 +119,13 @@ class SidebarView(GenericAPIView):
                 # publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
 
                 centrifugo_post(
-                    sidebar_update, sidebar_update_payload, subscription_channel
+                    subscription_channel, sidebar_update_payload
                 )
                 return JsonResponse(r, safe=True)
 
             else:
                 centrifugo_post(
-                    sidebar_update, sidebar_update_payload, subscription_channel
+                     subscription_channel, sidebar_update_payload
                 )
 
                 return JsonResponse(
@@ -145,7 +145,7 @@ class SidebarView(GenericAPIView):
                 )
         else:
             centrifugo_post(
-                sidebar_update, sidebar_update_payload, subscription_channel
+                subscription_channel, sidebar_update_payload
             )
 
             return JsonResponse(
