@@ -14,21 +14,21 @@ const SearchFilter = () => {
 		filter: "All songs",
 		sort: "Default"
 	});
-	const sortList = [
-		"Default",
-		"Ascending order A - Z",
-		"Descending order Z - A",
-		"Date added Recent to Oldest",
-		"Date added Oldest to Recent"
-	];
+	// const sortList = [
+	// 	"Default",
+	// 	"Ascending order A - Z",
+	// 	"Descending order Z - A",
+	// 	"Date added Recent to Oldest",
+	// 	"Date added Oldest to Recent"
+	// ];
 
-	const filterList = [
-		"All songs",
-		"By Artists",
-		"By Likes",
-		"By Duration",
-		"By Date addedt"
-	];
+	// const filterList = [
+	// 	"All songs",
+	// 	"By Artists",
+	// 	"By Likes",
+	// 	"By Duration",
+	// 	"By Date addedt"
+	// ];
 
 	const handleClickOutside = e => {
 		if (ref.current && !ref.current.contains(e.target)) {
@@ -71,7 +71,10 @@ const SearchFilter = () => {
 							<div className="menu" ref={ref}>
 								<button
 									onClick={() => {
-										setSelected({ ...selected, filter: "All songs" });
+										setSelected({
+											...selected,
+											filter: "All songs"
+										});
 										setShowFilter(false);
 									}}
 								>
@@ -79,15 +82,21 @@ const SearchFilter = () => {
 								</button>
 								<button
 									onClick={() => {
-										setSelected({ ...selected, filter: "By Artists" });
-										setShowFilter(false);
+										setSelected({
+											...selected,
+											filter: "By Artists"
+										});
+										setShowFilter(e => !e);
 									}}
 								>
 									By Artists
 								</button>
 								<button
 									onClick={() => {
-										setSelected({ ...selected, filter: "By Likes" });
+										setSelected({
+											...selected,
+											filter: "By Likes"
+										});
 										setShowFilter(false);
 									}}
 								>
@@ -95,7 +104,10 @@ const SearchFilter = () => {
 								</button>
 								<button
 									onClick={() => {
-										setSelected({ ...selected, filter: "By Duration" });
+										setSelected({
+											...selected,
+											filter: "By Duration"
+										});
 										setShowFilter(false);
 									}}
 								>
@@ -103,7 +115,10 @@ const SearchFilter = () => {
 								</button>
 								<button
 									onClick={() => {
-										setSelected({ ...selected, filter: "By Date added" });
+										setSelected({
+											...selected,
+											filter: "By Date added"
+										});
 										setShowFilter(false);
 									}}
 								>
@@ -111,7 +126,13 @@ const SearchFilter = () => {
 								</button>
 							</div>
 						)}
-						<img style={{ position: "absolute" }} src={ArrowIcon} alt="" />
+						<img
+							style={{
+								position: "absolute"
+							}}
+							src={ArrowIcon}
+							alt=""
+						/>
 					</div>
 				</div>
 				<div
@@ -131,7 +152,10 @@ const SearchFilter = () => {
 								<button
 									value="Default"
 									onClick={() => {
-										setSelected({ ...selected, sort: "Default" });
+										setSelected({
+											...selected,
+											sort: "Default"
+										});
 										setShowSort(false);
 									}}
 								>
@@ -187,7 +211,13 @@ const SearchFilter = () => {
 								</button>
 							</div>
 						)}
-						<img style={{ position: "absolute" }} src={ArrowIcon} alt="" />
+						<img
+							style={{
+								position: "absolute"
+							}}
+							src={ArrowIcon}
+							alt=""
+						/>
 					</div>
 				</div>
 			</div>
@@ -240,6 +270,9 @@ const Wrapper = styled.div`
 			display: flex;
 			align-items: center;
             padding-right: 8px;
+			span {
+				padding-bottom: 0;
+			}
 		}
 	}
 	.menu {
@@ -294,6 +327,11 @@ const Wrapper = styled.div`
 
         span {
             margin: 0;
+			width: calc(100% - 20px);
+			padding-bottom: 0;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
         }
 
 		img {

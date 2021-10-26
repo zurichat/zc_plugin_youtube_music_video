@@ -94,7 +94,7 @@ const Wrapper = styled.div`
     width: 100%;
     max-width: 464px;
     min-height: 220px;
-    background: var(--music-bg-color);
+    background: #FFFFFF;
     box-shadow: 1px 1px 44px rgba(64, 64, 64, 0.5);
     border-radius: 4px;
     padding: 24px;
