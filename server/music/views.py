@@ -19,13 +19,6 @@ from music.dataStorage import *
 # from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
 
-def check_if_user_is_in_room_and_return_room_id(user_id):
-    room_data = read_data(settings.ROOM_COLLECTION)
-    room_user_ids = room_data["data"][0]["userId"]
-    if user_id not in room_user_ids:
-        return None
-    return room_data["data"][0]["_id"]
-
 
 room_image = ["https://svgshare.com/i/aXm.svg"]
 
@@ -372,10 +365,6 @@ class DeleteCommentView(APIView):
 
     serializer_class = CommentSerializer
 
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.COMMENTS_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
-
     def post(self, request, *args, **kwargs):
         serializer = CommentSerializer(data=request.data)
 
@@ -395,10 +384,6 @@ class DeleteCommentView(APIView):
 
 
 class UpdateCommentView(APIView):
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.COMMENTS_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
-
     def put(self, request):
         serializer = CommentSerializer(data=request.data)
 
@@ -441,10 +426,6 @@ class RoomDetailView(
 class DeleteRoomView(APIView):
 
     serializer_class = RoomSerializer
-
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         serializer = RoomSerializer(data=request.data)
@@ -500,9 +481,6 @@ class DeleteRoomUserView(APIView):  # working
                 room_users.remove(x)
         return room_id, room_users
 
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data)
 
     def put(self, request, *args, **kwargs):
 

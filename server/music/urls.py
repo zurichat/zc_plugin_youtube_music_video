@@ -58,7 +58,6 @@ urlpatterns = [
         UserCountView.as_view(),
         name="usercount",
     ),
-    # path("createroom", CreateRoomView.as_view(), name="createroom"),
     path("org/<str:org_id>/room", RoomView.as_view(), name="room"),
     path(
         "org/<str:org_id>/room/<str:_id>/members/remove",
@@ -73,9 +72,6 @@ urlpatterns = [
         AddUserToRoomView.as_view(),
         name="adduser",
     ),
-    # path(
-    #     "org/<str:org_id>/users/<str:member_id>/create", CreateRoomView.as_view(), name="create"
-    # ),
     path(
         "org/<str:org_id>/users/<str:member_id>/create",
         CreateRoom.as_view(),
