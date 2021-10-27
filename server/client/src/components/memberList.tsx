@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 import MemberItem from "./common/memberItem";
 import { uiDispatch, uiSelect } from "../store/uiSlice";
-import User from "../types/user";
 
 import HeaderIcon from "../media/member-list-icon.svg";
 import CloseIcon from "../media/close-black.svg";

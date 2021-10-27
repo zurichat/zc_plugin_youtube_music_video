@@ -15,7 +15,6 @@ import EnterRoomModal from "./modals/enterRoom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { uiSelect } from "../store/uiSlice";
-import User from "../types/user";
 import { useEffect, useMemo, useState } from "react";
 import userService from "../services/userService";
 import { chatData } from "../utils/mockdata";

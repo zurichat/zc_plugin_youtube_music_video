@@ -18,7 +18,6 @@ import LikeOptionCount from "./common/likeOptionCount";
 
 import httpService from "../services/httpService";
 import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
-import Song from "../types/song";
 
 function Player() {
 	const [init, setInit] = useState(false);

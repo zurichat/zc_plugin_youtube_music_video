@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import Song from "../../types/song";
 
 import { playerAction } from "../../store/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
@@ -7,7 +6,6 @@ import OptionMenu from "./optionMenu";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { userSelect } from "../../store/usersSlice";
-import User from "../../types/user";
 
 interface Props {
 	song: Song;

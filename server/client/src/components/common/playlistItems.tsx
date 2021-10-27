@@ -1,5 +1,3 @@
-import Song from "../../types/song";
-
 import PlaylistItem from "./playlistItem";
 
 import styled from "styled-components";
