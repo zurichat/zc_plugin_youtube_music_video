@@ -73,7 +73,7 @@ async function addMember(ids?: string[]) {
 
 		return httpService.post(httpService.endpoints.adduser, {
 			room_id: httpService.room_id,
-			member_id: ids
+			memberId: ids
 		});
 	} catch (reason) {
 		console.log(reason);
@@ -82,24 +82,33 @@ async function addMember(ids?: string[]) {
 }
 
 async function removeMember(id: string, name = "user") {
-	httpService.post(httpService.endpoints.removeuser, {
+	httpService.put(httpService.endpoints.removeuser, {
 		memberId: id
 	});
 }
 
 async function getMembers(workspaceUsers?: User[]): Promise<User[]> {
 	try {
-		console.time("workspaceUsers");
 		const users = workspaceUsers || (await getWorkspaceUsers());
-		console.timeEnd("workspaceUsers");
 
-		console.time("users");
 		const { data: ids } = await httpService.get(httpService.endpoints.members);
-		console.timeEnd("users");
 
-		return users.filter(user => ids.find(id => id === user.id));
+		const uniqueIds = [...new Set(ids)];
+
+		const currentUser = await getCurrentUser();
+
+		const members = users.filter(user => uniqueIds.find(id => id === user.id));
+
+		// This is temporary and may be removed in the future
+		// In some cases, the currentUser is not in the workspace users list.
+
+		const isMember = uniqueIds.some(id => id === currentUser.id);
+		const inList = members.some(member => member.id === currentUser.id);
+
+		// Include currentUser in the members list if its a member and not in the list
+		return isMember && !inList ? [...members, currentUser] : members;
 	} catch (error) {
-		console.log("Users error:", error.message);
+		console.log("Members error:", error);
 		throw Error(error.message);
 	}
 }
@@ -108,6 +117,7 @@ async function isMember(): Promise<boolean> {
 	try {
 		const users = await getMembers();
 		const currentUser = await getCurrentUser();
+		console.log({ users, currentUser });
 		return users.some(user => user.id === currentUser.id);
 	} catch (error) {
 		throw Error(error.message);

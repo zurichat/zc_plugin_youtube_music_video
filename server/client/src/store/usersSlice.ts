@@ -15,7 +15,7 @@ const usersSlice = createSlice({
 
 	initialState: {
 		currentUser: user,
-		isMember: false,
+		isMember: true,
 		users: [] as User[]
 	},
 

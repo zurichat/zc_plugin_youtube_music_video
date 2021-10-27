@@ -4,8 +4,8 @@ from dataclasses import dataclass, field
 @dataclass
 class Member:  # for the users
 
-    _id: str
-    userId: str
+    # _id: str
+    memberId: str
     name: str
     avatar: str
     email: str
@@ -52,5 +52,5 @@ class Fave:  # for the comments
 
     _id: str
     userId: str
-    songId: int
+    songId: str
     like: bool = False
