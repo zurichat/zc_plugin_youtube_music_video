@@ -44,7 +44,7 @@ function LikeOptionCount(props) {
 
 			{countText && <div className={countClasses}>{countText}</div>}
 
-			<div>
+			<div className="like-button">
 				<Like className="like-button" liked={liked} onLike={handleLike} />
 			</div>
 
@@ -86,6 +86,11 @@ const Wrapper = styled.div<{ duration: string }>`
 
 	.like-option {
 		margin-right: 0;
+		z-index: 5;
+	}
+
+	.like-button {
+		z-index: 5;
 	}
 
 	@media screen and (max-width: 850px) {

@@ -8,14 +8,16 @@ import Player from "./player";
 import PlaylistHeader from "./common/playlistHeader";
 import PlaylistItems from "./common/playlistItems";
 import EmptyScreen from "./common/emptyScreen";
+import SearchFilter from "./searchFilter";
 
 function Playlist() {
 	const songs = useSelector(songSelect.allSongs);
 	const { show } = useSelector(getPlayerState);
 
-	return (
-		<Wrapper>
-			<PlaylistHeader />
+  return (
+    <Wrapper>
+      <PlaylistHeader />
+      <SearchFilter />
 
 			{songs.length === 0 && <EmptyScreen />}
 
