@@ -1,6 +1,3 @@
-import { SongToAdd } from "../types/song";
-import LikeSong from "../types/likeSong";
-
 import { songDispatch } from "../store/songsSlice";
 import httpService, { endpoints } from "./httpService";
 import store from "../store";
