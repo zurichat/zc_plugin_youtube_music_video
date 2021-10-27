@@ -226,7 +226,9 @@ class SongView(APIView):
         updated_data = read_data(settings.SONG_COLLECTION)
         updated_object = updated_data["data"][-1]
         # returns the updated_object alone
-        centrifugo_response = centrifugo_publish(plugin_id, updated_object)
+        centrifugo_response = centrifugo_publish(
+            room=plugin_id, event="New song added", data=updated_object
+        )
         if centrifugo_response.get("status_code", None) == 200:
             return Response(updated_object, status=status.HTTP_202_ACCEPTED)
         return Response(
@@ -248,7 +250,9 @@ class DeleteSongView(APIView):
 
             updated_data = read_data(settings.SONG_COLLECTION)
 
-            centrifugo_response = centrifugo_publish(plugin_id, updated_data)
+            centrifugo_response = centrifugo_publish(
+                room=plugin_id, event="Song deleted", data=updated_data
+            )
             if centrifugo_response.get("status_code", None) == 200:
                 return Response(updated_data, status=status.HTTP_200_OK)
             return Response(
@@ -284,10 +288,10 @@ class SongSearchView(APIView):
         for item in search_result:
             item["image_url"] = item["albumCover"]
             item["created_at"] = item["time"]
-            item["content"] = null
+            item["content"] = None
             item["url"] = f"https://zuri.chat/music/{collection_name}"
-            item["email"] = null
-            item["description"] = null
+            item["email"] = None
+            item["description"] = None
             item.pop("albumCover")
             item.pop("time")
 
@@ -350,7 +354,9 @@ class CommentView(APIView):
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
-            centrifugo_response = centrifugo_publish(plugin_id, updated_data)
+            centrifugo_response = centrifugo_publish(
+                room=plugin_id, event="New comment", data=updated_data
+            )
             if centrifugo_response.get("status_code", None) == 200:
                 return Response(updated_data, status=status.HTTP_200_OK)
             return Response(
@@ -375,7 +381,9 @@ class DeleteCommentView(APIView):
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
-            centrifugo_response = centrifugo_publish(plugin_id, updated_data)
+            centrifugo_response = centrifugo_publish(
+                room=plugin_id, event="Delete comment", data=updated_data
+            )
             if centrifugo_response.get("status_code", None) == 200:
                 return Response(updated_data, status=status.HTTP_200_OK)
             return Response(
@@ -403,7 +411,9 @@ class UpdateCommentView(APIView):
             )
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
-            centrifugo_response = centrifugo_publish(plugin_id, updated_data)
+            centrifugo_response = centrifugo_publish(
+                room=plugin_id, event="Comment Update", data=updated_data
+            )
             if centrifugo_response.get("status_code", None) == 200:
                 return Response(updated_data, status=status.HTTP_202_ACCEPTED)
             return Response(
@@ -499,18 +509,14 @@ class DeleteRoomUserView(APIView):  # working
         )
 
         sidebar_data = {
-            "event": "sidebar_update",
-            "plugin_id": settings.PLUGIN_ID,
-            "data": {
-                "name": "Music Plugin",
-                "description": "User joins the music room",
-                "group_name": "Music",
-                "category": "Entertainment",
-                "show_group": True,
-                "button_url": "/music",
-                "public_rooms": [],
-                "joined_rooms": [],
-            },
+            "name": "Music Plugin",
+            "description": "User joins the music room",
+            "group_name": "Music",
+            "category": "Entertainment",
+            "show_group": True,
+            "button_url": "/music",
+            "public_rooms": [],
+            "joined_rooms": [],
         }
 
         response_output = {
@@ -524,7 +530,9 @@ class DeleteRoomUserView(APIView):  # working
         }
 
         channel = f"{org_id}_{user}_sidebar"
-        centrifugo_data = centrifugo_publish(channel, sidebar_data)
+        centrifugo_data = centrifugo_publish(
+            room=channel, event="sidebar_update", data=sidebar_data
+        )
 
         if centrifugo_data.get("status_code", None) == 200:
             return Response(data=response_output, status=status.HTTP_201_CREATED)
@@ -583,23 +591,21 @@ class AddUserToRoomView(APIView):
                                 }
 
                                 sidebar_data = {
-                                    "event": "sidebar_update",
-                                    "plugin_id": settings.PLUGIN_ID,
-                                    "data": {
-                                        "name": "Music Plugin",
-                                        "description": "User joins the music room",
-                                        "group_name": "Music",
-                                        "category": "Entertainment",
-                                        "show_group": True,
-                                        "button_url": "/music",
-                                        "public_rooms": [music_data],
-                                        "joined_rooms": [music_data],
-                                    },
+                                    "name": "Music Plugin",
+                                    "description": "User joins the music room",
+                                    "group_name": "Music",
+                                    "category": "Entertainment",
+                                    "show_group": True,
+                                    "button_url": "/music",
+                                    "public_rooms": [music_data],
+                                    "joined_rooms": [music_data],
                                 }
 
                                 channel = f"{org_id}_{new_member_id}_sidebar"
                                 centrifugo_data = centrifugo_publish(
-                                    channel, sidebar_data
+                                    room=channel,
+                                    event="sidebar_update",
+                                    data=sidebar_data,
                                 )
 
                             if (
