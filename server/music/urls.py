@@ -60,7 +60,7 @@ urlpatterns = [
         "org/<str:org_id>/room/<str:_id>/members/count",
         UserCountView.as_view(),
         name="usercount",
-    ),  # user count
+    ),
     path("org/<str:org_id>/room", RoomView.as_view(), name="room"),  # view the room
     path(
         "org/<str:org_id>/room/<str:_id>/members/remove",
