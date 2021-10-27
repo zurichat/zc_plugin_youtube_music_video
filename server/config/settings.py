@@ -183,7 +183,6 @@ REST_FRAMEWORK = {
     #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S",
     "DATETIME_FORMAT": "%s.%f",
     "DEFAULT_PERMISSION_CLASSES": (
-        # "music.permissions.Is_Authenticated_Or_Read_Only",
         "rest_framework.permissions.AllowAny",
     ),
 }
@@ -231,9 +230,9 @@ ROOM_ID = "6169d8b54bfde011fe582e65"
 
 
 # new collections created
-ROOM_COLLECTION = "musicroom"
+ROOM_COLLECTION = "rooms"
 SONG_COLLECTION = "songs"
-COMMENTS_COLLECTION = "chats"
+COMMENTS_COLLECTION = "messages"
 
 
 APPEND_SLASH = False
