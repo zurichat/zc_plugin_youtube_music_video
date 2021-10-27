@@ -63,7 +63,7 @@ const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
 
 const Wrapper = styled.div`
   position: absolute;
-  z-index: 5;
+  z-index: 10;
   top: 46px;
   width: 100%;
   max-width: 200px;
