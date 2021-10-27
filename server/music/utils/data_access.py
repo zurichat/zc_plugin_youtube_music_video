@@ -1,8 +1,8 @@
-from music.utils.request_client import RequestClient
-from django.conf import settings
-from bs4 import BeautifulSoup
-from isodate import parse_duration
 import requests
+from bs4 import BeautifulSoup
+from django.conf import settings
+from isodate import parse_duration
+from music.utils.request_client import RequestClient
 
 plugin_id = settings.PLUGIN_ID
 org_id = settings.ORGANIZATON_ID
@@ -39,24 +39,6 @@ def verify_token(token):
         headers=headers,
     )
     return response.response_data
-
-
-# def read_data(collection=None, object_id=None, filter_data=None):
-#     if filter_data is None:
-#         filter_data = {}
-
-#     if object_id is None:
-#         object_id = ""
-
-#     request_client = RequestClient()
-
-#     response = request_client.request(
-#         method="GET",
-#         url=f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}",
-#         headers={"Authorization": "headers"},
-#         post_data=filter_data,
-#     )
-#     return response.response_data
 
 
 def read_data(collection=None, object_id=None, filter_data=None, options=None):
