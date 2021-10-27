@@ -1,8 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import store, { RootState } from ".";
 
-import User from "../types/user";
-
 const user: User = {
 	id: "juztiz5000kdkdkdkdkdkdkd",
 	avatar: "https://music.zuri.chat/static/8088dff19013ace2e359.svg",

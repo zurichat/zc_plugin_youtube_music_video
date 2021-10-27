@@ -1,52 +1,51 @@
 import { createSlice } from "@reduxjs/toolkit";
 import store, { RootState } from ".";
-import Song from "../types/song";
 
 const slice = createSlice({
-  name: "player",
+	name: "player",
 
-  initialState: {
-    playing: false,
-    show: false,
-    currentSongId: "",
-  },
+	initialState: {
+		playing: false,
+		show: false,
+		currentSongId: ""
+	},
 
-  reducers: {
-    playing: (state, action) => {
-      state.playing = action.payload.playing;
-    },
+	reducers: {
+		playing: (state, action) => {
+			state.playing = action.payload.playing;
+		},
 
-    showPlayer: (state, action) => {
-      state.show = action.payload.show;
-    },
+		showPlayer: (state, action) => {
+			state.show = action.payload.show;
+		},
 
-    changeCurrentSong: (state, action) => {
-      state.currentSongId = action.payload;
-    },
-  },
+		changeCurrentSong: (state, action) => {
+			state.currentSongId = action.payload;
+		}
+	}
 });
 
 export const { playing, showPlayer, changeCurrentSong } = slice.actions;
 
 export const playerAction = {
-  dispatchShowPlayer: (payload: boolean) => {
-    store.dispatch({ type: showPlayer.type, payload: { show: payload } });
-  },
+	dispatchShowPlayer: (payload: boolean) => {
+		store.dispatch({ type: showPlayer.type, payload: { show: payload } });
+	},
 
-  dispatchPlaying: (payload: boolean) => {
-    store.dispatch({ type: playing.type, payload: { playing: payload } });
-  },
+	dispatchPlaying: (payload: boolean) => {
+		store.dispatch({ type: playing.type, payload: { playing: payload } });
+	},
 
-  changeSong: (payload: Song) => {
-    store.dispatch({ type: changeCurrentSong.type, payload: payload.id });
-  },
+	changeSong: (payload: Song) => {
+		store.dispatch({ type: changeCurrentSong.type, payload: payload.id });
+	}
 };
 
 export const getPlayerState = (state: RootState) => state.player;
 
 export const playerSelector = {
-  selectCurrentSong: (state: RootState) =>
-    state.songs.find((s) => s.id === state.player.currentSongId),
+	selectCurrentSong: (state: RootState) =>
+		state.songs.find(s => s.id === state.player.currentSongId)
 };
 
 export default slice.reducer;
