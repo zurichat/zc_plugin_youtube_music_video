@@ -5,7 +5,7 @@ import Parcel from "single-spa-react/parcel";
 import { pluginHeader, headerConfig } from "../utils/config";
 
 // @ts-ignore
-// import { MessageBoard } from "@zuri/zuri-ui";
+import { MessageBoard } from "@zuri/zuri-ui";
 
 // import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
