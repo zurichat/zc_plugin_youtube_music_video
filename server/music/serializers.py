@@ -1,6 +1,5 @@
-from django.utils import timezone
+from music.models import Comment, Member, Room, Song
 from rest_framework import serializers
-from music.models import *
 
 
 class MemberSerializer(serializers.Serializer):
@@ -121,25 +120,3 @@ class AddToRoomSerializer(serializers.Serializer):
     memberId = serializers.ListField(
         child=serializers.CharField(max_length=100), allow_empty=False
     )
-
-
-class FaveSerializer(serializers.Serializer):
-    _id = serializers.CharField(read_only=True)
-    songId = serializers.CharField(max_length=100)
-    memberId = serializers.CharField(max_length=100)
-    like = serializers.BooleanField(default=False, required=False)
-
-    def create(self, validated_data):
-        return Fave(**validated_data)
-
-    def update(self, instance, validated_data):
-
-        instance._id = validated_data.get("_id", instance._id)
-        instance.memberId = validated_data.get("memberId", instance.memberId)
-        instance.songId = validated_data.get("songId", instance.songId)
-        instance.like = validated_data.get("like", instance.like)
-        instance.save()
-        return instance
-
-    def __str__(self):
-        return str()
