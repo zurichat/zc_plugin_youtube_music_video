@@ -1,4 +1,3 @@
-import User from "../types/user";
 import httpService from "./httpService";
 
 import {

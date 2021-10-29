@@ -1,6 +1,5 @@
 import httpService, { endpoints } from "./httpService";
 import { chatDispatch } from "../store/chatsSlice";
-import Chat from "../types/chat";
 import store from "../store";
 import userService from "./userService";
 

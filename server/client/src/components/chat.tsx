@@ -10,7 +10,6 @@ import { chatSelect, chatDispatch } from "../store/chatsSlice";
 import { uiSelect } from "../store/uiSlice";
 import { syncArray } from "../utils/syncArray";
 import chatService from "../services/chatService";
-import User from "../types/user";
 import userService from "../services/userService";
 
 function Chat(props) {

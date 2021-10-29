@@ -45,12 +45,3 @@ class Comment:  # for the comments
     userId: str
     name: str
     avatar: str
-
-
-@dataclass
-class Fave:  # for the comments
-
-    _id: str
-    userId: str
-    songId: str
-    like: bool = False
