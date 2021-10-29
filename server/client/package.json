@@ -78,8 +78,5 @@
 		"sockjs-client": "^1.5.2",
 		"styled-components": "^5.3.1"
 	},
-	"types": "dist/zuri-music-plugin.d.ts",
-	"lint-staged": {
-		"*.{js,ts,tsx}": "eslint --cache --fix"
-	}
+	"types": "dist/zuri-music-plugin.d.ts"
 }
