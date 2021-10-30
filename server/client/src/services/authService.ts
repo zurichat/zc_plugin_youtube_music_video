@@ -1,6 +1,5 @@
 // @ts-ignore
 import { GetUserInfo, GetWorkspaceUser } from "@zuri/control";
-import { userDispatch } from "../store/usersSlice";
 
 async function getUserInfo(email: string) {
 	try {

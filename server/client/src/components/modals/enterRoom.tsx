@@ -1,21 +1,24 @@
 import { toast } from "react-toastify";
 import styled from "styled-components";
 import userService from "../../services/userService";
-import { userDispatch } from "../../store/usersSlice";
+import { setMembership } from "../../app/usersSlice";
 import Button from "../common/button";
+import { useAppDispatch } from "../../app/hooks";
 
 interface Props {
 	isMember: boolean;
 }
 
 function EnterRoom(props: Props) {
+	const dispatch = useAppDispatch();
+
 	if (props.isMember) return null;
 
 	const handleJoin = () => {
 		userService
 			.addMember()
 			.then(() => {
-				userDispatch.setMembership(true);
+				dispatch(setMembership(true));
 				toast.success("Successfully joined plugin");
 			})
 			.catch(error => {

@@ -11,7 +11,7 @@ import bold from "../../media/bold.svg";
 
 import chatService from "../../services/chatService";
 import { useSelector } from "react-redux";
-import { userSelect } from "../../store/usersSlice";
+import { selectCurrentUser } from "../../app/usersSlice";
 
 function ChatInput(props) {
 	// states to manage the input text and also the showcasing of the emoji
@@ -20,7 +20,7 @@ function ChatInput(props) {
 	const [showGiphy, setShowGiphy] = useState(false);
 	const handleFocus = props.handleFocus;
 	// const handleBlur = props.handleBlur;
-	const currentUser = useSelector(userSelect.currentUser);
+	const currentUser = useSelector(selectCurrentUser);
 
 	// function to display the emoji once clicked and remove once the user select their preferred emoji
 	const onEmojiClick = (event, emojiObject) => {

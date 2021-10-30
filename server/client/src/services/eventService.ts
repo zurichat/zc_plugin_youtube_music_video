@@ -4,9 +4,12 @@ import { SubscribeToChannel } from "@zuri/control";
 import songService from "./songService";
 import chatService from "./chatService";
 
-import { songDispatch } from "../store/songsSlice";
-import { chatDispatch } from "../store/chatsSlice";
+import { addedSong, initializedSongs } from "../app/songsSlice";
+import { setChats, addedChat } from "../app/chatsSlice";
+import store from "../app/store";
 import httpService from "./httpService";
+
+const dispatch = store.dispatch;
 
 type PublishedMessage = {
 	data: {
@@ -40,14 +43,14 @@ const connect = () => {
 
 		switch (event) {
 			case "added_song": {
-				if (data.length >= 0) songDispatch.initialize(data);
-				else songDispatch.addSong(data);
+				if (data.length >= 0) dispatch(initializedSongs(data));
+				else dispatch(addedSong(data));
 				break;
 			}
 
 			case "added_chat": {
-				if (data.length >= 0) chatDispatch.set(data);
-				else chatDispatch.addChat(data);
+				if (data.length >= 0) store.dispatch(setChats(data));
+				else store.dispatch(addedChat(data));
 				break;
 			}
 
