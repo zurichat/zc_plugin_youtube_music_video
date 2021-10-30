@@ -1,15 +1,21 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { FiX } from "react-icons/fi";
-import { useSelector, connect } from "react-redux";
+import { connect } from "react-redux";
 import { toast } from "react-toastify";
 
-import { RootState } from "../../store";
-import { uiDispatch, uiSelect } from "../../store/uiSlice";
+import { RootState } from "../../app/store";
+import {
+	loaded,
+	selectIsLoading,
+	selectShowPasteUrl,
+	showedPasteUrl
+} from "../../app/uiSlice";
 
 import songService from "../../services/songService";
 import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
-import { userSelect } from "../../store/usersSlice";
+import { selectCurrentUser } from "../../app/usersSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 interface Props {
 	getSongByUrl: (url: string) => Song;
@@ -18,10 +24,11 @@ interface Props {
 const PasteUrl = (props: Props) => {
 	const [url, setUrl] = useState("");
 
-	const isLoading = useSelector(uiSelect.isLoading);
-	const { name: addedBy, id: userId } = useSelector(userSelect.currentUser);
+	const dispatch = useAppDispatch();
+	const isLoading = useAppSelector(selectIsLoading);
+	const { name: addedBy, id: userId } = useAppSelector(selectCurrentUser);
 
-	const showPasteUrl = useSelector(uiSelect.showPasteUrl);
+	const showPasteUrl = useAppSelector(selectShowPasteUrl);
 
 	if (!showPasteUrl) return null;
 
@@ -36,7 +43,7 @@ const PasteUrl = (props: Props) => {
 
 		if (isLoading) return;
 
-		uiDispatch.loading(true);
+		dispatch(loaded(true));
 
 		try {
 			getSongIdFromYouTubeUrl(url);
@@ -49,7 +56,7 @@ const PasteUrl = (props: Props) => {
 				time: `${Date.now()}`
 			});
 
-			uiDispatch.showPasteUrl(false);
+			dispatch(showedPasteUrl(false));
 
 			toast.success("Added Successfully");
 			setUrl("");
@@ -57,14 +64,14 @@ const PasteUrl = (props: Props) => {
 			toast.error(`Error: ${e.message}`);
 		}
 
-		uiDispatch.loading(false);
+		dispatch(loaded(false));
 	};
 
 	const handleEscape = ev => {
 		const escape = ev.code || ev.key;
 
 		if (escape === "Escape" || ev.target.dataset.close === "close") {
-			uiDispatch.showPasteUrl(false);
+			dispatch(showedPasteUrl(false));
 		}
 	};
 
@@ -82,7 +89,7 @@ const PasteUrl = (props: Props) => {
 								height: "1rem",
 								cursor: "pointer"
 							}}
-							onClick={() => uiDispatch.showPasteUrl(false)}
+							onClick={() => dispatch(showedPasteUrl(false))}
 						/>
 					</label>
 				</div>

@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 // Store
-import { playerAction, getPlayerState } from "../../store/playerSlice";
-import { uiDispatch } from "../../store/uiSlice";
+import {
+	changedCurrentSong,
+	changedPlaying,
+	getPlayerState,
+	showedPlayer
+} from "../../app/playerSlice";
+import { showedPasteUrl } from "../../app/uiSlice";
 
 // Components
 import Button from "./button";
 
 import Headset from "../../media/playlistIcon.svg";
-import { songSelect } from "../../store/songsSlice";
+import { selectFirstSong, selectSongs } from "../../app/songsSlice";
 import { totalDuration } from "../../utils/song";
 
 const PlaylistHeader = () => {
-	const player = useSelector(getPlayerState);
-	const firstSong = useSelector(songSelect.firstSong);
-	const songs = useSelector(songSelect.allSongs);
+	const dispatch = useAppDispatch();
+	const player = useAppSelector(getPlayerState);
+	const firstSong = useAppSelector(selectFirstSong);
+	const songs = useAppSelector(selectSongs);
 	const count = songs.length;
 
 	const [text, setText] = useState("Play");
@@ -25,15 +31,15 @@ const PlaylistHeader = () => {
 
 	const handleShowPlayer = () => {
 		if (text === "Play") {
-			playerAction.dispatchPlaying(true);
-			playerAction.dispatchShowPlayer(true);
-		} else playerAction.dispatchPlaying(false);
+			dispatch(changedPlaying(true));
+			dispatch(showedPlayer(true));
+		} else dispatch(changedPlaying(false));
 
-		if (!player.currentSongId) playerAction.changeSong(firstSong);
+		if (!player.currentSongId) dispatch(changedCurrentSong(firstSong));
 	};
 
 	const handleAddSongToggle = () => {
-		uiDispatch.showPasteUrl(true);
+		dispatch(showedPasteUrl(true));
 	};
 
 	return (

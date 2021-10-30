@@ -6,12 +6,12 @@ import playerReducer from "./playerSlice";
 import deleteReducer from "./deleteSongSlice";
 
 const reducer = {
-  users: usersReducer,
-  chats: chatsReducer,
-  songs: songsReducer,
-  ui: uiReducer,
-  player: playerReducer,
-  delete: deleteReducer,
+	users: usersReducer,
+	chats: chatsReducer,
+	songs: songsReducer,
+	ui: uiReducer,
+	player: playerReducer,
+	delete: deleteReducer
 };
 
 export default reducer;
