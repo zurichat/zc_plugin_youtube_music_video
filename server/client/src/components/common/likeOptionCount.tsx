@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import songService from "../../services/songService";
-import { userSelect } from "../../store/usersSlice";
+import { selectCurrentUser } from "../../app/usersSlice";
 
 import Like from "./like";
 import option from "../../media/option.svg";
@@ -17,7 +17,7 @@ import option from "../../media/option.svg";
 function LikeOptionCount(props) {
 	const { duration, likedBy = [], songId, handleOption } = props;
 
-	const { id: userId } = useSelector(userSelect.currentUser);
+	const { id: userId } = useSelector(selectCurrentUser);
 
 	const { length: count } = likedBy;
 	const liked = likedBy.some(id => id === userId);

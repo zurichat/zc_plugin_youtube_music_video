@@ -2,7 +2,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { uiDispatch } from "../../store/uiSlice";
+import { exitedModal, loaded, showedModal } from "../../app/uiSlice";
+import { useAppDispatch } from "../../app/hooks";
 
 import search from "../../media/search.svg";
 import beat from "../../media/beat.svg";
@@ -12,22 +13,24 @@ import log from "../../services/logService";
 import userService from "../../services/userService";
 
 const Exit = () => {
+	const dispatch = useAppDispatch();
+
 	const [change, setChange] = useState("about");
 
 	const handleLeaveRoom = () => {
 		log.success("Goodbye user");
 
 		userService.removeMember("");
-		uiDispatch.showExitModal(false);
-		uiDispatch.loading(true);
+		dispatch(exitedModal(false));
+		dispatch(loaded(true));
 
 		setTimeout(() => {
 			toast.dismiss();
-			uiDispatch.loading(false);
+			dispatch(loaded(false));
 		}, 1800);
 
 		setTimeout(() => {
-			uiDispatch.showModal(true);
+			dispatch(showedModal(true));
 		}, 2500);
 	};
 
@@ -42,7 +45,7 @@ const Exit = () => {
 					<img
 						src={close}
 						alt="icon"
-						onClick={() => uiDispatch.showExitModal(false)}
+						onClick={() => dispatch(exitedModal(false))}
 						className="close"
 					/>
 				</div>
