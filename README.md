@@ -45,24 +45,11 @@ Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a
     $ yarn
     $ yarn build
 
-### Setup eslint
+### Lint Frontend
 
-    - cd into the base folder where the .git folder is
+    - cd into the frontend folder (server/client)
 
-    $ yarn add eslint
-    $ yarn eslint --init
-
-    - Respond to choose your options
-    - Note: delete package-lock.json after this step
-
-    $ yarn
-    $ npx mrm@2 lint-staged
-
-    - declare the lint-staged parameters in the package.json
-
-    $ yarn eslint .
-
-    - to run eslint
+    `$ yarn lint`
 
 # To Run Django Server
 
@@ -79,14 +66,6 @@ Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a
     $ python manage.py migrate
 
     $ python manage.py runserver
-
-### run pre-commit, black & pylint before git commit -m
-
-    $ git add .
-
-    - to stage all unsaved changes
-
-    $ pre-commit run
 
 ### Note to the backend devs
 
