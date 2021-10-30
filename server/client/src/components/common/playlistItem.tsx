@@ -1,11 +1,14 @@
 import styled from "styled-components";
 
-import { playerAction } from "../../store/playerSlice";
+import {
+	changedCurrentSong,
+	changedPlaying,
+	showedPlayer
+} from "../../app/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
 import OptionMenu from "./optionMenu";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { userSelect } from "../../store/usersSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 interface Props {
 	song: Song;
@@ -25,7 +28,10 @@ function PlaylistItem(props: Props) {
 	} = props.song;
 
 	const [showOption, setShowOption] = useState(false);
-	const currentSongId = useSelector(
+
+	const dispatch = useAppDispatch();
+
+	const currentSongId = useAppSelector(
 		(_state: any) => _state.player.currentSongId
 	);
 
@@ -35,9 +41,9 @@ function PlaylistItem(props: Props) {
 		if (e.target.dataset.like) return;
 		if (e.target.dataset.option) return;
 
-		playerAction.changeSong(props.song);
-		playerAction.dispatchShowPlayer(true);
-		playerAction.dispatchPlaying(true);
+		dispatch(changedCurrentSong(props.song));
+		dispatch(showedPlayer(true));
+		dispatch(changedPlaying(true));
 	};
 
 	const handleOption = e => {

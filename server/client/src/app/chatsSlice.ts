@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import store, { RootState } from ".";
+import { RootState } from "./store";
 import { sanitize } from "../utils/sanitizer";
 
 // import avatar from "../media/chatItem.svg";
@@ -14,11 +14,11 @@ const chatsSlice = createSlice({
 			return payload.map(sanitize);
 		},
 
-		addChat: (state, { payload }: PayloadAction<Chat>) => {
+		addedChat: (state, { payload }: PayloadAction<Chat>) => {
 			state.push(sanitize(payload));
 		},
 
-		removeChat: (state, { payload }: PayloadAction<Chat>) => {
+		removeChat: (state, { payload }: PayloadAction<{ id: string }>) => {
 			state = state.filter(chat => chat.id !== payload.id);
 		},
 
@@ -44,30 +44,16 @@ const chatsSlice = createSlice({
 	}
 });
 
-export const { addChat, setChats, failChat, removeChat, sentChat } =
+export const { addedChat, setChats, failChat, removeChat, sentChat } =
 	chatsSlice.actions;
 
-export const chatDispatch = {
-	set: (payload: Chat[]) => store.dispatch({ type: setChats.type, payload }),
+export const selectChats = (state: RootState) => state.chats;
 
-	addChat: (payload: Chat) => store.dispatch({ type: addChat.type, payload }),
-
-	failChat: (payload: Chat) => store.dispatch({ type: failChat.type, payload }),
-
-	sentChat: (payload: Chat) => store.dispatch({ type: sentChat.type, payload }),
-
-	removeChat: (id: string) =>
-		store.dispatch({ type: removeChat.type, payload: { id } })
+export const selectChatById = (id: string) => (state: RootState) => {
+	return state.chats.find(chat => chat.id === id);
 };
 
-export const chatSelect = {
-	allChat: (state: RootState) => state.chats,
-
-	chatById: (id: string) => (state: RootState) => {
-		return state.chats.find(chat => chat.id === id);
-	},
-
-	lastChat: (state: RootState) => state.chats[state.chats.length - 1]
-};
+export const selectLastChat = (state: RootState) =>
+	state.chats[state.chats.length - 1];
 
 export default chatsSlice.reducer;

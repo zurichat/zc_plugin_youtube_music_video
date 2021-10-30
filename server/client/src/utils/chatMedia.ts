@@ -1,14 +1,16 @@
-import store from "../store";
-import { uiDispatch } from "../store/uiSlice";
+import store from "../app/store";
+import { showedChat } from "../app/uiSlice";
 
 export default function chatMediaQuery() {
-  // Display chat by default on desktop view
-  const mediaQuery = matchMedia("(min-width: 1123px)");
+	const dispatch = store.dispatch;
 
-  mediaQuery.addEventListener("change", (ev) => {
-    if (mediaQuery.matches) uiDispatch.showChat(true);
-    else if (store.getState().ui.showChat) uiDispatch.showChat(false);
-  });
+	// Display chat by default on desktop view
+	const mediaQuery = matchMedia("(min-width: 1123px)");
 
-  if (mediaQuery.matches) uiDispatch.showChat(true);
+	mediaQuery.addEventListener("change", ev => {
+		if (mediaQuery.matches) dispatch(showedChat(true));
+		else if (store.getState().ui.showChat) dispatch(showedChat(false));
+	});
+
+	if (mediaQuery.matches) dispatch(showedChat(true));
 }

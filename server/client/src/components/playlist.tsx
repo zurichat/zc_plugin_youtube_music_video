@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import { songSelect } from "../store/songsSlice";
-import { getPlayerState } from "../store/playerSlice";
+import { selectSongs } from "../app/songsSlice";
+import { getPlayerState } from "../app/playerSlice";
 
 import Player from "./player";
 import PlaylistHeader from "./common/playlistHeader";
@@ -11,13 +11,13 @@ import EmptyScreen from "./common/emptyScreen";
 import SearchFilter from "./searchFilter";
 
 function Playlist() {
-	const songs = useSelector(songSelect.allSongs);
+	const songs = useSelector(selectSongs);
 	const { show } = useSelector(getPlayerState);
 
-  return (
-    <Wrapper>
-      <PlaylistHeader />
-      <SearchFilter />
+	return (
+		<Wrapper>
+			<PlaylistHeader />
+			<SearchFilter />
 
 			{songs.length === 0 && <EmptyScreen />}
 

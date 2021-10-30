@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+
 import styled from "styled-components";
 
-import { uiDispatch, uiSelect } from "../store/uiSlice";
+import { selectShowChat, showedChat, showedMemberList } from "../app/uiSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import httpService from "../services/httpService";
 
 import menu from "../media/menu.svg";
@@ -14,8 +15,10 @@ import avatar3 from "../media/avatar-3.svg";
 
 const roomHeader = () => {
 	const { usercount: userCountEndpoint } = httpService.endpoints;
+
+	const dispatch = useAppDispatch();
 	const [userCount, setUserCount] = useState(0);
-	const showChat = useSelector(uiSelect.showChat);
+	const showChat = useAppSelector(selectShowChat);
 
 	useEffect(() => {
 		httpService
@@ -43,7 +46,7 @@ const roomHeader = () => {
 			<div className="header-right">
 				<div
 					className="header-right-flex"
-					onClick={() => uiDispatch.showMemberList(true)}
+					onClick={() => dispatch(showedMemberList(true))}
 				>
 					<div className="header-avatar">
 						<div className="pc-avatars">
@@ -65,7 +68,7 @@ const roomHeader = () => {
 							src={message}
 							alt="message count"
 							className="header-message-count"
-							onClick={() => uiDispatch.showChat(true)}
+							onClick={() => dispatch(showedChat(true))}
 						/>
 					)}
 
@@ -74,7 +77,7 @@ const roomHeader = () => {
 						src={message}
 						alt="message count"
 						className="header-message-count-mobile"
-						onClick={() => uiDispatch.showChat(true)}
+						onClick={() => dispatch(showedChat(true))}
 					/>
 				</div>
 			</div>
