@@ -230,7 +230,7 @@ ROOM_ID = "6169d8b54bfde011fe582e65"
 
 
 # new collections created
-ROOM_COLLECTION = "rooms"
+ROOM_COLLECTION = "musicroom"
 SONG_COLLECTION = "songs"
 COMMENTS_COLLECTION = "messages"
 

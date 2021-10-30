@@ -56,12 +56,12 @@ class change_room_image(APIView):
 def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
     output = []
-    if room_data:
+    if room_data['status'] == 200 and room_data['data'] is not None:
         room = {
             "room_name": room_data["data"]["room_name"],
             "room_id": f"/music/{room_id}",
             "button_url": f"/music",
-            "room_image": room_image[0],
+            "room_image": room_image[0],    
         }
         output.append(room)
         return output
