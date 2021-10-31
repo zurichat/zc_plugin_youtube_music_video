@@ -60,7 +60,7 @@ def get_room_info(room_id=None):
         room = {
             "room_name": room_data["data"]["room_name"],
             "room_id": f"/music/{room_id}",
-            "button_url": f"/music",
+            "button_url": "/music",
             "room_image": room_image[0],    
         }
         output.append(room)
@@ -91,7 +91,7 @@ class SidebarView(GenericAPIView):
             "room_id": "",
             "user_id": "",
             "show_group": False,
-            "button_url": f"/music",
+            "button_url": "/music",
             "public_rooms": [],
             "joined_rooms": [],
         }
@@ -120,12 +120,10 @@ class SidebarView(GenericAPIView):
                         
                         sidebar_update_payload = {
                                     "event": "sidebar_update",
-                                    "plugin_id": "dm.zuri.chat",
+                                    "plugin_id": "music.zuri.chat",
                                     "data": sidebar_data
                                 }
                         return Response(sidebar_update_payload, status=status.HTTP_200_OK)
-                    else:
-                        pass
                 return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
             return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
         return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
