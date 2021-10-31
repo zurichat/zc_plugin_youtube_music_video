@@ -5,13 +5,13 @@ function Filterbar() {
 		<Filterstyled>
 			<div className="filterBar">
 				<p>
-					<i className="fa fa-filter" aria-hidden="true" />
+					<i className="fa fa-filter" aria-hidden="true"></i>
 					Filter
 				</p>
 				<div className="drop-down">
 					<button className="accordion">
 						<h3>All songs</h3>
-						<i className="fa fa-chevron-down" aria-hidden="true" />
+						<i className="fa fa-chevron-down" aria-hidden="true"></i>
 					</button>
 					<div className="panel">
 						<a href="#">

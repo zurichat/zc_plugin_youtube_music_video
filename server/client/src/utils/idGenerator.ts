@@ -1,5 +1,5 @@
 export function getUUID() {
-	return `uu${Date.now()}${Math.round(Math.random() * 1000)}id`;
+	return "uu" + Date.now() + Math.round(Math.random() * 1000) + "id";
 }
 
 export function getSongIdFromYouTubeUrl(url: string) {

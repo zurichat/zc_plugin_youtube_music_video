@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
 import Player from "../components/player";
+import { Provider } from "react-redux";
 import store from "../app/store";
 
 const TestComponent = (
@@ -13,6 +13,6 @@ const TestComponent = (
 test("change song", () => {
 	render(TestComponent);
 	screen.debug();
-	// const nextButton = screen.getByText(/NEXT/i);
-	// expect(nextButton).toBeInTheDocument();
+	//const nextButton = screen.getByText(/NEXT/i);
+	//expect(nextButton).toBeInTheDocument();
 });

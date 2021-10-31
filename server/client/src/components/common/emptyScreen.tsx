@@ -1,17 +1,19 @@
 import styled from "styled-components";
 import Illustration from "../../media/emptyScreen.svg";
 
-const EmptyScreen = () => (
-	<Wrapper>
-		<div className="empty_container">
-			<img src={Illustration} alt="add songs illustration" />
+const EmptyScreen = () => {
+	return (
+		<Wrapper>
+			<div className="empty_container">
+				<img src={Illustration} alt="add songs illustration" />
 
-			<h3 className="heading_3">There are no songs here!</h3>
+				<h3 className="heading_3">There are no songs here!</h3>
 
-			<p className="text">Start adding your songs</p>
-		</div>
-	</Wrapper>
-);
+				<p className="text">Start adding your songs</p>
+			</div>
+		</Wrapper>
+	);
+};
 
 const Wrapper = styled.div`
 	position: relative;

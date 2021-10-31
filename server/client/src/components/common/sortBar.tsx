@@ -5,13 +5,13 @@ function Sortdiv() {
 		<SortStyled>
 			<div className="Sort">
 				<p>
-					<i className="fa fa-sort" aria-hidden="true" />
+					<i className="fa fa-sort" aria-hidden="true"></i>
 					Filter
 				</p>
 				<div className="drop-down">
 					<button className="accordion2">
 						<h3>Default</h3>
-						<i className="fa fa-chevron-down" aria-hidden="true" />
+						<i className="fa fa-chevron-down" aria-hidden="true"></i>
 					</button>
 					<div className="panel2">
 						<a href="#">

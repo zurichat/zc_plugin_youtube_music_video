@@ -9,8 +9,9 @@ const songsSlice = createSlice({
 	initialState: [] as Song[],
 
 	reducers: {
-		initializedSongs: (state, { payload }: PayloadAction<Song[]>) =>
-			payload.map(sanitize),
+		initializedSongs: (state, { payload }: PayloadAction<Song[]>) => {
+			return payload.map(sanitize);
+		},
 
 		addedSong: (state, { payload }: PayloadAction<Song>) => {
 			state.unshift(sanitize(payload));
@@ -60,11 +61,13 @@ export const { addedSong, removedSong, likedSong, initializedSongs } =
 
 export const selectSongs = (state: RootState) => state.songs;
 
-export const selectSongById = (songId: string) => (state: RootState) =>
-	state.songs.find(song => song.id === songId);
+export const selectSongById = (songId: string) => (state: RootState) => {
+	return state.songs.find(song => song.id === songId);
+};
 
-export const selectSongByUrl = (url: string) => (state: RootState) =>
-	state.songs.find(song => song.url === url);
+export const selectSongByUrl = (url: string) => (state: RootState) => {
+	return state.songs.find(song => song.url === url);
+};
 
 export const selectFirstSong = (state: RootState) => state.songs[0];
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import { getSongIdFromYouTubeUrl } from "./idGenerator";
 
 export async function getSongMetadat(url): Promise<SongMetadata> {
-	// https://www.youtube.com/watch?v=KUoPz0xYEoI
+	//https://www.youtube.com/watch?v=KUoPz0xYEoI
 	const id = getSongIdFromYouTubeUrl(url);
 
 	const endpoint = `https://coassist.herokuapp.com/api/metadata/${id}`;

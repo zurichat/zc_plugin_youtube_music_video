@@ -2,7 +2,7 @@ import store from "../app/store";
 import { showedChat } from "../app/uiSlice";
 
 export default function chatMediaQuery() {
-	const { dispatch } = store;
+	const dispatch = store.dispatch;
 
 	// Display chat by default on desktop view
 	const mediaQuery = matchMedia("(min-width: 1123px)");

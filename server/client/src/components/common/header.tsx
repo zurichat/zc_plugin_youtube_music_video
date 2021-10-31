@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import logo from "./Frame8866.svg";
+import styled from "styled-components";
 
 function Header() {
 	return (
@@ -12,8 +12,8 @@ function Header() {
 						</a>
 					</div>
 					<div className="nav__menu" id="nav-menu">
-						<i className="fas fa-search" />
-						<i className="fas fa-ellipsis-v" />
+						<i className="fas fa-search"></i>
+						<i className="fas fa-ellipsis-v"></i>
 					</div>
 				</header>
 			</div>

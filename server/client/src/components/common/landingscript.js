@@ -26,7 +26,7 @@ function LandingScript() {
 }
 // CAROUSEL/SLIDESHOW
 
-let slideIndex = 1;
+var slideIndex = 1;
 showSlides(slideIndex);
 
 function plusSlides(n) {
@@ -38,8 +38,8 @@ function currentSlide(n) {
 }
 
 function showSlides(n) {
-	let i;
-	const slides = document.getElementsByClassName("mySlides");
+	var i;
+	var slides = document.getElementsByClassName("mySlides");
 
 	if (n > slides.length) {
 		slideIndex = 1;
@@ -55,8 +55,8 @@ function showSlides(n) {
 }
 
 // ACCORDION DROPDOWN
-const acc = document.getElementsByClassName("accordion");
-let i;
+var acc = document.getElementsByClassName("accordion");
+var i;
 
 for (i = 0; i < acc.length; i++) {
 	acc[i].onClick = function () {

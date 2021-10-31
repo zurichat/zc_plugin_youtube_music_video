@@ -6,25 +6,27 @@ interface Props {
 	desc: string;
 	avatar: string;
 }
-const MemberItem = ({ name, status, desc, avatar }: Props) => (
-	<Wrapper>
-		<img src={avatar} alt="" />
-		<div className="profile-container">
-			<div className="profile">
-				<p className="display-name">{name}</p>
-				<div
-					style={{
-						borderColor: `${status ? "#0DBE3F" : "#616061"}`,
-						backgroundColor: `${status ? "#0DBE3F" : "#ffffff"}`
-					}}
-					className="status none"
-				/>
-				<p className="name none" />
+const MemberItem = ({ name, status, desc, avatar }: Props) => {
+	return (
+		<Wrapper>
+			<img src={avatar} alt="" />
+			<div className="profile-container">
+				<div className="profile">
+					<p className="display-name">{name}</p>
+					<div
+						style={{
+							borderColor: `${status ? "#0DBE3F" : "#616061"}`,
+							backgroundColor: `${status ? "#0DBE3F" : "#ffffff"}`
+						}}
+						className="status none"
+					></div>
+					<p className="name none"></p>
+				</div>
+				<p className="desc">{desc || "Product designer"}</p>
 			</div>
-			<p className="desc">{desc || "Product designer"}</p>
-		</div>
-	</Wrapper>
-);
+		</Wrapper>
+	);
+};
 
 const Wrapper = styled.div`
 	min-height: 48px;

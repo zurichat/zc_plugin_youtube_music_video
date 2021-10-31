@@ -30,7 +30,7 @@ function Player() {
 	const { currentsong: currentSongEndpoint } = httpService.endpoints;
 
 	const thumbnail = async (song: Song) => {
-		if (player.currentSongId === "") {
+		if (player.currentSongId === "")
 			song = {
 				id: "",
 				title: "",
@@ -42,7 +42,6 @@ function Player() {
 				likedBy: [],
 				time: ""
 			};
-		}
 		try {
 			await httpService.post(currentSongEndpoint, song);
 			console.log("Succesfully sent to current-song Endpoint");
@@ -50,6 +49,7 @@ function Player() {
 		} catch (error) {
 			console.log(error);
 		}
+		return;
 	};
 
 	useEffect(() => {
@@ -58,9 +58,8 @@ function Player() {
 
 	if (!player.show) return null;
 
-	const url = `https://www.youtube.com/embed/${getSongIdFromYouTubeUrl(
-		song.url
-	)}`;
+	const url =
+		"https://www.youtube.com/embed/" + getSongIdFromYouTubeUrl(song.url);
 
 	function getUpnext() {
 		const index = songs.indexOf(song);
@@ -103,10 +102,12 @@ function Player() {
 					onPlay={handlePlay}
 					onPause={handlePause}
 					onEnded={handedEnded}
-					pip
+					pip={true}
 					stopOnUnmount={false}
 					onEnablePIP={() => setInit(true)}
 					onDisablePIP={() => setInit(false)}
+
+					// config={{ playerVars: { showinfo: 1 } }}
 				/>
 			</div>
 

@@ -5,9 +5,9 @@ import SearchBar from "./searchBar";
 function SortBar() {
 	return (
 		<div className="App">
-			<SearchBar />
-			<Sortdiv />
-			<Filterbar />
+			<SearchBar></SearchBar>
+			<Sortdiv></Sortdiv>
+			<Filterbar></Filterbar>
 		</div>
 	);
 }

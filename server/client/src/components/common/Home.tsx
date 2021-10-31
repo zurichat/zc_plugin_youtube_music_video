@@ -1,15 +1,15 @@
-import styled from "styled-components";
 import Pluginlogo from "../../media/Rectangle158.svg";
 import Rectangle159 from "../../media/Rectangle159.svg";
 import Rectangle160 from "../../media/Rectangle160.svg";
 import Rectangle163 from "../../media/Rectangle163.svg";
 import LandingScript from "./landingscript";
+import styled from "styled-components";
 
 function Home() {
 	return (
 		<Homestyled>
 			<div className="market__col content_wrapper">
-				<i className="fas fa-chevron-left" />
+				<i className="fas fa-chevron-left"></i>
 				<h2>Market Place</h2>
 			</div>
 
@@ -42,7 +42,7 @@ function Home() {
 							<h3 className="mb_bottom">Support</h3>
 							<p className="margin">
 								<a href="#">
-									<i className="fa fa-envelope" aria-hidden="true" />{" "}
+									<i className="fa fa-envelope" aria-hidden="true"></i>{" "}
 									hello@zuri.chat
 								</a>
 							</p>
@@ -78,7 +78,7 @@ function Home() {
 							</li>
 						</ul>
 						<div className="slide_bar">
-							<div className="tab-indicator" />
+							<div className="tab-indicator"></div>
 						</div>
 
 						<div className="tab-body">
@@ -87,7 +87,7 @@ function Home() {
 								<div className="slideshow-container">
 									<div className="mySlides fade">
 										<div className="display bx1">
-											<div className="img__display img1" />
+											<div className="img__display img1"></div>
 											<h1>
 												Watch Youtube Videos on Zuri without getting redirected.
 											</h1>
@@ -96,7 +96,7 @@ function Home() {
 
 									<div className="mySlides fade">
 										<div className="display bx2">
-											<div className="img__display img2" />
+											<div className="img__display img2"></div>
 											<h1>
 												Create Playlists and check out what your friends are
 												listening to.
@@ -106,7 +106,7 @@ function Home() {
 
 									<div className="mySlides fade">
 										<div className="display bx3">
-											<div className="img__display img3" />
+											<div className="img__display img3"></div>
 											<h1>
 												Paste both audio and video url Link to play audio and
 												video.
@@ -150,16 +150,16 @@ function Home() {
 							<div id="review" data-tab-content>
 								<div className="review__bx">
 									<div className="user__profile review__dets">
-										<div className="profile__img" />
+										<div className="profile__img"></div>
 										<div className="user__name" id="user-name">
 											<h4>Emediong A.</h4>
 										</div>
 										<div className="star__ratings">
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star empty" aria-hidden="true" />
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star empty" aria-hidden="true"></i>
 										</div>
 									</div>
 
@@ -176,16 +176,16 @@ function Home() {
 
 								<div className="review__bx">
 									<div className="user__profile review__dets">
-										<div className="profile__img" />
+										<div className="profile__img"></div>
 										<div className="user__name" id="user-name">
 											<h4>Emediong A.</h4>
 										</div>
 										<div className="star__ratings">
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star empty" aria-hidden="true" />
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star empty" aria-hidden="true"></i>
 										</div>
 									</div>
 
@@ -202,16 +202,16 @@ function Home() {
 
 								<div className="review__bx">
 									<div className="user__profile review__dets">
-										<div className="profile__img" />
+										<div className="profile__img"></div>
 										<div className="user__name" id="user-name">
 											<h4>Emediong A.</h4>
 										</div>
 										<div className="star__ratings">
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star empty" aria-hidden="true" />
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star empty" aria-hidden="true"></i>
 										</div>
 									</div>
 
@@ -228,16 +228,16 @@ function Home() {
 
 								<div className="review__bx">
 									<div className="user__profile review__dets">
-										<div className="profile__img" />
+										<div className="profile__img"></div>
 										<div className="user__name" id="user-name">
 											<h4>Emediong A.</h4>
 										</div>
 										<div className="star__ratings">
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star empty" aria-hidden="true" />
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star empty" aria-hidden="true"></i>
 										</div>
 									</div>
 
@@ -254,16 +254,16 @@ function Home() {
 
 								<div className="review__bx">
 									<div className="user__profile review__dets">
-										<div className="profile__img" />
+										<div className="profile__img"></div>
 										<div className="user__name" id="user-name">
 											<h4>Emediong A.</h4>
 										</div>
 										<div className="star__ratings">
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star empty" aria-hidden="true" />
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star empty" aria-hidden="true"></i>
 										</div>
 									</div>
 
@@ -280,16 +280,16 @@ function Home() {
 
 								<div className="review__bx">
 									<div className="user__profile review__dets">
-										<div className="profile__img" />
+										<div className="profile__img"></div>
 										<div className="user__name" id="user-name">
 											<h4>Emediong A.</h4>
 										</div>
 										<div className="star__ratings">
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star" aria-hidden="true" />
-											<i className="fa fa-star empty" aria-hidden="true" />
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star" aria-hidden="true"></i>
+											<i className="fa fa-star empty" aria-hidden="true"></i>
 										</div>
 									</div>
 
@@ -354,7 +354,7 @@ function Home() {
 				<section className="drop__down content_wrapper">
 					<button className="accordion">
 						<h3>Supported Language</h3>
-						<i className="fa fa-chevron-down" aria-hidden="true" />
+						<i className="fa fa-chevron-down" aria-hidden="true"></i>
 					</button>
 					<div className="panel">
 						<p>English</p>
@@ -362,7 +362,7 @@ function Home() {
 
 					<button className="accordion">
 						<h3>Pricing</h3>
-						<i className="fa fa-chevron-down" aria-hidden="true" />
+						<i className="fa fa-chevron-down" aria-hidden="true"></i>
 					</button>
 					<div className="panel">
 						<p>N10,000 (7 days free trial)</p>
@@ -370,18 +370,18 @@ function Home() {
 
 					<button className="accordion">
 						<h3>Support</h3>
-						<i className="fa fa-chevron-down" aria-hidden="true" />
+						<i className="fa fa-chevron-down" aria-hidden="true"></i>
 					</button>
 					<div className="panel">
 						<a href="#">
-							<i className="fa fa-envelope" aria-hidden="true" />{" "}
+							<i className="fa fa-envelope" aria-hidden="true"></i>{" "}
 							hello@zuri.chat
 						</a>
 					</div>
 
 					<button className="accordion">
 						<h3>Category</h3>
-						<i className="fa fa-chevron-down" aria-hidden="true" />
+						<i className="fa fa-chevron-down" aria-hidden="true"></i>
 					</button>
 					<div className="panel">
 						<div className="btns">

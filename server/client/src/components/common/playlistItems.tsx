@@ -1,6 +1,7 @@
+import PlaylistItem from "./playlistItem";
+
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import PlaylistItem from "./playlistItem";
 import userService from "../../services/userService";
 
 interface Props {

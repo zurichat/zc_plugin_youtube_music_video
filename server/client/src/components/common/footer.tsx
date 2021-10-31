@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import logo from "./Frame8866.svg";
+import styled from "styled-components";
 
 function Footer() {
 	return (
@@ -35,16 +35,16 @@ function Footer() {
 						<ul className="footer__links">
 							<li>
 								<a href="#">
-									<i className="fab fa-facebook-f" />
+									<i className="fab fa-facebook-f"></i>
 								</a>
 							</li>
 							<li>
-								<a href="#" />
-								<i className="fab fa-instagram" aria-hidden="true" />
+								<a href="#"></a>
+								<i className="fab fa-instagram" aria-hidden="true"></i>
 							</li>
 							<li>
-								<a href="#" />
-								<i className="fab fa-twitter" aria-hidden="true" />
+								<a href="#"></a>
+								<i className="fab fa-twitter" aria-hidden="true"></i>
 							</li>
 						</ul>
 					</div>

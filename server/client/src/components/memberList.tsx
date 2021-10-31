@@ -79,7 +79,7 @@ const MemberList = ({ members }: Props) => {
 					{filtered.map((item, i) => (
 						<MemberItem
 							key={i}
-							status
+							status={true}
 							name={item.name}
 							desc=""
 							avatar={item.avatar}

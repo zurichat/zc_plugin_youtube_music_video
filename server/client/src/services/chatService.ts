@@ -11,7 +11,7 @@ import userService from "./userService";
 
 const { comments: commentEndpoint } = endpoints;
 
-const { dispatch } = store;
+const dispatch = store.dispatch;
 
 const getChats = async () => {
 	try {
@@ -34,12 +34,7 @@ const addChat = async (chat: Chat) => {
 
 		await httpService.post(
 			commentEndpoint,
-			{
-				...newChat,
-				name,
-				userId,
-				avatar
-			},
+			{ ...newChat, name, userId, avatar },
 			{ timeout: 15000 }
 		);
 
@@ -52,13 +47,16 @@ const addChat = async (chat: Chat) => {
 		console.log("Chat error:", error.message);
 		failChat({ ...chat });
 	}
+
+	return;
 };
 
-const deleteChat = (id: string) =>
-	httpService
+const deleteChat = (id: string) => {
+	return httpService
 		.post(endpoints.deletecomment, { id })
 		.then(() => removeChat({ id }))
 		.catch(e => console.log(e.message));
+};
 
 const chatService = { addChat, getChats, deleteChat };
 

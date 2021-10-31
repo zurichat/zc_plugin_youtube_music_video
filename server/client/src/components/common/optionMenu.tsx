@@ -1,15 +1,15 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { toast } from "react-toastify";
 import CopyIcon from "../../media/copy-icon.svg";
 import DeleteIcon from "../../media/delete-icon.svg";
 import { showedDeleteModal } from "../../app/uiSlice";
+import { toast } from "react-toastify";
 import { updatedSongId } from "../../app/deleteSongSlice";
 import { selectCurrentUser } from "../../app/usersSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
-	const ref = useRef(null);
+	let ref = useRef(null);
 
 	const dispatch = useAppDispatch();
 	const user = useAppSelector(selectCurrentUser);
@@ -40,9 +40,8 @@ const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
 	}
 
 	function handleDelete() {
-		if (user.id !== userId) {
+		if (user.id !== userId)
 			return toast.error("Sorry, you cannot delete this file.");
-		}
 		dispatch(updatedSongId(songId));
 		dispatch(showedDeleteModal(true));
 	}
