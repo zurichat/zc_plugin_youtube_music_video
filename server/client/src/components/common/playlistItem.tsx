@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+import { useEffect, useState } from "react";
 import {
 	changedCurrentSong,
 	changedPlaying,
@@ -7,7 +8,6 @@ import {
 } from "../../app/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
 import OptionMenu from "./optionMenu";
-import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 interface Props {
@@ -79,8 +79,15 @@ function PlaylistItem(props: Props) {
 				</div>
 			</div>
 
-			<LikeOptionCount {...{ songId, duration, likedBy, handleOption }} />
-			<div className="handle-play" onClick={handlePlay}></div>
+			<LikeOptionCount
+				{...{
+					songId,
+					duration,
+					likedBy,
+					handleOption
+				}}
+			/>
+			<div className="handle-play" onClick={handlePlay} />
 		</Wrapper>
 	);
 }

@@ -8,7 +8,6 @@ import ChatInput from "./common/chatInput";
 
 import { selectChats, setChats } from "../app/chatsSlice";
 import { selectShowChat } from "../app/uiSlice";
-import { syncArray } from "../utils/syncArray";
 import chatService from "../services/chatService";
 import userService from "../services/userService";
 import { useAppDispatch } from "../app/hooks";
@@ -19,13 +18,13 @@ function Chat(props) {
 	const chats = useSelector(selectChats);
 	const showChat = useSelector(selectShowChat);
 	const scroller = useRef(null);
-	//const [ chats, setChats] = useState(chat);
+	// const [ chats, setChats] = useState(chat);
 
-	/*useEffect( () => {
+	/* useEffect( () => {
     setChats(syncArray(chats, chat));
     console.log(chats);
     console.log(chat);
-  }, [chat]);*/
+  }, [chat]); */
 
 	const scrollToBottom = () => {
 		scroller.current.scrollIntoView(false);
@@ -80,21 +79,21 @@ function Chat(props) {
 
 	const Cancel = (id, message) => {
 		const test = chats.find(chat => chat.id === id && chat.message === message);
-		let list = [];
+		const list = [];
 		chats.map(ch => {
 			if (ch.message !== test.message) list.push(ch);
 		});
-		//setChats(newchats);
+		// setChats(newchats);
 		dispatch(setChats(list));
 	};
 
 	const Resend = (id, message) => {
-		let test = chats.find(chat => chat.id === id && chat.message === message);
-		let list = [];
+		const test = chats.find(chat => chat.id === id && chat.message === message);
+		const list = [];
 		chats.map(ch => {
 			if (ch.message !== test.message) list.push(ch);
 		});
-		//setChats(newchats);
+		// setChats(newchats);
 		dispatch(setChats(list));
 		chatService.addChat({ ...test, failed: false });
 	};
@@ -117,7 +116,7 @@ function Chat(props) {
 					<ChatItem key={index} {...items(chat)} users={workspaceUsers} />
 				))}
 
-				<div className="scroller" ref={scroller}></div>
+				<div className="scroller" ref={scroller} />
 			</div>
 			<ChatInput handleFocus={handleFocus} handleBlur={handleBlur} />
 		</Wrapper>

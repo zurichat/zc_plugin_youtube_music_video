@@ -2,7 +2,7 @@ import { initializedSongs, likedSong, removedSong } from "../app/songsSlice";
 import httpService, { endpoints } from "./httpService";
 import store from "../app/store";
 
-const dispatch = store.dispatch;
+const { dispatch } = store;
 
 const getSongs = () => {
 	httpService.get(httpService.endpoints.songs).then(
@@ -28,12 +28,11 @@ const addSong = async (song: SongToAdd) => {
 	});
 };
 
-const deleteSong = async (id: string) => {
-	return httpService.post(endpoints.deletesong, { id }).then(res => {
+const deleteSong = async (id: string) =>
+	httpService.post(endpoints.deletesong, { id }).then(res => {
 		dispatch(removedSong({ id }));
 		return res;
 	});
-};
 
 const likeSong = async (like: LikeSong) => {
 	dispatch(likedSong(like));
@@ -45,6 +44,11 @@ const likeSong = async (like: LikeSong) => {
 	}
 };
 
-const songService = { getSongs, addSong, likeSong, deleteSong };
+const songService = {
+	getSongs,
+	addSong,
+	likeSong,
+	deleteSong
+};
 
 export default songService;

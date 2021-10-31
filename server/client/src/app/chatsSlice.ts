@@ -10,9 +10,8 @@ const chatsSlice = createSlice({
 	initialState: [] as Chat[],
 
 	reducers: {
-		setChats: (state, { payload }: PayloadAction<Chat[]>) => {
-			return payload.map(sanitize);
-		},
+		setChats: (state, { payload }: PayloadAction<Chat[]>) =>
+			payload.map(sanitize),
 
 		addedChat: (state, { payload }: PayloadAction<Chat>) => {
 			state.push(sanitize(payload));
@@ -49,9 +48,8 @@ export const { addedChat, setChats, failChat, removeChat, sentChat } =
 
 export const selectChats = (state: RootState) => state.chats;
 
-export const selectChatById = (id: string) => (state: RootState) => {
-	return state.chats.find(chat => chat.id === id);
-};
+export const selectChatById = (id: string) => (state: RootState) =>
+	state.chats.find(chat => chat.id === id);
 
 export const selectLastChat = (state: RootState) =>
 	state.chats[state.chats.length - 1];

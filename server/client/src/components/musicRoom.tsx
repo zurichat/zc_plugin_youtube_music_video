@@ -2,10 +2,10 @@ import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
 
-import { pluginHeader, headerConfig } from "../utils/config";
-
 // @ts-ignore
 import { MessageBoard } from "@zuri/zuri-ui";
+import { useEffect, useMemo, useState } from "react";
+import { pluginHeader, headerConfig } from "../utils/config";
 
 // import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
@@ -15,7 +15,6 @@ import EnterRoomModal from "./modals/enterRoom";
 
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectShowPasteUrl } from "../app/uiSlice";
-import { useEffect, useMemo, useState } from "react";
 import userService from "../services/userService";
 import { chatData } from "../utils/mockdata";
 import { selectIsMember, setMembership } from "../app/usersSlice";
@@ -70,7 +69,7 @@ function MusicRoom() {
 						position="top-center"
 						theme="colored"
 						autoClose={3000}
-						hideProgressBar={true}
+						hideProgressBar
 						toastClassName="toast-wrapper"
 						bodyClassName="toast-body"
 					/>

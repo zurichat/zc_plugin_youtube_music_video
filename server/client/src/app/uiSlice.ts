@@ -27,10 +27,9 @@ const slice = createSlice({
 		showedPasteUrl: (state, action: PayloadAction<boolean>) => {
 			state.showPasteUrl = action.payload;
 		},
-		showedModal: (state, action: PayloadAction<boolean>) => {
+		showedModal: (state, action: PayloadAction<boolean>) =>
 			// state.showModal = action.payload;
-			return state;
-		},
+			state,
 
 		exitedModal: (state, action: PayloadAction<boolean>) => {
 			state.exitModal = action.payload;

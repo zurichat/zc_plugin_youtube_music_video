@@ -23,7 +23,7 @@ function LikeOptionCount(props) {
 	const liked = likedBy.some(id => id === userId);
 
 	const countText =
-		count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
+		count === 0 ? "" : count === 1 ? "1 like" : `${count} likes`;
 
 	const countClasses = duration ? "like-count" : "like-count-player";
 

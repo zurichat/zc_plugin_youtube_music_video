@@ -9,7 +9,7 @@ import { setChats, addedChat } from "../app/chatsSlice";
 import store from "../app/store";
 import httpService from "./httpService";
 
-const dispatch = store.dispatch;
+const { dispatch } = store;
 
 type PublishedMessage = {
 	data: {
