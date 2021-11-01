@@ -64,6 +64,13 @@ class SongSerializer(serializers.Serializer):
         return str()
 
 
+class LikeSongSerializer(serializers.Serializer):
+    song_id = serializers.CharField(max_length=100, required=False)
+    memberId = serializers.ListField(
+        child=serializers.CharField(max_length=100), allow_empty=False
+    )
+
+
 class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
