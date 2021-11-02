@@ -31,6 +31,7 @@ print(DEBUG)
 ALLOWED_HOSTS = [
     "zuri.chat",
     "music.zuri.chat",
+    "staging.zuri.chat",
     "159.65.123.65",
     "localhost",
     "127.0.0.1",
