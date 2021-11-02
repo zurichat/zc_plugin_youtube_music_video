@@ -1,6 +1,7 @@
 import re
 from django.core.paginator import Paginator
 from django.conf import settings
+from requests import status_codes
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
@@ -15,7 +16,6 @@ import requests
 from music.utils.dataStorage import *
 from requests import exceptions
 from django.http import Http404
-from music.utils.dataStorage import *
 from music.pagination import *
 from music.authentication import *
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
@@ -53,17 +53,18 @@ class change_room_image(APIView):
         )
 
 
-def get_room_info(roomid=None):
-    room_data = read_data(settings.ROOM_COLLECTION)
-    orgid = settings.ORGANIZATON_ID
-    roomid = settings.ROOM_ID
-
-    output = {
-        "room_name": room_data["data"][0]["room_name"],
-        "room_id": f"/music/{roomid}",
-        "button_url": f"/music",
-        "room_image": room_image[0],
-    }
+def get_room_info(room_id=None):
+    room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
+    output = []
+    if room_data['status'] == 200 and room_data['data'] is not None:
+        room = {
+            "room_name": room_data["data"]["room_name"],
+            "room_id": f"/music/{room_id}",
+            "button_url": "/music",
+            "room_image": room_image[0],    
+        }
+        output.append(room)
+        return output
     return output
 
 
@@ -74,60 +75,58 @@ class SidebarView(GenericAPIView):
 
         org_id = request.GET.get("org", None)
         user_id = request.GET.get("user", None)
-        room = settings.ROOM_COLLECTION
-        plugin_id = settings.PLUGIN_ID
-        roomid = settings.ROOM_ID
-        token = verify_token
-
-        pub_room = get_room_info()
-
+        room_id = settings.ROOM_ID
+        pub_room = get_room_info(room_id)
         sidebar_update = "currentWorkspace_userInfo_sidebar"
-
-        # subscription_channel: org_id_memberid_sidebar
         subscription_channel = "{org_id}_{user_id}_sidebar"
-
-        sidebar_update_payload = {
+        url = f"https://api.zuri.chat/organizations/{org_id}/members"
+        headers ={}
+        sidebar = {
             "name": "Music Plugin",
             "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
             "group_name": [],
             "category": "entertainment",
             "plugin_id": "music.zuri.chat",
-            "organisation_id": org_id,
-            "room_id": roomid,
-            "user_id": user_id,
+            "organisation_id": "",
+            "room_id": "",
+            "user_id": "",
             "show_group": False,
-            "button_url": f"/music",
-            "public_rooms": [pub_room],
-            # "starred" : [],
-            "joined_rooms": [pub_room],
+            "button_url": "/music",
+            "public_rooms": [],
+            "joined_rooms": [],
         }
-
-        if request.GET.get("org") and request.GET.get("user"):
-            url = f"https://api.zuri.chat/sidebar?org={org_id}&user={user_id}"
-
-            r = requests.get(url)
-            if r.status_code == 200:
-
-                return Response(r)
-
+        
+        if org_id and user_id:
+            if "Authorization" in request.headers:
+                headers["Authorization"] = request.headers["Authorization"]
             else:
-
-                return Response(
-                    {
-                        "name": "Music Plugin",
-                        "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                        "plugin_id": "music.zuri.chat",
-                        "organisation_id": org_id,
-                        "room_id": roomid,
-                        "user_id": user_id,
-                        "group_name": [],
-                        "show_group": False,
-                        "button_url": f"/music",
-                        "category": "entertainment",
-                        "public_rooms": [pub_room],
-                        "joined_rooms": [pub_room],
-                    }
-                )
+                headers["Cookie"] = request.headers["Cookie"]
+            org_members = requests.request(
+                "GET",
+                url=url,
+                headers=headers,
+            )
+            
+            if org_members.status_code == 200:
+                members = org_members.json()["data"]
+                for user in members:
+                    if user_id == user["_id"]:
+                        sidebar_data = sidebar
+                        sidebar_data["organisation_id"] = org_id
+                        sidebar_data["room_id"] = room_id
+                        sidebar_data["user_id"] = user_id
+                        sidebar_data["public_rooms"] = pub_room
+                        sidebar_data["joined_rooms"] = pub_room
+                        
+                        sidebar_update_payload = {
+                                    "event": "sidebar_update",
+                                    "plugin_id": "music.zuri.chat",
+                                    "data": sidebar_data
+                                }
+                        return Response(sidebar_update_payload, status=status.HTTP_200_OK)
+                return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
+        return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
 
     def is_valid(param):
         return param != "" and param is not None
@@ -554,34 +553,40 @@ class RoomDetailView(APIView):
 
 class DeleteRoomView(APIView):
 
-    serializer_class = RoomSerializer
-
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        description="view and delete rooms",
-        methods=["GET", "POST"],
+        methods=["DELETE"]
     )
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
+    def delete(self, request, *args, **kwargs):
+        org_id = kwargs.get("org_id")
+        room_id = kwargs.get("_id")
+        collection = settings.ROOM_COLLECTION
+        filter_data = {"organization_id": org_id}
+        
+        try:
+            room = read_data(
+                collection, object_id=room_id, filter_data=filter_data
+            )
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return None
 
-    def post(self, request, *args, **kwargs):
-        serializer = RoomSerializer(data=request.data)
+        if room:
+            if room["status"] == 200:
+                if room['data']['_id'] == room_id:
+                    response = delete_data(
+                        collection, object_id=room_id
+                    )
+                    if response["status"] == 200:
+                        return Response(data=response, status=status.HTTP_200_OK)
+                        #centrifugo_post(plugin_id, {"event": "room deleted", "data": response})
 
-        if serializer.is_valid():
-            object_id = request.data["_id"]
+                    return Response(data={"room not deleted"}, status=status.HTTP_424_FAILED_DEPENDENCY)
+                return Response(data={"invalid room"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(data={room["message"]:"room not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(data={"invalid room_id"}, status=status.HTTP_404_NOT_FOUND)
 
-            data = delete_data(settings.ROOM_COLLECTION, object_id=object_id)
-
-            updated_data = read_data(settings.ROOM_COLLECTION)
-
-            centrifugo_post(plugin_id, {"event": "room deleted", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # Note: use {"id": ""} to delete
 
 
 class CreateRoom(APIView):  # to create a new room(functional)
