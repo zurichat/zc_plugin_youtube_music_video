@@ -67,6 +67,13 @@ class SongSerializer(serializers.Serializer):
         return str()
 
 
+class LikeSongSerializer(serializers.Serializer):
+    song_id = serializers.CharField(max_length=100, required=False)
+    memberId = serializers.ListField(
+        child=serializers.CharField(max_length=100), allow_empty=False
+    )
+
+
 class SongLikeCountSerializer(serializers.Serializer):
 
     songId = serializers.CharField(max_length=100, required=False)
@@ -74,14 +81,15 @@ class SongLikeCountSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return songLikeCount(**validated_data)
-    
+
     def update(self, instance, validated_data):
-        
+
         instance.songId = validated_data.get("songId", instance.songId)
         instance.userId = validated_data.get("userId", instance.userId)
 
     def __str__(self):
         return str()
+
 class CommentSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
