@@ -1,4 +1,4 @@
-from music.models import Comment, Member, Room, Song
+from music.models import Comment, Member, Room, Song, songLikeCount
 from rest_framework import serializers
 
 
@@ -43,6 +43,9 @@ class SongSerializer(serializers.Serializer):
     )
     time = serializers.IntegerField(required=False)
 
+    # def total_likes(self):
+    #     return self.likedBy.count()
+
     def create(self, validated_data):
         return Song(**validated_data)
 
@@ -70,6 +73,22 @@ class LikeSongSerializer(serializers.Serializer):
         child=serializers.CharField(max_length=100), allow_empty=False
     )
 
+
+class SongLikeCountSerializer(serializers.Serializer):
+
+    songId = serializers.CharField(max_length=100, required=False)
+    userId = serializers.CharField(max_length=100, required=False)
+
+    def create(self, validated_data):
+        return songLikeCount(**validated_data)
+
+    def update(self, instance, validated_data):
+
+        instance.songId = validated_data.get("songId", instance.songId)
+        instance.userId = validated_data.get("userId", instance.userId)
+
+    def __str__(self):
+        return str()
 
 class CommentSerializer(serializers.Serializer):
 
