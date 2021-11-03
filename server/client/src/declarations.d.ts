@@ -37,3 +37,7 @@ declare module "*.svg" {
 	const src: string;
 	export default src;
 }
+
+declare module "@zuri/utilities" {
+	export const GetUserInfo, GetWorkspaceUser, SubscribeToChannel;
+}
