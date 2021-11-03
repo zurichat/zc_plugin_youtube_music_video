@@ -229,6 +229,52 @@ class SongView(APIView):
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":"", "time":""} in the payload
 
 
+class songLikeCountView(APIView):
+    serializer_class = SongLikeCountSerializer
+
+    @extend_schema(
+        request=SongLikeCountSerializer,
+        responses={200: SongLikeCountSerializer},
+        description="song likes/unlikes count",
+        methods=["POST"],
+    )
+    def post(self,request, *args, **kwargs):
+        serializer = SongLikeCountSerializer(data=request.data)
+        x = DataStorage()
+        org_id = settings.ORGANIZATON_ID
+        x.organization_id = org_id
+
+        if serializer.is_valid():
+            songId = request.data["songId"]
+            userId = request.data["userId"]
+        
+            songs = read_data(settings.SONG_COLLECTION, object_id=songId)
+            likedBy = songs["data"]["likedBy"]
+            
+            if userId in likedBy:
+                likedBy.remove(userId)
+                unlike_count = len(likedBy)
+                x.update("songs", songId, {"likedBy":likedBy})
+                
+                return Response({
+                    "unlikedBy": userId,
+                    "songId": songId,
+                    "total_likes": unlike_count,
+                }, status=status.HTTP_200_OK)
+
+            else:
+                likedBy.append(userId)
+                like_count = len(likedBy)
+                x.update("songs", songId, {"likedBy":likedBy})
+                
+                return Response({
+                    "likedBy": userId,
+                    "songId": songId,
+                    "total_likes": like_count,
+                }, status=status.HTTP_200_OK)
+                    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+            
 class DeleteSongView(APIView):
     serializer_class = SongSerializer
 
