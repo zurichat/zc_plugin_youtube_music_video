@@ -1,127 +1,125 @@
-import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
-import ChatHeader from "./common/chatHeader";
-import ChatItem from "./common/chatItem";
-import ChatInput from "./common/chatInput";
+import ChatHeader from './common/chatHeader';
+import ChatItem from './common/chatItem';
+import ChatInput from './common/chatInput';
 
-import { selectChats, setChats } from "../app/chatsSlice";
-import { selectShowChat } from "../app/uiSlice";
-import { syncArray } from "../utils/syncArray";
-import chatService from "../services/chatService";
-import userService from "../services/userService";
-import { useAppDispatch } from "../app/hooks";
+import { selectChats, setChats } from '../app/chatsSlice';
+import { selectShowChat } from '../app/uiSlice';
+import { syncArray } from '../utils/syncArray';
+import chatService from '../services/chatService';
+import userService from '../services/userService';
+import { useAppDispatch } from '../app/hooks';
 
 function Chat(props) {
-	const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-	const chats = useSelector(selectChats);
-	const showChat = useSelector(selectShowChat);
-	const scroller = useRef(null);
-	//const [ chats, setChats] = useState(chat);
+  const chats = useSelector(selectChats);
+  const showChat = useSelector(selectShowChat);
+  const scroller = useRef(null);
+  // const [ chats, setChats] = useState(chat);
 
-	/*useEffect( () => {
+  /* useEffect( () => {
     setChats(syncArray(chats, chat));
     console.log(chats);
     console.log(chat);
-  }, [chat]);*/
+  }, [chat]); */
 
-	const scrollToBottom = () => {
-		scroller.current.scrollIntoView(false);
-	};
+  const scrollToBottom = () => {
+    scroller.current.scrollIntoView(false);
+  };
 
-	const [workspaceUsers, setWorkspaceUsers] = useState([] as User[]);
+  const [workspaceUsers, setWorkspaceUsers] = useState([] as User[]);
 
-	useEffect(() => {
-		userService.getWorkspaceUsers().then(setWorkspaceUsers).catch(console.log);
-	}, []);
+  useEffect(() => {
+    userService.getWorkspaceUsers().then(setWorkspaceUsers).catch(console.log);
+  }, []);
 
-	useEffect(() => {
-		if (showChat) {
-			scrollToBottom();
-		}
-	});
+  useEffect(() => {
+    if (showChat) {
+      scrollToBottom();
+    }
+  });
 
-	if (!showChat) return null;
+  if (!showChat) return null;
 
-	function handleFocus() {
-		const mediaQuery = window.matchMedia("(max-width: 1000px)");
-		const mediaQueryPhone = window.matchMedia("(max-width: 450px)");
-		const chatItemGroup =
-			document.querySelector<HTMLElement>(".chat-item-group");
-		const chatWrapper = document.querySelector<HTMLElement>(".chat-wrapper");
+  function handleFocus() {
+    const mediaQuery = window.matchMedia('(max-width: 1000px)');
+    const mediaQueryPhone = window.matchMedia('(max-width: 450px)');
+    const chatItemGroup =			document.querySelector<HTMLElement>('.chat-item-group');
+    const chatWrapper = document.querySelector<HTMLElement>('.chat-wrapper');
 
-		if (mediaQueryPhone.matches) {
-			chatItemGroup.style.maxHeight = "180px";
-			chatWrapper.style.position = "fixed";
-			chatWrapper.style.top = "40px";
-		} else if (mediaQuery.matches) {
-			chatItemGroup.style.maxHeight = "200px";
-			chatWrapper.style.position = "fixed";
-			chatWrapper.style.top = "60px";
-		}
-	}
+    if (mediaQueryPhone.matches) {
+      chatItemGroup.style.maxHeight = '180px';
+      chatWrapper.style.position = 'fixed';
+      chatWrapper.style.top = '40px';
+    } else if (mediaQuery.matches) {
+      chatItemGroup.style.maxHeight = '200px';
+      chatWrapper.style.position = 'fixed';
+      chatWrapper.style.top = '60px';
+    }
+  }
 
-	function handleBlur() {
-		const mediaQuery = window.matchMedia("(max-width: 1000px)");
+  function handleBlur() {
+    const mediaQuery = window.matchMedia('(max-width: 1000px)');
 
-		const chatItemGroup =
-			document.querySelector<HTMLElement>(".chat-item-group");
+    const chatItemGroup =			document.querySelector<HTMLElement>('.chat-item-group');
 
-		const chatWrapper = document.querySelector<HTMLElement>(".chat-wrapper");
+    const chatWrapper = document.querySelector<HTMLElement>('.chat-wrapper');
 
-		if (mediaQuery.matches) {
-			chatItemGroup.style.maxHeight = "450px";
-			chatWrapper.style.position = "fixed";
-			chatWrapper.style.top = "70px";
-		}
-	}
+    if (mediaQuery.matches) {
+      chatItemGroup.style.maxHeight = '450px';
+      chatWrapper.style.position = 'fixed';
+      chatWrapper.style.top = '70px';
+    }
+  }
 
-	const Cancel = (id, message) => {
-		const test = chats.find(chat => chat.id === id && chat.message === message);
-		let list = [];
-		chats.map(ch => {
-			if (ch.message !== test.message) list.push(ch);
-		});
-		//setChats(newchats);
-		dispatch(setChats(list));
-	};
+  const Cancel = (id, message) => {
+    const test = chats.find((chat) => chat.id === id && chat.message === message);
+    const list = [];
+    chats.map((ch) => {
+      if (ch.message !== test.message) list.push(ch);
+    });
+    // setChats(newchats);
+    dispatch(setChats(list));
+  };
 
-	const Resend = (id, message) => {
-		let test = chats.find(chat => chat.id === id && chat.message === message);
-		let list = [];
-		chats.map(ch => {
-			if (ch.message !== test.message) list.push(ch);
-		});
-		//setChats(newchats);
-		dispatch(setChats(list));
-		chatService.addChat({ ...test, failed: false });
-	};
+  const Resend = (id, message) => {
+    const test = chats.find((chat) => chat.id === id && chat.message === message);
+    const list = [];
+    chats.map((ch) => {
+      if (ch.message !== test.message) list.push(ch);
+    });
+    // setChats(newchats);
+    dispatch(setChats(list));
+    chatService.addChat({ ...test, failed: false });
+  };
 
-	const items = chat => {
-		const y = {
-			onCancel: Cancel,
-			onResend: Resend,
-			...chat
-		};
-		return y;
-	};
+  const items = (chat) => {
+    const y = {
+      onCancel: Cancel,
+      onResend: Resend,
+      ...chat,
+    };
+    return y;
+  };
 
-	return (
-		<Wrapper className="chat-wrapper">
-			<ChatHeader />
+  return (
+    <Wrapper className="chat-wrapper">
+      <ChatHeader />
 
-			<div className="chat-item-group">
-				{chats.map((chat, index) => (
-					<ChatItem key={index} {...items(chat)} users={workspaceUsers} />
-				))}
+      <div className="chat-item-group">
+        {chats.map((chat, index) => (
+          <ChatItem key={index} {...items(chat)} users={workspaceUsers} />
+        ))}
 
-				<div className="scroller" ref={scroller}></div>
-			</div>
-			<ChatInput handleFocus={handleFocus} handleBlur={handleBlur} />
-		</Wrapper>
-	);
+        <div className="scroller" ref={scroller} />
+      </div>
+      <ChatInput handleFocus={handleFocus} handleBlur={handleBlur} />
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`

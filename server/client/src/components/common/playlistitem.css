@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap");
 * {
 	padding: 0;
 	margin: 0;
@@ -6,10 +6,10 @@
 	text-decoration: none;
 	font-family: lato;
 }
-.container{
+.container {
 	margin-top: 3em !important;
 	display: grid;
-    grid-template-columns:14% 52% 20% 20%;
+	grid-template-columns: 14% 52% 20% 20%;
 	align-items: center;
 	padding-right: 1em;
 	padding-left: 1em;
@@ -17,15 +17,14 @@
 	width: 100%;
 	margin: auto;
 	box-sizing: border-box;
-    box-shadow: 0 5px 10px rgba(0, 0, 0,0.2);
-
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
-.para{
+.para {
 	display: none;
 }
-.container-one{
+.container-one {
 	display: grid;
-    grid-template-columns:14% 52% 20% 20%;
+	grid-template-columns: 14% 52% 20% 20%;
 	align-items: center;
 	padding-right: 1em;
 	padding-left: 1em;
@@ -33,104 +32,89 @@
 	width: 100%;
 	margin: auto;
 	box-sizing: border-box;
-    box-shadow: 0 5px 10px rgba(0, 0, 0,0.2);
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
-.playlistclass{
+.playlistclass {
 	padding-bottom: 1em;
 }
-.playlistclass h3{
+.playlistclass h3 {
+	font-family: "Lato";
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 700;
 
-	font-family: 'Lato';
-    font-size: 12px;
-font-style: normal;
-font-weight: 700;
-
-letter-spacing: 0px;
-text-align: left;
-
-
-
+	letter-spacing: 0px;
+	text-align: left;
 }
-.playlistclass p{
+.playlistclass p {
 	font-size: 8px;
 	line-height: 2em;
 	font-weight: 400;
 
-	font-family: 'Lato';
-font-size: 10px;
-font-style: normal;
-font-weight: 500;
-line-height: 20px;
-letter-spacing: 0px;
-text-align: left;
-
-
-
+	font-family: "Lato";
+	font-size: 10px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 20px;
+	letter-spacing: 0px;
+	text-align: left;
 }
-.img{
+.img {
 	width: 40px;
-padding-bottom: 1em;
-
+	padding-bottom: 1em;
 }
-.paragraph p{
+.paragraph p {
 	font-size: 9px;
 	padding-right: 3em;
-    padding-bottom: 1em !important;
-
+	padding-bottom: 1em !important;
 }
-.vector1{
+.vector1 {
 	padding-right: 2em;
-    padding-bottom: 1em;
-width: 43px;
+	padding-bottom: 1em;
+	width: 43px;
 }
-.vector2{
-    padding-bottom: 1em;
-
+.vector2 {
+	padding-bottom: 1em;
 }
-.vector11{
+.vector11 {
 	width: 10px;
-
 }
-@media(min-width: 768px){
-	body{
+@media (min-width: 768px) {
+	body {
 		width: 50%;
 		margin: auto;
 	}
-	.para{
+	.para {
 		display: none;
 	}
-
 }
-@media(min-width: 1024px){
-	body{
+@media (min-width: 1024px) {
+	body {
 		width: 75%;
 		margin: auto;
 	}
 
-	.playlistclass h3{
+	.playlistclass h3 {
 		font-size: 14px;
-
 	}
-	.playlistclass p{
+	.playlistclass p {
 		font-size: 12px;
 		line-height: 2.5em;
-
 	}
-	.para{
+	.para {
 		display: block;
 	}
-	.para p{
-		padding-bottom: 1em ;
+	.para p {
+		padding-bottom: 1em;
 		font-size: 14px;
-
 	}
-	.paragraph p{
+	.paragraph p {
 		font-size: 12px;
 	}
-	.container{
+	.container {
 		margin-top: 3em !important;
 		display: grid;
-		grid-template-columns:10% 45% 15% 15% 40%;
+		grid-template-columns: 10% 45% 15% 15% 40%;
 		align-items: center;
 		padding-right: 1em;
 		padding-left: 1em;
@@ -138,12 +122,11 @@ width: 43px;
 		width: 100%;
 		margin: auto;
 		box-sizing: border-box;
-		box-shadow: 0 5px 10px rgba(0, 0, 0,0.2);
-
+		box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 	}
-	.container-one{
+	.container-one {
 		display: grid;
-	grid-template-columns: 10% 45% 15% 15% 40%;
+		grid-template-columns: 10% 45% 15% 15% 40%;
 		align-items: center;
 		padding-right: 1em;
 		padding-left: 1em;
@@ -151,55 +134,48 @@ width: 43px;
 		width: 100%;
 		margin: auto;
 		box-sizing: border-box;
-		box-shadow: 0 5px 10px rgba(0, 0, 0,0.2);
+		box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 	}
-	.img{
+	.img {
 		width: 60px;
-
-
 	}
-	.vector1{
+	.vector1 {
 		padding-right: 2em;
 		padding-bottom: 1em;
 		width: 50px;
 	}
-	.vector2{
+	.vector2 {
 		padding-bottom: 1em;
 		width: 20px;
 		padding-right: 0.5em;
 	}
-
 }
-@media(min-width: 1440px){
-	body{
+@media (min-width: 1440px) {
+	body {
 		width: 70%;
 		margin: auto;
 	}
-	.playlistclass h3{
+	.playlistclass h3 {
 		font-size: 20px;
-
 	}
-	.playlistclass p{
+	.playlistclass p {
 		font-size: 15px;
 		line-height: 2.5em;
-
-
 	}
-	.para{
+	.para {
 		display: block;
 	}
-	.para p{
-
+	.para p {
 		padding-bottom: 1em;
 		font-size: 16px;
 	}
-	.paragraph p{
+	.paragraph p {
 		font-size: 16px;
 	}
-	.container{
+	.container {
 		margin-top: 3em !important;
 		display: grid;
-		grid-template-columns:8% 45% 15% 15% 40%;
+		grid-template-columns: 8% 45% 15% 15% 40%;
 		align-items: center;
 		padding-right: 1em;
 		padding-left: 1em;
@@ -207,12 +183,11 @@ width: 43px;
 		width: 100%;
 		margin: auto;
 		box-sizing: border-box;
-		box-shadow: 0 5px 10px rgba(0, 0, 0,0.2);
-
+		box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 	}
-	.container-one{
+	.container-one {
 		display: grid;
-	grid-template-columns: 8% 45% 15% 15% 40%;
+		grid-template-columns: 8% 45% 15% 15% 40%;
 		align-items: center;
 		padding-right: 1em;
 		padding-left: 1em;
@@ -220,22 +195,19 @@ width: 43px;
 		width: 100%;
 		margin: auto;
 		box-sizing: border-box;
-		box-shadow: 0 5px 10px rgba(0, 0, 0,0.2);
+		box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 	}
-	.img{
+	.img {
 		width: 60px;
-
-
 	}
-	.vector1{
+	.vector1 {
 		padding-right: 2em;
 		padding-bottom: 1em;
 		width: 50px;
 	}
-	.vector2{
+	.vector2 {
 		padding-bottom: 1em;
 		width: 20px;
 		padding-right: 0.5em;
 	}
-
 }

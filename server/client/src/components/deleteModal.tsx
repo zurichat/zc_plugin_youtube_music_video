@@ -1,73 +1,73 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import styled from "styled-components";
-import Close from "../media/close-black.svg";
-import { selectUpdateId, updatedSongId } from "../app/deleteSongSlice";
-import { selectShowDeleteModal, showedDeleteModal } from "../app/uiSlice";
-import songService from "../services/songService";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import styled from 'styled-components';
+import Close from '../media/close-black.svg';
+import { selectUpdateId, updatedSongId } from '../app/deleteSongSlice';
+import { selectShowDeleteModal, showedDeleteModal } from '../app/uiSlice';
+import songService from '../services/songService';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 
 const DeleteModal = () => {
-	const dispatch = useAppDispatch();
-	const showDeleteModal = useAppSelector(selectShowDeleteModal);
+  const dispatch = useAppDispatch();
+  const showDeleteModal = useAppSelector(selectShowDeleteModal);
 
-	useEffect(() => {
-		document.addEventListener("keydown", handleEscape);
-	});
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscape);
+  });
 
-	function handleClose() {
-		return dispatch(showedDeleteModal(false));
-	}
+  function handleClose() {
+    return dispatch(showedDeleteModal(false));
+  }
 
-	const id = useSelector(selectUpdateId);
+  const id = useSelector(selectUpdateId);
 
-	function handleDelete() {
-		dispatch(showedDeleteModal(false));
-		songService
-			.deleteSong(id)
-			.then(res => {
-				if (res.status === 200) toast.success("Deleted successfully");
-				dispatch(updatedSongId(""));
-			})
-			.catch(err => {
-				toast.error(`${err.message}`);
-				console.log(err.message);
-			});
-	}
+  function handleDelete() {
+    dispatch(showedDeleteModal(false));
+    songService
+      .deleteSong(id)
+      .then((res) => {
+        if (res.status === 200) toast.success('Deleted successfully');
+        dispatch(updatedSongId(''));
+      })
+      .catch((err) => {
+        toast.error(`${err.message}`);
+        console.log(err.message);
+      });
+  }
 
-	function handleEscape(e) {
-		if (e.key === "Escape" || e.target.dataset.close === "close") {
-			return handleClose();
-		}
-	}
+  function handleEscape(e) {
+    if (e.key === 'Escape' || e.target.dataset.close === 'close') {
+      return handleClose();
+    }
+  }
 
-	if (!showDeleteModal) return null;
+  if (!showDeleteModal) return null;
 
-	return (
-		<Wrapper role="dialog" onClick={handleEscape} data-close="close">
-			<div className="container">
-				<div className="header">
-					<h6>Are you sure?</h6>
-					<button autoFocus className="cancel-btn" onClick={handleClose}>
-						<img src={Close} alt="" />
-					</button>
-				</div>
-				<p>
-					You’re about to permanently delete this song. This action cannot be
-					undone
-				</p>
-				<div className="btn-group">
-					<button className="secondary-btn" onClick={handleClose}>
-						No, cancel
-					</button>
-					<button className="danger-btn" onClick={handleDelete}>
-						Yes, Delete
-					</button>
-				</div>
-			</div>
-		</Wrapper>
-	);
+  return (
+    <Wrapper role="dialog" onClick={handleEscape} data-close="close">
+      <div className="container">
+        <div className="header">
+          <h6>Are you sure?</h6>
+          <button autoFocus className="cancel-btn" onClick={handleClose}>
+            <img src={Close} alt="" />
+          </button>
+        </div>
+        <p>
+          You’re about to permanently delete this song. This action cannot be
+          undone
+        </p>
+        <div className="btn-group">
+          <button className="secondary-btn" onClick={handleClose}>
+            No, cancel
+          </button>
+          <button className="danger-btn" onClick={handleDelete}>
+            Yes, Delete
+          </button>
+        </div>
+      </div>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`

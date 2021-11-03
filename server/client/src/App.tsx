@@ -1,31 +1,31 @@
-import { useEffect } from "react";
-import styled from "styled-components";
+import { useEffect } from 'react';
+import styled from 'styled-components';
 
-import MusicRoom from "./components/musicRoom";
-import DeleteModal from "./components/deleteModal";
+import MusicRoom from './components/musicRoom';
+import DeleteModal from './components/deleteModal';
 
-import chatMediaQuery from "./utils/chatMedia";
+import chatMediaQuery from './utils/chatMedia';
 
-import eventService from "./services/eventService";
+import eventService from './services/eventService';
 
-import "moment-timezone";
-import "react-toastify/dist/ReactToastify.css";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import "./App.css";
+import 'moment-timezone';
+import 'react-toastify/dist/ReactToastify.css';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import './App.css';
 
 function App() {
-	useEffect(() => {
-		eventService.connect();
-		chatMediaQuery(); // toggle chat display based on screen size.
-	}, []);
+  useEffect(() => {
+    eventService.connect();
+    chatMediaQuery(); // toggle chat display based on screen size.
+  }, []);
 
-	return (
-		<Wrapper>
-			<DeleteModal />
+  return (
+    <Wrapper>
+      <DeleteModal />
 
-			<MusicRoom />
-		</Wrapper>
-	);
+      <MusicRoom />
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`

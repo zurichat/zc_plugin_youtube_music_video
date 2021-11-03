@@ -5,9 +5,9 @@ import Home from './common/Home';
 function LandingPage() {
   return (
     <div className="App">
-      <Header></Header>
-      <Home></Home>
-      <Footer></Footer>
+      <Header />
+      <Home />
+      <Footer />
     </div>
   );
 }

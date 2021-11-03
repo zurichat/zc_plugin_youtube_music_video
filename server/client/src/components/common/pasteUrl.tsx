@@ -1,118 +1,118 @@
-import { useState } from "react";
-import styled from "styled-components";
-import { FiX } from "react-icons/fi";
-import { connect } from "react-redux";
-import { toast } from "react-toastify";
+import { useState } from 'react';
+import styled from 'styled-components';
+import { FiX } from 'react-icons/fi';
+import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 
-import { RootState } from "../../app/store";
+import { RootState } from '../../app/store';
 import {
-	loaded,
-	selectIsLoading,
-	selectShowPasteUrl,
-	showedPasteUrl
-} from "../../app/uiSlice";
+  loaded,
+  selectIsLoading,
+  selectShowPasteUrl,
+  showedPasteUrl,
+} from '../../app/uiSlice';
 
-import songService from "../../services/songService";
-import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
-import { selectCurrentUser } from "../../app/usersSlice";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import songService from '../../services/songService';
+import { getSongIdFromYouTubeUrl } from '../../utils/idGenerator';
+import { selectCurrentUser } from '../../app/usersSlice';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 
 interface Props {
 	getSongByUrl: (url: string) => Song;
 }
 
 const PasteUrl = (props: Props) => {
-	const [url, setUrl] = useState("");
+  const [url, setUrl] = useState('');
 
-	const dispatch = useAppDispatch();
-	const isLoading = useAppSelector(selectIsLoading);
-	const { name: addedBy, id: userId } = useAppSelector(selectCurrentUser);
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(selectIsLoading);
+  const { name: addedBy, id: userId } = useAppSelector(selectCurrentUser);
 
-	const showPasteUrl = useAppSelector(selectShowPasteUrl);
+  const showPasteUrl = useAppSelector(selectShowPasteUrl);
 
-	if (!showPasteUrl) return null;
+  if (!showPasteUrl) return null;
 
-	const handleChange = (event: any) => setUrl(event.target.value);
+  const handleChange = (event: any) => setUrl(event.target.value);
 
-	const handleSubmit = async (e: any) => {
-		e.preventDefault();
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
 
-		if (props.getSongByUrl(url)) {
-			return toast.error("This song already exists.") && setUrl("");
-		}
+    if (props.getSongByUrl(url)) {
+      return toast.error('This song already exists.') && setUrl('');
+    }
 
-		if (isLoading) return;
+    if (isLoading) return;
 
-		dispatch(loaded(true));
+    dispatch(loaded(true));
 
-		try {
-			getSongIdFromYouTubeUrl(url);
+    try {
+      getSongIdFromYouTubeUrl(url);
 
-			await songService.addSong({
-				url,
-				addedBy,
-				userId,
-				likedBy: [],
-				time: `${Date.now()}`
-			});
+      await songService.addSong({
+        url,
+        addedBy,
+        userId,
+        likedBy: [],
+        time: `${Date.now()}`,
+      });
 
-			dispatch(showedPasteUrl(false));
+      dispatch(showedPasteUrl(false));
 
-			toast.success("Added Successfully");
-			setUrl("");
-		} catch (e) {
-			toast.error(`Error: ${e.message}`);
-		}
+      toast.success('Added Successfully');
+      setUrl('');
+    } catch (e) {
+      toast.error(`Error: ${e.message}`);
+    }
 
-		dispatch(loaded(false));
-	};
+    dispatch(loaded(false));
+  };
 
-	const handleEscape = ev => {
-		const escape = ev.code || ev.key;
+  const handleEscape = (ev) => {
+    const escape = ev.code || ev.key;
 
-		if (escape === "Escape" || ev.target.dataset.close === "close") {
-			dispatch(showedPasteUrl(false));
-		}
-	};
+    if (escape === 'Escape' || ev.target.dataset.close === 'close') {
+      dispatch(showedPasteUrl(false));
+    }
+  };
 
-	return (
-		<Wrapper onClick={handleEscape} data-close="close">
-			<form onSubmit={handleSubmit} className="submit-form">
-				<div>
-					<label htmlFor="" className="form-label">
-						Paste Youtube URL here
-						<FiX
-							style={{
-								color: "#000",
-								background: "#fff",
-								width: "1rem",
-								height: "1rem",
-								cursor: "pointer"
-							}}
-							onClick={() => dispatch(showedPasteUrl(false))}
-						/>
-					</label>
-				</div>
+  return (
+    <Wrapper onClick={handleEscape} data-close="close">
+      <form onSubmit={handleSubmit} className="submit-form">
+        <div>
+          <label htmlFor="" className="form-label">
+            Paste Youtube URL here
+            <FiX
+              style={{
+							  color: '#000',
+							  background: '#fff',
+							  width: '1rem',
+							  height: '1rem',
+							  cursor: 'pointer',
+              }}
+              onClick={() => dispatch(showedPasteUrl(false))}
+            />
+          </label>
+        </div>
 
-				<div className="input-text-div">
-					<input
-						className="input-text"
-						type="text"
-						name=""
-						id=""
-						value={url}
-						onChange={handleChange}
-						onKeyDown={handleEscape}
-						autoFocus
-					/>
-				</div>
+        <div className="input-text-div">
+          <input
+            className="input-text"
+            type="text"
+            name=""
+            id=""
+            value={url}
+            onChange={handleChange}
+            onKeyDown={handleEscape}
+            autoFocus
+          />
+        </div>
 
-				<div className="input-submit-div">
-					<input className="input-submit" type="submit" value="Add" />
-				</div>
-			</form>
-		</Wrapper>
-	);
+        <div className="input-submit-div">
+          <input className="input-submit" type="submit" value="Add" />
+        </div>
+      </form>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.div`
@@ -182,7 +182,7 @@ const Wrapper = styled.div`
 `;
 
 const mapStateToProps = (state: RootState) => ({
-	getSongByUrl: url => state.songs.find(song => song.url === url)
+  getSongByUrl: (url) => state.songs.find((song) => song.url === url),
 });
 
 export default connect(mapStateToProps)(PasteUrl);

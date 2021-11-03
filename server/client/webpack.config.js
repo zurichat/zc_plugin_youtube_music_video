@@ -1,12 +1,12 @@
-const { merge } = require("webpack-merge");
-const singleSpaDefaults = require("webpack-config-single-spa-react-ts");
-const webpack = require("webpack");
+const { merge } = require('webpack-merge');
+const singleSpaDefaults = require('webpack-config-single-spa-react-ts');
+const webpack = require('webpack');
 // const path = require("path");
 
 module.exports = (webpackConfigEnv, argv) => {
   const defaultConfig = singleSpaDefaults({
-    orgName: "zuri",
-    projectName: "music-plugin",
+    orgName: 'zuri',
+    projectName: 'music-plugin',
     webpackConfigEnv,
     argv,
   });
