@@ -41,3 +41,7 @@ declare module "*.svg" {
 declare module "@zuri/utilities" {
 	export const GetUserInfo, GetWorkspaceUser, SubscribeToChannel;
 }
+
+declare module "@zuri/zuri-ui" {
+	export const MessageBoard;
+}
