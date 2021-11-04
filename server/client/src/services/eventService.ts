@@ -1,5 +1,4 @@
-// @ts-ignore;
-import { SubscribeToChannel } from '@zuri/control';
+import { SubscribeToChannel } from "@zuri/utilities";
 
 import songService from './songService';
 import chatService from './chatService';
@@ -27,49 +26,50 @@ type PublishedMessage = {
 };
 
 const connect = () => {
-  // initialize store
-  songService.getSongs();
-  chatService.getChats();
+	// initialize store
+	songService.getSongs();
+	chatService.getChats();
 
-  SubscribeToChannel(httpService.room_id, (message: PublishedMessage) => {
-    const {
-      event,
-      data: { data },
-    } = message.data;
+	SubscribeToChannel(httpService.room_id, (message: PublishedMessage) => {
+		const {
+			event,
+			data: { data }
+		} = message.data;
 
-    console.log({ event, data });
+		console.log({ event, data });
 
-    if (!data) return null;
+		if (!data) return null;
 
-    switch (event) {
-      case 'added_song': {
-        if (data.length >= 0) dispatch(initializedSongs(data));
-        else dispatch(addedSong(data));
-        break;
-      }
+		switch (event) {
+			case "added_song": {
+				if (data.length >= 0) dispatch(initializedSongs(data));
+				else dispatch(addedSong(data));
+				break;
+			}
 
-      case 'added_chat': {
-        if (data.length >= 0) store.dispatch(setChats(data));
-        else store.dispatch(addedChat(data));
-        break;
-      }
+			case "added_chat": {
+				if (data.length >= 0) store.dispatch(setChats(data));
+				else store.dispatch(addedChat(data));
+				break;
+			}
 
-      case 'join_room': {
-        break;
-      }
+			// case "join_room": {
+			// 	break;
+			// }
 
-      case 'entered_room': {
-        break;
-      }
+			// case "entered_room": {
+			// 	break;
+			// }
 
-      case 'sidebar_update': {
-        break;
-      }
+			// case "sidebar_update": {
+			// 	break;
+			// }
 
-      default: {
-      }
-    }
-  });
+			default: {
+				console.log("default");
+			}
+		}
+	});
 };
 
 export default { connect };
