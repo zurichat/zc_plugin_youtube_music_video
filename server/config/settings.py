@@ -32,9 +32,10 @@ ALLOWED_HOSTS = [
     "zuri.chat",
     "music.zuri.chat",
     "staging.zuri.chat",
-    "159.65.123.65",
+    "178.63.43.138",
     "localhost",
     "127.0.0.1",
+    "127.0.0.1:22672",
     "*",
 ]
 
@@ -81,7 +82,7 @@ MIDDLEWARE = [
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
-    "159.65.123.65",
+    "178.63.43.138",
     # ...
 ]
 

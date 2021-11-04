@@ -1,0 +1,40 @@
+export declare const endpoints: {
+    songs: string;
+    currentsong: string;
+    deletesong: string;
+    songsearch: string;
+    likesong: string;
+    comments: string;
+    deletecomment: string;
+    updatecomment: string;
+    roomdetail: string;
+    deleteroom: string;
+    members: string;
+    adduser: string;
+    removeuser: string;
+    usercount: string;
+};
+declare const httpService: {
+    get: <T = any, R = import("axios").AxiosResponse<T>>(url: string, config?: import("axios").AxiosRequestConfig) => Promise<R>;
+    post: <T_1 = any, R_1 = import("axios").AxiosResponse<T_1>>(url: string, data?: any, config?: import("axios").AxiosRequestConfig) => Promise<R_1>;
+    put: <T_2 = any, R_2 = import("axios").AxiosResponse<T_2>>(url: string, data?: any, config?: import("axios").AxiosRequestConfig) => Promise<R_2>;
+    room_id: string;
+    org_id: string;
+    endpoints: {
+        songs: string;
+        currentsong: string;
+        deletesong: string;
+        songsearch: string;
+        likesong: string;
+        comments: string;
+        deletecomment: string;
+        updatecomment: string;
+        roomdetail: string;
+        deleteroom: string;
+        members: string;
+        adduser: string;
+        removeuser: string;
+        usercount: string;
+    };
+};
+export default httpService;
