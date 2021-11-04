@@ -7,7 +7,7 @@ staticfiles/
 /pythagorasenv
 DBName
 dist/
-PRs.md
+PR.md
 
 ### VirtualEnv template
 # Virtualenv
@@ -48,6 +48,7 @@ pip-selfcheck.json
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+/.vscode
 
 # Gradle and Maven with auto-import
 # When using Gradle or Maven with auto-import, you should exclude module files,
