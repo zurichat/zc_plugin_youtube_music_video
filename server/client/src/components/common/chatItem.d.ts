@@ -1,5 +1,5 @@
 /// <reference types="react" />
-declare function ChatItem({ onCancel, onResend, id, name, avatar, time, message, userId, notSent, failed, users, }: {
+declare function ChatItem({ onCancel, onResend, id, name, avatar, time, message, userId, notSent, failed, users }: {
     onCancel: any;
     onResend: any;
     id: any;

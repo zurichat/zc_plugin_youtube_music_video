@@ -1,4 +1,4 @@
-import { RootState } from './store';
+import { RootState } from "./store";
 export declare const setCurrentUser: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<User, string>, addedUser: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<User, string>, setUsers: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<User[], string>, removedUser: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<{
     id: string;
 }, string>, setMembership: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<boolean, string>;

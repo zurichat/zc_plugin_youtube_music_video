@@ -1,4 +1,4 @@
-import { ThunkAction, Action } from '@reduxjs/toolkit';
+import { ThunkAction, Action } from "@reduxjs/toolkit";
 declare const store: import("@reduxjs/toolkit").EnhancedStore<{
     users: {
         currentUser: User;

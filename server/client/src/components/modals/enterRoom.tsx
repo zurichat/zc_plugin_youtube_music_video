@@ -1,53 +1,53 @@
-import { toast } from 'react-toastify';
-import styled from 'styled-components';
-import userService from '../../services/userService';
-import { setMembership } from '../../app/usersSlice';
-import Button from '../common/button';
-import { useAppDispatch } from '../../app/hooks';
+import { toast } from "react-toastify";
+import styled from "styled-components";
+import userService from "../../services/userService";
+import { setMembership } from "../../app/usersSlice";
+import Button from "../common/button";
+import { useAppDispatch } from "../../app/hooks";
 
 interface Props {
 	isMember: boolean;
 }
 
 function EnterRoom(props: Props) {
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  if (props.isMember) return null;
+	if (props.isMember) return null;
 
-  const handleJoin = () => {
-    userService
-      .addMember()
-      .then(() => {
-        dispatch(setMembership(true));
-        toast.success('Successfully joined plugin');
-      })
-      .catch((error) => {
-        toast.error('An error occured. Please try again later.');
-        console.log(error);
-      });
-  };
+	const handleJoin = () => {
+		userService
+			.addMember()
+			.then(() => {
+				dispatch(setMembership(true));
+				toast.success("Successfully joined plugin");
+			})
+			.catch(error => {
+				toast.error("An error occured. Please try again later.");
+				console.log(error);
+			});
+	};
 
-  const handleDetails = () => {};
+	const handleDetails = () => {};
 
-  return (
-    <Wrapper>
-      <div className="enter-text">You are viewing Music Plugin</div>
+	return (
+		<Wrapper>
+			<div className="enter-text">You are viewing Music Plugin</div>
 
-      <div className="enter-btns">
-        <Button
-          color="secondary"
-          className="enter-join-btn"
-          onClick={handleJoin}
-        >
-          Join Plugin
-        </Button>
+			<div className="enter-btns">
+				<Button
+					color="secondary"
+					className="enter-join-btn"
+					onClick={handleJoin}
+				>
+					Join Plugin
+				</Button>
 
-        <Button color="primary" onClick={handleDetails}>
-          See More Details
-        </Button>
-      </div>
-    </Wrapper>
-  );
+				<Button color="primary" onClick={handleDetails}>
+					See More Details
+				</Button>
+			</div>
+		</Wrapper>
+	);
 }
 
 const Wrapper = styled.div`

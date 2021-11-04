@@ -1,4 +1,4 @@
-import { RootState } from './store';
+import { RootState } from "./store";
 export declare const addedChat: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<Chat, string>, setChats: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<Chat[], string>, failChat: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<Chat, string>, removeChat: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<{
     id: string;
 }, string>, sentChat: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<Chat, string>;

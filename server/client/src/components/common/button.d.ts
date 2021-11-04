@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 interface Props {
-    color?: 'primary' | 'secondary' | 'disabled';
+    color?: "primary" | "secondary" | "disabled";
     className?: string;
     onClick: () => void;
 }

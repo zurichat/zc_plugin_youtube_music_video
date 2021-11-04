@@ -1,101 +1,101 @@
-import styled from 'styled-components';
-import { ToastContainer } from 'react-toastify';
-import Parcel from 'single-spa-react/parcel';
+import styled from "styled-components";
+import { ToastContainer } from "react-toastify";
+import Parcel from "single-spa-react/parcel";
 
-import { MessageBoard } from '@zuri/zuri-ui';
-import { useEffect, useMemo, useState } from 'react';
-import { pluginHeader, headerConfig } from '../utils/config';
+import { pluginHeader, headerConfig } from "../utils/config";
 
 // @ts-ignore
+import { MessageBoard } from "@zuri/zuri-ui";
 
 // import RoomHeader from "./roomHeader";
-import Playlist from './playlist';
-import Chat from './chat';
-import PasteUrl from './common/pasteUrl';
-import EnterRoomModal from './modals/enterRoom';
+import Playlist from "./playlist";
+import Chat from "./chat";
+import PasteUrl from "./common/pasteUrl";
+import EnterRoomModal from "./modals/enterRoom";
 
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { selectShowPasteUrl } from '../app/uiSlice';
-import userService from '../services/userService';
-import { chatData } from '../utils/mockdata';
-import { selectIsMember, setMembership } from '../app/usersSlice';
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { selectShowPasteUrl } from "../app/uiSlice";
+import { useEffect, useMemo, useState } from "react";
+import userService from "../services/userService";
+import { chatData } from "../utils/mockdata";
+import { selectIsMember, setMembership } from "../app/usersSlice";
 
 function MusicRoom() {
-  const [members, setMembers] = useState([] as User[]);
-  const [reload, setReload] = useState(false);
+	const [members, setMembers] = useState([] as User[]);
+	const [reload, setReload] = useState(false);
 
-  const showPasteUrl = useAppSelector(selectShowPasteUrl);
-  const isMember = useAppSelector(selectIsMember);
+	const showPasteUrl = useAppSelector(selectShowPasteUrl);
+	const isMember = useAppSelector(selectIsMember);
 
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    userService.getMembers().then(setMembers).catch(console.log);
-    userService
-      .isMember()
-      .then((value) => dispatch(setMembership(value)))
-      .catch(console.log);
-  }, [reload, isMember]);
+	useEffect(() => {
+		userService.getMembers().then(setMembers).catch(console.log);
+		userService
+			.isMember()
+			.then(value => dispatch(setMembership(value)))
+			.catch(console.log);
+	}, [reload, isMember]);
 
-  const handleCreateRoomMessages = (message) => {
-    console.log('creating a message', message);
-  };
+	const handleCreateRoomMessages = message => {
+		console.log("creating a message", message);
+	};
 
-  const chatSidebarConfig = useMemo(
-    () => ({
-      sendChatMessageHandler: (msg) => {
-        // dispatch();
-      },
-      currentUserData: {
-        username: 'Aleey',
-        imageUrl: '',
-      },
-      messages: chatData(),
+	const chatSidebarConfig = useMemo(
+		() => ({
+			sendChatMessageHandler: msg => {
+				// dispatch();
+			},
+			currentUserData: {
+				username: "Aleey",
+				imageUrl: ""
+			},
+			messages: chatData(),
 
-      showChatSideBar: true,
-      chatHeader: 'Chats',
-    }),
-    [],
-  );
+			showChatSideBar: true,
+			chatHeader: "Chats"
+		}),
+		[]
+	);
 
-  return (
-    <Wrapper overflowMain={showPasteUrl}>
-      <div className="room-main">
-        {/* Modals */}
-        <PasteUrl />
-        <EnterRoomModal isMember={isMember} />
+	return (
+		<Wrapper overflowMain={showPasteUrl}>
+			<div className="room-main">
+				{/* Modals */}
+				<PasteUrl />
+				<EnterRoomModal isMember={isMember} />
 
-        <div className="toast-holder">
-          <ToastContainer
-            position="top-center"
-            theme="colored"
-            autoClose={3000}
-            hideProgressBar
-            toastClassName="toast-wrapper"
-            bodyClassName="toast-body"
-          />
-        </div>
+				<div className="toast-holder">
+					<ToastContainer
+						position="top-center"
+						theme="colored"
+						autoClose={3000}
+						hideProgressBar={true}
+						toastClassName="toast-wrapper"
+						bodyClassName="toast-body"
+					/>
+				</div>
 
-        <div className="plugin-header">
-          <Parcel
-            config={pluginHeader}
-            wrapWith="div"
-            wrapStyle={{ width: '100%' }}
-            headerConfig={headerConfig(members, () => setReload(!reload))}
-          />
-        </div>
+				<div className="plugin-header">
+					<Parcel
+						config={pluginHeader}
+						wrapWith="div"
+						wrapStyle={{ width: "100%" }}
+						headerConfig={headerConfig(members, () => setReload(!reload))}
+					/>
+				</div>
 
-        {/* <RoomHeader /> */}
+				{/* <RoomHeader /> */}
 
-        <Playlist />
-      </div>
+				<Playlist />
+			</div>
 
-      <div className="room-chat-container">
-        <Chat />
-        {/* <MessageBoard chatsConfig={chatSidebarConfig} /> */}
-      </div>
-    </Wrapper>
-  );
+			<div className="room-chat-container">
+				<Chat />
+				{/* <MessageBoard chatsConfig={chatSidebarConfig} /> */}
+			</div>
+		</Wrapper>
+	);
 }
 
 const Wrapper = styled.div<{ overflowMain: boolean }>`
@@ -115,7 +115,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 
 	.room-main {
 		flex-grow: 1;
-		overflow-y: ${(props) => (props.overflowMain ? 'hidden' : 'scroll')};
+		overflow-y: ${props => (props.overflowMain ? "hidden" : "scroll")};
 		position: relative;
 		margin-right: 10px;
 		background-color: white;

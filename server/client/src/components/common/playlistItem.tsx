@@ -1,14 +1,14 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { useEffect, useState } from 'react';
 import {
-  changedCurrentSong,
-  changedPlaying,
-  showedPlayer,
-} from '../../app/playerSlice';
-import LikeOptionCount from './likeOptionCount';
-import OptionMenu from './optionMenu';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+	changedCurrentSong,
+	changedPlaying,
+	showedPlayer
+} from "../../app/playerSlice";
+import LikeOptionCount from "./likeOptionCount";
+import OptionMenu from "./optionMenu";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 interface Props {
 	song: Song;
@@ -16,82 +16,73 @@ interface Props {
 }
 
 function PlaylistItem(props: Props) {
-  const {
-    title,
-    addedBy,
-    albumCover,
-    id: songId,
-    userId,
-    duration,
-    likedBy,
-    url,
-  } = props.song;
+	const {
+		title,
+		addedBy,
+		albumCover,
+		id: songId,
+		userId,
+		duration,
+		likedBy,
+		url
+	} = props.song;
 
-  const [showOption, setShowOption] = useState(false);
+	const [showOption, setShowOption] = useState(false);
 
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  const currentSongId = useAppSelector(
-    (_state: any) => _state.player.currentSongId,
-  );
+	const currentSongId = useAppSelector(
+		(_state: any) => _state.player.currentSongId
+	);
 
-  const user = props.users.find((user) => user.id === userId);
+	const user = props.users.find(user => user.id === userId);
 
-  const handlePlay = (e) => {
-    if (e.target.dataset.like) return;
-    if (e.target.dataset.option) return;
+	const handlePlay = e => {
+		if (e.target.dataset.like) return;
+		if (e.target.dataset.option) return;
 
-    dispatch(changedCurrentSong(props.song));
-    dispatch(showedPlayer(true));
-    dispatch(changedPlaying(true));
-  };
+		dispatch(changedCurrentSong(props.song));
+		dispatch(showedPlayer(true));
+		dispatch(changedPlaying(true));
+	};
 
-  const handleOption = (e) => {
-    setShowOption(e);
-  };
+	const handleOption = e => {
+		setShowOption(e);
+	};
 
-  useEffect(() => {
-    const onClickOutside = () => {
-      setShowOption(false);
-    };
-    window.addEventListener('click', onClickOutside), false;
-    return () => {
-      window.removeEventListener('click', onClickOutside);
-    };
-  }, []);
+	useEffect(() => {
+		const onClickOutside = () => {
+			setShowOption(false);
+		};
+		window.addEventListener("click", onClickOutside), false;
+		return () => {
+			window.removeEventListener("click", onClickOutside);
+		};
+	}, []);
 
-  return (
-    <Wrapper isPlaying={currentSongId === props.song.id}>
-      <OptionMenu
-        option={showOption}
-        toggleOption={handleOption}
-        {...{ url, songId, userId }}
-      />
+	return (
+		<Wrapper isPlaying={currentSongId === props.song.id}>
+			<OptionMenu
+				option={showOption}
+				toggleOption={handleOption}
+				{...{ url, songId, userId }}
+			/>
 
-      <div className="item-group-1">
-        <img src={albumCover} alt="album cover" className="item-albumCover" />
-        <div className="item-info">
-          <div className="item-title">{title}</div>
+			<div className="item-group-1">
+				<img src={albumCover} alt="album cover" className="item-albumCover" />
+				<div className="item-info">
+					<div className="item-title">{title}</div>
 
-          <div className="item-addedBy">
-            Added by
-            {' '}
-            <span>{user?.name ?? addedBy}</span>
-          </div>
-        </div>
-      </div>
+					<div className="item-addedBy">
+						Added by <span>{user?.name ?? addedBy}</span>
+					</div>
+				</div>
+			</div>
 
-      <LikeOptionCount
-        {...{
-				  songId,
-				  duration,
-				  likedBy,
-				  handleOption,
-        }}
-      />
-      <div className="handle-play" onClick={handlePlay} />
-    </Wrapper>
-  );
+			<LikeOptionCount {...{ songId, duration, likedBy, handleOption }} />
+			<div className="handle-play" onClick={handlePlay}></div>
+		</Wrapper>
+	);
 }
 
 const Wrapper = styled.div<{ isPlaying: boolean }>`
@@ -99,7 +90,7 @@ const Wrapper = styled.div<{ isPlaying: boolean }>`
 	box-sizing: border-box;
 	display: flex;
 	justify-content: space-between;
-	background: ${(props) => (props.isPlaying ? '#CBFFEE' : '#fff')};
+	background: ${props => (props.isPlaying ? "#CBFFEE" : "#fff")};
 	font-family: "Lato", sans-serif;
 	transition: all 200ms ease-in-out;
 	box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04);

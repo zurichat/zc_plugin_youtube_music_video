@@ -1,23 +1,23 @@
 import { SubscribeToChannel } from "@zuri/utilities";
 
-import songService from './songService';
-import chatService from './chatService';
+import songService from "./songService";
+import chatService from "./chatService";
 
-import { addedSong, initializedSongs } from '../app/songsSlice';
-import { setChats, addedChat } from '../app/chatsSlice';
-import store from '../app/store';
-import httpService from './httpService';
+import { addedSong, initializedSongs } from "../app/songsSlice";
+import { setChats, addedChat } from "../app/chatsSlice";
+import store from "../app/store";
+import httpService from "./httpService";
 
-const { dispatch } = store;
+const dispatch = store.dispatch;
 
 type PublishedMessage = {
 	data: {
 		event:
-			| 'added_song'
-			| 'added_chat'
-			| 'join_room'
-			| 'entered_room'
-			| 'sidebar_update';
+			| "added_song"
+			| "added_chat"
+			| "join_room"
+			| "entered_room"
+			| "sidebar_update";
 
 		data: {
 			data: any;

@@ -1,96 +1,94 @@
-import { useState } from 'react';
-import styled from 'styled-components';
+import { useState } from "react";
+import styled from "styled-components";
 
-import MemberItem from './common/memberItem';
-import { selectShowMemberList, showedMemberList } from '../app/uiSlice';
+import MemberItem from "./common/memberItem";
+import { selectShowMemberList, showedMemberList } from "../app/uiSlice";
 
-import HeaderIcon from '../media/member-list-icon.svg';
-import CloseIcon from '../media/close-black.svg';
-import SearchIcon from '../media/search.svg';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
+import HeaderIcon from "../media/member-list-icon.svg";
+import CloseIcon from "../media/close-black.svg";
+import SearchIcon from "../media/search.svg";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 
 interface Props {
 	members: User[];
 }
 
 const MemberList = ({ members }: Props) => {
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  const showMemberList = useAppSelector(selectShowMemberList);
+	const showMemberList = useAppSelector(selectShowMemberList);
 
-  const [query, setQuery] = useState('');
+	const [query, setQuery] = useState("");
 
-  if (!showMemberList) return null;
+	if (!showMemberList) return null;
 
-  const handleEscape = (e) => {
-    const { target, code, key } = e;
+	const handleEscape = e => {
+		const { target, code, key } = e;
 
-    const ckey = code || key;
-    if (ckey === 'Escape' || target.dataset.close === 'close') {
-      dispatch(showedMemberList(false));
-    }
-  };
+		const ckey = code || key;
+		if (ckey === "Escape" || target.dataset.close === "close") {
+			dispatch(showedMemberList(false));
+		}
+	};
 
-  const filtered = query
-    ? members.filter((user) => user.name.toLowerCase().includes(query.toLowerCase()))
-    : members;
+	const filtered = query
+		? members.filter(user =>
+				user.name.toLowerCase().includes(query.toLowerCase())
+		  )
+		: members;
 
-  return (
-    <Wrapper onClick={handleEscape} data-close="close">
-      <div className="container">
-        <div className="header-container">
-          <div className="title-container">
-            <div className="align-center">
-              <img src={HeaderIcon} alt=" Header icon" />
-              {' '}
-              <h3>Music room</h3>
-            </div>
-            <img
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-							  dispatch(showedMemberList(false));
-              }}
-              src={CloseIcon}
-              alt="Close Icon"
-            />
-          </div>
+	return (
+		<Wrapper onClick={handleEscape} data-close="close">
+			<div className="container">
+				<div className="header-container">
+					<div className="title-container">
+						<div className="align-center">
+							<img src={HeaderIcon} alt=" Header icon" /> <h3>Music room</h3>
+						</div>
+						<img
+							style={{ cursor: "pointer" }}
+							onClick={() => {
+								dispatch(showedMemberList(false));
+							}}
+							src={CloseIcon}
+							alt="Close Icon"
+						/>
+					</div>
 
-          <div>
-            <p className="member-tag">
-              Members
-              {' '}
-              <span>{filtered.length}</span>
-            </p>
-          </div>
-        </div>
+					<div>
+						<p className="member-tag">
+							Members <span>{filtered.length}</span>
+						</p>
+					</div>
+				</div>
 
-        <div className="list-container">
-          <form action="#">
-            <img src={SearchIcon} alt="search icon" />
-            <input
-              type="text"
-              placeholder="Find People"
-              autoFocus
-              onKeyDown={handleEscape}
-              onChange={(e) => setQuery(e.target.value)}
-              value={query}
-            />
-          </form>
-        </div>
-        <div className="member">
-          {filtered.map((item, i) => (
-            <MemberItem
-              key={i}
-              status
-              name={item.name}
-              desc=""
-              avatar={item.avatar}
-            />
-          ))}
-        </div>
-      </div>
-    </Wrapper>
-  );
+				<div className="list-container">
+					<form action="#">
+						<img src={SearchIcon} alt="search icon" />
+						<input
+							type="text"
+							placeholder="Find People"
+							autoFocus
+							onKeyDown={handleEscape}
+							onChange={e => setQuery(e.target.value)}
+							value={query}
+						/>
+					</form>
+				</div>
+				<div className="member">
+					{filtered.map((item, i) => (
+						<MemberItem
+							key={i}
+							status={true}
+							name={item.name}
+							desc=""
+							avatar={item.avatar}
+						/>
+					))}
+				</div>
+			</div>
+		</Wrapper>
+	);
 };
 
 const Wrapper = styled.div`

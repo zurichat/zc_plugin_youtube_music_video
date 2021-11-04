@@ -5,5 +5,5 @@ interface Props {
     desc: string;
     avatar: string;
 }
-declare const MemberItem: ({ name, status, desc, avatar, }: Props) => JSX.Element;
+declare const MemberItem: ({ name, status, desc, avatar }: Props) => JSX.Element;
 export default MemberItem;

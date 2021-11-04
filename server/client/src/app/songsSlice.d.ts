@@ -1,4 +1,4 @@
-import { RootState } from './store';
+import { RootState } from "./store";
 export declare const addedSong: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<Song, string>, removedSong: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<{
     id: string;
 }, string>, likedSong: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<LikeSong, string>, initializedSongs: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<Song[], string>;

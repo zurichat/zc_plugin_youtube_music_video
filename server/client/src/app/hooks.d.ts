@@ -1,5 +1,5 @@
-import { TypedUseSelectorHook } from 'react-redux';
-import type { RootState } from './store';
+import { TypedUseSelectorHook } from "react-redux";
+import type { RootState } from "./store";
 export declare const useAppDispatch: () => import("redux-thunk").ThunkDispatch<{
     users: {
         currentUser: User;

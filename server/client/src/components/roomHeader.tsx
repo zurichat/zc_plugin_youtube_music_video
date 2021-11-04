@@ -1,88 +1,88 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { selectShowChat, showedChat, showedMemberList } from '../app/uiSlice';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import httpService from '../services/httpService';
+import { selectShowChat, showedChat, showedMemberList } from "../app/uiSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import httpService from "../services/httpService";
 
-import menu from '../media/menu.svg';
-import message from '../media/message.svg';
-import RoomIcon from '../media/musicRoomIcon.svg';
-import avatar1 from '../media/avatar-1.svg';
-import avatar2 from '../media/avatar-2.svg';
-import avatar3 from '../media/avatar-3.svg';
+import menu from "../media/menu.svg";
+import message from "../media/message.svg";
+import RoomIcon from "../media/musicRoomIcon.svg";
+import avatar1 from "../media/avatar-1.svg";
+import avatar2 from "../media/avatar-2.svg";
+import avatar3 from "../media/avatar-3.svg";
 
 const roomHeader = () => {
-  const { usercount: userCountEndpoint } = httpService.endpoints;
+	const { usercount: userCountEndpoint } = httpService.endpoints;
 
-  const dispatch = useAppDispatch();
-  const [userCount, setUserCount] = useState(0);
-  const showChat = useAppSelector(selectShowChat);
+	const dispatch = useAppDispatch();
+	const [userCount, setUserCount] = useState(0);
+	const showChat = useAppSelector(selectShowChat);
 
-  useEffect(() => {
-    httpService
-      .get(userCountEndpoint)
-      .then((res) => {
-        setUserCount(res.data);
-      })
-      .catch((err) => console.log(err.message));
-  }, []);
+	useEffect(() => {
+		httpService
+			.get(userCountEndpoint)
+			.then(res => {
+				setUserCount(res.data);
+			})
+			.catch(err => console.log(err.message));
+	}, []);
 
-  return (
-    <Wrapper>
-      <div className="header-left">
-        <img
-          src={menu}
-          alt="icon"
-          className="header-icon menu"
-          onClick={undefined}
-        />
+	return (
+		<Wrapper>
+			<div className="header-left">
+				<img
+					src={menu}
+					alt="icon"
+					className="header-icon menu"
+					onClick={undefined}
+				/>
 
-        <img src={RoomIcon} alt="icon" className="header-icon hide-2" />
+				<img src={RoomIcon} alt="icon" className="header-icon hide-2" />
 
-        <span className="header-link">Music Room</span>
-      </div>
-      <div className="header-right">
-        <div
-          className="header-right-flex"
-          onClick={() => dispatch(showedMemberList(true))}
-        >
-          <div className="header-avatar">
-            <div className="pc-avatars">
-              <img className="avatar-1" src={avatar1} alt="avatar name" />
-              <img className="avatar-2" src={avatar2} alt="avatar name" />
-              <img className="avatar-3" src={avatar3} alt="avatar name" />
-            </div>
-            <div className="mobile-avatar">
-              <img src={avatar3} alt="" />
-            </div>
-          </div>
-          <div className="header-user-count">{userCount}</div>
-        </div>
-        <div>
-          {/*  for pc */}
-          {!showChat && (
-          <img
-            style={{ cursor: 'pointer' }}
-            src={message}
-            alt="message count"
-            className="header-message-count"
-            onClick={() => dispatch(showedChat(true))}
-          />
-          )}
+				<span className="header-link">Music Room</span>
+			</div>
+			<div className="header-right">
+				<div
+					className="header-right-flex"
+					onClick={() => dispatch(showedMemberList(true))}
+				>
+					<div className="header-avatar">
+						<div className="pc-avatars">
+							<img className="avatar-1" src={avatar1} alt="avatar name" />
+							<img className="avatar-2" src={avatar2} alt="avatar name" />
+							<img className="avatar-3" src={avatar3} alt="avatar name" />
+						</div>
+						<div className="mobile-avatar">
+							<img src={avatar3} alt="" />
+						</div>
+					</div>
+					<div className="header-user-count">{userCount}</div>
+				</div>
+				<div>
+					{/*  for pc */}
+					{!showChat && (
+						<img
+							style={{ cursor: "pointer" }}
+							src={message}
+							alt="message count"
+							className="header-message-count"
+							onClick={() => dispatch(showedChat(true))}
+						/>
+					)}
 
-          {/* for mobile */}
-          <img
-            src={message}
-            alt="message count"
-            className="header-message-count-mobile"
-            onClick={() => dispatch(showedChat(true))}
-          />
-        </div>
-      </div>
-    </Wrapper>
-  );
+					{/* for mobile */}
+					<img
+						src={message}
+						alt="message count"
+						className="header-message-count-mobile"
+						onClick={() => dispatch(showedChat(true))}
+					/>
+				</div>
+			</div>
+		</Wrapper>
+	);
 };
 
 const Wrapper = styled.header`

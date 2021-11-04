@@ -1,13 +1,13 @@
 // convert secondes to HH:MM:SS
 
 function formatTime(val) {
-  const numInSec = parseInt(val, 10);
+  let numInSec = parseInt(val, 10);
   let toHours = Math.floor(numInSec / 3600);
   let toMinutes = Math.floor((numInSec - toHours * 3600) / 60);
   let toSeconds = numInSec - toHours * 3600 - toMinutes * 60;
 
   if (toHours < 1) {
-    toHours = '';
+    toHours = ``;
   } else if (toHours > 1 && toHours < 10) {
     toHours = `0${toHours}:`;
   } else {

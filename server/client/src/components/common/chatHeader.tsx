@@ -1,42 +1,42 @@
-import styled from 'styled-components';
-import { showedChat } from '../../app/uiSlice';
-import { useAppDispatch } from '../../app/hooks';
+import styled from "styled-components";
+import { showedChat } from "../../app/uiSlice";
+import { useAppDispatch } from "../../app/hooks";
 
-import chatIcon from '../../media/chat.svg';
-import chatIcon__green from '../../media/chat-green.svg';
-import chatClose from '../../media/close.svg';
-import chatClose__black from '../../media/close-black.svg';
+import chatIcon from "../../media/chat.svg";
+import chatIcon__green from "../../media/chat-green.svg";
+import chatClose from "../../media/close.svg";
+import chatClose__black from "../../media/close-black.svg";
 
 function ChatHeader() {
-  const dispatch = useAppDispatch();
+	const dispatch = useAppDispatch();
 
-  return (
-    <Wrapper>
-      <div className="chatHeader__left">
-        <img src={chatIcon} alt="" className="chatHeader__icon" />
+	return (
+		<Wrapper>
+			<div className="chatHeader__left">
+				<img src={chatIcon} alt="" className="chatHeader__icon" />
 
-        <img
-          src={chatIcon__green}
-          alt="chat"
-          className="chatHeader__icon__green"
-        />
-        <div className="chatHeader__title">Chat</div>
-      </div>
+				<img
+					src={chatIcon__green}
+					alt="chat"
+					className="chatHeader__icon__green"
+				/>
+				<div className="chatHeader__title">Chat</div>
+			</div>
 
-      <img
-        src={chatClose}
-        alt=""
-        className="chatHeader__close"
-        onClick={() => dispatch(showedChat(false))}
-      />
-      <img
-        src={chatClose__black}
-        alt=""
-        className="chatHeader__close__black"
-        onClick={() => dispatch(showedChat(false))}
-      />
-    </Wrapper>
-  );
+			<img
+				src={chatClose}
+				alt=""
+				className="chatHeader__close"
+				onClick={() => dispatch(showedChat(false))}
+			/>
+			<img
+				src={chatClose__black}
+				alt=""
+				className="chatHeader__close__black"
+				onClick={() => dispatch(showedChat(false))}
+			/>
+		</Wrapper>
+	);
 }
 
 const Wrapper = styled.div`

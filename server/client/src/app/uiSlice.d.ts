@@ -1,4 +1,4 @@
-import { RootState } from './store';
+import { RootState } from "./store";
 export declare const loaded: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<boolean, string>, showedChat: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<boolean, string>, showedPasteUrl: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<boolean, string>, showedModal: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<boolean, string>, exitedModal: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<boolean, string>, showedMemberList: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<boolean, string>, showedDeleteModal: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<boolean, string>, setEnterModal: import("@reduxjs/toolkit").ActionCreatorWithOptionalPayload<boolean, string>;
 export declare const selectShowChat: (state: RootState) => boolean;
 export declare const selectShowPasteUrl: (state: RootState) => boolean;

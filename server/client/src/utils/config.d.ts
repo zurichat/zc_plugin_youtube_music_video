@@ -1,4 +1,4 @@
-import { pluginHeader } from '@zuri/plugin-header';
+import { pluginHeader } from "@zuri/plugin-header";
 export { pluginHeader };
 export declare const headerConfig: (members: User[], cb: any) => {
     name: string;

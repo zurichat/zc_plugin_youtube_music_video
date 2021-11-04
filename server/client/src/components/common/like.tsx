@@ -1,10 +1,10 @@
-import like from '../../media/like.svg';
-import like_filled from '../../media/like-filled.svg';
+import like from "../../media/like.svg";
+import like_filled from "../../media/like-filled.svg";
 
 interface Props {
-	liked: boolean;
-	onLike: () => void;
-	className?: string;
+  liked: boolean;
+  onLike: () => void;
+  className?: string;
 }
 
 function Like({ liked, onLike, className }: Props) {
@@ -16,11 +16,11 @@ function Like({ liked, onLike, className }: Props) {
       onClick={onLike}
       className={className}
       style={{
-			  display: 'block',
-			  cursor: 'pointer',
-			  width: '20px',
-			  height: '20px',
-			  transition: 'all 200ms ease-in-out',
+        display: "block",
+        cursor: "pointer",
+        width: "20px",
+        height: "20px",
+        transition: "all 200ms ease-in-out",
       }}
     />
   );

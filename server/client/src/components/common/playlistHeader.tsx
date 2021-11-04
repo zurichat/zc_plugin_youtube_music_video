@@ -1,94 +1,85 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 // Store
 import {
-  changedCurrentSong,
-  changedPlaying,
-  getPlayerState,
-  showedPlayer,
-} from '../../app/playerSlice';
-import { showedPasteUrl } from '../../app/uiSlice';
+	changedCurrentSong,
+	changedPlaying,
+	getPlayerState,
+	showedPlayer
+} from "../../app/playerSlice";
+import { showedPasteUrl } from "../../app/uiSlice";
 
 // Components
-import Button from './button';
+import Button from "./button";
 
-import Headset from '../../media/playlistIcon.svg';
-import { selectFirstSong, selectSongs } from '../../app/songsSlice';
-import { totalDuration } from '../../utils/song';
+import Headset from "../../media/playlistIcon.svg";
+import { selectFirstSong, selectSongs } from "../../app/songsSlice";
+import { totalDuration } from "../../utils/song";
 
 const PlaylistHeader = () => {
-  const dispatch = useAppDispatch();
-  const player = useAppSelector(getPlayerState);
-  const firstSong = useAppSelector(selectFirstSong);
-  const songs = useAppSelector(selectSongs);
-  const count = songs.length;
+	const dispatch = useAppDispatch();
+	const player = useAppSelector(getPlayerState);
+	const firstSong = useAppSelector(selectFirstSong);
+	const songs = useAppSelector(selectSongs);
+	const count = songs.length;
 
-  const [text, setText] = useState('Play');
+	const [text, setText] = useState("Play");
 
-  useEffect(() => setText(player.playing ? 'Pause' : 'Play'), [player.playing]);
+	useEffect(() => setText(player.playing ? "Pause" : "Play"), [player.playing]);
 
-  const handleShowPlayer = () => {
-    if (text === 'Play') {
-      dispatch(changedPlaying(true));
-      dispatch(showedPlayer(true));
-    } else dispatch(changedPlaying(false));
+	const handleShowPlayer = () => {
+		if (text === "Play") {
+			dispatch(changedPlaying(true));
+			dispatch(showedPlayer(true));
+		} else dispatch(changedPlaying(false));
 
-    if (!player.currentSongId) dispatch(changedCurrentSong(firstSong));
-  };
+		if (!player.currentSongId) dispatch(changedCurrentSong(firstSong));
+	};
 
-  const handleAddSongToggle = () => {
-    dispatch(showedPasteUrl(true));
-  };
+	const handleAddSongToggle = () => {
+		dispatch(showedPasteUrl(true));
+	};
 
-  return (
-    <Wrapper>
-      <div className="playlist-content-wrapper">
-        <div className="playlist-img-div">
-          <img src={Headset} alt="Playlist Header" className="playlist-img" />
-        </div>
+	return (
+		<Wrapper>
+			<div className="playlist-content-wrapper">
+				<div className="playlist-img-div">
+					<img src={Headset} alt="Playlist Header" className="playlist-img" />
+				</div>
 
-        <div className="playlist-content">
-          <div className="playlist-caption">
-            Music
-            {' '}
-            <span className="playlist-caption-hide">Room</span>
-            {' '}
-            Playlist
-          </div>
+				<div className="playlist-content">
+					<div className="playlist-caption">
+						Music <span className="playlist-caption-hide">Room</span> Playlist
+					</div>
 
-          {count > 0 && (
-          <div className="playlist-summary">
-            {count}
-            {' '}
-            {count > 1 ? 'songs' : 'song'}
-            ,
-            {' '}
-            {totalDuration(songs)}
-          </div>
-          )}
+					{count > 0 && (
+						<div className="playlist-summary">
+							{count} {count > 1 ? "songs" : "song"}, {totalDuration(songs)}
+						</div>
+					)}
 
-          <div className="playlist-button-group">
-            <Button
-              className="playlist-button md"
-              color="secondary"
-              onClick={handleAddSongToggle}
-            >
-              <span className="playlist-button-desktop-text">
-                Add a song to the playlist
-              </span>
-              <span className="playlist-button-mobile-text">Add a song</span>
-            </Button>
+					<div className="playlist-button-group">
+						<Button
+							className="playlist-button md"
+							color="secondary"
+							onClick={handleAddSongToggle}
+						>
+							<span className="playlist-button-desktop-text">
+								Add a song to the playlist
+							</span>
+							<span className="playlist-button-mobile-text">Add a song</span>
+						</Button>
 
-            <Button className="playlist-button" onClick={handleShowPlayer}>
-              {text}
-            </Button>
-          </div>
-        </div>
-      </div>
-    </Wrapper>
-  );
+						<Button className="playlist-button" onClick={handleShowPlayer}>
+							{text}
+						</Button>
+					</div>
+				</div>
+			</div>
+		</Wrapper>
+	);
 };
 
 const Wrapper = styled.div`
