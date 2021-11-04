@@ -1,5 +1,4 @@
-// @ts-ignore;
-import { SubscribeToChannel } from "@zuri/control";
+import { SubscribeToChannel } from "@zuri/utilities";
 
 import songService from "./songService";
 import chatService from "./chatService";
@@ -54,19 +53,20 @@ const connect = () => {
 				break;
 			}
 
-			case "join_room": {
-				break;
-			}
+			// case "join_room": {
+			// 	break;
+			// }
 
-			case "entered_room": {
-				break;
-			}
+			// case "entered_room": {
+			// 	break;
+			// }
 
-			case "sidebar_update": {
-				break;
-			}
+			// case "sidebar_update": {
+			// 	break;
+			// }
 
 			default: {
+				console.log("default");
 			}
 		}
 	});

@@ -1,5 +1,4 @@
-// @ts-ignore
-import { GetUserInfo, GetWorkspaceUser } from "@zuri/control";
+import { GetUserInfo, GetWorkspaceUser } from "@zuri/utilities";
 
 async function getUserInfo(email: string) {
 	try {

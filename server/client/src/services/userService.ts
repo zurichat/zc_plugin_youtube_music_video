@@ -1,10 +1,6 @@
 import httpService from "./httpService";
 
-import {
-	GetUserInfo,
-	GetWorkspaceUser
-	// @ts-ignore
-} from "@zuri/control";
+import { GetUserInfo, GetWorkspaceUser } from "@zuri/utilities";
 
 async function getCurrentUser(): Promise<User> {
 	try {
