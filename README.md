@@ -58,7 +58,7 @@ Client server running @ <a href='http://localhost:22672'>http://localhost:22672<
     $ python -m venv venv - to create a virtual environment
     $ venv\scripts\activate
 
-    $ pip install -r requirements/local.txt
+    $ pip install -r requirements.txt
 
     - Create .env file in config and put variables for Secret Key and Database (PostgreSQL) as created in sample.env file
 
@@ -69,7 +69,7 @@ Client server running @ <a href='http://localhost:22672'>http://localhost:22672<
 
 ### Note to the backend devs
 
-    You don't need to start run yarn to check your endpoints.
+    You don't need to run yarn start to check your endpoints.
 
 Server running on <a href='http://localhost:8000'>http://localhost:8000/music</a>
 
