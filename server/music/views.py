@@ -1,26 +1,25 @@
+import json
 import re
-from django.core.paginator import Paginator
+
+import requests
 from django.conf import settings
-from requests import status_codes
+from django.core.paginator import Paginator
+from django.http import Http404, JsonResponse
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import (OpenApiExample, OpenApiParameter,
+                                   extend_schema)
+from music.authentication import *
+from music.models import *
+from music.pagination import *
+from music.serializers import *
+from music.utils.data_access import *
+from music.utils.dataStorage import *
+from requests import exceptions, status_codes
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from django.http import JsonResponse
-import json
-from music.serializers import *
-from music.models import *
-from music.utils.data_access import *
 from rest_framework.views import APIView
-import requests
-from music.utils.dataStorage import *
-from requests import exceptions
-from django.http import Http404
-from music.pagination import *
-from music.authentication import *
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
-from drf_spectacular.types import OpenApiTypes
-
 
 # from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 
@@ -56,12 +55,12 @@ class change_room_image(APIView):
 def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
     output = []
-    if room_data['status'] == 200 and room_data['data'] is not None:
+    if room_data["status"] == 200 and room_data["data"] is not None:
         room = {
             "room_name": room_data["data"]["room_name"],
             "room_id": f"/music/{room_id}",
             "button_url": "/music",
-            "room_image": room_image[0],    
+            "room_image": room_image[0],
         }
         output.append(room)
         return output
@@ -80,7 +79,7 @@ class SidebarView(GenericAPIView):
         sidebar_update = "currentWorkspace_userInfo_sidebar"
         subscription_channel = "{org_id}_{user_id}_sidebar"
         url = f"https://api.zuri.chat/organizations/{org_id}/members"
-        headers ={}
+        headers = {}
         sidebar = {
             "name": "Music Plugin",
             "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
@@ -95,7 +94,7 @@ class SidebarView(GenericAPIView):
             "public_rooms": [],
             "joined_rooms": [],
         }
-        
+
         if org_id and user_id:
             if "Authorization" in request.headers:
                 headers["Authorization"] = request.headers["Authorization"]
@@ -106,7 +105,7 @@ class SidebarView(GenericAPIView):
                 url=url,
                 headers=headers,
             )
-            
+
             if org_members.status_code == 200:
                 members = org_members.json()["data"]
                 for user in members:
@@ -117,13 +116,15 @@ class SidebarView(GenericAPIView):
                         sidebar_data["user_id"] = user_id
                         sidebar_data["public_rooms"] = pub_room
                         sidebar_data["joined_rooms"] = pub_room
-                        
+
                         sidebar_update_payload = {
-                                    "event": "sidebar_update",
-                                    "plugin_id": "music.zuri.chat",
-                                    "data": sidebar_data
-                                }
-                        return Response(sidebar_update_payload, status=status.HTTP_200_OK)
+                            "event": "sidebar_update",
+                            "plugin_id": "music.zuri.chat",
+                            "data": sidebar_data,
+                        }
+                        return Response(
+                            sidebar_update_payload, status=status.HTTP_200_OK
+                        )
                 return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
             return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
         return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
@@ -238,7 +239,7 @@ class songLikeCountView(APIView):
         description="song likes/unlikes count",
         methods=["POST"],
     )
-    def post(self,request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = SongLikeCountSerializer(data=request.data)
         x = DataStorage()
         org_id = settings.ORGANIZATON_ID
@@ -247,34 +248,41 @@ class songLikeCountView(APIView):
         if serializer.is_valid():
             songId = request.data["songId"]
             userId = request.data["userId"]
-        
+
             songs = read_data(settings.SONG_COLLECTION, object_id=songId)
             likedBy = songs["data"]["likedBy"]
-            
+
             if userId in likedBy:
                 likedBy.remove(userId)
                 unlike_count = len(likedBy)
-                x.update("songs", songId, {"likedBy":likedBy})
-                
-                return Response({
-                    "unlikedBy": userId,
-                    "songId": songId,
-                    "total_likes": unlike_count,
-                }, status=status.HTTP_200_OK)
+                x.update("songs", songId, {"likedBy": likedBy})
+
+                return Response(
+                    {
+                        "unlikedBy": userId,
+                        "songId": songId,
+                        "total_likes": unlike_count,
+                    },
+                    status=status.HTTP_200_OK,
+                )
 
             else:
                 likedBy.append(userId)
                 like_count = len(likedBy)
-                x.update("songs", songId, {"likedBy":likedBy})
-                
-                return Response({
-                    "likedBy": userId,
-                    "songId": songId,
-                    "total_likes": like_count,
-                }, status=status.HTTP_200_OK)
-                    
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
-            
+                x.update("songs", songId, {"likedBy": likedBy})
+
+                return Response(
+                    {
+                        "likedBy": userId,
+                        "songId": songId,
+                        "total_likes": like_count,
+                    },
+                    status=status.HTTP_200_OK,
+                )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class DeleteSongView(APIView):
     serializer_class = SongSerializer
 
@@ -333,9 +341,7 @@ class LikeSongView(APIView):
                 new_songs = list(set(member_ids).difference(set(users_id)))
                 list(map(lambda x: users_id.append(x), new_songs))
                 if new_songs:
-                    response = helper.update(
-                        "songs", song_id, {"memberId": users_id}
-                    )
+                    response = helper.update("songs", song_id, {"memberId": users_id})
                     if response.get("status") == 200:
                         response_output = {
                             "event": "like_song",
@@ -349,14 +355,13 @@ class LikeSongView(APIView):
                     return Response(
                         "Song not liked", status=status.HTTP_424_FAILED_DEPENDENCY
                     )
-                return Response(
-                    "Song already liked", status=status.HTTP_302_FOUND
-                )
+                return Response("Song already liked", status=status.HTTP_302_FOUND)
             return Response(
                 "Data not available on ZC core",
                 status=status.HTTP_424_FAILED_DEPENDENCY,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SongSearchView(APIView):
 
@@ -599,41 +604,39 @@ class RoomDetailView(APIView):
 
 
 class DeleteRoomView(APIView):
-
     @extend_schema(
-        request=RoomSerializer,
-        responses={200: RoomSerializer},
-        methods=["DELETE"]
+        request=RoomSerializer, responses={200: RoomSerializer}, methods=["DELETE"]
     )
     def delete(self, request, *args, **kwargs):
         org_id = kwargs.get("org_id")
         room_id = kwargs.get("_id")
         collection = settings.ROOM_COLLECTION
         filter_data = {"organization_id": org_id}
-        
+
         try:
-            room = read_data(
-                collection, object_id=room_id, filter_data=filter_data
-            )
+            room = read_data(collection, object_id=room_id, filter_data=filter_data)
         except requests.exceptions.RequestException as e:
             print(e)
             return None
 
         if room:
             if room["status"] == 200:
-                if room['data']['_id'] == room_id:
-                    response = delete_data(
-                        collection, object_id=room_id
-                    )
+                if room["data"]["_id"] == room_id:
+                    response = delete_data(collection, object_id=room_id)
                     if response["status"] == 200:
                         return Response(data=response, status=status.HTTP_200_OK)
-                        #centrifugo_post(plugin_id, {"event": "room deleted", "data": response})
+                        # centrifugo_post(plugin_id, {"event": "room deleted", "data": response})
 
-                    return Response(data={"room not deleted"}, status=status.HTTP_424_FAILED_DEPENDENCY)
+                    return Response(
+                        data={"room not deleted"},
+                        status=status.HTTP_424_FAILED_DEPENDENCY,
+                    )
                 return Response(data={"invalid room"}, status=status.HTTP_404_NOT_FOUND)
-            return Response(data={room["message"]:"room not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                data={room["message"]: "room not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         return Response(data={"invalid room_id"}, status=status.HTTP_404_NOT_FOUND)
-
 
 
 class CreateRoom(APIView):  # to create a new room(functional)

@@ -87,5 +87,9 @@ urlpatterns = [
     ),  # create room
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
-    path("org/<str:org_id>/room/<str:_id>/songs/likecount", songLikeCountView.as_view(), name="like-count"),
+    path(
+        "org/<str:org_id>/room/<str:_id>/songs/likecount",
+        songLikeCountView.as_view(),
+        name="like-count",
+    ),
 ]

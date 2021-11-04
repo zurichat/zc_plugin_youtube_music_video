@@ -183,9 +183,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S",
     "DATETIME_FORMAT": "%s.%f",
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.AllowAny",
-    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
 }
 
 if DEBUG:

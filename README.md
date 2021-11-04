@@ -45,11 +45,16 @@ Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a
     $ yarn
     $ yarn build
 
-### Lint Frontend
+### Run Eslint and Pre-commit
 
     - cd into the frontend folder (server/client)
 
-    `$ yarn lint`
+    `$ yarn lint --fix (or yarn lint --fix . to fix all files)
+
+### Run Pre-commit standalone for Backend
+
+    $ cd server
+    $ pre-commit run (or pre-commit run --all-files to check all files)
 
 # To Run Django Server
 
