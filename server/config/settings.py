@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from django.core.management.commands.runserver import Command as runserver
 
 import environ  # import environ
 
@@ -31,11 +32,13 @@ print(DEBUG)
 ALLOWED_HOSTS = [
     "zuri.chat",
     "music.zuri.chat",
-    "178.68.43.138",
+    "staging.zuri.chat",
+    "178.63.43.138", # new default port for plugins on zuri.chat
     "localhost",
     "127.0.0.1",
     "*",
 ]
+runserver.default_port = '22672'        # new default port for music plugin
 
 # Application definition
 CORS_ALLOW_ALL_ORIGINS = True
