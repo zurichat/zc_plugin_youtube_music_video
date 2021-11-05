@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import environ  # import environ
+from django.core.management.commands.runserver import Command as runserver
 
 env = environ.Env()  # Initialise environment variables
 environ.Env.read_env()
@@ -32,12 +33,12 @@ ALLOWED_HOSTS = [
     "zuri.chat",
     "music.zuri.chat",
     "staging.zuri.chat",
-    "178.63.43.138",
+    "178.63.43.138",  # new default port for plugins on zuri.chat
     "localhost",
     "127.0.0.1",
-    "127.0.0.1:22672",
     "*",
 ]
+runserver.default_port = "22672"  # new default port for music plugin
 
 # Application definition
 CORS_ALLOW_ALL_ORIGINS = True
@@ -232,7 +233,7 @@ ROOM_ID = "6169d8b54bfde011fe582e65"
 # new collections created
 ROOM_COLLECTION = "musicroom"
 SONG_COLLECTION = "songs"
-COMMENTS_COLLECTION = "messages"
+COMMENTS_COLLECTION = "chats"
 
 
 APPEND_SLASH = False

@@ -2,17 +2,6 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class Member:  # for the users
-
-    # _id: str
-    memberId: str
-    name: str
-    avatar: str
-    email: str
-    job: str
-
-
-@dataclass
 class Song:  # for the songs
 
     _id: str

@@ -1,37 +1,10 @@
-from music.models import Comment, Member, Room, Song, songLikeCount
+from music.models import Comment, Room, Song, songLikeCount
 from rest_framework import serializers
-
-
-class MemberSerializer(serializers.Serializer):
-
-    # _id = serializers.CharField(read_only=True)
-    memberId = serializers.CharField(read_only=True)
-    name = serializers.CharField(max_length=256, read_only=False)
-    avatar = serializers.CharField(max_length=256, read_only=True, required=False)
-    email = serializers.CharField(max_length=256, read_only=False)
-    job = serializers.CharField(max_length=256, read_only=True, required=False)
-
-    def create(self, validated_data):
-        return Member(**validated_data)
-
-    def update(self, instance, validated_data):
-
-        # instance._id = validated_data.get("_id", instance._id)
-        instance.memberId = validated_data.get("memberId", instance.memberId)
-        instance.name = validated_data.get("name", instance.name)
-        instance.avatar = validated_data.get("avatar", instance.avatar)
-        instance.email = validated_data.get("email", instance.email)
-        instance.job = validated_data.get("job", instance.job)
-        instance.save()
-        return instance
-
-    def __str__(self):
-        return str()
 
 
 class SongSerializer(serializers.Serializer):
 
-    _id = serializers.CharField(read_only=False)
+    _id = serializers.CharField(read_only=True)
     title = serializers.CharField(required=False)
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
@@ -116,13 +89,14 @@ class CommentSerializer(serializers.Serializer):
         return str()
 
 
-class RoomSerializer(serializers.Serializer):  # pauline
+class RoomSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     room_name = serializers.CharField(max_length=100, required=False)
+    plugin_name = serializers.CharField(max_length=300, required=False)
     description = serializers.CharField(max_length=300, required=False)
     private = serializers.BooleanField(default=False, required=False)
-    room_url = serializers.CharField(max_length=300, required=False)
+    archived = serializers.BooleanField(default=False, required=False)
     memberId = serializers.ListField(
         child=serializers.CharField(max_length=128), required=False, default=[]
     )
@@ -132,9 +106,10 @@ class RoomSerializer(serializers.Serializer):  # pauline
 
     def update(self, instance, validated_data):
         instance.room_name = validated_data.get("room_name", instance.room_name)
+        instance.plugin_name = validated_data.get("plugin_name", instance.plugin_name)
         instance.description = validated_data.get("description", instance.description)
         instance.private = validated_data.get("private", instance.private)
-        instance.room_url = validated_data.get("room_url", instance.room_url)
+        instance.archived = validated_data.get("archived", instance.archived)
         instance.memberId = validated_data.get("memberId", instance.memberId)
         return instance
 
