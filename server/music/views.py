@@ -1007,3 +1007,4 @@ class UninstallView(APIView):
                 "data": None,
             }
             return Response(data=data, status=status.HTTP_424_FAILED_DEPENDENCY)
+        
