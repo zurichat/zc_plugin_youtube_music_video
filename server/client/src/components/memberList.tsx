@@ -1,30 +1,33 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 import MemberItem from "./common/memberItem";
-import { uiDispatch, uiSelect } from "../store/uiSlice";
-import User from "../types/user";
+import { selectShowMemberList, showedMemberList } from "../app/uiSlice";
 
 import HeaderIcon from "../media/member-list-icon.svg";
 import CloseIcon from "../media/close-black.svg";
 import SearchIcon from "../media/search.svg";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 
 interface Props {
 	members: User[];
 }
 
 const MemberList = ({ members }: Props) => {
-	const showMemberList = useSelector(uiSelect.showMemberList);
+	const dispatch = useAppDispatch();
+
+	const showMemberList = useAppSelector(selectShowMemberList);
 
 	const [query, setQuery] = useState("");
 
 	if (!showMemberList) return null;
 
 	const handleEscape = e => {
-		const key = e.code || e.key;
-		if (key === "Escape" || e.target.dataset.close === "close") {
-			uiDispatch.showMemberList(false);
+		const { target, code, key } = e;
+
+		const ckey = code || key;
+		if (ckey === "Escape" || target.dataset.close === "close") {
+			dispatch(showedMemberList(false));
 		}
 	};
 
@@ -45,7 +48,7 @@ const MemberList = ({ members }: Props) => {
 						<img
 							style={{ cursor: "pointer" }}
 							onClick={() => {
-								uiDispatch.showMemberList(false);
+								dispatch(showedMemberList(false));
 							}}
 							src={CloseIcon}
 							alt="Close Icon"

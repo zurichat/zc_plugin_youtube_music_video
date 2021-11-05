@@ -6,16 +6,18 @@ import ChatHeader from "./common/chatHeader";
 import ChatItem from "./common/chatItem";
 import ChatInput from "./common/chatInput";
 
-import { chatSelect, chatDispatch } from "../store/chatsSlice";
-import { uiSelect } from "../store/uiSlice";
+import { selectChats, setChats } from "../app/chatsSlice";
+import { selectShowChat } from "../app/uiSlice";
 import { syncArray } from "../utils/syncArray";
 import chatService from "../services/chatService";
-import User from "../types/user";
 import userService from "../services/userService";
+import { useAppDispatch } from "../app/hooks";
 
 function Chat(props) {
-	const chats = useSelector(chatSelect.allChat);
-	const showChat = useSelector(uiSelect.showChat);
+	const dispatch = useAppDispatch();
+
+	const chats = useSelector(selectChats);
+	const showChat = useSelector(selectShowChat);
 	const scroller = useRef(null);
 	//const [ chats, setChats] = useState(chat);
 
@@ -83,7 +85,7 @@ function Chat(props) {
 			if (ch.message !== test.message) list.push(ch);
 		});
 		//setChats(newchats);
-		chatDispatch.set(list);
+		dispatch(setChats(list));
 	};
 
 	const Resend = (id, message) => {
@@ -93,7 +95,7 @@ function Chat(props) {
 			if (ch.message !== test.message) list.push(ch);
 		});
 		//setChats(newchats);
-		chatDispatch.set(list);
+		dispatch(setChats(list));
 		chatService.addChat({ ...test, failed: false });
 	};
 

@@ -1,6 +1,5 @@
-from django.utils import timezone
+from music.models import Comment, Member, Room, Song, songLikeCount
 from rest_framework import serializers
-from music.models import *
 
 
 class MemberSerializer(serializers.Serializer):
@@ -8,7 +7,7 @@ class MemberSerializer(serializers.Serializer):
     # _id = serializers.CharField(read_only=True)
     memberId = serializers.CharField(read_only=True)
     name = serializers.CharField(max_length=256, read_only=False)
-    avatar = serializers.CharField(max_length=256, read_only=True,required=False)
+    avatar = serializers.CharField(max_length=256, read_only=True, required=False)
     email = serializers.CharField(max_length=256, read_only=False)
     job = serializers.CharField(max_length=256, read_only=True, required=False)
 
@@ -44,6 +43,9 @@ class SongSerializer(serializers.Serializer):
     )
     time = serializers.IntegerField(required=False)
 
+    # def total_likes(self):
+    #     return self.likedBy.count()
+
     def create(self, validated_data):
         return Song(**validated_data)
 
@@ -64,6 +66,29 @@ class SongSerializer(serializers.Serializer):
     def __str__(self):
         return str()
 
+
+class LikeSongSerializer(serializers.Serializer):
+    song_id = serializers.CharField(max_length=100, required=False)
+    memberId = serializers.ListField(
+        child=serializers.CharField(max_length=100), allow_empty=False
+    )
+
+
+class SongLikeCountSerializer(serializers.Serializer):
+
+    songId = serializers.CharField(max_length=100, required=False)
+    userId = serializers.CharField(max_length=100, required=False)
+
+    def create(self, validated_data):
+        return songLikeCount(**validated_data)
+
+    def update(self, instance, validated_data):
+
+        instance.songId = validated_data.get("songId", instance.songId)
+        instance.userId = validated_data.get("userId", instance.userId)
+
+    def __str__(self):
+        return str()
 
 class CommentSerializer(serializers.Serializer):
 
@@ -121,25 +146,3 @@ class AddToRoomSerializer(serializers.Serializer):
     memberId = serializers.ListField(
         child=serializers.CharField(max_length=100), allow_empty=False
     )
-
-
-class FaveSerializer(serializers.Serializer):
-    _id = serializers.CharField(read_only=True)
-    userId = serializers.CharField(max_length=100)
-    songId = serializers.CharField(max_length=100)
-    like = serializers.BooleanField(default=False, required=False)
-
-    def create(self, validated_data):
-        return Fave(**validated_data)
-
-    def update(self, instance, validated_data):
-
-        instance._id = validated_data.get("_id", instance._id)
-        instance.userId = validated_data.get("userId", instance.userId)
-        instance.songId = validated_data.get("songId", instance.songId)
-        instance.like = validated_data.get("like", instance.like)
-        instance.save()
-        return instance
-
-    def __str__(self):
-        return str()

@@ -21,7 +21,7 @@
     $ yarn - to install dependencies if you haven't
     $ yarn start
 
-Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a>
+Client server running @ <a href='http://localhost:22672'>http://localhost:22672</a>
 
 ### Note to the frontend devs
 
@@ -45,6 +45,12 @@ Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a
     $ yarn
     $ yarn build
 
+### Lint Frontend
+
+    - cd into the frontend folder (server/client)
+
+    `$ yarn lint`
+
 # To Run Django Server
 
     $ cd server
@@ -52,7 +58,7 @@ Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a
     $ python -m venv venv - to create a virtual environment
     $ venv\scripts\activate
 
-    $ pip install -r requirements/local.txt
+    $ pip install -r requirements.txt
 
     - Create .env file in config and put variables for Secret Key and Database (PostgreSQL) as created in sample.env file
 
@@ -61,8 +67,12 @@ Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a
 
     $ python manage.py runserver
 
+### Note to the backend devs
+
+    You don't need to run yarn start to check your endpoints.
+
 Server running on <a href='http://localhost:8000'>http://localhost:8000/music</a>
 
-API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
+<!-- API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
 
-Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a>
+Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a> -->

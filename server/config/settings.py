@@ -31,7 +31,7 @@ print(DEBUG)
 ALLOWED_HOSTS = [
     "zuri.chat",
     "music.zuri.chat",
-    "159.65.123.65",
+    "178.68.43.138",
     "localhost",
     "127.0.0.1",
     "*",
@@ -80,7 +80,7 @@ MIDDLEWARE = [
 INTERNAL_IPS = [
     # ...
     "127.0.0.1",
-    "159.65.123.65",
+    "178.68.43.138",
     # ...
 ]
 
@@ -183,7 +183,6 @@ REST_FRAMEWORK = {
     #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S",
     "DATETIME_FORMAT": "%s.%f",
     "DEFAULT_PERMISSION_CLASSES": (
-        # "music.permissions.Is_Authenticated_Or_Read_Only",
         "rest_framework.permissions.AllowAny",
     ),
 }
@@ -197,7 +196,6 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "YouTube Music Plugin API",
     "DESCRIPTION": "YouTube Music Plugin for Zuri.Chat",
     "VERSION": "1.0.0",
-    
     # OTHER SETTINGS
 }
 
@@ -234,7 +232,7 @@ ROOM_ID = "6169d8b54bfde011fe582e65"
 # new collections created
 ROOM_COLLECTION = "musicroom"
 SONG_COLLECTION = "songs"
-COMMENTS_COLLECTION = "chats"
+COMMENTS_COLLECTION = "messages"
 
 
 APPEND_SLASH = False

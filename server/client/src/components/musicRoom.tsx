@@ -1,38 +1,35 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
-
 import { pluginHeader, headerConfig } from "../utils/config";
-
-// @ts-ignore
-// import { MessageBoard } from "@zuri/zuri-ui";
-
+import { MessageBoard } from "@zuri/zuri-ui";
 // import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
 import Chat from "./chat";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
-
-import { useDispatch, useSelector } from "react-redux";
-import { uiSelect } from "../store/uiSlice";
-import User from "../types/user";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { selectShowPasteUrl } from "../app/uiSlice";
 import { useEffect, useMemo, useState } from "react";
 import userService from "../services/userService";
 import { chatData } from "../utils/mockdata";
-import { userDispatch, userSelect } from "../store/usersSlice";
+import { selectIsMember, setMembership } from "../app/usersSlice";
 
 function MusicRoom() {
 	const [members, setMembers] = useState([] as User[]);
 	const [reload, setReload] = useState(false);
 
-	const showPasteUrl = useSelector(uiSelect.showPasteUrl);
-	const isMember = useSelector(userSelect.isMember);
+	const showPasteUrl = useAppSelector(selectShowPasteUrl);
+	const isMember = useAppSelector(selectIsMember);
 
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		userService.getMembers().then(setMembers).catch(console.log);
-		userService.isMember().then(userDispatch.setMembership).catch(console.log);
+		userService
+			.isMember()
+			.then(value => dispatch(setMembership(value)))
+			.catch(console.log);
 	}, [reload, isMember]);
 
 	const handleCreateRoomMessages = message => {
@@ -42,7 +39,7 @@ function MusicRoom() {
 	const chatSidebarConfig = useMemo(
 		() => ({
 			sendChatMessageHandler: msg => {
-				dispatch(handleCreateRoomMessages(msg));
+				// dispatch();
 			},
 			currentUserData: {
 				username: "Aleey",

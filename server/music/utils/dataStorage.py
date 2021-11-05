@@ -1,6 +1,7 @@
 from urllib.parse import urlencode
 from requests.exceptions import RequestException
 import requests
+from django.conf import settings
 
 
 centrifugo = "58c2400b-831d-411d-8fe8-31b6e337738b"
@@ -104,13 +105,24 @@ class DataStorage:
 DB = DataStorage()
 
 
-def centrifugo_publish(room, data):
+def centrifugo_publish(room, event, data, plugin_url="music.zuri.chat"):
+    data_to_publish = {
+        "status": 200,
+        "event": event,
+        "plugin_url": plugin_url,
+        "plugin_id": settings.PLUGIN_ID,
+        "data": data,
+    }
+
     headers = {
         "Content-type": "application/json",
         "Authorization": "apikey " + centrifugo,
     }
     url = "https://realtime.zuri.chat/api"
-    command = {"method": "publish", "params": {"channel": room, "data": data}}
+    command = {
+        "method": "publish",
+        "params": {"channel": room, "data": data_to_publish},
+    }
     try:
         response = requests.post(url=url, headers=headers, json=command)
     except requests.RequestException as error:

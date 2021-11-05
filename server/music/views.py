@@ -1,6 +1,7 @@
 import re
 from django.core.paginator import Paginator
 from django.conf import settings
+from requests import status_codes
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
@@ -12,9 +13,9 @@ from music.models import *
 from music.utils.data_access import *
 from rest_framework.views import APIView
 import requests
+from music.utils.dataStorage import *
 from requests import exceptions
 from django.http import Http404
-from music.utils.dataStorage import *
 from music.pagination import *
 from music.authentication import *
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
@@ -22,14 +23,6 @@ from drf_spectacular.types import OpenApiTypes
 
 
 # from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-
-
-def check_if_user_is_in_room_and_return_room_id(user_id):
-    room_data = read_data(settings.ROOM_COLLECTION)
-    room_user_ids = room_data["data"][0]["userId"]
-    if user_id not in room_user_ids:
-        return None
-    return room_data["data"][0]["_id"]
 
 
 room_image = ["https://svgshare.com/i/aXm.svg"]
@@ -60,17 +53,18 @@ class change_room_image(APIView):
         )
 
 
-def get_room_info(roomid=None):
-    room_data = read_data(settings.ROOM_COLLECTION)
-    orgid = settings.ORGANIZATON_ID
-    roomid = settings.ROOM_ID
-
-    output = {
-        "room_name": room_data["data"][0]["room_name"],
-        "room_id": f"/music/{roomid}",
-        "button_url": f"/music",
-        "room_image": room_image[0],
-    }
+def get_room_info(room_id=None):
+    room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
+    output = []
+    if room_data['status'] == 200 and room_data['data'] is not None:
+        room = {
+            "room_name": room_data["data"]["room_name"],
+            "room_id": f"/music/{room_id}",
+            "button_url": "/music",
+            "room_image": room_image[0],    
+        }
+        output.append(room)
+        return output
     return output
 
 
@@ -81,88 +75,58 @@ class SidebarView(GenericAPIView):
 
         org_id = request.GET.get("org", None)
         user_id = request.GET.get("user", None)
-        room = settings.ROOM_COLLECTION
-        plugin_id = settings.PLUGIN_ID
-        roomid = settings.ROOM_ID
-        token = verify_token
-
-        pub_room = get_room_info()
-
+        room_id = settings.ROOM_ID
+        pub_room = get_room_info(room_id)
         sidebar_update = "currentWorkspace_userInfo_sidebar"
-
-        # subscription_channel: org_id_memberid_sidebar
         subscription_channel = "{org_id}_{user_id}_sidebar"
-
-        sidebar_update_payload = {
-            "event": "sidebar_update",
+        url = f"https://api.zuri.chat/organizations/{org_id}/members"
+        headers ={}
+        sidebar = {
+            "name": "Music Plugin",
+            "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
+            "group_name": [],
+            "category": "entertainment",
             "plugin_id": "music.zuri.chat",
-            "data": {
-                "name": "Music Plugin",
-                "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                "group_name": "music",
-                "category": "entertainment",
-                "show_group": False,
-                "button_url": f"/music/{org_id}/{roomid}",
-                "public_rooms": [pub_room],
-                #"starred" : [],
-                "joined_rooms": [pub_room],
-            },
+            "organisation_id": "",
+            "room_id": "",
+            "user_id": "",
+            "show_group": False,
+            "button_url": "/music",
+            "public_rooms": [],
+            "joined_rooms": [],
         }
-
-        if request.GET.get("org") and request.GET.get("user"):
-            url = f"https://api.zuri.chat/organizations/{org_id}/members/{user_id}"
-            headers = token
-            r = requests.get(url, headers=headers)
-            print(r.status_code)
-
-            if r.status_code == 200:
-                public_url = f"https://api.zuri.chat/data/read/{org_id}/{plugin_id}/{room}/{roomid}"
-
-                r = requests.get(public_url)
-                # publish_to_sidebar(plugin_id, user_id, {"event": "sidebar_update", "data": pub_room})
-
-                centrifugo_post(sidebar_update_payload, subscription_channel)
-                return JsonResponse(r, safe=True)
-
+        
+        if org_id and user_id:
+            if "Authorization" in request.headers:
+                headers["Authorization"] = request.headers["Authorization"]
             else:
-                centrifugo_post(sidebar_update_payload, subscription_channel)
-
-                return JsonResponse(
-                    {
-                        "event": "sidebar_update",
-                        "name": "Music Plugin",
-                        "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                        "plugin_id": plugin_id,
-                        "organisation_id": org_id,
-                        "room_id": roomid,
-                        "user_id": user_id,
-                        "group_name": "music",
-                        "show_group": False,
-                        "category": "entertainment",
-                        "public_rooms": [pub_room],
-                        "joined_rooms": [pub_room],
-                    }
-                )
-        else:
-            centrifugo_post(
-                sidebar_update_payload, subscription_channel
+                headers["Cookie"] = request.headers["Cookie"]
+            org_members = requests.request(
+                "GET",
+                url=url,
+                headers=headers,
             )
-
-            return JsonResponse(
-                {
-                    "name": "Music Plugin",
-                    "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                    "plugin_id": plugin_id,
-                    "organisation_id": org_id,
-                    "room_id": roomid,
-                    "user_id": user_id,
-                    "group_name": "music",
-                    "show_group": False,
-                    "category": "entertainment",
-                    "public_rooms": [pub_room],
-                    "joined_rooms": [pub_room],
-                }
-            )
+            
+            if org_members.status_code == 200:
+                members = org_members.json()["data"]
+                for user in members:
+                    if user_id == user["_id"]:
+                        sidebar_data = sidebar
+                        sidebar_data["organisation_id"] = org_id
+                        sidebar_data["room_id"] = room_id
+                        sidebar_data["user_id"] = user_id
+                        sidebar_data["public_rooms"] = pub_room
+                        sidebar_data["joined_rooms"] = pub_room
+                        
+                        sidebar_update_payload = {
+                                    "event": "sidebar_update",
+                                    "plugin_id": "music.zuri.chat",
+                                    "data": sidebar_data
+                                }
+                        return Response(sidebar_update_payload, status=status.HTTP_200_OK)
+                return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
+        return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
 
     def is_valid(param):
         return param != "" and param is not None
@@ -222,9 +186,9 @@ class SongView(APIView):
     @extend_schema(
         request=SongSerializer,
         responses={200: SongSerializer},
-        methods=["GET", "POST"]
-    ) 
-    
+        description="Add and view songs",
+        methods=["GET", "POST"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
 
@@ -252,21 +216,74 @@ class SongView(APIView):
         updated_data = read_data(settings.SONG_COLLECTION)
         updated_object = updated_data["data"][-1]
         # returns the updated_object alone
+        centrifugo_response = centrifugo_publish(
+            room=plugin_id, event="New song added", data=updated_object
+        )
+        if centrifugo_response.get("status_code", None) == 200:
+            return Response(updated_object, status=status.HTTP_202_ACCEPTED)
+        return Response(
+            "Song updated but Centrifugo is not available",
+            status=status.HTTP_424_FAILED_DEPENDENCY,
+        )
 
-        centrifugo_post(plugin_id, {"event": "added_song", "data": updated_object})
-        return Response(updated_object, status=status.HTTP_202_ACCEPTED)
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":"", "time":""} in the payload
 
 
+class songLikeCountView(APIView):
+    serializer_class = SongLikeCountSerializer
+
+    @extend_schema(
+        request=SongLikeCountSerializer,
+        responses={200: SongLikeCountSerializer},
+        description="song likes/unlikes count",
+        methods=["POST"],
+    )
+    def post(self,request, *args, **kwargs):
+        serializer = SongLikeCountSerializer(data=request.data)
+        x = DataStorage()
+        org_id = settings.ORGANIZATON_ID
+        x.organization_id = org_id
+
+        if serializer.is_valid():
+            songId = request.data["songId"]
+            userId = request.data["userId"]
+        
+            songs = read_data(settings.SONG_COLLECTION, object_id=songId)
+            likedBy = songs["data"]["likedBy"]
+            
+            if userId in likedBy:
+                likedBy.remove(userId)
+                unlike_count = len(likedBy)
+                x.update("songs", songId, {"likedBy":likedBy})
+                
+                return Response({
+                    "unlikedBy": userId,
+                    "songId": songId,
+                    "total_likes": unlike_count,
+                }, status=status.HTTP_200_OK)
+
+            else:
+                likedBy.append(userId)
+                like_count = len(likedBy)
+                x.update("songs", songId, {"likedBy":likedBy})
+                
+                return Response({
+                    "likedBy": userId,
+                    "songId": songId,
+                    "total_likes": like_count,
+                }, status=status.HTTP_200_OK)
+                    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+            
 class DeleteSongView(APIView):
     serializer_class = SongSerializer
 
     @extend_schema(
         request=SongSerializer,
         responses={200: SongSerializer},
-        methods=["GET", "POST"]
-    ) 
-
+        description="view and delete songs",
+        methods=["GET", "POST"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.SONG_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -281,24 +298,76 @@ class DeleteSongView(APIView):
 
             updated_data = read_data(settings.SONG_COLLECTION)
 
-            centrifugo_post(plugin_id, {"event": "deleted_chat", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
+            centrifugo_response = centrifugo_publish(
+                room=plugin_id, event="Song deleted", data=updated_data
+            )
+            if centrifugo_response.get("status_code", None) == 200:
+                return Response(updated_data, status=status.HTTP_200_OK)
+            return Response(
+                "Song deleted but Centrifugo is not available",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
+            )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # Note: use {"_id": ""} to delete
 
 
+class LikeSongView(APIView):
+    @extend_schema(
+        request=LikeSongSerializer,
+        responses={200: LikeSongSerializer},
+        description="user likes song",
+        methods=["POST"],
+    )
+    def post(self, request, org_id, song_id):
+        helper = DataStorage()
+        helper.organization_id = org_id
+        serializer = LikeSongSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.data
+            song_id = data["song_id"]
+            member_ids = data["memberId"]
+            song_data = helper.read("songs", {"_id": song_id})
+            if song_data and song_data.get("status_code", None) is None:
+                users_id = song_data.get("memberId")
+                new_songs = list(set(member_ids).difference(set(users_id)))
+                list(map(lambda x: users_id.append(x), new_songs))
+                if new_songs:
+                    response = helper.update(
+                        "songs", song_id, {"memberId": users_id}
+                    )
+                    if response.get("status") == 200:
+                        response_output = {
+                            "event": "like_song",
+                            "message": response.get("message"),
+                            "data": {
+                                "song_id": data["song_id"],
+                                "new_ids": new_songs,
+                                "action": "song liked successfully",
+                            },
+                        }
+                    return Response(
+                        "Song not liked", status=status.HTTP_424_FAILED_DEPENDENCY
+                    )
+                return Response(
+                    "Song already liked", status=status.HTTP_302_FOUND
+                )
+            return Response(
+                "Data not available on ZC core",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class SongSearchView(APIView):
-    
+
     serializer_class = SongSerializer
 
     @extend_schema(
         request=SongSerializer,
         responses={200: SongSerializer},
-        methods=["GET"]
-    ) 
-
+        description="search for songs",
+        methods=["GET"],
+    )
     def get(self, request, *args, **kwargs):
 
         collection_name = settings.SONG_COLLECTION
@@ -328,13 +397,18 @@ class SongSearchView(APIView):
                 item["images_url"] = [item["albumCover"]]
                 item["created_at"] = item["time"]
                 item["created_by"] = item["addedBy"]
-                item["content"] = None
-                item["url"] = f"https://zuri.chat/music/{collection_name}"
-                item["email"] = None
-                item["description"] = None
-                item.pop("albumCover")
-                item.pop("time")
-                item.pop("addedBy")
+                item["content"] = item["title"]
+                item["destination_url"] = f"/music/{collection_name}/{item['_id']}"
+                for field in [
+                    "duration",
+                    "likedBy",
+                    "time",
+                    "addedBy",
+                    "albumCover",
+                    "userId",
+                    "url",
+                ]:
+                    item.pop(field)
 
             result = paginator.paginate_queryset(search_result, request)
             # print(result)
@@ -356,9 +430,9 @@ class SongSearchSuggestions(APIView):
     @extend_schema(
         request=SongSerializer,
         responses={200: SongSerializer},
-        methods=["GET"]
-    ) 
-
+        description="Song search",
+        methods=["GET"],
+    )
     def get(self, request, *args, **kwargs):
         songs = read_data(settings.SONG_COLLECTION)["data"]
         data = {}
@@ -396,9 +470,9 @@ class CommentView(APIView):
     @extend_schema(
         request=CommentSerializer,
         responses={200: CommentSerializer},
-        methods=["GET", "POST"]
-    ) 
-
+        description="view and add comments",
+        methods=["GET", "POST"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -415,9 +489,15 @@ class CommentView(APIView):
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
-            centrifugo_post(plugin_id, {"event": "added_chat", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
+            centrifugo_response = centrifugo_publish(
+                room=plugin_id, event="New comment", data=updated_data
+            )
+            if centrifugo_response.get("status_code", None) == 200:
+                return Response(updated_data, status=status.HTTP_200_OK)
+            return Response(
+                "Comment added but Centrifugo is not available",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
+            )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -429,9 +509,9 @@ class DeleteCommentView(APIView):
     @extend_schema(
         request=CommentSerializer,
         responses={200: CommentSerializer},
-        methods=["GET", "POST"]
-    )     
-
+        description="view and delete comments",
+        methods=["GET", "POST"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -446,9 +526,15 @@ class DeleteCommentView(APIView):
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
-            centrifugo_post(plugin_id, {"event": "deleted_chat", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
+            centrifugo_response = centrifugo_publish(
+                room=plugin_id, event="Delete comment", data=updated_data
+            )
+            if centrifugo_response.get("status_code", None) == 200:
+                return Response(updated_data, status=status.HTTP_200_OK)
+            return Response(
+                "Comment deleted but Centrifugo is not available",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
+            )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # Note: use {"id": ""} to delete
@@ -460,9 +546,9 @@ class UpdateCommentView(APIView):
     @extend_schema(
         request=CommentSerializer,
         responses={200: CommentSerializer},
-        methods=["GET", "PUT"]
-    )    
-
+        description="view and update comments",
+        methods=["GET", "PUT"],
+    )
     def get(self, request, *args, **kwargs):
         data = read_data(settings.COMMENTS_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -482,18 +568,22 @@ class UpdateCommentView(APIView):
             )
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
-
-            centrifugo_post(plugin_id, {"event": "updated_chat", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
+            centrifugo_response = centrifugo_publish(
+                room=plugin_id, event="Comment Update", data=updated_data
+            )
+            if centrifugo_response.get("status_code", None) == 200:
+                return Response(updated_data, status=status.HTTP_202_ACCEPTED)
+            return Response(
+                "Comment updated but Centrifugo is not available",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
+            )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-#room views
-class RoomDetailView(
-    APIView
-):  # room detailview (if the organization has multiple music rooms)
+# room views
+class RoomDetailView(APIView):
+    # room detailview (if the organization has multiple music rooms)
     def get(self, request, *args, **kwargs):
 
         serializer = RoomSerializer(data=request.data)
@@ -510,47 +600,53 @@ class RoomDetailView(
 
 class DeleteRoomView(APIView):
 
-    serializer_class = RoomSerializer
-
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        methods=["GET", "POST"]
+        methods=["DELETE"]
     )
-
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
-
-    def post(self, request, *args, **kwargs):
-        serializer = RoomSerializer(data=request.data)
-
-        if serializer.is_valid():
-            object_id = request.data["_id"]
-
-            data = delete_data(settings.ROOM_COLLECTION, object_id=object_id)
-
-            updated_data = read_data(settings.ROOM_COLLECTION)
-
-            centrifugo_post(plugin_id, {"event": "room deleted", "data": updated_data})
-
-            return Response(data, status=status.HTTP_200_OK)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # Note: use {"id": ""} to delete
-
-
-class CreateRoom(APIView):  #to create a new room(functional)
-    serializer_class = RoomSerializer
-
-    @extend_schema(
-        request=RoomSerializer,
-        responses={200: RoomSerializer},
-        methods=["POST"]
-    )
-
-    def post(self, request, *args, **kwargs):
+    def delete(self, request, *args, **kwargs):
+        org_id = kwargs.get("org_id")
+        room_id = kwargs.get("_id")
+        collection = settings.ROOM_COLLECTION
+        filter_data = {"organization_id": org_id}
         
+        try:
+            room = read_data(
+                collection, object_id=room_id, filter_data=filter_data
+            )
+        except requests.exceptions.RequestException as e:
+            print(e)
+            return None
+
+        if room:
+            if room["status"] == 200:
+                if room['data']['_id'] == room_id:
+                    response = delete_data(
+                        collection, object_id=room_id
+                    )
+                    if response["status"] == 200:
+                        return Response(data=response, status=status.HTTP_200_OK)
+                        #centrifugo_post(plugin_id, {"event": "room deleted", "data": response})
+
+                    return Response(data={"room not deleted"}, status=status.HTTP_424_FAILED_DEPENDENCY)
+                return Response(data={"invalid room"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(data={room["message"]:"room not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(data={"invalid room_id"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
+class CreateRoom(APIView):  # to create a new room(functional)
+    serializer_class = RoomSerializer
+
+    @extend_schema(
+        request=RoomSerializer,
+        responses={200: RoomSerializer},
+        description="create a new room",
+        methods=["POST"],
+    )
+    def post(self, request, *args, **kwargs):
+
         org_id = request.data.get("org_id")
         memberId = request.data.get("memberId")
         collection = request.data.get("collection")
@@ -560,15 +656,14 @@ class CreateRoom(APIView):  #to create a new room(functional)
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            
+
             rooms = serializer.data
 
             rooms["org_id"] = org_id
             rooms["plugin_id"] = plugin_id
-            
-          
+
             data = write_data(settings.ROOM_COLLECTION, payload=rooms)
-            if data and data.get("status_code", None) == None:        
+            if data and data.get("status_code", None) == None:
 
                 room_url = (
                     f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
@@ -598,7 +693,7 @@ class CreateRoom(APIView):  #to create a new room(functional)
                     if x.status_code in [201, 200]:
 
                         responses = x.json()
-  
+
                         return Response(data=responses, status=status.HTTP_200_OK)
                     return Response(
                         data={"message": "url error"}, status=status.HTTP_200_OK
@@ -616,9 +711,9 @@ class RoomView(APIView):  # view room
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        methods=["GET"]
+        description="view information about a room",
+        methods=["GET"],
     )
-
     def get(self, request, *args, **kwargs):
         data = read_data(settings.ROOM_COLLECTION)
         return Response(data, status=status.HTTP_200_OK)
@@ -643,9 +738,9 @@ class DeleteRoomUserView(APIView):  # fully functional working
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        methods=["GET", "PUT"]
+        description="view and remove users from the room list",
+        methods=["GET", "PUT"],
     )
-
     def remove_user(self, request, *args, **kwargs):
 
         room_data = read_data(settings.ROOM_COLLECTION)
@@ -658,22 +753,49 @@ class DeleteRoomUserView(APIView):  # fully functional working
                 room_users.remove(x)
         return room_id, room_users
 
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data)
-
     def put(self, request, *args, **kwargs):
-        
-        room_id, updated_room = self.remove_user(request)
 
+        room_id, updated_room = self.remove_user(request)
+        user = request.data["memberId"]
         payload = {"memberId": updated_room}
 
         data = write_data(
             settings.ROOM_COLLECTION, object_id=room_id, payload=payload, method="PUT"
         )
 
-        centrifugo_post(plugin_id, {"event": "User left room", "data": data})
-        return Response(data, status=status.HTTP_202_ACCEPTED)
+        sidebar_data = {
+            "name": "Music Plugin",
+            "description": "User joins the music room",
+            "group_name": "Music",
+            "category": "Entertainment",
+            "show_group": True,
+            "button_url": "/music",
+            "public_rooms": [],
+            "joined_rooms": [],
+        }
+
+        response_output = {
+            "event": "add_users_to_room",
+            "message": "success",
+            "data": {
+                "room_id": data["room_id"],
+                "new_member_ids": user,
+                "action": "user removed successfully",
+            },
+        }
+
+        channel = f"{org_id}_{user}_sidebar"
+        centrifugo_data = centrifugo_publish(
+            room=channel, event="sidebar_update", data=sidebar_data
+        )
+
+        if centrifugo_data.get("status_code", None) == 200:
+            return Response(data=response_output, status=status.HTTP_201_CREATED)
+        else:
+            return Response(
+                data="User/users added but centrifugo not available",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
+            )
         # Note: use {"memberId": ""} to delete
 
 
@@ -684,16 +806,16 @@ class RoomUserList(APIView):  # working
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        methods=["GET"]
+        description="view information about members in a room",
+        methods=["GET"],
     )
-    
     def get(self, request, *args, **kwargs):
         room_data = read_data(settings.ROOM_COLLECTION)
 
         serializer = self.serializer_class(data=request.data)
 
         if serializer.is_valid():
-            
+
             rooms = serializer.data
 
             room_users = room_data["data"][0]["memberId"]
@@ -701,14 +823,13 @@ class RoomUserList(APIView):  # working
             return Response(room_users)
 
 
-class AddUserToRoomView(APIView): # to add a user to the room
-
+class AddUserToRoomView(APIView):  # to add a user to the room
     @extend_schema(
         request=AddToRoomSerializer,
         responses={200: AddToRoomSerializer},
-        methods=["POST"]
+        description="add new user to a room",
+        methods=["POST"],
     )
-
     def post(self, request, org_id, room_id):
         helper = DataStorage()
         helper.organization_id = org_id
@@ -744,23 +865,21 @@ class AddUserToRoomView(APIView): # to add a user to the room
                                 }
 
                                 sidebar_data = {
-                                    "event": "sidebar_update",
-                                    "plugin_id": settings.PLUGIN_ID,
-                                    "data": {
-                                        "name": "Music Plugin",
-                                        "description": "User joins the music room",
-                                        "group_name": "Music",
-                                        "category": "Entertainment",
-                                        "show_group": True,
-                                        "button_url": "/music",
-                                        "public_rooms": [music_data],
-                                        "joined_rooms": [music_data],
-                                    },
+                                    "name": "Music Plugin",
+                                    "description": "User joins the music room",
+                                    "group_name": "Music",
+                                    "category": "Entertainment",
+                                    "show_group": True,
+                                    "button_url": "/music",
+                                    "public_rooms": [music_data],
+                                    "joined_rooms": [music_data],
                                 }
 
                                 channel = f"{org_id}_{new_member_id}_sidebar"
                                 centrifugo_data = centrifugo_publish(
-                                    channel, sidebar_data
+                                    room=channel,
+                                    event="sidebar_update",
+                                    data=sidebar_data,
                                 )
 
                             if (
@@ -888,5 +1007,3 @@ class UninstallView(APIView):
                 "data": None,
             }
             return Response(data=data, status=status.HTTP_424_FAILED_DEPENDENCY)
-
-

@@ -1,15 +1,14 @@
-import { SongToAdd } from "../types/song";
-import LikeSong from "../types/likeSong";
-
-import { songDispatch } from "../store/songsSlice";
+import { initializedSongs, likedSong, removedSong } from "../app/songsSlice";
 import httpService, { endpoints } from "./httpService";
-import store from "../store";
+import store from "../app/store";
+
+const dispatch = store.dispatch;
 
 const getSongs = () => {
 	httpService.get(httpService.endpoints.songs).then(
 		result => {
 			const data = result.data.data ?? [];
-			songDispatch.initialize(data.filter(song => song.url));
+			dispatch(initializedSongs(data.filter(song => song.url)));
 			return result;
 		},
 
@@ -31,13 +30,13 @@ const addSong = async (song: SongToAdd) => {
 
 const deleteSong = async (id: string) => {
 	return httpService.post(endpoints.deletesong, { id }).then(res => {
-		songDispatch.removeSong(id);
+		dispatch(removedSong({ id }));
 		return res;
 	});
 };
 
 const likeSong = async (like: LikeSong) => {
-	songDispatch.likeSong(like);
+	dispatch(likedSong(like));
 
 	try {
 		await httpService.post(httpService.endpoints.likesong, like);

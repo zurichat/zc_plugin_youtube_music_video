@@ -1,11 +1,6 @@
-import User from "../types/user";
 import httpService from "./httpService";
 
-import {
-	GetUserInfo,
-	GetWorkspaceUser
-	// @ts-ignore
-} from "@zuri/control";
+import { GetUserInfo, GetWorkspaceUser } from "@zuri/utilities";
 
 async function getCurrentUser(): Promise<User> {
 	try {
@@ -71,8 +66,6 @@ async function addMember(ids?: string[]) {
 			ids = [id];
 		}
 
-		console.log([ids]);
-
 		return httpService.post(httpService.endpoints.adduser, {
 			room_id: httpService.room_id,
 			memberId: ids
@@ -91,17 +84,24 @@ async function removeMember(id: string, name = "user") {
 
 async function getMembers(workspaceUsers?: User[]): Promise<User[]> {
 	try {
-		console.time("workspaceUsers");
 		const users = workspaceUsers || (await getWorkspaceUsers());
-		console.timeEnd("workspaceUsers");
 
 		const { data: ids } = await httpService.get(httpService.endpoints.members);
 
-		const currentUser = await getCurrentUser();
-		const isMember = ids.some(id => id === currentUser.id);
+		const uniqueIds = [...new Set(ids)];
 
-		const members = users.filter(user => ids.find(id => id === user.id));
-		return isMember ? [...members, currentUser] : members;
+		const currentUser = await getCurrentUser();
+
+		const members = users.filter(user => uniqueIds.find(id => id === user.id));
+
+		// This is temporary and may be removed in the future
+		// In some cases, the currentUser is not in the workspace users list.
+
+		const isMember = uniqueIds.some(id => id === currentUser.id);
+		const inList = members.some(member => member.id === currentUser.id);
+
+		// Include currentUser in the members list if its a member and not in the list
+		return isMember && !inList ? [...members, currentUser] : members;
 	} catch (error) {
 		console.log("Members error:", error);
 		throw Error(error.message);

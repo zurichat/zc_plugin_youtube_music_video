@@ -7,7 +7,8 @@ staticfiles/
 /pythagorasenv
 DBName
 dist/
-PRs.md
+PR.md
+/.vscode
 
 ### VirtualEnv template
 # Virtualenv

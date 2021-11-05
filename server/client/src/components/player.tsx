@@ -1,30 +1,31 @@
 import { useState, useEffect } from "react";
 import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
-import { useSelector, connect } from "react-redux";
+import { connect } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 
-import store from "../store";
-import { songSelect } from "../store/songsSlice";
+import store from "../app/store";
+import { selectSongs } from "../app/songsSlice";
 
 import {
 	getPlayerState,
-	playerAction,
-	playerSelector,
-	playing
-} from "../store/playerSlice";
+	changedPlaying,
+	changedCurrentSong,
+	selectCurrentSong
+} from "../app/playerSlice";
 
 import PlaylistItems from "./common/playlistItems";
 import LikeOptionCount from "./common/likeOptionCount";
 
 import httpService from "../services/httpService";
 import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
-import Song from "../types/song";
 
 function Player() {
 	const [init, setInit] = useState(false);
-	const player = useSelector(getPlayerState);
-	const songs = useSelector(songSelect.allSongs);
-	const song = useSelector(playerSelector.selectCurrentSong);
+	const dispatch = useAppDispatch();
+	const player = useAppSelector(getPlayerState);
+	const songs = useAppSelector(selectSongs);
+	const song = useAppSelector(selectCurrentSong);
 	const upnext = getUpnext();
 	const { currentsong: currentSongEndpoint } = httpService.endpoints;
 
@@ -66,11 +67,11 @@ function Player() {
 	}
 
 	const handlePlay = () => {
-		store.dispatch({ type: playing.type, payload: { playing: true } });
+		store.dispatch({ type: changedPlaying.type, payload: { playing: true } });
 	};
 
 	const handlePause = () => {
-		store.dispatch({ type: playing.type, payload: { playing: false } });
+		store.dispatch({ type: changedPlaying.type, payload: { playing: false } });
 	};
 
 	const handedEnded = () => {
@@ -79,7 +80,7 @@ function Player() {
 		if (index === -1) return;
 
 		const indexNext = index < songs.length - 1 ? index + 1 : 0;
-		playerAction.changeSong(songs[indexNext]);
+		dispatch(changedCurrentSong(songs[indexNext]));
 	};
 
 	const handleNext = () => {
