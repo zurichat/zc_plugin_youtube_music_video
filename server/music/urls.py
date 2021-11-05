@@ -24,6 +24,11 @@ urlpatterns = [
         name="deletesong",
     ),  # delete song
     path(
+        "org/<str:org_id>/room/<str:_id>/songs/like",
+        LikeSongView.as_view(),
+        name="likesong",
+    ),  # like song
+    path(
         "search/<str:org_id>/<str:member_id>",
         SongSearchView.as_view(),
         name="songsearch",
@@ -82,4 +87,5 @@ urlpatterns = [
     ),  # create room
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
+    path("org/<str:org_id>/room/<str:_id>/songs/likecount", songLikeCountView.as_view(), name="like-count"),
 ]

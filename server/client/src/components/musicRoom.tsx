@@ -1,18 +1,13 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
-
 import { pluginHeader, headerConfig } from "../utils/config";
-
-// @ts-ignore
 import { MessageBoard } from "@zuri/zuri-ui";
-
 // import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
 import Chat from "./chat";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
-
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectShowPasteUrl } from "../app/uiSlice";
 import { useEffect, useMemo, useState } from "react";

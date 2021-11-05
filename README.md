@@ -21,7 +21,7 @@
     $ yarn - to install dependencies if you haven't
     $ yarn start
 
-Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a>
+Client server running @ <a href='http://localhost:22672'>http://localhost:22672</a>
 
 ### Note to the frontend devs
 
@@ -58,7 +58,7 @@ Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a
     $ python -m venv venv - to create a virtual environment
     $ venv\scripts\activate
 
-    $ pip install -r requirements/local.txt
+    $ pip install -r requirements.txt
 
     - Create .env file in config and put variables for Secret Key and Database (PostgreSQL) as created in sample.env file
 
@@ -69,8 +69,7 @@ Client server running @ <a href='http://localhost:9001'>http://localhost:9001</a
 
 ### Note to the backend devs
 
-    You don't need to start run yarn to check your endpoints.
-
+    You don't need to run yarn start to check your endpoints.
 
 Server running on <a href='http://localhost:8000'>http://localhost:8000/music</a>
 

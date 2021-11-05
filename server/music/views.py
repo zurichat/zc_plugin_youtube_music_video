@@ -56,12 +56,12 @@ class change_room_image(APIView):
 def get_room_info(room_id=None):
     room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
     output = []
-    if room_data:
+    if room_data['status'] == 200 and room_data['data'] is not None:
         room = {
             "room_name": room_data["data"]["room_name"],
             "room_id": f"/music/{room_id}",
-            "button_url": f"/music",
-            "room_image": room_image[0],
+            "button_url": "/music",
+            "room_image": room_image[0],    
         }
         output.append(room)
         return output
@@ -91,7 +91,7 @@ class SidebarView(GenericAPIView):
             "room_id": "",
             "user_id": "",
             "show_group": False,
-            "button_url": f"/music",
+            "button_url": "/music",
             "public_rooms": [],
             "joined_rooms": [],
         }
@@ -120,12 +120,10 @@ class SidebarView(GenericAPIView):
                         
                         sidebar_update_payload = {
                                     "event": "sidebar_update",
-                                    "plugin_id": "dm.zuri.chat",
+                                    "plugin_id": "music.zuri.chat",
                                     "data": sidebar_data
                                 }
                         return Response(sidebar_update_payload, status=status.HTTP_200_OK)
-                    else:
-                        pass
                 return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
             return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
         return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
@@ -231,6 +229,52 @@ class SongView(APIView):
         # Note: song endpoint expects {"url": "", "userId": "", "addedBy":"", "time":""} in the payload
 
 
+class songLikeCountView(APIView):
+    serializer_class = SongLikeCountSerializer
+
+    @extend_schema(
+        request=SongLikeCountSerializer,
+        responses={200: SongLikeCountSerializer},
+        description="song likes/unlikes count",
+        methods=["POST"],
+    )
+    def post(self,request, *args, **kwargs):
+        serializer = SongLikeCountSerializer(data=request.data)
+        x = DataStorage()
+        org_id = settings.ORGANIZATON_ID
+        x.organization_id = org_id
+
+        if serializer.is_valid():
+            songId = request.data["songId"]
+            userId = request.data["userId"]
+        
+            songs = read_data(settings.SONG_COLLECTION, object_id=songId)
+            likedBy = songs["data"]["likedBy"]
+            
+            if userId in likedBy:
+                likedBy.remove(userId)
+                unlike_count = len(likedBy)
+                x.update("songs", songId, {"likedBy":likedBy})
+                
+                return Response({
+                    "unlikedBy": userId,
+                    "songId": songId,
+                    "total_likes": unlike_count,
+                }, status=status.HTTP_200_OK)
+
+            else:
+                likedBy.append(userId)
+                like_count = len(likedBy)
+                x.update("songs", songId, {"likedBy":likedBy})
+                
+                return Response({
+                    "likedBy": userId,
+                    "songId": songId,
+                    "total_likes": like_count,
+                }, status=status.HTTP_200_OK)
+                    
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+            
 class DeleteSongView(APIView):
     serializer_class = SongSerializer
 
@@ -267,6 +311,52 @@ class DeleteSongView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         # Note: use {"_id": ""} to delete
 
+
+class LikeSongView(APIView):
+    @extend_schema(
+        request=LikeSongSerializer,
+        responses={200: LikeSongSerializer},
+        description="user likes song",
+        methods=["POST"],
+    )
+    def post(self, request, org_id, song_id):
+        helper = DataStorage()
+        helper.organization_id = org_id
+        serializer = LikeSongSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.data
+            song_id = data["song_id"]
+            member_ids = data["memberId"]
+            song_data = helper.read("songs", {"_id": song_id})
+            if song_data and song_data.get("status_code", None) is None:
+                users_id = song_data.get("memberId")
+                new_songs = list(set(member_ids).difference(set(users_id)))
+                list(map(lambda x: users_id.append(x), new_songs))
+                if new_songs:
+                    response = helper.update(
+                        "songs", song_id, {"memberId": users_id}
+                    )
+                    if response.get("status") == 200:
+                        response_output = {
+                            "event": "like_song",
+                            "message": response.get("message"),
+                            "data": {
+                                "song_id": data["song_id"],
+                                "new_ids": new_songs,
+                                "action": "song liked successfully",
+                            },
+                        }
+                    return Response(
+                        "Song not liked", status=status.HTTP_424_FAILED_DEPENDENCY
+                    )
+                return Response(
+                    "Song already liked", status=status.HTTP_302_FOUND
+                )
+            return Response(
+                "Data not available on ZC core",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class SongSearchView(APIView):
 
