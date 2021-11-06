@@ -1,6 +1,5 @@
-from rest_framework import authentication
-from rest_framework import exceptions
 import requests
+from rest_framework import authentication, exceptions
 
 
 class Zuri_Token_Auth(authentication.TokenAuthentication):

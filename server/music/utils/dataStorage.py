@@ -1,8 +1,8 @@
 from urllib.parse import urlencode
-from requests.exceptions import RequestException
+
 import requests
 from django.conf import settings
-
+from requests.exceptions import RequestException
 
 centrifugo = "58c2400b-831d-411d-8fe8-31b6e337738b"
 PLUGIN_ID = "616991e5ef1c19335a2869f4"

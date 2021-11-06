@@ -26,6 +26,31 @@ repos:
     rev: v3.0.0-a4
     hooks:
     -   id: pylint
+        args:
+        - --max-line-length=500
+        - --ignore-imports=yes
+        - --disable=E1101
+        - --disable=E0401
+        - --disable=C0114
+        - --disable=C0115
+        - --disable=C0116
+        - --disable=W0621
+        - --disable=R0201
+        - --disable=W0613
+        - --disable=W0102
+        - --disable=W0622
+        - --disable=R1710
+        - --disable=E0402
+        - --disable=R1704
+        - --disable=C0412
+        - --disable=C0103
+        - --disable=W1401
+        - --disable=C0302
+        - --disable=W0404
+        - --disable=R0914
+        - --disable=W0703
+        - --disable=W0703
+        - --disable=R0903
   - repo: https://github.com/timothycrosley/isort
     rev: 5.9.3
     hooks:
