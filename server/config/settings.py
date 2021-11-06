@@ -23,7 +23,6 @@ SYSTEM_ENV = env("SYSTEM_ENV")
 
 # switches DEBUG to true or false based on the Environment variable
 if SYSTEM_ENV == "Development":
-
     DEBUG = True
 else:
     DEBUG = False
@@ -111,14 +110,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Create a file named .env and Declare your environment variables for database in .env
 # Make sure you don’t use quotations around strings.
+
 DATABASES = {
     "default": {
-        "ENGINE": env("DATABASE_ENGINE"),
-        "NAME": env("DATABASE_NAME"),
-        "USER": env("DATABASE_USER"),
-        "PASSWORD": env("DATABASE_PASS"),
-        "HOST": env("DATABASE_HOST"),
-        "PORT": env("DATABASE_PORT"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
 # Password validation
