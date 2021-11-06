@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import environ  # import environ
+from django.core.management.commands.runserver import Command as runserver
 
 env = environ.Env()  # Initialise environment variables
 environ.Env.read_env()
@@ -22,7 +23,6 @@ SYSTEM_ENV = env("SYSTEM_ENV")
 
 # switches DEBUG to true or false based on the Environment variable
 if SYSTEM_ENV == "Development":
-
     DEBUG = True
 else:
     DEBUG = False
@@ -31,11 +31,13 @@ print(DEBUG)
 ALLOWED_HOSTS = [
     "zuri.chat",
     "music.zuri.chat",
-    "178.68.43.138",
+    "staging.zuri.chat",
+    "178.63.43.138",  # new default port for plugins on zuri.chat
     "localhost",
     "127.0.0.1",
     "*",
 ]
+runserver.default_port = "22672"  # new default port for music plugin
 
 # Application definition
 CORS_ALLOW_ALL_ORIGINS = True
@@ -108,14 +110,11 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Create a file named .env and Declare your environment variables for database in .env
 # Make sure you don’t use quotations around strings.
+
 DATABASES = {
     "default": {
-        "ENGINE": env("DATABASE_ENGINE"),
-        "NAME": env("DATABASE_NAME"),
-        "USER": env("DATABASE_USER"),
-        "PASSWORD": env("DATABASE_PASS"),
-        "HOST": env("DATABASE_HOST"),
-        "PORT": env("DATABASE_PORT"),
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
     }
 }
 # Password validation
@@ -182,9 +181,7 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S",
     "DATETIME_FORMAT": "%s.%f",
-    "DEFAULT_PERMISSION_CLASSES": (
-        "rest_framework.permissions.AllowAny",
-    ),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
 }
 
 if DEBUG:
@@ -232,7 +229,7 @@ ROOM_ID = "6169d8b54bfde011fe582e65"
 # new collections created
 ROOM_COLLECTION = "musicroom"
 SONG_COLLECTION = "songs"
-COMMENTS_COLLECTION = "messages"
+COMMENTS_COLLECTION = "chats"
 
 
 APPEND_SLASH = False

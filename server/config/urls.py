@@ -1,16 +1,11 @@
-from django.contrib import admin
-from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularSwaggerView,
-    SpectacularRedocView,
-)
+from django.contrib import admin
+from django.urls import include, path
 from django.views.generic import TemplateView
+from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
+                                   SpectacularSwaggerView)
 from music.views import SidebarView
-
 
 urlpatterns = [
     # coming from frontend app using react every thing we connect in App.js in components will be
