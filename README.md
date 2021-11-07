@@ -1,78 +1,212 @@
 # YouTube Music-Video Plugin
 
-![music image](https://scontent.fabb1-1.fna.fbcdn.net/v/t1.6435-9/p640x640/184205866_309950770525058_7072329262818108856_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=e3f864&_nc_ohc=KxNw0YAjzh8AX_67s2d&_nc_ht=scontent.fabb1-1.fna&oh=e0bb8173d7cf9f75f82b00345dbbb987&oe=616AD4A8)
+> ## Table of contents
+* [Overview](#overview)
+* [Project Features](#project-features)
+* [Technologies](#technologies)
+* [Repo Setup](#repo-setup)
+* [Setting up the project](#setting-up-the-project)
+    * [Frontend](#frontend)
+    * [Backend](#backend)
+* [Links to the project](#links-to-the-project)
+* [Status](#status)
+* [Contributing to the project](#contributing-to-the-project)
 
-# Tech Stack
+#
+>## Overview
+<p align="justify">
+ZuriChat is an open source slack clone that provides the opportunity for people to network, collaborate, educate and learn remotely. It allows people to take their classroom everywhere, make learning fun, stay engaged and inspired with the virtual lounge and games.
 
-- Django
-- React
+One of its unique features are the variety of plugins designed to add features such as tracking company expenses, sending information fast and smoothly, managing files and integrating tools all with ZuriChat.
 
-# To Run Client
+This project is focused on the ZuriChat music plugin.
+</p>
 
-### Start the client
+![site image](https://drive.google.com/uc?export=view&id=1OinCY56dOGcG6DvliWAhznSj4d7gA4_H)
 
-    $ cd server/client
-    $ yarn - to install dependencies if you haven't
-    $ yarn start
+#
+> ## Project Features
+The YouTube music plugin allows the users in the organization to add and play Youtube links.You can also chat in real time with other members of the organization.
 
-### Start the single-spa root
 
-    $ cd root
-    $ yarn - to install dependencies if you haven't
-    $ yarn start
+- Add and Play Youtube music and videos.
 
-Client server running @ <a href='http://localhost:22672'>http://localhost:22672</a>
+- Chat in realtime in the music room.
 
-### Note to the frontend devs
+- Song search and filter options.
 
-    You don't need to start django server. Only start the client and single-spa root
+</p>
 
-## Note to the DevOps
+#
+> ## Technologies
 
-    Build first before starting django server
+<p align="justify">
+*Note: This project was setup and developed on a system running Windows 10. The stacks used for the project include:
+</p>
 
-# To Build
 
-### Build the client
+| <b><u>Stack</u></b> | <b><u>Usage</u></b> |
+| :---         | :---         |
+| **`Python 3.9`** | Programming language. |
+| **`React JS`** | Frontend |
+| **`MongoDB`** | External Database |
+| **` Django Rest framework`** | APIs. |
 
-    $ cd server/client
-    $ yarn
-    $ yarn build
+#
+> ## Repo Setup
 
-### Build the single-spa root
+<p align="justify">
+To setup the repo, first fork and clone the Zurichat YouTube Music, then clone the forked repository to create a copy on the local machine.
+</p>
 
-    $ cd root
-    $ yarn
-    $ yarn build
+    $ git clone git@github.com:pauline-banye/music_video.git
 
-### Lint Frontend
+<p align="justify">
+Change directory to the cloned repo and set the original Zurichat repository as the "upstream" and your forked repository as the "origin" using gitbash.
+</p>
 
-    - cd into the frontend folder (server/client)
+    $ git remote add upstream git@github.com:zurichat/zc_plugin_youtube_music_video.git
 
-    `$ yarn lint`
 
-# To Run Django Server
+#
+> ## Setting up the project
+<p align="justify">
+The first step requires the download and installation of Python 3.9 and a check to confirm that pip and the necessary dependencies are properly installed.
+</p>
 
-    $ cd server
+<p align="justify">
+After the installation of the Python program, setup the project environment with pip and virtualenv in the command prompt, powershell or gitbash terminal. Virtualenv helps to create an isolated Python environment containing all the packages necessary for the project.
+</p>
 
-    $ python -m venv venv - to create a virtual environment
-    $ venv\scripts\activate
+*Note:
+- This project was setup using the gitbash terminal. Some of the commands used do not work with command prompt or powershell.
+- If a "pip command not found error" is encountered, download get-pip.py and run `phython get-pip.py` to install it.
 
-    $ pip install -r requirements.txt
+###
+    $ pip install virtualenv
 
-    - Create .env file in config and put variables for Secret Key and Database (PostgreSQL) as created in sample.env file
 
-    $ python manage.py makemigrations
-    $ python manage.py migrate
+Navigate to the cloned local project folder. Create a virtual environment folder and activate the environment by running the following commands in the gitbash terminal.
 
-    $ python manage.py runserver
 
-### Note to the backend devs
+###
+    $ python -m venv venv
+    $ source venv/scripts/activate
 
-    You don't need to run yarn start to check your endpoints.
 
-Server running on <a href='http://localhost:8000'>http://localhost:8000/music</a>
+<p align="justify">
+Once the virtual environment is active, the next step is the Django installation. Django is an open source Python web application framework thats helps with the rapid development of secure websites.
+</p>
 
-<!-- API root available on <a href='http://localhost:8000/music/api/'>http://localhost:8000/music/api/</a>
+###
+    $ (venv) pip install django
 
-Admin root available on <a href='http://localhost:8000/music/admin/'>http://localhost:8000/music/admin/</a> -->
+
+<p align="justify">
+After installing Django, install Django REST framework in the gitbash terminal. The Django REST framework is a flexible toolkit for building Web based APIs. The REST framework was used for the creation of APIs, serialization and the authentication process for this project.
+</p>
+
+###
+    $ (venv) pip install djangorestframework
+
+
+Install all the necessary dependencies for the project. A few of them are listed below.
+
+| <b><u>Modules</u></b> | <b><u>Usage</u></b> |
+| :---         | :---         |
+| **`django-cors-headers`** | Cross Origin Resource Sharing |
+| **`gunicorn`** | WSGI HTTP server |
+| **`whitenoise`** | Static files |
+| **`Markdown`** | Markup language |
+| **`django-environ`** | Environment configuration |
+
+
+An exhaustive list can be found in the requirements.txt file included in this project. The modules can be 'batch installed' using the  `pip install -r requirements.txt` command.
+
+
+### Frontend
+
+-   #### Build the client
+
+        $ cd server/client
+        $ yarn
+        $ yarn build
+
+-   #### Build the single-spa root
+
+        $ cd root
+        $ yarn
+        $ yarn build
+
+-   #### Start the client
+
+        $ cd server/client
+        $ yarn
+        $ yarn start
+
+-   #### Start the single-spa root
+
+        $ cd root
+        $ yarn
+        $ yarn start
+
+        - Frontend devs: You don't need to start django server. Only start the client and single-spa root to view your edits.
+
+-   #### Run Eslint on the client
+
+        - cd into the frontend folder (server/client)
+
+        $ yarn lint --fix (or yarn lint --fix . to fix all files)
+
+#
+### Backend.
+-   #### Run Django Server
+
+        $ cd server
+
+        - Create .env file in config and put variables for Secret Key as created in sample.env file
+
+        $ python manage.py runserver
+
+-   #### Run Pre-commit standalone for Backend
+
+        $ cd server
+        $ pre-commit run (or pre-commit run --all-files to check all files)
+
+        - Backend devs: You don't need to run yarn start to test your endpoints.
+
+#
+### Note to the DevOps
+
+-   Build first before starting django server
+
+#
+> ## Links to the project
+Local server: <a href='<http://localhost:22672/music>'>http://localhost:22672/music</a>
+
+Live site: <a href='<http://staging.zuri.chat/music>'>http://staging.zuri.chat/music</a>
+
+API root: <a href='http://localhost:22672/music/api/v1'>http://localhost::22672/music/api/v1</a>
+
+#
+> ## Status
+This project is a work in progress and is currently under development.
+
+
+#
+> ## Contributing to the project
+
+If you find something worth contributing, please fork the repo, make a pull request and add valid and well-reasoned explanations about your changes or comments.
+
+Before adding a pull request, please note:
+
+-   It should be inviting and clear.
+-   Any additions should be relevant.
+-   It should be easy to contribute to.
+-   Urls marked **\*** are temporarily unavailable. Don't delete it without confirming that it has permanently expired.
+
+This repository is not meant to contain everything. Only good quality verified information.
+
+All **`suggestions`** are welcome!
+
+> Readme created by Pauline Banye

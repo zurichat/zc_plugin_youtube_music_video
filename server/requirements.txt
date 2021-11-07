@@ -4,7 +4,6 @@ black==21.9b0
 coreapi==2.3.3
 coverage==6.0.1
 dataclasses==0.6
-dataclasses==0.6
 dj-rest-auth==2.1.4
 Django==3.2.4
 django-allauth==0.44.0

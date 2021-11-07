@@ -2,17 +2,6 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class Member:  # for the users
-
-    # _id: str
-    memberId: str
-    name: str
-    avatar: str
-    email: str
-    job: str
-
-
-@dataclass
 class Song:  # for the songs
 
     _id: str
@@ -25,11 +14,13 @@ class Song:  # for the songs
     addedBy: str
     likedBy: dict = field(default_factory=dict)
 
+
 @dataclass
 class songLikeCount:
 
     songId: str
     userId: str
+
 
 @dataclass
 class Room:  # for the rooms
