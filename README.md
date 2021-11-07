@@ -7,7 +7,14 @@
 * [Repo Setup](#repo-setup)
 * [Setting up the project](#setting-up-the-project)
     * [Frontend](#frontend)
+        * [Build the client](#build-the-client)
+        * [Build the single-spa root](#build-the-single-spa-root)
+        * [Start the client](#start-the-client)
+        * [Start the single-spa root](#start-the-single-spa-root)
+        * [Lint the Frontend](#lint-the-frontend)
     * [Backend](#backend)
+        * [Run the Django Server](#run-the-django-server)
+        * [Pre-commit and lint the Backend](#pre-commit-and-lint-the-backend)
 * [Links to the project](#links-to-the-project)
 * [Status](#status)
 * [Contributing to the project](#contributing-to-the-project)
@@ -79,7 +86,9 @@ After the installation of the Python program, setup the project environment with
 </p>
 
 *Note:
-- This project was setup using the gitbash terminal. Some of the commands used do not work with command prompt or powershell.
+
+* This project was setup using the gitbash terminal. Some of the commands used do not work with command prompt or powershell.
+
 - If a "pip command not found error" is encountered, download get-pip.py and run `phython get-pip.py` to install it.
 
 ###
@@ -152,15 +161,15 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
         - Frontend devs: You don't need to start django server. Only start the client and single-spa root to view your edits.
 
--   #### Run Eslint on the client
+-   #### Lint the Frontend
 
         - cd into the frontend folder (server/client)
 
         $ yarn lint --fix (or yarn lint --fix . to fix all files)
 
 #
-### Backend.
--   #### Run Django Server
+### Backend
+-   #### Run the Django Server
 
         $ cd server
 
@@ -168,7 +177,7 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
         $ python manage.py runserver
 
--   #### Run Pre-commit standalone for Backend
+-   #### Pre-commit and lint the Backend
 
         $ cd server
         $ pre-commit run (or pre-commit run --all-files to check all files)
