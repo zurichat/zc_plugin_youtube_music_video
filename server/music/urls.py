@@ -102,3 +102,5 @@ urlpatterns = [
         name="adduser",
     ),  # add user
 ]
+
+

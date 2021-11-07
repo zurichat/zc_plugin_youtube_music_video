@@ -22,7 +22,10 @@ SECRET_KEY = env("SECRET_KEY")
 SYSTEM_ENV = env("SYSTEM_ENV")
 
 # switches DEBUG to true or false based on the Environment variable
-DEBUG = SYSTEM_ENV == "Development"
+if SYSTEM_ENV == "Development":
+    DEBUG = True
+else:
+    DEBUG = False
 print(DEBUG)
 
 ALLOWED_HOSTS = [
