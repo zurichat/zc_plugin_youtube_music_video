@@ -346,7 +346,7 @@ class LikeSongView(APIView):
         description="user likes song",
         methods=["POST"],
     )
-    def post(self, request, org_id, song_id):
+    def post(self, request, *args, **kwargs):
         helper = DataStorage()
         helper.organization_id = org_id
         serializer = LikeSongSerializer(data=request.data)
@@ -356,21 +356,24 @@ class LikeSongView(APIView):
             member_ids = data["memberId"]
             song_data = helper.read("songs", {"_id": song_id})
             if song_data and song_data.get("status_code", None) is None:
-                users_id = song_data.get("memberId")
-                new_songs = list(set(member_ids).difference(set(users_id)))
-                list(map(lambda x: users_id.append(x), new_songs))
-                if new_songs:
-                    response = helper.update("songs", song_id, {"memberId": users_id})
+                users_id = song_data.get("likedBy")
+                if member_ids not in users_id:
+                    users_id.append(member_ids)
+                if users_id:
+                    response = helper.update("songs", song_id, {"likedBy": users_id})
                     if response.get("status") == 200:
                         response_output = {
                             "event": "like_song",
                             "message": response.get("message"),
                             "data": {
                                 "song_id": data["song_id"],
-                                "new_ids": new_songs,
+                                "new_ids": member_ids,
                                 "action": "song liked successfully",
                             },
                         }
+                        return Response(
+                            response_output, status=status.HTTP_424_FAILED_DEPENDENCY
+                        )
                     return Response(
                         "Song not liked", status=status.HTTP_424_FAILED_DEPENDENCY
                     )
