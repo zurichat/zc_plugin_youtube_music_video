@@ -22,10 +22,7 @@ SECRET_KEY = env("SECRET_KEY")
 SYSTEM_ENV = env("SYSTEM_ENV")
 
 # switches DEBUG to true or false based on the Environment variable
-if SYSTEM_ENV == "Development":
-    DEBUG = True
-else:
-    DEBUG = False
+DEBUG = SYSTEM_ENV == "Development"
 print(DEBUG)
 
 ALLOWED_HOSTS = [
@@ -108,9 +105,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-# Create a file named .env and Declare your environment variables for database in .env
-# Make sure you don’t use quotations around strings.
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -179,7 +173,7 @@ REST_FRAMEWORK = {
     # ],
     # "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    #'DATETIME_FORMAT': "%Y-%m-%d - %H:%M:%S",
+    # "DATETIME_FORMAT": "%Y-%m-%d - %H:%M:%S",
     "DATETIME_FORMAT": "%s.%f",
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
 }

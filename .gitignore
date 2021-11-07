@@ -6,6 +6,7 @@ static/
 staticfiles/
 /pythagorasenv
 DBName
+db.sqlite3
 dist/
 PR.md
 /.vscode
