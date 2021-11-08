@@ -86,8 +86,8 @@ function MusicRoom() {
 			</div>
 
 			<div className="room-chat-container">
-				<Chat />
-				{/* <MessageBoard chatsConfig={chatSidebarConfig} /> */}
+				{/* <Chat /> */}
+				<MessageBoard id="chat-comp" chatsConfig={chatSidebarConfig} />
 			</div>
 		</Wrapper>
 	);
@@ -117,7 +117,9 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	}
 
 	.room-chat-container {
+		position: relative;
 		margin-top: 5px;
+		width: 500px;
 	}
 
 	.room-main::-webkit-scrollbar,
