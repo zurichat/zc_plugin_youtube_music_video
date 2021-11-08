@@ -46,6 +46,26 @@ declare global {
 		avatar: string;
 	}
 
+	interface ChatN {
+		username: string;
+		id: number;
+		time: string;
+		imageUrl: string;
+		emojies: { name: string; count: number; emoji: string }[];
+		richUiData: {
+			blocks: {
+				data: {};
+				depth: number;
+				entityRanges: [];
+				inlineStyleRanges: [];
+				key: string;
+				text: string;
+				type: string;
+			}[];
+			entityMap: {};
+		};
+	}
+
 	interface User {
 		id: string;
 		name: string;
