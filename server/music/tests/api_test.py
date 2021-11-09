@@ -1,9 +1,9 @@
 # import pytest
-from music.views import SidebarView, PluginInfoView
 from django.test.client import Client
 from django.urls import resolve, reverse
-from rest_framework.test import APITestCase
+from music.views import PluginInfoView, SidebarView
 from rest_framework import status
+from rest_framework.test import APITestCase
 
 
 class TestUrls(APITestCase):
@@ -77,9 +77,9 @@ class TestUrls(APITestCase):
             response.json(),
             {
                 "plugin_name": "Youtube Music Video Plugin",
-                "description": "This is a plugin that allows individuals in an organization to add music and video links from YouTube. These links are added to a shared playlist so that anyone in that organization can listen to or watch any of the shared videos or songs.",
+                "description": "This is a plugin that allows individuals in an organization to add music and video links from YouTube.",
                 "plugin_structure": "Monolith",
-                "team name": "Team Pythagoras",
+                "team name": "Team Music",
                 "plugin_url": "music.zuri.chat",
                 "information_url": "music.zuri.chat/info",
                 "sidebar_url": "music.zuri.chat/sidebar",

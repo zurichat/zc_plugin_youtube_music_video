@@ -16,13 +16,12 @@ def user_login():
 
     request_client = RequestClient()
 
-    response = request_client.request(
+    return request_client.request(
         method="POST",
         url="https://api.zuri.chat/auth/login",
         headers={"Content-Type": "application/json"},
         post_data=payload,
     )
-    return response
 
 
 def verify_token(token):
@@ -116,13 +115,12 @@ def centrifugo_post(room, data):
     post_data = {"method": "publish", "params": {"channel": room, "data": data}}
     request_client = RequestClient()
 
-    response = request_client.request(
+    return request_client.request(
         method="POST",
         url="https://realtime.zuri.chat/api",
         headers=headers,
         post_data=post_data,
     )
-    return response
 
 
 def publish_to_sidebar(organization_id, user_id, data):
@@ -134,13 +132,12 @@ def publish_to_sidebar(organization_id, user_id, data):
     post_data = {"method": "publish", "params": {"channel": room, "data": data}}
     request_client = RequestClient()
 
-    response = request_client.request(
+    return request_client.request(
         method="POST",
         url="https://realtime.zuri.chat/api",
         headers=headers,
         post_data=post_data,
     )
-    return response
 
 
 def get_video(url):
@@ -150,7 +147,7 @@ def get_video(url):
 
     soup = BeautifulSoup(content, "html.parser")
 
-    result = {
+    return {
         "title": soup.select_one('meta[itemprop="name"][content]')["content"],
         "track_url": soup.select_one('link[itemprop="url"]')["href"],
         "thumbnail_url": soup.select_one('link[itemprop="thumbnailUrl"]')["href"],
@@ -160,8 +157,6 @@ def get_video(url):
             )
         ),
     }
-
-    return result
 
 
 def delete_data(

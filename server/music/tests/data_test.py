@@ -1,8 +1,9 @@
-from django.test import TestCase
-import requests
-from rest_framework import status
-from datetime import datetime
 import json
+from datetime import datetime
+
+import requests
+from django.test import TestCase
+from rest_framework import status
 
 
 class TestDataReadWrite(TestCase):

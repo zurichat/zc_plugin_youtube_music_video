@@ -1,4 +1,3 @@
-
 # class SidebarView(GenericAPIView):
 #     permission_classes = [AllowAny]
 
@@ -35,8 +34,8 @@
 #                     "public_rooms": [pub_room],
 #                     # "starred" : [],
 #                     "joined_rooms": [pub_room],
-                   
-    
+
+
 #                 },
 #             }
 #             # centrifugo_post(sidebar_update_payload, subscription_channel)
@@ -74,7 +73,7 @@
 #                         "category": "entertainment",
 #                         "public_rooms": [pub_room],
 #                         "joined_rooms": [pub_room],
-                        
+
 #                     }
 #                 )
 #         else:
@@ -98,7 +97,3 @@
 
 #     def is_valid(param):
 #         return param != "" and param is not None
-
-
-
-                   
