@@ -37,7 +37,7 @@ function MusicRoom() {
 	const chatSidebarConfig = useMemo(
 		() => ({
 			sendChatMessageHandler: msg => {
-				// dispatch();
+				console.log(msg, "here");
 			},
 			currentUserData: {
 				username: "Aleey",
@@ -83,7 +83,7 @@ function MusicRoom() {
 			</div>
 
 			<div className="room-chat-container">
-				<MessageBoard id="chat-comp" chatsConfig={chatSidebarConfig} />
+				<MessageBoard chatsConfig={chatSidebarConfig} />
 			</div>
 		</Wrapper>
 	);
@@ -100,6 +100,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 
 	.plugin-header {
 		position: sticky;
+		position: relative;
 		top: 0px;
 		z-index: 100;
 	}
@@ -114,6 +115,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 
 	.room-chat-container {
 		position: relative;
+		background-color: white !important;
 		margin-top: 5px;
 		width: 500px;
 	}
@@ -172,11 +174,8 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 		.room-chat-container {
 			position: fixed;
 			top: 40px;
-			// background: rgb(240, 240, 240);
-			background: none;
+			display: none;
 			flex-basis: 40%;
-			display: flex;
-			justify-content: center;
 			z-index: 111;
 			max-height: 400px;
 		}

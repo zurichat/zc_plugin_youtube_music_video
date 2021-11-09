@@ -17,7 +17,7 @@ function Playlist() {
 	return (
 		<Wrapper>
 			<PlaylistHeader />
-			<SearchFilter />
+			{/* <SearchFilter /> */}
 
 			{songs.length === 0 && <EmptyScreen />}
 
