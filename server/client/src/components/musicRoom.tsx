@@ -3,9 +3,7 @@ import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
 import { pluginHeader, headerConfig } from "../utils/config";
 import { MessageBoard } from "@zuri/zuri-ui";
-// import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
-import Chat from "./chat";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -45,6 +43,7 @@ function MusicRoom() {
 				username: "Aleey",
 				imageUrl: ""
 			},
+
 			messages: chatData(),
 
 			showChatSideBar: true,
@@ -80,14 +79,11 @@ function MusicRoom() {
 					/>
 				</div>
 
-				{/* <RoomHeader /> */}
-
 				<Playlist />
 			</div>
 
 			<div className="room-chat-container">
-				<Chat />
-				{/* <MessageBoard chatsConfig={chatSidebarConfig} /> */}
+				<MessageBoard id="chat-comp" chatsConfig={chatSidebarConfig} />
 			</div>
 		</Wrapper>
 	);
@@ -117,7 +113,9 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	}
 
 	.room-chat-container {
+		position: relative;
 		margin-top: 5px;
+		width: 500px;
 	}
 
 	.room-main::-webkit-scrollbar,
