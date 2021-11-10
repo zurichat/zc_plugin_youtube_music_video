@@ -48,18 +48,22 @@ const PasteUrl = (props: Props) => {
 		try {
 			getSongIdFromYouTubeUrl(url);
 
-			await songService.addSong({
+			const song: SongToAdd = {
 				url,
 				addedBy,
 				userId,
 				likedBy: [],
 				time: `${Date.now()}`
+			};
+
+			songService.addSong(song, {
+				success: () => {
+					dispatch(showedPasteUrl(false));
+
+					toast.success("Added Successfully");
+					setUrl("");
+				}
 			});
-
-			dispatch(showedPasteUrl(false));
-
-			toast.success("Added Successfully");
-			setUrl("");
 		} catch (e) {
 			toast.error(`Error: ${e.message}`);
 		}
