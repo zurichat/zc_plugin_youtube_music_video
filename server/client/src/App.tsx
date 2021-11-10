@@ -15,7 +15,7 @@ import "./App.css";
 
 function App() {
 	useEffect(() => {
-		// eventService.connect();
+		eventService.connect();
 		chatMediaQuery(); // toggle chat display based on screen size.
 	}, []);
 
