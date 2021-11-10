@@ -37,7 +37,9 @@ function customRegister(env: "dev" | "prod") {
 		registerApplication({
 			name: "@zuri/zuri-plugin-music",
 			app: () =>
-				System.import("https://music.zuri.chat/static/zuri-music-plugin.js"),
+				System.import(
+					"https://staging.zuri.chat/music/static/zuri-music-plugin.js"
+				),
 			activeWhen: ["/"]
 		});
 	}
