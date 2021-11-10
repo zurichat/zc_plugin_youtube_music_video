@@ -7,6 +7,7 @@ import { selectUpdateId, updatedSongId } from "../app/deleteSongSlice";
 import { selectShowDeleteModal, showedDeleteModal } from "../app/uiSlice";
 import songService from "../services/songService";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { removedSong } from "../app/songsSlice";
 
 const DeleteModal = () => {
 	const dispatch = useAppDispatch();
@@ -24,16 +25,14 @@ const DeleteModal = () => {
 
 	function handleDelete() {
 		dispatch(showedDeleteModal(false));
-		songService
-			.deleteSong(id)
-			.then(res => {
-				if (res.status === 200) toast.success("Deleted successfully");
+
+		songService.deleteSong(id, {
+			success: () => {
+				toast.success("Deleted successfully");
+				dispatch(removedSong({ id }));
 				dispatch(updatedSongId(""));
-			})
-			.catch(err => {
-				toast.error(`${err.message}`);
-				console.log(err.message);
-			});
+			}
+		});
 	}
 
 	function handleEscape(e) {

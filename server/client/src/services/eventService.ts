@@ -28,7 +28,7 @@ type PublishedMessage = {
 const connect = () => {
 	// initialize store
 	songService.getSongs();
-	chatService.getChats();
+	// chatService.getChats();
 
 	SubscribeToChannel(httpService.room_id, (message: PublishedMessage) => {
 		const {
@@ -36,7 +36,7 @@ const connect = () => {
 			data: { data }
 		} = message.data;
 
-		console.log({ event, data });
+		console.log({ event, data }, "event");
 
 		if (!data) return null;
 

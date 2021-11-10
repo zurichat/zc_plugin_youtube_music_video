@@ -1,14 +1,13 @@
-import { initializedSongs, likedSong, removedSong } from "../app/songsSlice";
+import { initializedSongs } from "../app/songsSlice";
 import httpService, { endpoints } from "./httpService";
 import store from "../app/store";
-
-const dispatch = store.dispatch;
+import { toast } from "react-toastify";
 
 const getSongs = () => {
 	httpService.get(httpService.endpoints.songs).then(
 		result => {
 			const data = result.data.data ?? [];
-			dispatch(initializedSongs(data.filter(song => song.url)));
+			store.dispatch(initializedSongs(data.filter(song => song.url)));
 			return result;
 		},
 
@@ -19,29 +18,41 @@ const getSongs = () => {
 	);
 };
 
-const addSong = async (song: SongToAdd) => {
-	console.log("adding song", song);
-
-	return httpService.post(httpService.endpoints.songs, song).then(() => {
+const addSong = async (song: SongToAdd, cb: Callback) => {
+	try {
+		await httpService.post(httpService.endpoints.songs, song);
 		const { songs } = store.getState();
 		songs.slice(6).forEach(({ id }) => deleteSong(id));
-	});
+
+		cb?.success && cb.success();
+	} catch (error) {
+		toast.error(error.message);
+		console.log(error.message);
+		cb?.error && cb.error();
+	}
 };
 
-const deleteSong = async (id: string) => {
-	return httpService.post(endpoints.deletesong, { id }).then(res => {
-		dispatch(removedSong({ id }));
-		return res;
-	});
-};
-
-const likeSong = async (like: LikeSong) => {
-	dispatch(likedSong(like));
-
+const deleteSong = async (id: string, cb?: Callback) => {
 	try {
-		await httpService.post(httpService.endpoints.likesong, like);
+		await httpService.post(endpoints.deletesong, { id });
+
+		cb?.success && cb.success();
 	} catch (error) {
 		console.log(error.message);
+		toast.error(error.message);
+		cb?.error && cb.error();
+	}
+};
+
+const likeSong = async (like: LikeSong, cb: Callback) => {
+	try {
+		await httpService.post(httpService.endpoints.likesong, like);
+
+		cb?.success && cb.success();
+	} catch (error) {
+		console.log(error.message);
+		toast.error(error.message);
+		cb?.error && cb.error();
 	}
 };
 

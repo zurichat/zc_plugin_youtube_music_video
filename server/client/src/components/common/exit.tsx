@@ -9,7 +9,6 @@ import search from "../../media/search.svg";
 import beat from "../../media/beat.svg";
 import close from "../../media/close-popup.svg";
 
-import log from "../../services/logService";
 import userService from "../../services/userService";
 
 const Exit = () => {
@@ -18,8 +17,6 @@ const Exit = () => {
 	const [change, setChange] = useState("about");
 
 	const handleLeaveRoom = () => {
-		log.success("Goodbye user");
-
 		userService.removeMember("");
 		dispatch(exitedModal(false));
 		dispatch(loaded(true));

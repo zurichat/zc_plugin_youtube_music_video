@@ -72,4 +72,9 @@ declare global {
 		avatar: string;
 		email: string;
 	}
+
+	interface Callback {
+		success?: () => void;
+		error?: () => void;
+	}
 }

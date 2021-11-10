@@ -6,6 +6,8 @@ import { selectCurrentUser } from "../../app/usersSlice";
 
 import Like from "./like";
 import option from "../../media/option.svg";
+import { useAppDispatch } from "../../app/hooks";
+import { likedSong } from "../../app/songsSlice";
 
 // interface Props {
 //   duration?: string;
@@ -15,6 +17,7 @@ import option from "../../media/option.svg";
 // }
 
 function LikeOptionCount(props) {
+	const dispatch = useAppDispatch();
 	const { duration, likedBy = [], songId, handleOption } = props;
 
 	const { id: userId } = useSelector(selectCurrentUser);
@@ -22,13 +25,16 @@ function LikeOptionCount(props) {
 	const { length: count } = likedBy;
 	const liked = likedBy.some(id => id === userId);
 
-	const countText =
-		count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
+	const countText = `${count} ${count > 1 ? "likes" : "like"}`;
 
 	const countClasses = duration ? "like-count" : "like-count-player";
 
 	const handleLike = () => {
-		songService.likeSong({ songId, userId, like: !liked });
+		const likedObj = { songId, userId, like: !liked };
+
+		songService.likeSong(likedObj, {
+			success: () => dispatch(likedSong(likedObj))
+		});
 	};
 
 	const formatDuration = (duration: string) => {
