@@ -51,6 +51,7 @@ const likeSong = async (like: LikeSong, cb: Callback) => {
 		cb?.success && cb.success();
 	} catch (error) {
 		console.log(error.message);
+		toast.error(error.message);
 		cb?.error && cb.error();
 	}
 };
