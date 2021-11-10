@@ -241,7 +241,7 @@ class SongView(APIView):
         updated_object = updated_data["data"][-1]
         # returns the updated_object alone
         centrifugo_response = centrifugo_publish(
-            room=plugin_id, event="New song added", data=updated_object
+            room=settings.ROOM_ID, event="New song added", data=updated_object
         )
         if centrifugo_response.get("status_code", None) == 200:
             return Response(updated_object, status=status.HTTP_202_ACCEPTED)
@@ -326,7 +326,7 @@ class DeleteSongView(APIView):
             updated_data = read_data(settings.SONG_COLLECTION)
 
             centrifugo_response = centrifugo_publish(
-                room=plugin_id, event="Song deleted", data=updated_data
+                room=settings.ROOM_ID, event="Song deleted", data=updated_data
             )
             if centrifugo_response.get("status_code", None) == 200:
                 return Response(updated_data, status=status.HTTP_200_OK)
@@ -371,9 +371,15 @@ class LikeSongView(APIView):
                                 "action": "song liked successfully",
                             },
                         }
+                        centrifugo_response = centrifugo_publish(
+                        room=settings.ROOM_ID, event="Song liked", data=response_output
+                            )
+                        if centrifugo_response.get("status_code", None) == 200:
+                            return Response(response_output, status=status.HTTP_201_CREATED)
                         return Response(
-                            response_output, status=status.HTTP_424_FAILED_DEPENDENCY
-                        )
+                            "Song liked but Centrifugo is not available",
+                            status=status.HTTP_424_FAILED_DEPENDENCY,
+                            )
                     return Response(
                         "Song not liked", status=status.HTTP_424_FAILED_DEPENDENCY
                     )
@@ -516,7 +522,7 @@ class CommentView(APIView):
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
             centrifugo_response = centrifugo_publish(
-                room=plugin_id, event="New comment", data=updated_data
+                room=settings.ROOM_ID, event="New comment", data=updated_data
             )
             if centrifugo_response.get("status_code", None) == 200:
                 return Response(updated_data, status=status.HTTP_200_OK)
@@ -549,7 +555,7 @@ class DeleteCommentView(APIView):
             updated_data = read_data(settings.COMMENTS_COLLECTION)
 
             centrifugo_response = centrifugo_publish(
-                room=plugin_id, event="Delete comment", data=updated_data
+                room=settings.ROOM_ID, event="Delete comment", data=updated_data
             )
             if centrifugo_response.get("status_code", None) == 200:
                 return Response(updated_data, status=status.HTTP_200_OK)
@@ -587,7 +593,7 @@ class UpdateCommentView(APIView):
 
             updated_data = read_data(settings.COMMENTS_COLLECTION)
             centrifugo_response = centrifugo_publish(
-                room=plugin_id, event="Comment Update", data=updated_data
+                room=settings.ROOM_ID, event="Comment Update", data=updated_data
             )
             if centrifugo_response.get("status_code", None) == 200:
                 return Response(updated_data, status=status.HTTP_202_ACCEPTED)
