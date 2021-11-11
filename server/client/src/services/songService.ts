@@ -3,11 +3,7 @@ import log from "./logService";
 
 const getSongs = () => {
 	return httpService.get(httpService.endpoints.songs).then(
-		result => {
-			const data = result.data.data ?? [];
-			return data as Song[];
-		},
-
+		result => (result.data.data ?? []) as Song[],
 		error => {
 			log.error(error);
 			return [] as Song[];
