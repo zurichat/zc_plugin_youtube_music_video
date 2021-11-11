@@ -5,10 +5,9 @@ import { selectSongs } from "../app/songsSlice";
 import { getPlayerState } from "../app/playerSlice";
 
 import Player from "./player";
-import PlaylistHeader from "./common/playlistHeader";
+import PlaylistHeader from "./playlistHeader";
 import PlaylistItems from "./common/playlistItems";
 import EmptyScreen from "./common/emptyScreen";
-import SearchFilter from "./searchFilter";
 
 function Playlist() {
 	const songs = useSelector(selectSongs);
@@ -17,7 +16,6 @@ function Playlist() {
 	return (
 		<Wrapper>
 			<PlaylistHeader />
-			{/* <SearchFilter /> */}
 
 			{songs.length === 0 && <EmptyScreen />}
 

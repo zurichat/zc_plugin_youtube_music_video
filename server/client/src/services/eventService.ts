@@ -7,6 +7,7 @@ import { addedSong, initializedSongs } from "../app/songsSlice";
 import { setChats, addedChat } from "../app/chatsSlice";
 import store from "../app/store";
 import httpService from "./httpService";
+import { sanitize } from "../utils/sanitizer";
 
 const dispatch = store.dispatch;
 
@@ -27,8 +28,11 @@ type PublishedMessage = {
 
 const connect = () => {
 	// initialize store
-	songService.getSongs();
+	const songs = songService.getSongs();
 	// chatService.getChats();
+
+	console.log(songs);
+	store.dispatch(initializedSongs(sanitize(songs)));
 
 	SubscribeToChannel(httpService.room_id, (message: PublishedMessage) => {
 		const {

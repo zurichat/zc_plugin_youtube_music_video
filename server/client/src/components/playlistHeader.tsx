@@ -1,22 +1,17 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-
-// Store
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
 	changedCurrentSong,
 	changedPlaying,
 	getPlayerState,
 	showedPlayer
-} from "../../app/playerSlice";
-import { showedPasteUrl } from "../../app/uiSlice";
-
-// Components
-import Button from "./button";
-
-import Headset from "../../media/playlistIcon.svg";
-import { selectFirstSong, selectSongs } from "../../app/songsSlice";
-import { totalDuration } from "../../utils/song";
+} from "../app/playerSlice";
+import { showedPasteUrl } from "../app/uiSlice";
+import Button from "./common/button";
+import Headset from "../media/playlistIcon.svg";
+import { selectFirstSong, selectSongs } from "../app/songsSlice";
+import { totalDuration } from "../utils/song";
 
 const PlaylistHeader = () => {
 	const dispatch = useAppDispatch();
