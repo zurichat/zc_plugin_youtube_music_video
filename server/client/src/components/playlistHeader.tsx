@@ -12,6 +12,7 @@ import Button from "./common/button";
 import Headset from "../media/playlistIcon.svg";
 import { selectFirstSong, selectSongs } from "../app/songsSlice";
 import { totalDuration } from "../utils/song";
+import SearchSortFilter from "./searchSortFilter";
 
 const PlaylistHeader = () => {
 	const dispatch = useAppDispatch();
@@ -73,6 +74,8 @@ const PlaylistHeader = () => {
 					</div>
 				</div>
 			</div>
+
+			<SearchSortFilter />
 		</Wrapper>
 	);
 };
@@ -84,6 +87,7 @@ const Wrapper = styled.div`
 	padding-top: 10px;
 	background: white;
 	display: flex;
+	flex-direction: column;
 	justify-content: center;
 	width: 100%;
 	overflow: hidden;
