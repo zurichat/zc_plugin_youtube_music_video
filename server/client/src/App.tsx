@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 
 import MusicRoom from "./components/musicRoom";
-import DeleteModal from "./components/deleteModal";
+import DeleteModal from "./components/modals/deleteModal";
 
 import chatMediaQuery from "./utils/chatMedia";
 

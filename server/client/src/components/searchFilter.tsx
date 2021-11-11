@@ -14,6 +14,7 @@ const SearchFilter = () => {
 		filter: "All songs",
 		sort: "Default"
 	});
+
 	// const sortList = [
 	// 	"Default",
 	// 	"Ascending order A - Z",
@@ -216,7 +217,7 @@ const SearchFilter = () => {
 								position: "absolute"
 							}}
 							src={ArrowIcon}
-							alt=""
+							alt="k"
 						/>
 					</div>
 				</div>
@@ -232,12 +233,12 @@ const Wrapper = styled.div`
 
 	form {
 		position: relative;
-        width: 100%;
-        max-width: -webkit-fill-available;
+		width: 100%;
+		max-width: -webkit-fill-available;
 
 		input {
 			font-style: normal;
-            width: -webkit-fill-available;
+			width: -webkit-fill-available;
 			font-weight: normal;
 			font-size: 15px;
 			line-height: 18px;
@@ -269,20 +270,20 @@ const Wrapper = styled.div`
 		.title {
 			display: flex;
 			align-items: center;
-            padding-right: 8px;
+			padding-right: 8px;
 			span {
 				padding-bottom: 0;
 			}
 		}
 	}
 	.menu {
-        position: absolute;
-        top: 48px;
-        left: 0px;
-        width: 100%;
-        box-shadow: 0px 2px 10px #D7D7D7;
-        border-radius: 4px;
-        z-index: 5;
+		position: absolute;
+		top: 48px;
+		left: 0px;
+		width: 100%;
+		box-shadow: 0px 2px 10px #d7d7d7;
+		border-radius: 4px;
+		z-index: 5;
 		button {
 			border: none;
 
@@ -295,50 +296,51 @@ const Wrapper = styled.div`
 			font-size: 14px;
 			line-height: 170%;
 			color: #1d1c1d;
-			&:hover, &:focus {
+			&:hover,
+			&:focus {
 				background: #f6f6f6;
-                cursor: pointer;
+				cursor: pointer;
 			}
 		}
 	}
-    .filter__container, .sort__container {
-        display: flex;
-    }
+	.filter__container,
+	.sort__container {
+		display: flex;
+	}
 
-    .sort__container {
-        .select__container {
-        width: 240px;
-    }
-    }
+	.sort__container {
+		.select__container {
+			width: 240px;
+		}
+	}
 
 	.filter__container {
 		margin: 0 24px 0 40px;
 	}
 	.select__container {
-        align-items: center;
+		align-items: center;
 		position: relative;
-        padding: 0 24px 0 16px;
+		padding: 0 24px 0 16px;
 		height: 48px;
 		border: 1px solid #f6f6f6;
 		border-radius: 8px;
-        display: flex;
-        width: 200px;
-        cursor: pointer;
+		display: flex;
+		width: 200px;
+		cursor: pointer;
 
-        span {
-            margin: 0;
+		span {
+			margin: 0;
 			width: calc(100% - 20px);
 			padding-bottom: 0;
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
-        }
+		}
 
 		img {
-            top: 12px;
+			top: 12px;
 			right: 24px;
 			position: aboslute;
-		}
 		}
 	}
 `;

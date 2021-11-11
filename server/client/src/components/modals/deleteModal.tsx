@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import styled from "styled-components";
-import Close from "../media/close-black.svg";
-import { selectUpdateId, updatedSongId } from "../app/deleteSongSlice";
-import { selectShowDeleteModal, showedDeleteModal } from "../app/uiSlice";
-import songService from "../services/songService";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { removedSong } from "../app/songsSlice";
+import Close from "../../media/close-black.svg";
+import { selectUpdateId, updatedSongId } from "../../app/deleteSongSlice";
+import { selectShowDeleteModal, showedDeleteModal } from "../../app/uiSlice";
+import songService from "../../services/songService";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { addedSong, removedSong, selectSongs } from "../../app/songsSlice";
 
 const DeleteModal = () => {
 	const dispatch = useAppDispatch();
+
+	const songs = useAppSelector(selectSongs);
 	const showDeleteModal = useAppSelector(selectShowDeleteModal);
 
 	useEffect(() => {
@@ -26,12 +27,12 @@ const DeleteModal = () => {
 	function handleDelete() {
 		dispatch(showedDeleteModal(false));
 
+		const song = songs.find(s => s.id === id);
+		dispatch(removedSong({ id }));
+
 		songService.deleteSong(id, {
-			success: () => {
-				toast.success("Deleted successfully");
-				dispatch(removedSong({ id }));
-				dispatch(updatedSongId(""));
-			}
+			success: () => dispatch(updatedSongId("")),
+			error: () => dispatch(addedSong(song))
 		});
 	}
 

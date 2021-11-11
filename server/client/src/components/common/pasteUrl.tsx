@@ -16,6 +16,7 @@ import songService from "../../services/songService";
 import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
 import { selectCurrentUser } from "../../app/usersSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { addedSong } from "../../app/songsSlice";
 
 interface Props {
 	getSongByUrl: (url: string) => Song;
@@ -57,9 +58,9 @@ const PasteUrl = (props: Props) => {
 			};
 
 			songService.addSong(song, {
-				success: () => {
+				success: (song: Song) => {
 					dispatch(showedPasteUrl(false));
-
+					dispatch(addedSong(song));
 					toast.success("Added Successfully");
 					setUrl("");
 				}
@@ -186,7 +187,7 @@ const Wrapper = styled.div`
 `;
 
 const mapStateToProps = (state: RootState) => ({
-	getSongByUrl: url => state.songs.find(song => song.url === url)
+	getSongByUrl: url => state.songs.list.find(song => song.url === url)
 });
 
 export default connect(mapStateToProps)(PasteUrl);

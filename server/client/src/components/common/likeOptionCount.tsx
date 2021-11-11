@@ -32,8 +32,10 @@ function LikeOptionCount(props) {
 	const handleLike = () => {
 		const likedObj = { songId, userId, like: !liked };
 
+		dispatch(likedSong(likedObj));
+
 		songService.likeSong(likedObj, {
-			success: () => dispatch(likedSong(likedObj))
+			error: () => dispatch(likedSong({ ...likedObj, like: !liked }))
 		});
 	};
 
