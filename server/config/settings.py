@@ -22,17 +22,18 @@ SECRET_KEY = env("SECRET_KEY")
 SYSTEM_ENV = env("SYSTEM_ENV")
 
 # switches DEBUG to true or false based on the Environment variable
-if SYSTEM_ENV == "Development":
-    DEBUG = True
-else:
-    DEBUG = False
-print(DEBUG)
+# if SYSTEM_ENV == "Development":
+#     DEBUG = True
+# else:
+#     DEBUG = False
+# print(DEBUG)
+DEBUG = SYSTEM_ENV == "Development"
 
 ALLOWED_HOSTS = [
     "zuri.chat",
     "music.zuri.chat",
     "staging.zuri.chat",
-    "178.63.43.138",  # new default port for plugins on zuri.chat
+    "178.63.43.138",  # new default IP for plugins on zuri.chat
     "localhost",
     "127.0.0.1",
     "*",

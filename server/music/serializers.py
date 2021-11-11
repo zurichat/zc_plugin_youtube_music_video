@@ -45,7 +45,6 @@ class LikeSongSerializer(serializers.Serializer):
     memberId = serializers.CharField(max_length=100, required=False)
 
 
-
 class SongLikeCountSerializer(serializers.Serializer):
 
     songId = serializers.CharField(max_length=100, required=False)

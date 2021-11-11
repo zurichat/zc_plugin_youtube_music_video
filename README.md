@@ -22,7 +22,7 @@
 #
 >## Overview
 <p align="justify">
-ZuriChat is an open source slack clone that provides the opportunity for people to network, collaborate, educate and learn remotely. It allows people to take their classroom everywhere, make learning fun, stay engaged and inspired with the virtual lounge and games.
+ZuriChat is an open source web app that provides the opportunity for people to network, collaborate, educate and learn remotely. It allows people to take their classroom everywhere, make learning fun, stay engaged and inspired with the virtual lounge and games.
 
 One of its unique features are the variety of plugins designed to add features such as tracking company expenses, sending information fast and smoothly, managing files and integrating tools all with ZuriChat.
 
@@ -193,7 +193,11 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 > ## Links to the project
 Local server: <a href='<http://localhost:22672/music>'>http://localhost:22672/music</a>
 
-Live site: <a href='<http://staging.zuri.chat/music>'>http://staging.zuri.chat/music</a>
+Zurichat Staging site: <a href='<http://staging.zuri.chat/music>'>http://staging.zuri.chat/music</a>
+
+Zurichat main site: <a href='<http://zuri.chat/music>'>http://zuri.chat/music</a>
+
+Live site: <a href='<http://music.zuri.chat/music>'>http://music.zuri.chat/music</a>
 
 API root: <a href='http://localhost:22672/music/api/v1'>http://localhost::22672/music/api/v1</a>
 
