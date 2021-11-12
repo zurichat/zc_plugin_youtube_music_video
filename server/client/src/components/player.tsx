@@ -45,7 +45,6 @@ function Player() {
 		try {
 			await httpService.post(currentSongEndpoint, song);
 			console.log("Succesfully sent to current-song Endpoint");
-			console.log(song);
 		} catch (error) {
 			console.log(error);
 		}

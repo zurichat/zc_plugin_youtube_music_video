@@ -21,7 +21,5 @@ export default SearchSortFilter;
 
 const Wrapper = styled.div`
 	display: flex;
-	justify-content: center;
-	border: 1px solid red;
 	gap: 20px;
 `;

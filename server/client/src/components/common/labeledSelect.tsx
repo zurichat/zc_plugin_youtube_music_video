@@ -28,7 +28,7 @@ export default LabeledSelect;
 const Wrapper = styled.div`
 	display: flex;
 	align-items: center;
-	height: 48px;
+	height: 36px;
 	padding: 10px;
 	font-size: 16px;
 	gap: 10px;

@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-
-/**
- *  Hey, to use this Search component, just change the list  and put your logic in the handleSearch function. The rest should work just fine.
- */
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+	changedCurrentSong,
+	changedPlaying,
+	showedPlayer
+} from "../../app/playerSlice";
+import { selectSongs } from "../../app/songsSlice";
 
 const Search = () => {
-	const [query, setQuery] = useState("");
+	const dispatch = useAppDispatch();
+	const songs = useAppSelector(selectSongs);
+
 	const [isBlur, setBlur] = useState(true);
+	const [query, setQuery] = useState("");
 
 	useEffect(() => {
 		window.addEventListener("click", (e: any) => {
@@ -15,24 +21,23 @@ const Search = () => {
 		});
 	}, []);
 
-	// Change this list to your list
-
-	const list = [
-		"my mind dey here for you",
-		"I i'm not here with you",
-		"Na watin dey do you?",
-		"come to my aid"
-	];
+	const list = songs.map(song => song.title);
 
 	const filtered =
 		!isBlur && query
 			? list.filter(item => item.toLowerCase().includes(query.toLowerCase()))
 			: [];
 
-	// Perform an action when an item is selected.
-
 	const handleSelect = (item: string) => {
-		console.log("selected", item);
+		setBlur(true);
+
+		const { id } = songs.find(
+			song => song.title.toLowerCase() === item.toLowerCase()
+		);
+
+		dispatch(changedCurrentSong({ id }));
+		dispatch(changedPlaying(true));
+		dispatch(showedPlayer(true));
 	};
 
 	return (
@@ -77,9 +82,8 @@ const Wrapper = styled.div`
 	.search-input-container {
 		display: flex;
 		align-items: center;
-		border: 1px solid #747474;
 		border-radius: 3px;
-		height: 48px;
+		height: 36px;
 		width: 100%;
 		padding: 10px;
 		background: white;
@@ -95,7 +99,7 @@ const Wrapper = styled.div`
 
 	.search-items {
 		position: absolute;
-		top: 48px;
+		top: 36px;
 	}
 	.search-item-container {
 		display: flex;
@@ -107,7 +111,7 @@ const Wrapper = styled.div`
 		font-size: 16px;
 		box-shadow: 0px 2px 10px #d7d7d7;
 		cursor: pointer;
-		background: #fff;
+		background: #fefefe;
 	}
 	.search-item-container:hover {
 		background: #f6f6f6;

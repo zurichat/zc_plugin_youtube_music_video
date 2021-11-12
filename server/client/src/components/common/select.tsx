@@ -32,7 +32,8 @@ const Select = ({ value, onSelect, options }: SelectProps) => {
 		<Wrapper className={marker} len={maxLen}>
 			<div
 				className="select-value-container"
-				onClick={() => setDropdown(!dropdown)}>
+				onClick={() => setDropdown(!dropdown)}
+			>
 				<div className="search-value">{value}</div>
 
 				{<DropdownIcon />}
@@ -43,7 +44,8 @@ const Select = ({ value, onSelect, options }: SelectProps) => {
 					<div
 						key={index}
 						className="select-option"
-						onClick={() => raiseSelect(item)}>
+						onClick={() => raiseSelect(item)}
+					>
 						{item}
 					</div>
 				))}
@@ -78,8 +80,7 @@ const Wrapper = styled.div<{ len: number }>`
 
 	.select-options {
 		position: absolute;
-		top: 36px;
-		width: ${props => `clamp(200px, calc(28px * ${props.len / 3}), 300px)`};
+		top: 30px;
 	}
 	.select-option {
 		display: flex;
@@ -91,6 +92,7 @@ const Wrapper = styled.div<{ len: number }>`
 		box-shadow: 0px 2px 10px #d7d7d7;
 		cursor: pointer;
 		background: #fff;
+		width: ${props => `clamp(200px, calc(28px * ${props.len / 3}), 300px)`};
 	}
 	.select-option:hover {
 		background: #f6f6f6;
@@ -105,7 +107,8 @@ const DropdownIcon = () => (
 		height="8"
 		viewBox="0 0 12 8"
 		fill="none"
-		xmlns="http://www.w3.org/2000/svg">
+		xmlns="http://www.w3.org/2000/svg"
+	>
 		<path
 			d="M10.293 0.292969L5.99997 4.58597L1.70697 0.292969L0.292969 1.70697L5.99997 7.41397L11.707 1.70697L10.293 0.292969Z"
 			fill="#1D1C1D"
