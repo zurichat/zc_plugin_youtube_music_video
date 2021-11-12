@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-
 import { selectSongs } from "../app/songsSlice";
 import { getPlayerState } from "../app/playerSlice";
-
 import Player from "./player";
 import PlaylistHeader from "./playlistHeader";
 import PlaylistItems from "./common/playlistItems";
@@ -41,7 +39,6 @@ const Wrapper = styled.div`
 	.playlist-header-container {
 		position: sticky;
 		top: 25px;
-		border: 1px solid green;
 		margin-bottom: 20px;
 		z-index: 1;
 	}

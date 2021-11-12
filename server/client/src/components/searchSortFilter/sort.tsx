@@ -1,23 +1,37 @@
 import { useState } from "react";
+import { useAppDispatch } from "../../app/hooks";
+import { sortParamChanged } from "../../app/songsSlice";
 import LabeledSelect from "../common/labeledSelect";
 
 const Sort = () => {
-	const options = [
-		"Default",
-		"Ascending order A - Z",
-		"Descending order Z - A",
-		"Date added Recent to Oldest",
-		"Date added Oldest to Recent"
+	const dispatch = useAppDispatch();
+
+	const sortParams: SortParam[] = [
+		{ property: "", label: "Default", order: "asc" },
+		{ property: "title", label: "Ascending order A - Z", order: "asc" },
+		{ property: "title", label: "Descending order Z - A", order: "des" },
+		{ property: "time", label: "Date added Recent to Oldest", order: "asc" },
+		{ property: "time", label: "Date added Oldest to Recent", order: "des" }
 	];
 
+	const options = sortParams.map(param => param.label);
+
 	const [value, setValue] = useState(options[0]);
+
+	const handleSort = (value: string) => {
+		const param = sortParams.find(s => s.label === value);
+
+		setValue(value);
+
+		dispatch(sortParamChanged(param));
+	};
 
 	return (
 		<LabeledSelect
 			name="Sort"
 			Icon={<SortIcon />}
 			value={value}
-			onSelect={setValue}
+			onSelect={handleSort}
 			options={options}
 		/>
 	);

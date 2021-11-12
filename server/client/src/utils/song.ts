@@ -13,3 +13,19 @@ export const totalDuration = (songs: Song[]) => {
 
 	return `${to2Digits(h, "hr ")}${to2Digits(m, "min ")}${to2Digits(s, "sec")} `;
 };
+
+export const sortByTitle = (songs: Song[], order: "asc" | "des") => {
+	return order === "asc"
+		? songs.sort((a, b) => a.title.localeCompare(b.title))
+		: songs.sort((a, b) => b.title.localeCompare(a.title));
+};
+
+export const sortByTime = (songs: Song[], order: "asc" | "des") => {
+	return order === "asc"
+		? songs.sort(
+				(a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+		  )
+		: songs.sort(
+				(a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
+		  );
+};

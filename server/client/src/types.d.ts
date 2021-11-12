@@ -1,6 +1,12 @@
 export const d = 3; // export or import is definitely needed
 
 declare global {
+	interface SortParam {
+		property: "title" | "time" | "";
+		label: string;
+		order: "asc" | "des";
+	}
+
 	interface Song extends SongToAdd {
 		id: string;
 		title: string;

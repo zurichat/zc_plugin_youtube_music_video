@@ -2,12 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 import { sanitize } from "../utils/sanitizer";
+import { sortByTitle } from "../utils/song";
 
 const songsSlice = createSlice({
 	name: "songs",
 
 	initialState: {
-		searchQuery: "",
+		sortParam: { property: "" } as SortParam,
 		list: [] as Song[]
 	},
 
@@ -39,14 +40,19 @@ const songsSlice = createSlice({
 			state.list[index] = song;
 		},
 
-		queryChanged: (state, { payload }: PayloadAction<string>) => {
-			state.searchQuery = payload;
+		sortParamChanged: (state, { payload }: PayloadAction<SortParam>) => {
+			state.sortParam = payload;
 		}
 	}
 });
 
-export const { addedSong, removedSong, likedSong, initializedSongs } =
-	songsSlice.actions;
+export const {
+	addedSong,
+	removedSong,
+	likedSong,
+	initializedSongs,
+	sortParamChanged
+} = songsSlice.actions;
 
 // export const songDispatch = {
 // 	addedSong: (payload: Song) => {
@@ -66,7 +72,16 @@ export const { addedSong, removedSong, likedSong, initializedSongs } =
 // 	}
 // };
 
-export const selectSongs = (state: RootState) => state.songs.list;
+export const selectSongs = (state: RootState) => {
+	const { list, sortParam } = state.songs;
+
+	const { property, order } = sortParam;
+	const listN: Song[] = JSON.parse(JSON.stringify(list));
+
+	const sorted = property === "title" ? sortByTitle(listN, order) : listN;
+
+	return sorted;
+};
 
 export const selectSongById = (songId: string) => (state: RootState) => {
 	return state.songs.list.find(song => song.id === songId);
@@ -90,7 +105,5 @@ export const selectLikeCount =
 			liked: song.likedBy.some(id => id === userId)
 		};
 	};
-
-export const selectSearchQuery = (state: RootState) => state.songs.searchQuery;
 
 export default songsSlice.reducer;
