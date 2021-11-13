@@ -75,6 +75,8 @@ const Wrapper = styled.div<{ duration: string }>`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	cursor: context-menu;
+	/* z-index: 1; */
 
 	& > * {
 		margin-right: 25px;
@@ -94,11 +96,7 @@ const Wrapper = styled.div<{ duration: string }>`
 
 	.like-option {
 		margin-right: 0;
-		z-index: 5;
-	}
-
-	.like-button {
-		z-index: 5;
+		cursor: pointer;
 	}
 
 	@media screen and (max-width: 850px) {

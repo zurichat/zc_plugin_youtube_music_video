@@ -1,13 +1,12 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-
 import { selectSongs } from "../app/songsSlice";
 import { getPlayerState } from "../app/playerSlice";
-
 import Player from "./player";
 import PlaylistHeader from "./playlistHeader";
 import PlaylistItems from "./common/playlistItems";
 import EmptyScreen from "./common/emptyScreen";
+import SearchSortFilter from "./searchSortFilter";
 
 function Playlist() {
 	const songs = useSelector(selectSongs);
@@ -15,7 +14,10 @@ function Playlist() {
 
 	return (
 		<Wrapper>
-			<PlaylistHeader />
+			<div className="playlist-header-container">
+				<PlaylistHeader />
+				{!show && <SearchSortFilter />}
+			</div>
 
 			{songs.length === 0 && <EmptyScreen />}
 
@@ -33,6 +35,13 @@ const Wrapper = styled.div`
 	margin-top: 40px;
 	height: 80%;
 	min-height: 80%;
+
+	.playlist-header-container {
+		position: sticky;
+		top: 25px;
+		margin-bottom: 20px;
+		z-index: 2;
+	}
 
 	&::-webkit-scrollbar {
 		width: 3px;

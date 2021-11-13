@@ -19,6 +19,7 @@ import LikeOptionCount from "./common/likeOptionCount";
 
 import httpService from "../services/httpService";
 import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
+import SearchSortFilter from "./searchSortFilter";
 
 function Player() {
 	const [init, setInit] = useState(false);
@@ -45,7 +46,6 @@ function Player() {
 		try {
 			await httpService.post(currentSongEndpoint, song);
 			console.log("Succesfully sent to current-song Endpoint");
-			console.log(song);
 		} catch (error) {
 			console.log(error);
 		}
@@ -120,7 +120,11 @@ function Player() {
 				</div>
 			</div>
 
-			{upnext.length > 0 && <div className="player-next">Up next</div>}
+			<SearchSortFilter />
+
+			{upnext.length > 0 && (
+				<div className="player-next">All songs ({songs.length})</div>
+			)}
 
 			<PlaylistItems songs={upnext} />
 		</Wrapper>
