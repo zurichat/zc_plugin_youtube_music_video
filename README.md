@@ -25,11 +25,7 @@
 > ## Overview
 
 <p align="justify">
-<<<<<<< HEAD
-ZuriChat is an open source web app that provides the opportunity for people to network, collaborate, educate and learn remotely. It allows people to take their classroom everywhere, make learning fun, stay engaged and inspired with the virtual lounge and games.
-=======
 ZuriChat is an open source workspace app that provides the opportunity for people to network, collaborate, educate and learn remotely. It allows people to take their classroom everywhere, make learning fun, stay engaged and inspired with the virtual lounge and games.
->>>>>>> 7773b0a9077f6d5144bf559eb959f8ebb63ea4de
 
 One of its unique features are the variety of plugins designed to add functionalities such as tracking company expenses, sending information fast and smoothly, managing files and integrating tools all with ZuriChat.
 
@@ -43,13 +39,15 @@ This project is focused on the ZuriChat music plugin.
 
 > ## Project Features
 >
-> The YouTube music plugin allows the users in the organization to add and play Youtube links.You can also chat in real time with other members of the organization.
+The YouTube music plugin allows the users in the organization to add and play Youtube links.You can also chat in real time with other members of the organization.
 
 - Add and Play Youtube music and videos.
 
 - Chat in realtime in the music room.
 
 - Song search and filter options.
+
+- Like and unlike songs.
 
 </p>
 
@@ -73,7 +71,7 @@ This project is focused on the ZuriChat music plugin.
 > ## Repo Setup
 
 <p align="justify">
-To setup the repo, first fork and clone the Zurichat YouTube Music, then clone the forked repository to create a copy on the local machine.
+To setup the repo, first fork the Zurichat YouTube Music, then clone the forked repository to create a copy on the local machine.
 </p>
 
     $ git clone git@github.com:pauline-banye/music_video.git
@@ -204,7 +202,7 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
 > ## Links to the project
 >
-> Local server: <a href='<http://localhost:22672/music>'>http://localhost:22672/music</a>
+ Local server: <a href='<http://localhost:22672/music>'>http://localhost:22672/music</a>
 
 Zurichat Staging site: <a href='<http://staging.zuri.chat/music>'>http://staging.zuri.chat/music</a>
 
@@ -212,13 +210,11 @@ Zurichat main site: <a href='<http://zuri.chat/music>'>http://zuri.chat/music</a
 
 Live site: <a href='<http://music.zuri.chat/music>'>http://music.zuri.chat/music</a>
 
-API root: <a href='http://localhost:22672/music/api/v1'>http://localhost::22672/music/api/v1</a>
-
 #
 
 > ## Status
 >
-> This project is a work in progress and is currently under development.
+This project is a work in progress and is currently under development.
 
 #
 
@@ -237,4 +233,4 @@ This repository is not meant to contain everything. Only good quality verified i
 
 All **`suggestions`** are welcome!
 
-> Readme created by Pauline Banye
+> ###### Readme created by Pauline Banye
