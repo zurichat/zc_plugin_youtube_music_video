@@ -7,13 +7,14 @@ interface Props {
 	onSelect: (value: string) => void;
 	Icon: React.ReactElement;
 	name: string;
+	className?: string;
 }
 
 const LabeledSelect = (props: Props) => {
-	const { name, value, options, onSelect, Icon } = props;
+	const { name, value, options, onSelect, Icon, className } = props;
 
 	return (
-		<Wrapper>
+		<Wrapper className={className}>
 			{Icon}
 
 			<div>{name}</div>

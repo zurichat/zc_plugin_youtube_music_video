@@ -93,6 +93,7 @@ const Wrapper = styled.div<{ len: number }>`
 		cursor: pointer;
 		background: #fff;
 		width: ${props => `clamp(200px, calc(28px * ${props.len / 3}), 300px)`};
+		z-index: 111;
 	}
 	.select-option:hover {
 		background: #f6f6f6;

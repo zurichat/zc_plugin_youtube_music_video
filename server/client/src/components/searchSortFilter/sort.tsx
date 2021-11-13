@@ -3,7 +3,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { sortParamChanged } from "../../app/songsSlice";
 import LabeledSelect from "../common/labeledSelect";
 
-const Sort = () => {
+const Sort = ({ className }) => {
 	const dispatch = useAppDispatch();
 
 	const sortParams: SortParam[] = [
@@ -33,6 +33,7 @@ const Sort = () => {
 			value={value}
 			onSelect={handleSort}
 			options={options}
+			className={className}
 		/>
 	);
 };

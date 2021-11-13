@@ -1,7 +1,7 @@
 import { useState } from "react";
 import LabeledSelect from "../common/labeledSelect";
 
-const Filter = () => {
+const Filter = ({ className }) => {
 	const options = [
 		"All songs",
 		"By Artists",
@@ -18,6 +18,7 @@ const Filter = () => {
 			name="Filter"
 			onSelect={setValue}
 			Icon={<FilterIcon />}
+			className={className}
 		/>
 	);
 };

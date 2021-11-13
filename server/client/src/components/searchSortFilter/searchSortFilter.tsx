@@ -10,9 +10,9 @@ function SearchSortFilter(props: Props) {
 
 	return (
 		<Wrapper>
-			<Search />
-			<Filter />
-			<Sort />
+			<Search className="ssf-search" />
+			<Filter className="ssf-filter" />
+			<Sort className="ssf-sort" />
 		</Wrapper>
 	);
 }
@@ -22,4 +22,22 @@ export default SearchSortFilter;
 const Wrapper = styled.div`
 	display: flex;
 	gap: 20px;
+
+	@media (max-width: 853px) {
+		.ssf-search {
+			display: none;
+		}
+	}
+
+	@media (max-width: 631px) {
+		.ssf-filter {
+			display: none;
+		}
+	}
+
+	@media (max-width: 357px) {
+		.ssf-sort {
+			display: none;
+		}
+	}
 `;

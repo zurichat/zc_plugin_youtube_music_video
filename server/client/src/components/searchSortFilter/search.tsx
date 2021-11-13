@@ -8,7 +8,7 @@ import {
 } from "../../app/playerSlice";
 import { selectSongs } from "../../app/songsSlice";
 
-const Search = () => {
+const Search = ({ className }) => {
 	const dispatch = useAppDispatch();
 	const songs = useAppSelector(selectSongs);
 
@@ -41,7 +41,7 @@ const Search = () => {
 	};
 
 	return (
-		<Wrapper data-search className="searchbox">
+		<Wrapper className={`searchbox ${className}`}>
 			<div className="search-input-container">
 				{query && <SearchIcon />}
 
@@ -99,7 +99,7 @@ const Wrapper = styled.div`
 
 	.search-items {
 		position: absolute;
-		top: 36px;
+		top: 38px;
 	}
 	.search-item-container {
 		display: flex;

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 import { sanitize } from "../utils/sanitizer";
-import { sortByTitle } from "../utils/song";
+import { sortByTime, sortByTitle } from "../utils/song";
 
 const songsSlice = createSlice({
 	name: "songs",
@@ -76,9 +76,14 @@ export const selectSongs = (state: RootState) => {
 	const { list, sortParam } = state.songs;
 
 	const { property, order } = sortParam;
-	const listN: Song[] = JSON.parse(JSON.stringify(list));
+	const clonedList: Song[] = JSON.parse(JSON.stringify(list));
 
-	const sorted = property === "title" ? sortByTitle(listN, order) : listN;
+	const sorted =
+		property === "title"
+			? sortByTitle(clonedList, order)
+			: property === "time"
+			? sortByTime(clonedList, order)
+			: clonedList;
 
 	return sorted;
 };

@@ -21,11 +21,14 @@ export const sortByTitle = (songs: Song[], order: "asc" | "des") => {
 };
 
 export const sortByTime = (songs: Song[], order: "asc" | "des") => {
-	return order === "asc"
-		? songs.sort(
-				(a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
-		  )
-		: songs.sort(
-				(a, b) => new Date(b.time).getTime() - new Date(a.time).getTime()
-		  );
+	try {
+		const getTime = (time: number) => new Date(time).getTime();
+
+		return order === "asc"
+			? songs.sort((a, b) => getTime(+a.time) - getTime(+b.time))
+			: songs.sort((a, b) => getTime(+b.time) - getTime(+a.time));
+	} catch (error) {
+		console.log(error.message, "util/sortByTime, line 31");
+		return songs;
+	}
 };
