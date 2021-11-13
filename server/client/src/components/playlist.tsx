@@ -16,7 +16,7 @@ function Playlist() {
 		<Wrapper>
 			<div className="playlist-header-container">
 				<PlaylistHeader />
-				<SearchSortFilter />
+				{!show && <SearchSortFilter />}
 			</div>
 
 			{songs.length === 0 && <EmptyScreen />}
