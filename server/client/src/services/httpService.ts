@@ -13,7 +13,7 @@ export const endpoints = {
 	currentsong: "songs/current",
 	deletesong: "songs/delete",
 	songsearch: "songsearch",
-	likesong: "songs/like",
+	likesong: "songs/likecount",
 
 	// Comments endpoints
 	comments: "comments",

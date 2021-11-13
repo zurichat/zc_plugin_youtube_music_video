@@ -1,20 +1,11 @@
 import { toast } from "react-toastify";
 
-export const success = (message: string) => {
-  // toast.success(message, {
-  //   style: {
-  //     background: "hsla(160, 100%, 36%, 1)",
-  //   },
-  // });
-};
-
-export const error = (message: string) => {
-  // toast.error(message);
-};
-
 const log = {
-  success,
-  error,
+	error: error => {
+		const m = typeof error === "object" ? error.message : error;
+		toast.error(m);
+		console.log(m);
+	}
 };
 
 export default log;

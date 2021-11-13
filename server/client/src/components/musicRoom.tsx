@@ -3,9 +3,7 @@ import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
 import { pluginHeader, headerConfig } from "../utils/config";
 import { MessageBoard } from "@zuri/zuri-ui";
-// import RoomHeader from "./roomHeader";
 import Playlist from "./playlist";
-import Chat from "./chat";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
@@ -39,12 +37,13 @@ function MusicRoom() {
 	const chatSidebarConfig = useMemo(
 		() => ({
 			sendChatMessageHandler: msg => {
-				// dispatch();
+				console.log(msg, "here");
 			},
 			currentUserData: {
 				username: "Aleey",
 				imageUrl: ""
 			},
+
 			messages: chatData(),
 
 			showChatSideBar: true,
@@ -80,14 +79,11 @@ function MusicRoom() {
 					/>
 				</div>
 
-				{/* <RoomHeader /> */}
-
 				<Playlist />
 			</div>
 
 			<div className="room-chat-container">
-				<Chat />
-				{/* <MessageBoard chatsConfig={chatSidebarConfig} /> */}
+				<MessageBoard chatsConfig={chatSidebarConfig} />
 			</div>
 		</Wrapper>
 	);
@@ -105,7 +101,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	.plugin-header {
 		position: sticky;
 		top: 0px;
-		z-index: 100;
+		z-index: 1111;
 	}
 
 	.room-main {
@@ -117,7 +113,10 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	}
 
 	.room-chat-container {
+		position: relative;
+		background-color: white !important;
 		margin-top: 5px;
+		width: 500px;
 	}
 
 	.room-main::-webkit-scrollbar,
@@ -174,11 +173,8 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 		.room-chat-container {
 			position: fixed;
 			top: 40px;
-			// background: rgb(240, 240, 240);
-			background: none;
+			display: none;
 			flex-basis: 40%;
-			display: flex;
-			justify-content: center;
 			z-index: 111;
 			max-height: 400px;
 		}

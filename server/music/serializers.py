@@ -1,4 +1,3 @@
-from music.models import Comment, Room, Song, songLikeCount
 from rest_framework import serializers
 
 
@@ -9,42 +8,17 @@ class SongSerializer(serializers.Serializer):
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
     url = serializers.CharField(required=False)
-    userId = serializers.CharField(required=False)
+    userId = serializers.CharField(max_length=100, required=False)
     addedBy = serializers.CharField(required=False)
     likedBy = serializers.ListField(
         child=serializers.CharField(max_length=128), required=False, default=[]
     )
     time = serializers.IntegerField(required=False)
 
-    # def total_likes(self):
-    #     return self.likedBy.count()
-
-    def create(self, validated_data):
-        return Song(**validated_data)
-
-    def update(self, instance, validated_data):
-
-        instance._id = validated_data.get("_id", instance._id)
-        instance.title = validated_data.get("title", instance.title)
-        instance.duration = validated_data.get("duration", instance.duration)
-        instance.albumcover = validated_data.get("albumcover", instance.albumcover)
-        instance.url = validated_data.get("url", instance.url)
-        instance.userId = validated_data.get("userId", instance.userId)
-        instance.addedBy = validated_data.get("addedBy", instance.addedBy)
-        instance.likedBy = validated_data.get("likedBy", instance.likedBy)
-        instance.time = validated_data.get("time", instance.time)
-        instance.save()
-        return instance
-
-    def __str__(self):
-        return str()
-
 
 class LikeSongSerializer(serializers.Serializer):
     song_id = serializers.CharField(max_length=100, required=False)
-    memberId = serializers.ListField(
-        child=serializers.CharField(max_length=100), allow_empty=False
-    )
+    memberId = serializers.CharField(max_length=100, required=False)
 
 
 class SongLikeCountSerializer(serializers.Serializer):
@@ -52,41 +26,65 @@ class SongLikeCountSerializer(serializers.Serializer):
     songId = serializers.CharField(max_length=100, required=False)
     userId = serializers.CharField(max_length=100, required=False)
 
-    def create(self, validated_data):
-        return songLikeCount(**validated_data)
 
-    def update(self, instance, validated_data):
+class EmojiSerializer(serializers.Serializer):  # for the emojis
 
-        instance.songId = validated_data.get("songId", instance.songId)
-        instance.userId = validated_data.get("userId", instance.userId)
-
-    def __str__(self):
-        return str()
+    name = serializers.CharField(max_length=256, required=False)
+    emoji = serializers.CharField(max_length=256, required=False)
+    count = serializers.IntegerField(default=0, required=False)
 
 
-class CommentSerializer(serializers.Serializer):
+class BlockSerializer(serializers.Serializer):  # for the block
+
+    data = serializers.DictField(
+        child=serializers.CharField(max_length=128),
+        allow_empty=True,
+        required=False,
+        default={},
+    )
+    depth = serializers.IntegerField(default=0, required=False)
+    entityRanges = serializers.ListField(
+        child=serializers.CharField(max_length=128),
+        allow_empty=True,
+        required=False,
+        default=[],
+    )
+    inlineStyleRanges = serializers.ListField(
+        child=serializers.CharField(max_length=128),
+        allow_empty=True,
+        required=False,
+        default=[],
+    )
+    key = serializers.CharField(max_length=256, required=False)
+    text = serializers.CharField(max_length=256, required=False)
+    type = serializers.CharField(max_length=256, required=False)
+
+
+class UiDataSerializer(serializers.Serializer):  # for the ui data
+
+    blocks = serializers.ListField(
+        child=BlockSerializer(), required=False, allow_empty=True, default=[]
+    )
+
+    entityMap = serializers.DictField(
+        child=serializers.CharField(max_length=128),
+        allow_empty=True,
+        required=False,
+        default={},
+    )
+
+
+class CommentSerializer(serializers.Serializer):  # for the chat
 
     _id = serializers.CharField(read_only=True)
-    message = serializers.CharField(max_length=256, required=False)
-    userId = serializers.CharField(max_length=100, required=False)
-    name = serializers.CharField(max_length=256, required=False)
-    avatar = serializers.CharField(max_length=256, required=False)
+    username = serializers.CharField(max_length=256, required=False)
+    userId = serializers.CharField(max_length=100)
+    emojies = serializers.ListField(
+        required=False, allow_empty=True, default=[], child=EmojiSerializer()
+    )
+    richUiData = UiDataSerializer(required=False, allow_null=True)
+    imageUrl = serializers.CharField(max_length=256, required=False)
     time = serializers.IntegerField(required=False)
-
-    def create(self, validated_data):
-        return Comment(**validated_data)
-
-    def update(self, instance, validated_data):
-
-        instance.message = validated_data.get("message", instance.message)
-        instance.userId = validated_data.get("userId", instance.userId)
-        instance.name = validated_data.get("name", instance.name)
-        instance.avatar = validated_data.get("avatar", instance.avatar)
-        instance.time = validated_data.get("time", instance.time)
-        return instance
-
-    def __str__(self):
-        return str()
 
 
 class RoomSerializer(serializers.Serializer):
@@ -100,21 +98,6 @@ class RoomSerializer(serializers.Serializer):
     memberId = serializers.ListField(
         child=serializers.CharField(max_length=128), required=False, default=[]
     )
-
-    def create(self, validated_data):
-        return Room(**validated_data)
-
-    def update(self, instance, validated_data):
-        instance.room_name = validated_data.get("room_name", instance.room_name)
-        instance.plugin_name = validated_data.get("plugin_name", instance.plugin_name)
-        instance.description = validated_data.get("description", instance.description)
-        instance.private = validated_data.get("private", instance.private)
-        instance.archived = validated_data.get("archived", instance.archived)
-        instance.memberId = validated_data.get("memberId", instance.memberId)
-        return instance
-
-    def __str__(self):
-        return str()
 
 
 class AddToRoomSerializer(serializers.Serializer):

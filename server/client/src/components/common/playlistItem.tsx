@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 import {
 	changedCurrentSong,
 	changedPlaying,
@@ -38,12 +37,11 @@ function PlaylistItem(props: Props) {
 	const user = props.users.find(user => user.id === userId);
 
 	const handlePlay = e => {
-		if (e.target.dataset.like) return;
-		if (e.target.dataset.option) return;
-
-		dispatch(changedCurrentSong(props.song));
-		dispatch(showedPlayer(true));
-		dispatch(changedPlaying(true));
+		if (e.target.dataset.play || e.target.closest(".item-group-1")) {
+			dispatch(changedCurrentSong(props.song));
+			dispatch(showedPlayer(true));
+			dispatch(changedPlaying(true));
+		}
 	};
 
 	const handleOption = e => {
@@ -61,7 +59,11 @@ function PlaylistItem(props: Props) {
 	}, []);
 
 	return (
-		<Wrapper isPlaying={currentSongId === props.song.id}>
+		<Wrapper
+			data-play
+			isPlaying={currentSongId === props.song.id}
+			onClick={handlePlay}
+		>
 			<OptionMenu
 				option={showOption}
 				toggleOption={handleOption}
@@ -80,7 +82,7 @@ function PlaylistItem(props: Props) {
 			</div>
 
 			<LikeOptionCount {...{ songId, duration, likedBy, handleOption }} />
-			<div className="handle-play" onClick={handlePlay}></div>
+			{/* <div className="handle-play" onClick={handlePlay}></div> */}
 		</Wrapper>
 	);
 }
@@ -93,7 +95,7 @@ const Wrapper = styled.div<{ isPlaying: boolean }>`
 	background: ${props => (props.isPlaying ? "#CBFFEE" : "#fff")};
 	font-family: "Lato", sans-serif;
 	transition: all 200ms ease-in-out;
-	box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04);
+	/* box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04); */
 	height: 50px;
 	margin-bottom: 8px;
 	cursor: pointer;
