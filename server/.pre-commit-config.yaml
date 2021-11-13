@@ -16,12 +16,12 @@ repos:
     rev: 21.9b0
     hooks:
     -   id: black
-  - repo: https://github.com/PyCQA/flake8
-    rev: 4.0.1
-    hooks:
-    -   id: flake8
-        args:
-          - "--max-line-length=150"
+#  - repo: https://github.com/PyCQA/flake8
+#    rev: 4.0.1
+#    hooks:
+#    -   id: flake8
+#        args:
+#          - "--max-line-length=150"
   - repo: https://github.com/PyCQA/pylint
     rev: v3.0.0-a4
     hooks:
