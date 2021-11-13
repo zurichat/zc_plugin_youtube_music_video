@@ -54,24 +54,6 @@ export const {
 	sortParamChanged
 } = songsSlice.actions;
 
-// export const songDispatch = {
-// 	addedSong: (payload: Song) => {
-// 		store.dispatch({ type: addSong.type, payload });
-// 	},
-
-// 	initializedSongs: (payload: Song[]) => {
-// 		store.dispatch({ type: initialize.type, payload });
-// 	},
-
-// 	removedSong: (id: string) => {
-// 		store.dispatch({ type: removeSong.type, payload: { id } });
-// 	},
-
-// 	likedSong: (payload: LikeSong) => {
-// 		store.dispatch({ type: likeSong.type, payload });
-// 	}
-// };
-
 export const selectSongs = (state: RootState) => {
 	const { list, sortParam } = state.songs;
 
