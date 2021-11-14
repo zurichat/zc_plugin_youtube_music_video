@@ -1,11 +1,9 @@
 from django.urls import path
-from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
-                                   SpectacularSwaggerView)
 from music.views import (AddUserToRoomView, CommentView, CreateRoom,
                          DeleteCommentView, DeleteRoomUserView, DeleteRoomView,
                          DeleteSongView, InstallView, LikeSongView,
                          PluginInfoView, PluginPingView, RoomDetailView,
-                         RoomUserList, RoomView, SidebarView,
+                         RoomUserList, RoomView,
                          SongSearchSuggestions, SongSearchView, SongView,
                          UninstallView, UpdateCommentView, UserCountView,
                          change_room_image, songLikeCountView)
@@ -22,15 +20,6 @@ urlpatterns = [
     path("ping", PluginPingView.as_view(), name="ping"),
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
-    path("sidebar", SidebarView.as_view(), name="sidebar"),
-    # doc urls
-    path("music/schema", SpectacularAPIView.as_view(), name="schema"),
-    path(
-        "music/docs",
-        SpectacularSwaggerView.as_view(url_name="schema"),
-        name="swagger-ui",
-    ),
-    path("music/redoc", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     # songs urls
     path(
         "org/<str:org_id>/room/<str:_id>/songs/current",
