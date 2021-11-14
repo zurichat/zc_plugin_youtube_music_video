@@ -60,8 +60,7 @@ def get_room_info(room_id=None):
     if room_data["status"] == 200 and room_data["data"] is not None:
         room = {
             "room_name": room_data["data"]["room_name"],
-            "room_id": f"/music/{room_id}",
-            "button_url": "/music",
+            "room_url": f"/music/{room_id}",
             "room_image": room_image[0],
         }
         output.append(room)
@@ -97,14 +96,13 @@ class SidebarView(GenericAPIView):
             "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
             "group_name": [],
             "category": "entertainment",
-            "plugin_id": "music.zuri.chat",
-            "organisation_id": "",
-            "room_id": "",
-            "user_id": "",
+            "plugin_id": settings.PLUGIN_ID,
+            "organisation_id": org_id,
+            "user_id": user_id,
             "show_group": False,
-            "button_url": "/music",
-            "public_rooms": [],
-            "joined_rooms": [],
+            "room_url": f"/music/{room_id}",
+            "public_rooms": [pub_room],
+            "joined_rooms": [pub_room],
         }
 
         if org_id and user_id:
@@ -131,15 +129,15 @@ class SidebarView(GenericAPIView):
 
                         sidebar_update_payload = {
                             "event": "sidebar_update",
-                            "plugin_id": "music.zuri.chat",
+                            "plugin_id": settings.PLUGIN_ID,
                             "data": sidebar_data,
                         }
-                        return Response(
+                        return JsonResponse(
                             sidebar_update_payload, status=status.HTTP_200_OK
                         )
-                return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
-            return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
-        return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
+                return JsonResponse(sidebar, status=status.HTTP_401_UNAUTHORIZED)
+            return JsonResponse(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
+        return JsonResponse(sidebar, status=status.HTTP_204_NO_CONTENT)
 
     def is_valid(param):
         return param != "" and param is not None
@@ -175,7 +173,7 @@ class PluginInfoView(GenericAPIView):
                 "icon_url": "https://svgshare.com/i/aXm.svg",
                 "photos": "https://svgshare.com/i/aXm.svg",
                 "homepage_url": "https://zuri.chat/music",
-                "sidebar_url": "https://zuri.chat/sidebar",
+                "sidebar_url": "https://zuri.chat/api/v1/sidebar",
                 "install_url": "https://zuri.chat/music",
                 "ping_url": "http://zuri.chat/music/api/v1/ping",
             },
@@ -260,7 +258,7 @@ class SongView(APIView):
                     return Response(updated_object, status=status.HTTP_202_ACCEPTED)
                 return Response(
                     "Song updated but Centrifugo is not available",
-                    status=status.HTTP_424_FAILED_DEPENDENCY
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
                 )
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -299,7 +297,7 @@ class songLikeCountView(APIView):
                         "songId": songId,
                         "total_likes": unlike_count,
                     },
-                    status=status.HTTP_200_OK
+                    status=status.HTTP_200_OK,
                 )
 
             else:
@@ -313,7 +311,7 @@ class songLikeCountView(APIView):
                         "songId": songId,
                         "total_likes": like_count,
                     },
-                    status=status.HTTP_200_OK
+                    status=status.HTTP_200_OK,
                 )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -347,7 +345,7 @@ class DeleteSongView(APIView):
                     return Response(updated_data, status=status.HTTP_200_OK)
                 return Response(
                     "Song deleted but Centrifugo is not available",
-                    status=status.HTTP_424_FAILED_DEPENDENCY
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
                 )
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
@@ -395,7 +393,7 @@ class LikeSongView(APIView):
                 return Response("Song already liked", status=status.HTTP_302_FOUND)
             return Response(
                 "Data not available on ZC core",
-                status=status.HTTP_424_FAILED_DEPENDENCY
+                status=status.HTTP_424_FAILED_DEPENDENCY,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -488,7 +486,7 @@ class SongSearchSuggestions(APIView):
                     "total_count": len(data),
                     "data": data,
                 },
-                status=status.HTTP_200_OK
+                status=status.HTTP_200_OK,
             )
 
         except Exception as e:
@@ -500,7 +498,7 @@ class SongSearchSuggestions(APIView):
                     "total_count": len(data),
                     "data": data,
                 },
-                status=status.HTTP_200_OK
+                status=status.HTTP_200_OK,
             )
 
 
@@ -522,7 +520,7 @@ class CommentView(APIView):
                 return Response(data, status=status.HTTP_200_OK)
             return Response(
                 data={"message": "no messages in collection"},
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_404_NOT_FOUND,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -547,11 +545,11 @@ class CommentView(APIView):
                     return Response(updated_data, status=status.HTTP_200_OK)
                 return Response(
                     data={"message": "Comment added but Centrifugo is not available"},
-                    status=status.HTTP_424_FAILED_DEPENDENCY
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
                 )
             return Response(
                 data={"message": "comment not created"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -585,11 +583,11 @@ class DeleteCommentView(APIView):
                     return Response(updated_data, status=status.HTTP_200_OK)
                 return Response(
                     "Comment deleted but Centrifugo is not available",
-                    status=status.HTTP_424_FAILED_DEPENDENCY
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
                 )
             return Response(
                 data={"message": "comment not deleted"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -623,11 +621,11 @@ class UpdateCommentView(APIView):
                     return Response(updated_data, status=status.HTTP_202_ACCEPTED)
                 return Response(
                     "Comment updated but Centrifugo is not available",
-                    status=status.HTTP_424_FAILED_DEPENDENCY
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
                 )
             return Response(
                 data={"message": "comment not updated"},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -709,7 +707,7 @@ class DeleteRoomView(APIView):
                 return Response(data={"invalid room"}, status=status.HTTP_404_NOT_FOUND)
             return Response(
                 data={room["message"]: "room not found"},
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_404_NOT_FOUND,
             )
         return Response(data={"invalid room_id"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -816,8 +814,7 @@ class UserCountView(APIView):
                         data={"user_count": user_count}, status=status.HTTP_200_OK
                     )
                 return Response(
-                    data={"message": "no users in this room"},
-                    status=status.HTTP_200_OK
+                    data={"message": "no users in this room"}, status=status.HTTP_200_OK
                 )
 
             return Response(
@@ -887,11 +884,9 @@ class DeleteRoomUserView(APIView):
             else:
                 return Response(
                     data="User/users removed but centrifugo not available",
-                    status=status.HTTP_424_FAILED_DEPENDENCY
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
                 )
-        return Response(
-            "User/users not removed", status=status.HTTP_400_BAD_REQUEST
-        )
+        return Response("User/users not removed", status=status.HTTP_400_BAD_REQUEST)
 
 
 class RoomUserList(APIView):
@@ -915,8 +910,7 @@ class RoomUserList(APIView):
                         data={"room_users": room_users}, status=status.HTTP_200_OK
                     )
                 return Response(
-                    data={"message": "no users in this room"},
-                    status=status.HTTP_200_OK
+                    data={"message": "no users in this room"}, status=status.HTTP_200_OK
                 )
 
             return Response(
@@ -994,12 +988,12 @@ class AddUserToRoomView(APIView):
                             else:
                                 return Response(
                                     data="User/users added but centrifugo not available",
-                                    status=status.HTTP_424_FAILED_DEPENDENCY
+                                    status=status.HTTP_424_FAILED_DEPENDENCY,
                                 )
                         except Exception:
                             return Response(
                                 data="centrifugo server not available",
-                                status=status.HTTP_424_FAILED_DEPENDENCY
+                                status=status.HTTP_424_FAILED_DEPENDENCY,
                             )
                     return Response(
                         "User/users not added", status=status.HTTP_424_FAILED_DEPENDENCY
@@ -1009,7 +1003,7 @@ class AddUserToRoomView(APIView):
                 )
             return Response(
                 "Data not available on ZC core",
-                status=status.HTTP_424_FAILED_DEPENDENCY
+                status=status.HTTP_424_FAILED_DEPENDENCY,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
