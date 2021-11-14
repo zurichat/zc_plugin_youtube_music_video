@@ -75,190 +75,73 @@ class SidebarView(GenericAPIView):
         description="Sidebar information",
         responses={
             200: "Success",
-            400: "Bad request",
+            204: "No content",
+            401: "Unatthorized",
+            424: "Failed",
         },
         methods=["GET"],
     )
-    def get(self, request):
-        
-        org_id = request.GET.get("org")
-        user_id = request.GET.get("user")
+    def get(self, request, *args, **kwargs):
+
+        org_id = request.GET.get("org", None)
+        user_id = request.GET.get("user", None)
         room_id = settings.ROOM_ID
         pub_room = get_room_info(room_id)
+        sidebar_update = "currentWorkspace_userInfo_sidebar"
+        subscription_channel = "{org_id}_{user_id}_sidebar"
+        url = f"https://api.zuri.chat/organizations/{org_id}/members"
+        headers = {}
+        sidebar = {
+            "name": "Music Plugin",
+            "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
+            "group_name": [],
+            "category": "entertainment",
+            "plugin_id": "music.zuri.chat",
+            "organisation_id": "",
+            "room_id": "",
+            "user_id": "",
+            "show_group": False,
+            "button_url": "/music",
+            "public_rooms": [],
+            "joined_rooms": [],
+        }
 
         if org_id and user_id:
-            sidebar = {
-                "name": "Music Plugin",
-                "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-                "group_name": [],
-                "category": "entertainment",
-                "plugin_id": settings.PLUGIN_ID,
-                "organisation_id": f"{org_id}",
-                "user_id": f"{user_id}",
-                "show_group": False,
-                "room_url": f"/music/{room_id}",
-                "public_rooms": [pub_room],
-                "joined_rooms": [pub_room],
-            }
-            return Response(sidebar, status=status.HTTP_200_OK)
-        return Response(
-            {"message": "org id or user id is None"}, status=status.HTTP_400_BAD_REQUEST
-        )
+            if "Authorization" in request.headers:
+                headers["Authorization"] = request.headers["Authorization"]
+            else:
+                headers["Cookie"] = request.headers["Cookie"]
+            org_members = requests.request(
+                "GET",
+                url=url,
+                headers=headers,
+            )
 
+            if org_members.status_code == 200:
+                members = org_members.json()["data"]
+                for user in members:
+                    if user_id == user["_id"]:
+                        sidebar_data = sidebar
+                        sidebar_data["organisation_id"] = org_id
+                        sidebar_data["room_id"] = room_id
+                        sidebar_data["user_id"] = user_id
+                        sidebar_data["public_rooms"] = pub_room
+                        sidebar_data["joined_rooms"] = pub_room
 
-# class SidebarView(GenericAPIView): # old
-#     permission_classes = [AllowAny]
+                        sidebar_update_payload = {
+                            "event": "sidebar_update",
+                            "plugin_id": "music.zuri.chat",
+                            "data": sidebar_data,
+                        }
+                        return Response(
+                            sidebar_update_payload, status=status.HTTP_200_OK
+                        )
+                return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
+            return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
+        return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
 
-#     @extend_schema(
-#         description="Sidebar information",
-#         responses={
-#             200: "Success",
-#             204: "No content",
-#             401: "Unatthorized",
-#             424: "Failed",
-#         },
-#         methods=["GET"],
-#     )
-#     def get(self, request, *args, **kwargs):
-
-#         # org_id = request.GET.get("org", None)
-#         # user_id = request.GET.get("user", None)
-#         org_id = request.GET.get("org")
-#         user_id = request.GET.get("user")
-#         room_id = settings.ROOM_ID
-#         pub_room = get_room_info(room_id)
-#         sidebar_update = "currentWorkspace_userInfo_sidebar"
-#         subscription_channel = "{org_id}_{user_id}_sidebar"
-#         url = f"https://api.zuri.chat/organizations/{org_id}/members"
-#         headers = {}
-#         sidebar = {
-#             "name": "Music Plugin",
-#             "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-#             "group_name": [],
-#             "category": "entertainment",
-#             "plugin_id": settings.PLUGIN_ID,
-#             # "organisation_id": org_id,
-#             # "user_id": user_id,
-#             "organisation_id": f"{org_id}",
-#             "user_id": f"{user_id}",
-#             "show_group": False,
-#             "room_url": f"/music/{room_id}",
-#             "public_rooms": [pub_room],
-#             "joined_rooms": [pub_room],
-#         }
-
-#         if org_id and user_id:
-#             if "Authorization" in request.headers:
-#                 headers["Authorization"] = request.headers["Authorization"]
-#             else:
-#                 headers["Cookie"] = request.headers["Cookie"]
-#             org_members = requests.request(
-#                 "GET",
-#                 url=url,
-#                 headers=headers,
-#             )
-
-#             if org_members.status_code == 200:
-#                 members = org_members.json()["data"]
-#                 for user in members:
-#                     if user_id == user["_id"]:
-#                         sidebar_data = sidebar
-#                         sidebar_data["organisation_id"] = org_id
-#                         sidebar_data["room_id"] = room_id
-#                         sidebar_data["user_id"] = user_id
-#                         sidebar_data["public_rooms"] = pub_room
-#                         sidebar_data["joined_rooms"] = pub_room
-
-#                         sidebar_update_payload = {
-#                             "event": "sidebar_update",
-#                             "plugin_id": settings.PLUGIN_ID,
-#                             "data": sidebar_data,
-#                         }
-#                         return Response(
-#                             sidebar_update_payload, status=status.HTTP_200_OK
-#                         )
-#                 return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
-#             return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
-#         return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
-
-#     def is_valid(param):
-#         return param != "" and param is not None
-
-
-# class SidebarView(GenericAPIView): # older
-#     permission_classes = [AllowAny]
-
-#     @extend_schema(
-#         description="Sidebar information",
-#         responses={
-#             200: "Success",
-#             204: "No content",
-#             401: "Unatthorized",
-#             424: "Failed",
-#         },
-#         methods=["GET"],
-#     )
-#     def get(self, request, *args, **kwargs):
-
-#         org_id = request.GET.get("org", None)
-#         user_id = request.GET.get("user", None)
-#         room_id = settings.ROOM_ID
-#         pub_room = get_room_info(room_id)
-#         sidebar_update = "currentWorkspace_userInfo_sidebar"
-#         subscription_channel = "{org_id}_{user_id}_sidebar"
-#         url = f"https://api.zuri.chat/organizations/{org_id}/members"
-#         headers = {}
-#         sidebar = {
-#             "name": "Music Plugin",
-#             "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
-#             "group_name": [],
-#             "category": "entertainment",
-#             "plugin_id": "music.zuri.chat",
-#             "organisation_id": "",
-#             "room_id": "",
-#             "user_id": "",
-#             "show_group": False,
-#             "button_url": "/music",
-#             "public_rooms": [],
-#             "joined_rooms": [],
-#         }
-
-#         if org_id and user_id:
-#             if "Authorization" in request.headers:
-#                 headers["Authorization"] = request.headers["Authorization"]
-#             else:
-#                 headers["Cookie"] = request.headers["Cookie"]
-#             org_members = requests.request(
-#                 "GET",
-#                 url=url,
-#                 headers=headers,
-#             )
-
-#             if org_members.status_code == 200:
-#                 members = org_members.json()["data"]
-#                 for user in members:
-#                     if user_id == user["_id"]:
-#                         sidebar_data = sidebar
-#                         sidebar_data["organisation_id"] = org_id
-#                         sidebar_data["room_id"] = room_id
-#                         sidebar_data["user_id"] = user_id
-#                         sidebar_data["public_rooms"] = pub_room
-#                         sidebar_data["joined_rooms"] = pub_room
-
-#                         sidebar_update_payload = {
-#                             "event": "sidebar_update",
-#                             "plugin_id": "music.zuri.chat",
-#                             "data": sidebar_data,
-#                         }
-#                         return Response(
-#                             sidebar_update_payload, status=status.HTTP_200_OK
-#                         )
-#                 return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
-#             return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
-#         return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
-
-#     def is_valid(param):
-#         return param != "" and param is not None
+    def is_valid(param):
+        return param != "" and param is not None
 
 
 class PluginInfoView(GenericAPIView):
