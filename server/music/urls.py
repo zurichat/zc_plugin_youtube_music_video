@@ -1,12 +1,14 @@
 from django.urls import path
+from drf_spectacular.views import (SpectacularAPIView, SpectacularRedocView,
+                                   SpectacularSwaggerView)
 from music.views import (AddUserToRoomView, CommentView, CreateRoom,
                          DeleteCommentView, DeleteRoomUserView, DeleteRoomView,
                          DeleteSongView, InstallView, LikeSongView,
                          PluginInfoView, PluginPingView, RoomDetailView,
-                         RoomUserList, RoomView, SongSearchSuggestions,
-                         SongSearchView, SongView, UninstallView,
-                         UpdateCommentView, UserCountView, change_room_image,
-                         songLikeCountView)
+                         RoomUserList, RoomView, SidebarView,
+                         SongSearchSuggestions, SongSearchView, SongView,
+                         UninstallView, UpdateCommentView, UserCountView,
+                         change_room_image, songLikeCountView)
 
 # current url with orgid and roomid:
 # https://music.zuri.chat/music/api/v1/org/61695d8bb2cc8a9af4833d46/room/6169d8b54bfde011fe582e65/
@@ -15,10 +17,20 @@ from music.views import (AddUserToRoomView, CommentView, CreateRoom,
 
 
 urlpatterns = [
+    # static urls
     path("info", PluginInfoView.as_view(), name="info"),
     path("ping", PluginPingView.as_view(), name="ping"),
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
+    path("sidebar", SidebarView.as_view(), name="sidebar"),
+    # doc urls
+    path("music/schema", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "music/docs",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path("music/redoc", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     # songs urls
     path(
         "org/<str:org_id>/room/<str:_id>/songs/current",
