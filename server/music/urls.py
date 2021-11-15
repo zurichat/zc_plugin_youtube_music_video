@@ -15,6 +15,7 @@ from music.views import (AddUserToRoomView, CommentView, CreateRoom,
 
 
 urlpatterns = [
+    # static urls
     path("info", PluginInfoView.as_view(), name="info"),
     path("ping", PluginPingView.as_view(), name="ping"),
     path("install", InstallView.as_view(), name="install"),
