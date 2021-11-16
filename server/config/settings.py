@@ -22,14 +22,18 @@ SECRET_KEY = env("SECRET_KEY")
 SYSTEM_ENV = env("SYSTEM_ENV")
 
 # switches DEBUG to true or false based on the Environment variable
-DEBUG = SYSTEM_ENV == "Development"
-print(DEBUG)
+if SYSTEM_ENV == "Development":
+    DEBUG = True
+else:
+    DEBUG = False
+# print(DEBUG)
+# DEBUG = SYSTEM_ENV == "Development"
 
 ALLOWED_HOSTS = [
     "zuri.chat",
     "music.zuri.chat",
     "staging.zuri.chat",
-    "178.63.43.138",  # new default port for plugins on zuri.chat
+    "178.63.43.138",  # new default IP for plugins on zuri.chat
     "localhost",
     "127.0.0.1",
     "*",
@@ -220,10 +224,9 @@ CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
 ROOM_ID = "6169d8b54bfde011fe582e65"
 
 
-# new collections created
+# current collections
 ROOM_COLLECTION = "musicroom"
 SONG_COLLECTION = "songs"
 COMMENTS_COLLECTION = "chats"
-
 
 APPEND_SLASH = False
