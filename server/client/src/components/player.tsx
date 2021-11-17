@@ -62,7 +62,9 @@ function Player() {
 		"https://www.youtube.com/embed/" + getSongIdFromYouTubeUrl(song.url);
 
 	function getUpnext() {
-		const index = songs.indexOf(song);
+		if (!song) return songs;
+
+		const index = songs.findIndex(s => s.id === song.id);
 		return [...songs.slice(index + 1), song, ...songs.slice(0, index)];
 	}
 
@@ -134,7 +136,7 @@ function Player() {
 const Wrapper = styled.div<{ init: boolean }>`
 	display: ${props => (props.init ? "none" : "block")};
 	height: "100%";
-	/* z-index: 100; */
+	z-index: 3;
 
 	.player-wrapper {
 		position: relative;
