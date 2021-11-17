@@ -140,6 +140,7 @@ const Wrapper = styled.div<{ init: boolean }>`
 	.player-wrapper {
 		position: relative;
 		padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+		z-index: 111;
 	}
 
 	.nextsong {
