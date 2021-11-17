@@ -33,4 +33,5 @@ const Wrapper = styled.div`
 	padding: 10px;
 	font-size: 16px;
 	gap: 10px;
+	z-index: 111;
 `;

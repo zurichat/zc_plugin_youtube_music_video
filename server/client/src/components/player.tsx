@@ -122,12 +122,12 @@ function Player() {
 				</div>
 			</div>
 
-			<div style={{ zIndex: 20 }}>
-				<SearchSortFilter />
-			</div>
+			<SearchSortFilter />
 
 			{upnext.length > 0 && (
-				<div className="player-next">All songs {songs.length}</div>
+				<div className="player-next">
+					All songs <span>({songs.length})</span>
+				</div>
 			)}
 
 			<PlaylistItems songs={upnext} />
@@ -136,7 +136,9 @@ function Player() {
 }
 
 const Wrapper = styled.div<{ init: boolean }>`
-	display: ${props => (props.init ? "none" : "block")};
+	display: ${props => (props.init ? "none" : "flex")};
+	flex-direction: column;
+	gap: 15px;
 	height: "100%";
 
 	.player-wrapper {
@@ -167,12 +169,17 @@ const Wrapper = styled.div<{ init: boolean }>`
 	.player-next {
 		font-size: 18px;
 		font-weight: 500;
-		margin: 10px 0;
 	}
 
 	.player-next {
-		display: inline-block;
+		align-self: flex-start;
+		font-weight: 600;
+		padding: 4px;
 		border-bottom: 4px solid hsla(160, 100%, 36%, 1);
+
+		span {
+			font-weight: 400;
+		}
 	}
 `;
 
