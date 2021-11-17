@@ -25,7 +25,7 @@ function LikeOptionCount(props) {
 	const { length: count } = likedBy;
 	const liked = likedBy.some(id => id === userId);
 
-	const countText = `${count} ${count > 1 ? "likes" : "like"}`;
+	const countText = count > 1 ? `${count} likes` : count === 1 ? "1 like" : "";
 
 	const countClasses = duration ? "like-count" : "like-count-player";
 
@@ -50,9 +50,9 @@ function LikeOptionCount(props) {
 				<div className="like-duration">{formatDuration(duration)} mins</div>
 			)}
 
-			{countText && <div className={countClasses}>{countText}</div>}
+			<div className={countClasses}>{countText}</div>
 
-			<div className="like-button">
+			<div className="like-button-div">
 				<Like className="like-button" liked={liked} onLike={handleLike} />
 			</div>
 
@@ -92,6 +92,11 @@ const Wrapper = styled.div<{ duration: string }>`
 	.like-count,
 	.like-count-player {
 		color: rgba(153, 153, 153, 1);
+	}
+
+	.like-count {
+		min-width: 50px;
+		text-align: right;
 	}
 
 	.like-option {
