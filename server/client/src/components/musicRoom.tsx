@@ -37,14 +37,14 @@ function MusicRoom() {
 	const chatSidebarConfig = useMemo(
 		() => ({
 			sendChatMessageHandler: msg => {
-				console.log(msg, "here");
+				console.log({ msg }, "here");
 			},
 			currentUserData: {
 				username: "Aleey",
 				imageUrl: ""
 			},
 
-			messages: chatData(),
+			messages: [],
 
 			showChatSideBar: true,
 			chatHeader: "Chats"

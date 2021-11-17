@@ -122,10 +122,12 @@ function Player() {
 				</div>
 			</div>
 
-			<SearchSortFilter />
+			<div style={{ zIndex: 20 }}>
+				<SearchSortFilter />
+			</div>
 
 			{upnext.length > 0 && (
-				<div className="player-next">All songs ({songs.length})</div>
+				<div className="player-next">All songs {songs.length}</div>
 			)}
 
 			<PlaylistItems songs={upnext} />
@@ -169,8 +171,8 @@ const Wrapper = styled.div<{ init: boolean }>`
 	}
 
 	.player-next {
-		border-bottom: 5px solid hsla(160, 100%, 36%, 1);
-		width: 70px;
+		display: inline-block;
+		border-bottom: 4px solid hsla(160, 100%, 36%, 1);
 	}
 `;
 
