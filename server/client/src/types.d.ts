@@ -53,9 +53,10 @@ declare global {
 	}
 
 	interface ChatN {
+		id: string;
 		username: string;
-		id: number;
-		time: string;
+		userId: string;
+		time: number;
 		imageUrl: string;
 		emojies: { name: string; count: number; emoji: string }[];
 		richUiData: {
