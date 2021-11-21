@@ -6,6 +6,8 @@ import { selectCurrentUser } from "../../app/usersSlice";
 
 import Like from "./like";
 import option from "../../media/option.svg";
+import { useAppDispatch } from "../../app/hooks";
+import { likedSong } from "../../app/songsSlice";
 
 // interface Props {
 //   duration?: string;
@@ -15,6 +17,7 @@ import option from "../../media/option.svg";
 // }
 
 function LikeOptionCount(props) {
+	const dispatch = useAppDispatch();
 	const { duration, likedBy = [], songId, handleOption } = props;
 
 	const { id: userId } = useSelector(selectCurrentUser);
@@ -22,13 +25,18 @@ function LikeOptionCount(props) {
 	const { length: count } = likedBy;
 	const liked = likedBy.some(id => id === userId);
 
-	const countText =
-		count === 0 ? "" : count === 1 ? `1 like` : `${count} likes`;
+	const countText = count > 1 ? `${count} likes` : count === 1 ? "1 like" : "";
 
 	const countClasses = duration ? "like-count" : "like-count-player";
 
 	const handleLike = () => {
-		songService.likeSong({ songId, userId, like: !liked });
+		const likedObj = { songId, userId, like: !liked };
+
+		dispatch(likedSong(likedObj));
+
+		songService.likeSong(likedObj, {
+			error: () => dispatch(likedSong({ ...likedObj, like: !liked }))
+		});
 	};
 
 	const formatDuration = (duration: string) => {
@@ -42,9 +50,9 @@ function LikeOptionCount(props) {
 				<div className="like-duration">{formatDuration(duration)} mins</div>
 			)}
 
-			{countText && <div className={countClasses}>{countText}</div>}
+			<div className={countClasses}>{countText}</div>
 
-			<div className="like-button">
+			<div className="like-button-div">
 				<Like className="like-button" liked={liked} onLike={handleLike} />
 			</div>
 
@@ -67,6 +75,8 @@ const Wrapper = styled.div<{ duration: string }>`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	cursor: context-menu;
+	/* z-index: 1; */
 
 	& > * {
 		margin-right: 25px;
@@ -84,13 +94,14 @@ const Wrapper = styled.div<{ duration: string }>`
 		color: rgba(153, 153, 153, 1);
 	}
 
-	.like-option {
-		margin-right: 0;
-		z-index: 5;
+	.like-count {
+		min-width: 50px;
+		text-align: right;
 	}
 
-	.like-button {
-		z-index: 5;
+	.like-option {
+		margin-right: 0;
+		cursor: pointer;
 	}
 
 	@media screen and (max-width: 850px) {

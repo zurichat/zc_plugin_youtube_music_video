@@ -36,8 +36,6 @@
 			{
 				"imports": {
 					"single-spa": "https://cdn.jsdelivr.net/npm/single-spa@5.9.0/lib/system/single-spa.min.js",
-					"react": "https://cdn.jsdelivr.net/npm/react@16.13.1/umd/react.production.min.js",
-					"react-dom": "https://cdn.jsdelivr.net/npm/react-dom@16.13.1/umd/react-dom.production.min.js",
 
 					"@zuri/plugin-header": "https://staging.zuri.chat/zuri-plugin-header.js",
 					"@zuri/manage-user-modal": "https://staging.zuri.chat/zuri-manageUser.js",
@@ -48,12 +46,13 @@
 			}
 		</script>
 
-		<!-- imports for the app -->
-
 		<% if (isLocal) { %>
 		<script type="systemjs-importmap">
 			{
 				"imports": {
+					"react": "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.js",
+					"react-dom": "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.js",
+
 					"@zuri/root-config": "/zuri-root-config.js",
 					"@zuri/zuri-music-plugin": "//localhost:8001/zuri-music-plugin.js"
 				}
@@ -66,8 +65,11 @@
 		<script type="systemjs-importmap">
 			{
 				"imports": {
-					"@zuri/root-config": "https://staging.zuri.chat/music/static/zuri-root-config.js",
-					"@zuri/zuri-music-plugin": "https://staging.zuri.chat/music/static/zuri-music-plugin.js"
+					"react": "https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js",
+					"react-dom": "https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js",
+
+					"@zuri/root-config": "https://music.zuri.chat/static/zuri-root-config.js",
+					"@zuri/zuri-music-plugin": "https://music.zuri.chat/static/zuri-music-plugin.js"
 				}
 			}
 		</script>

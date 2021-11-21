@@ -1,47 +1,56 @@
-import { initializedSongs, likedSong, removedSong } from "../app/songsSlice";
-import httpService, { endpoints } from "./httpService";
-import store from "../app/store";
-
-const dispatch = store.dispatch;
+import httpService from "./httpService";
+import log from "./logService";
 
 const getSongs = () => {
-	httpService.get(httpService.endpoints.songs).then(
-		result => {
-			const data = result.data.data ?? [];
-			dispatch(initializedSongs(data.filter(song => song.url)));
-			return result;
-		},
-
+	return httpService.get(httpService.endpoints.songs).then(
+		result => (result.data.data ?? []) as Song[],
 		error => {
-			console.log(error.message);
-			return [];
+			log.error(error);
+			return [] as Song[];
 		}
 	);
 };
 
-const addSong = async (song: SongToAdd) => {
-	console.log("adding song", song);
-
-	return httpService.post(httpService.endpoints.songs, song).then(() => {
-		const { songs } = store.getState();
-		songs.slice(6).forEach(({ id }) => deleteSong(id));
-	});
-};
-
-const deleteSong = async (id: string) => {
-	return httpService.post(endpoints.deletesong, { id }).then(res => {
-		dispatch(removedSong({ id }));
-		return res;
-	});
-};
-
-const likeSong = async (like: LikeSong) => {
-	dispatch(likedSong(like));
-
+const addSong = async (song: SongToAdd, cb: Callback) => {
 	try {
-		await httpService.post(httpService.endpoints.likesong, like);
+		const { post, endpoints } = httpService;
+
+		const { data } = await post(endpoints.songs, song);
+
+		cb?.success && cb.success(data);
 	} catch (error) {
-		console.log(error.message);
+		log.error(error);
+		cb?.error && cb.error();
+	}
+};
+
+const deleteSong = async (id: string, cb?: Callback) => {
+	try {
+		const { post, endpoints } = httpService;
+
+		await post(endpoints.deletesong, { _id: id });
+
+		cb?.success && cb.success();
+	} catch (error) {
+		log.error(error);
+		cb?.error && cb.error();
+	}
+};
+
+const likeSong = async (like: LikeSong, cb: Callback) => {
+	try {
+		const { post, endpoints } = httpService;
+
+		const { songId, userId } = like;
+		await post(endpoints.likesong, {
+			songId,
+			userId
+		});
+
+		cb?.success && cb.success();
+	} catch (error) {
+		log.error(error);
+		cb?.error && cb.error();
 	}
 };
 

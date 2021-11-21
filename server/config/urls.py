@@ -10,10 +10,11 @@ from music.views import SidebarView
 urlpatterns = [
     # coming from frontend app using react every thing we connect in App.js in components will be
     # rendered here in IndexView using Same Django app Server
-    # wrote the urls for the songs model issue #226
     path("music/admin", admin.site.urls),
     path("music", TemplateView.as_view(template_name="index.html")),
     path("music/api/v1/", include(("music.urls", "music"), namespace="music_v1")),
+    path("api/v1/sidebar", SidebarView.as_view(), name="sidebar"),
+    # doc urls
     path("music/schema", SpectacularAPIView.as_view(), name="schema"),
     path(
         "music/docs",
@@ -21,7 +22,4 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path("music/redoc", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
-    path("sidebar", SidebarView.as_view(), name="sidebar"),
-    # path("sidebar?org=<str:org_id>&user=<str:user_id>", SidebarView.as_view(), name="sidebar"),
-    # path("music/docs", include("documentation.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

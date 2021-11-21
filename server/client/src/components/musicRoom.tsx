@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectShowPasteUrl } from "../app/uiSlice";
 import { useEffect, useMemo, useState } from "react";
 import userService from "../services/userService";
-import { chatData } from "../utils/mockdata";
+// import { chatData } from "../utils/mockdata";
 import { selectIsMember, setMembership } from "../app/usersSlice";
 
 function MusicRoom() {
@@ -30,21 +30,21 @@ function MusicRoom() {
 			.catch(console.log);
 	}, [reload, isMember]);
 
-	const handleCreateRoomMessages = message => {
-		console.log("creating a message", message);
-	};
+	// const handleCreateRoomMessages = message => {
+	// 	console.log("creating a message", message);
+	// };
 
 	const chatSidebarConfig = useMemo(
 		() => ({
 			sendChatMessageHandler: msg => {
-				// dispatch();
+				console.log({ msg }, "here");
 			},
 			currentUserData: {
 				username: "Aleey",
 				imageUrl: ""
 			},
 
-			messages: chatData(),
+			messages: [],
 
 			showChatSideBar: true,
 			chatHeader: "Chats"
@@ -83,7 +83,7 @@ function MusicRoom() {
 			</div>
 
 			<div className="room-chat-container">
-				<MessageBoard id="chat-comp" chatsConfig={chatSidebarConfig} />
+				<MessageBoard chatsConfig={chatSidebarConfig} />
 			</div>
 		</Wrapper>
 	);
@@ -101,7 +101,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	.plugin-header {
 		position: sticky;
 		top: 0px;
-		z-index: 100;
+		z-index: 1111;
 	}
 
 	.room-main {
@@ -114,6 +114,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 
 	.room-chat-container {
 		position: relative;
+		background-color: white !important;
 		margin-top: 5px;
 		width: 500px;
 	}
@@ -172,11 +173,8 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 		.room-chat-container {
 			position: fixed;
 			top: 40px;
-			// background: rgb(240, 240, 240);
-			background: none;
+			display: none;
 			flex-basis: 40%;
-			display: flex;
-			justify-content: center;
 			z-index: 111;
 			max-height: 400px;
 		}

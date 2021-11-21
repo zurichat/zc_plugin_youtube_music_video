@@ -31,6 +31,6 @@ export const { changedPlaying, showedPlayer, changedCurrentSong } =
 export const getPlayerState = (state: RootState) => state.player;
 
 export const selectCurrentSong = (state: RootState) =>
-	state.songs.find(s => s.id === state.player.currentSongId);
+	state.songs.list.find(s => s.id === state.player.currentSongId);
 
 export default slice.reducer;

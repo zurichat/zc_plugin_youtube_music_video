@@ -1,6 +1,12 @@
 export const d = 3; // export or import is definitely needed
 
 declare global {
+	interface SortParam {
+		property: "title" | "time" | "";
+		label: string;
+		order: "asc" | "des";
+	}
+
 	interface Song extends SongToAdd {
 		id: string;
 		title: string;
@@ -47,9 +53,10 @@ declare global {
 	}
 
 	interface ChatN {
+		id: string;
 		username: string;
-		id: number;
-		time: string;
+		userId: string;
+		time: number;
 		imageUrl: string;
 		emojies: { name: string; count: number; emoji: string }[];
 		richUiData: {
@@ -71,5 +78,10 @@ declare global {
 		name: string;
 		avatar: string;
 		email: string;
+	}
+
+	interface Callback {
+		success?: (value?: any) => void;
+		error?: () => void;
 	}
 }
