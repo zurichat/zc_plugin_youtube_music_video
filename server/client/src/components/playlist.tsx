@@ -41,6 +41,7 @@ const Wrapper = styled.div`
 		top: 25px;
 		margin-bottom: 20px;
 		z-index: 2;
+		background: white;
 	}
 
 	&::-webkit-scrollbar {

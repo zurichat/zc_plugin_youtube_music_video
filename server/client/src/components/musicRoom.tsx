@@ -11,7 +11,14 @@ import { selectShowPasteUrl } from "../app/uiSlice";
 import { useEffect, useMemo, useState } from "react";
 import userService from "../services/userService";
 // import { chatData } from "../utils/mockdata";
-import { selectIsMember, setMembership } from "../app/usersSlice";
+import {
+	selectCurrentUser,
+	selectIsMember,
+	setCurrentUser,
+	setMembership
+} from "../app/usersSlice";
+import chatService from "../services/chatService";
+import eventService from "../services/eventService";
 
 function MusicRoom() {
 	const [members, setMembers] = useState([] as User[]);
@@ -19,6 +26,7 @@ function MusicRoom() {
 
 	const showPasteUrl = useAppSelector(selectShowPasteUrl);
 	const isMember = useAppSelector(selectIsMember);
+	const user = useAppSelector(selectCurrentUser);
 
 	const dispatch = useAppDispatch();
 
@@ -30,6 +38,41 @@ function MusicRoom() {
 			.catch(console.log);
 	}, [reload, isMember]);
 
+	useEffect(() => {
+		// userService.getCurrentUser().then(user => dispatch(setCurrentUser(user)));
+
+		try {
+			eventService.connect();
+
+			chatService.addChat({
+				id: Date.now() + "",
+				username: user.name,
+				userId: user.id,
+				time: Date.now(),
+				imageUrl: user.avatar,
+				emojies: [],
+				richUiData: {
+					blocks: [
+						{
+							data: {},
+							depth: 1,
+							entityRanges: [],
+							inlineStyleRanges: [],
+							key: "key",
+							text: "a text",
+							type: "type"
+						}
+					],
+					entityMap: {}
+				}
+			});
+
+			chatService.deleteChat("618fc4d6b350ab40022ac8a7");
+		} catch (error) {
+			console.log("comment error", error);
+		}
+	}, []);
+
 	// const handleCreateRoomMessages = message => {
 	// 	console.log("creating a message", message);
 	// };
@@ -38,7 +81,30 @@ function MusicRoom() {
 		() => ({
 			sendChatMessageHandler: msg => {
 				console.log({ msg }, "here");
+				// const comment: ChatN = {
+				// 	id: "",
+				// 	username: user.name,
+				// 	userId: user.id,
+				// 	time: Date.now(),
+				// 	imageUrl: user.avatar,
+				// 	emojies: [],
+				// 	richUiData: {
+				// 		blocks: [
+				// 			{
+				// 				data: {},
+				// 				depth: 1,
+				// 				entityRanges: [],
+				// 				inlineStyleRanges: [],
+				// 				key: "key",
+				// 				text: "a text",
+				// 				type: "type"
+				// 			}
+				// 		],
+				// 		entityMap: {}
+				// 	}
+				// };
 			},
+
 			currentUserData: {
 				username: "Aleey",
 				imageUrl: ""
