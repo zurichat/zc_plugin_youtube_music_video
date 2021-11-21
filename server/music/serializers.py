@@ -105,3 +105,17 @@ class AddToRoomSerializer(serializers.Serializer):
     memberId = serializers.ListField(
         child=serializers.CharField(max_length=100), allow_empty=False
     )
+
+
+class RemoveUserSerializer(serializers.Serializer):
+    room_id = serializers.CharField(max_length=100, required=False)
+    memberId = serializers.CharField(max_length=100, required=False)
+
+
+class DeleteSongSerializer(serializers.Serializer):
+    _id = serializers.CharField(max_length=100)
+
+
+class DeleteChatSerializer(serializers.Serializer):
+    _id = serializers.CharField(max_length=100)
+

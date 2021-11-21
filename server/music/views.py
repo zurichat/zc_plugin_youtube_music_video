@@ -9,7 +9,7 @@ from drf_spectacular.utils import extend_schema
 from music.pagination import SearchPagination
 from music.serializers import (AddToRoomSerializer, CommentSerializer,
                                LikeSongSerializer, RoomSerializer,
-                               SongLikeCountSerializer, SongSerializer)
+                               SongLikeCountSerializer, SongSerializer, DeleteChatSerializer, DeleteSongSerializer)
 from music.utils.data_access import *
 from music.utils.dataStorage import DataStorage, centrifugo_publish
 from requests import exceptions, status_codes
@@ -204,7 +204,7 @@ class SongView(APIView):
     serializer_class = SongSerializer
 
     @extend_schema(
-        request={"SongSerializer"},
+        request=SongSerializer,
         responses={200: SongSerializer},
         description="Add and view songs. Note: song endpoint only expects url, userId in the payload",
         methods=["GET", "POST"],
@@ -322,9 +322,9 @@ class DeleteSongView(APIView):
     serializer_class = SongSerializer
 
     @extend_schema(
-        request=SongSerializer,
+        request=DeleteSongSerializer,
         responses={200: SongSerializer},
-        description="delete songs. Note you only need to pass the '_id':'xxx' of the song to delete",
+        description="delete songs",
         methods=["POST"],
     )
     def post(self, request, *args, **kwargs):
@@ -560,9 +560,9 @@ class DeleteCommentView(APIView):
     serializer_class = CommentSerializer
 
     @extend_schema(
-        request=CommentSerializer,
-        responses={200: CommentSerializer},
-        description="view and delete comments. Note: use only '_id':'xxx' to delete",
+        request=DeleteChatSerializer,
+        responses={200: "success"},
+        description="view and delete comments",
         methods=["POST"],
     )
     def post(self, request, *args, **kwargs):
@@ -680,7 +680,7 @@ class DeleteRoomView(APIView):
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        description="delete a specific room from the collection. Pass the roomid (_id) in the url",
+        description="delete a specific room from the collection",
         methods=["DELETE"],
     )
     def delete(self, request, *args, **kwargs):
@@ -830,7 +830,7 @@ class DeleteRoomUserView(APIView):
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        description="view and remove users from the room list. Note: you need pass 'memberId':'xxx' and 'room_id':'xxx' to remove a user from the room",
+        description="view and remove users from the room list. Note: pass {'room_id':'xxxx','memberId':'xxxx'} as the request parameters to remove a user" ,
         methods=["PUT"],
     )
     def remove_user(self, request, *args, **kwargs):
