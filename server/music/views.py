@@ -889,9 +889,9 @@ class DeleteRoomUserView(APIView):
                 return Response(data=response_output, status=status.HTTP_201_CREATED)
             else:
                 return Response(
-                data="User removed but centrifugo not available",
-                status=status.HTTP_424_FAILED_DEPENDENCY,
-            )
+                    data="User removed but centrifugo not available",
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
+                )
         return Response("User not removed", status=status.HTTP_400_BAD_REQUEST)
 
 
