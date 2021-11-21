@@ -581,7 +581,7 @@ class DeleteCommentView(APIView):
                 updated_data = read_data(settings.COMMENTS_COLLECTION)
                 
                 centrifugo_response = centrifugo_publish(
-                    room=settings.ROOM_ID, event="Comment deleted", data=updated_data
+                    room=settings.ROOM_ID, event="Delete Comment", data=updated_data
                 )
                 if centrifugo_response.get("status_code", None) == 200:
                     return Response(updated_data, status=status.HTTP_200_OK)
