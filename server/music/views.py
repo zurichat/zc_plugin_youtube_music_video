@@ -133,12 +133,12 @@ class SidebarView(GenericAPIView):
                             "plugin_id": "music.zuri.chat",
                             "data": sidebar_data,
                         }
-                        return Response(
+                        return JsonResponse(
                             sidebar_update_payload, status=status.HTTP_200_OK
                         )
-                return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
-            return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
-        return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
+                return JsonResponse(sidebar, status=status.HTTP_401_UNAUTHORIZED)
+            return JsonResponse(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
+        return JsonResponse(sidebar, status=status.HTTP_204_NO_CONTENT)
 
     def is_valid(param):
         return param != "" and param is not None

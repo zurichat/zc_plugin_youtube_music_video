@@ -78,7 +78,7 @@ class CommentSerializer(serializers.Serializer):  # for the chat
 
     _id = serializers.CharField(read_only=True)
     username = serializers.CharField(max_length=256, required=False)
-    userId = serializers.CharField(max_length=100)
+    userId = serializers.CharField(max_length=100, required=False)
     emojies = serializers.ListField(
         required=False, allow_empty=True, default=[], child=EmojiSerializer()
     )
