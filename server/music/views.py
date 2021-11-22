@@ -9,7 +9,7 @@ from drf_spectacular.utils import extend_schema
 from music.pagination import SearchPagination
 from music.serializers import (AddToRoomSerializer, CommentSerializer,
                                LikeSongSerializer, RoomSerializer,
-                               SongLikeCountSerializer, SongSerializer)
+                               SongLikeCountSerializer, SongSerializer, DeleteChatSerializer, DeleteSongSerializer)
 from music.utils.data_access import *
 from music.utils.dataStorage import DataStorage, centrifugo_publish
 from requests import exceptions, status_codes
@@ -133,12 +133,12 @@ class SidebarView(GenericAPIView):
                             "plugin_id": "music.zuri.chat",
                             "data": sidebar_data,
                         }
-                        return Response(
+                        return JsonResponse(
                             sidebar_update_payload, status=status.HTTP_200_OK
                         )
-                return Response(sidebar, status=status.HTTP_401_UNAUTHORIZED)
-            return Response(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
-        return Response(sidebar, status=status.HTTP_204_NO_CONTENT)
+                return JsonResponse(sidebar, status=status.HTTP_401_UNAUTHORIZED)
+            return JsonResponse(sidebar, status=status.HTTP_424_FAILED_DEPENDENCY)
+        return JsonResponse(sidebar, status=status.HTTP_204_NO_CONTENT)
 
     def is_valid(param):
         return param != "" and param is not None
@@ -204,7 +204,7 @@ class SongView(APIView):
     serializer_class = SongSerializer
 
     @extend_schema(
-        request={"SongSerializer"},
+        request=SongSerializer,
         responses={200: SongSerializer},
         description="Add and view songs. Note: song endpoint only expects url, userId in the payload",
         methods=["GET", "POST"],
@@ -244,16 +244,16 @@ class SongView(APIView):
                 "time": time_info,
             }
 
+        
             data = write_data(settings.SONG_COLLECTION, payload=payload)
 
             if data["status"] == 200:
-
+                
                 updated_data = read_data(settings.SONG_COLLECTION)
                 updated_object = updated_data["data"][-1]
                 # returns the updated_object alone
-
                 centrifugo_response = centrifugo_publish(
-                    room=plugin_id, event="New song added", data=updated_object
+                    room=settings.ROOM_ID, event="New song added", data=updated_object
                 )
                 if centrifugo_response.get("status_code", None) == 200:
                     return Response(updated_object, status=status.HTTP_202_ACCEPTED)
@@ -322,9 +322,9 @@ class DeleteSongView(APIView):
     serializer_class = SongSerializer
 
     @extend_schema(
-        request=SongSerializer,
+        request=DeleteSongSerializer,
         responses={200: SongSerializer},
-        description="delete songs. Note you only need to pass the '_id':'xxx' of the song to delete",
+        description="delete songs",
         methods=["POST"],
     )
     def post(self, request, *args, **kwargs):
@@ -336,11 +336,10 @@ class DeleteSongView(APIView):
             data = delete_data(settings.SONG_COLLECTION, object_id=object_id)
 
             if data["status"] == 200:
-
                 updated_data = read_data(settings.SONG_COLLECTION)
 
                 centrifugo_response = centrifugo_publish(
-                    room=plugin_id, event="Song deleted", data=updated_data
+                    room=settings.ROOM_ID, event="Song deleted", data=updated_data
                 )
                 if centrifugo_response.get("status_code", None) == 200:
                     return Response(updated_data, status=status.HTTP_200_OK)
@@ -385,9 +384,15 @@ class LikeSongView(APIView):
                                 "action": "song liked successfully",
                             },
                         }
+                        centrifugo_response = centrifugo_publish(
+                        room=settings.ROOM_ID, event="Song liked", data=response_output
+                            )
+                        if centrifugo_response.get("status_code", None) == 200:
+                            return Response(response_output, status=status.HTTP_201_CREATED)
                         return Response(
-                            response_output, status=status.HTTP_424_FAILED_DEPENDENCY
-                        )
+                            "Song liked but Centrifugo is not available",
+                            status=status.HTTP_424_FAILED_DEPENDENCY,
+                            )
                     return Response(
                         "Song not liked", status=status.HTTP_424_FAILED_DEPENDENCY
                     )
@@ -536,11 +541,10 @@ class CommentView(APIView):
             )
 
             if data["status"] == 200:
-
                 updated_data = read_data(settings.COMMENTS_COLLECTION)
-
+                
                 centrifugo_response = centrifugo_publish(
-                    room=plugin_id, event="New comment", data=updated_data
+                    room=settings.ROOM_ID, event="New comment", data=updated_data
                 )
                 if centrifugo_response.get("status_code", None) == 200:
                     return Response(updated_data, status=status.HTTP_200_OK)
@@ -560,9 +564,9 @@ class DeleteCommentView(APIView):
     serializer_class = CommentSerializer
 
     @extend_schema(
-        request=CommentSerializer,
-        responses={200: CommentSerializer},
-        description="view and delete comments. Note: use only '_id':'xxx' to delete",
+        request=DeleteChatSerializer,
+        responses={200: "success"},
+        description="view and delete comments",
         methods=["POST"],
     )
     def post(self, request, *args, **kwargs):
@@ -574,11 +578,10 @@ class DeleteCommentView(APIView):
             data = delete_data(settings.COMMENTS_COLLECTION, object_id=object_id)
 
             if data["status"] == 200:
-
                 updated_data = read_data(settings.COMMENTS_COLLECTION)
-
+                
                 centrifugo_response = centrifugo_publish(
-                    room=plugin_id, event="Delete comment", data=updated_data
+                    room=settings.ROOM_ID, event="Delete Comment", data=updated_data
                 )
                 if centrifugo_response.get("status_code", None) == 200:
                     return Response(updated_data, status=status.HTTP_200_OK)
@@ -613,10 +616,12 @@ class UpdateCommentView(APIView):
                 payload=payload,
                 method="PUT",
             )
+
+            
             if data["status"] == 200:
                 updated_data = read_data(settings.COMMENTS_COLLECTION)
                 centrifugo_response = centrifugo_publish(
-                    room=plugin_id, event="Comment Update", data=updated_data
+                    room=settings.ROOM_ID, event="Comment Update", data=updated_data
                 )
                 if centrifugo_response.get("status_code", None) == 200:
                     return Response(updated_data, status=status.HTTP_202_ACCEPTED)
@@ -680,7 +685,7 @@ class DeleteRoomView(APIView):
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        description="delete a specific room from the collection. Pass the roomid (_id) in the url",
+        description="delete a specific room from the collection",
         methods=["DELETE"],
     )
     def delete(self, request, *args, **kwargs):
@@ -830,7 +835,7 @@ class DeleteRoomUserView(APIView):
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        description="view and remove users from the room list. Note: you need pass 'memberId':'xxx' and 'room_id':'xxx' to remove a user from the room",
+        description="view and remove users from the room list. Note: pass {'room_id':'xxxx','memberId':'xxxx'} as the request parameters to remove a user" ,
         methods=["PUT"],
     )
     def remove_user(self, request, *args, **kwargs):
@@ -874,7 +879,7 @@ class DeleteRoomUserView(APIView):
                     "action": "user removed successfully",
                 },
             }
-
+            
             channel = f"{org_id}_{user}_sidebar"
             centrifugo_data = centrifugo_publish(
                 room=channel, event="sidebar_update", data=sidebar_data
@@ -884,10 +889,10 @@ class DeleteRoomUserView(APIView):
                 return Response(data=response_output, status=status.HTTP_201_CREATED)
             else:
                 return Response(
-                    data="User/users removed but centrifugo not available",
+                    data="User removed but centrifugo not available",
                     status=status.HTTP_424_FAILED_DEPENDENCY,
                 )
-        return Response("User/users not removed", status=status.HTTP_400_BAD_REQUEST)
+        return Response("User not removed", status=status.HTTP_400_BAD_REQUEST)
 
 
 class RoomUserList(APIView):

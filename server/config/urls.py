@@ -13,7 +13,7 @@ urlpatterns = [
     path("music/admin", admin.site.urls),
     path("music", TemplateView.as_view(template_name="index.html")),
     path("music/api/v1/", include(("music.urls", "music"), namespace="music_v1")),
-    path("sidebar", SidebarView.as_view(), name="sidebar"),
+    path("api/v1/sidebar", SidebarView.as_view(), name="sidebar"),
     # doc urls
     path("music/schema", SpectacularAPIView.as_view(), name="schema"),
     path(

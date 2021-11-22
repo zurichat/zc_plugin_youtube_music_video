@@ -40,7 +40,7 @@ const Sort = ({ className }) => {
 
 export default Sort;
 
-// ===================== FILTER ICONS ======================
+// ===================== SORT ICON ======================
 
 const SortIcon = () => (
 	<svg

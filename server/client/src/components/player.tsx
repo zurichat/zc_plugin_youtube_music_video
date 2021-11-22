@@ -62,7 +62,9 @@ function Player() {
 		"https://www.youtube.com/embed/" + getSongIdFromYouTubeUrl(song.url);
 
 	function getUpnext() {
-		const index = songs.indexOf(song);
+		if (!song) return songs;
+
+		const index = songs.findIndex(s => s.id === song.id);
 		return [...songs.slice(index + 1), song, ...songs.slice(0, index)];
 	}
 
@@ -123,7 +125,9 @@ function Player() {
 			<SearchSortFilter />
 
 			{upnext.length > 0 && (
-				<div className="player-next">All songs ({songs.length})</div>
+				<div className="player-next">
+					All songs <span>({songs.length})</span>
+				</div>
 			)}
 
 			<PlaylistItems songs={upnext} />
@@ -132,13 +136,15 @@ function Player() {
 }
 
 const Wrapper = styled.div<{ init: boolean }>`
-	display: ${props => (props.init ? "none" : "block")};
+	display: ${props => (props.init ? "none" : "flex")};
+	flex-direction: column;
+	gap: 15px;
 	height: "100%";
-	/* z-index: 100; */
 
 	.player-wrapper {
 		position: relative;
 		padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
+		z-index: 111;
 	}
 
 	.nextsong {
@@ -163,12 +169,17 @@ const Wrapper = styled.div<{ init: boolean }>`
 	.player-next {
 		font-size: 18px;
 		font-weight: 500;
-		margin: 10px 0;
 	}
 
 	.player-next {
-		border-bottom: 5px solid hsla(160, 100%, 36%, 1);
-		width: 70px;
+		align-self: flex-start;
+		font-weight: 600;
+		padding: 4px;
+		border-bottom: 4px solid hsla(160, 100%, 36%, 1);
+
+		span {
+			font-weight: 400;
+		}
 	}
 `;
 

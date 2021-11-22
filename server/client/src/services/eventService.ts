@@ -31,7 +31,7 @@ const connect = () => {
 	songService.getSongs().then(songs => {
 		store.dispatch(initializedSongs(songs.map(sanitize)));
 	});
-	// chatService.getChats();
+	chatService.getChats().then(v => console.log({ v }));
 
 	SubscribeToChannel(httpService.room_id, (message: PublishedMessage) => {
 		const {
