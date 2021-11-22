@@ -80,29 +80,7 @@ function MusicRoom() {
 	const chatSidebarConfig = useMemo(
 		() => ({
 			sendChatMessageHandler: msg => {
-				console.log({ msg }, "here");
-				// const comment: ChatN = {
-				// 	id: "",
-				// 	username: user.name,
-				// 	userId: user.id,
-				// 	time: Date.now(),
-				// 	imageUrl: user.avatar,
-				// 	emojies: [],
-				// 	richUiData: {
-				// 		blocks: [
-				// 			{
-				// 				data: {},
-				// 				depth: 1,
-				// 				entityRanges: [],
-				// 				inlineStyleRanges: [],
-				// 				key: "key",
-				// 				text: "a text",
-				// 				type: "type"
-				// 			}
-				// 		],
-				// 		entityMap: {}
-				// 	}
-				// };
+				alert(`${msg} here`);
 			},
 
 			currentUserData: {
