@@ -13,11 +13,11 @@ function ChatHeader() {
 	return (
 		<Wrapper>
 			<div className="chatHeader__left">
-				<img src={chatIcon} alt="" className="chatHeader__icon" />
+				<img src={chatIcon} alt="chat" className="chatHeader__icon" />
 
 				<img
 					src={chatIcon__green}
-					alt="chat"
+					alt="chat-mobile"
 					className="chatHeader__icon__green"
 				/>
 				<div className="chatHeader__title">Chat</div>
@@ -25,7 +25,7 @@ function ChatHeader() {
 
 			<img
 				src={chatClose}
-				alt=""
+				alt="close-chat"
 				className="chatHeader__close"
 				onClick={() => dispatch(showedChat(false))}
 			/>
