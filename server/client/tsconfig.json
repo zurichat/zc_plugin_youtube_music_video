@@ -1,10 +1,12 @@
 {
 	"extends": "ts-config-single-spa",
 	"compilerOptions": {
+		"baseUrl": ".",
 		"jsx": "react-jsx",
 		"downlevelIteration": true,
-		"declarationDir": "dist"
+		"declarationDir": "dist",
+		"isolatedModules": false,
 	},
 	"files": ["src/zuri-music-plugin.tsx"],
-	"include": ["src/**/*", "svgTransform.js"]
+	"include": ["src/**/*", "svgTransform.js", "src"]
 }

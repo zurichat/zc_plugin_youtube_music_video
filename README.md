@@ -173,6 +173,15 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
       $ yarn lint --fix (or yarn lint --fix . to fix all files)
 
+- #### Running Tests & generating test coverage report
+
+      - cd into the frontend folder (server/client)
+
+      $ yarn test
+
+      - To view coverage report : inside test-coverage/icov-report there's an
+      index.html file, open this file in a browser to view coverage report.
+
 #
 
 ### Backend
