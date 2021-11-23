@@ -2,7 +2,7 @@ name: Youtube Music Deployment
 
 on:
   push:
-    branches: [  ]
+    branches: [ staging ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -20,7 +20,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            cd /var/www/zuri.chat/zuriplugins/music_plugin/staging/zc_plugin_youtube_music_video/root
+            cd /var/www/zuri.chat/zuriplugins/music_plugin/staging/zc_plugin_youtube_music_video
+            git stash
+            git pull
+            cd root
             yarn install
             yarn build
             cd ../server/client
@@ -31,4 +34,4 @@ jobs:
             pip3 install -r requirements.txt --upgrade
             python3 manage.py collectstatic --noinput
             pkill -u ${{secrets.USERNAME}} gunicorn
-            gunicorn --bind 0.0.0.0:{} config.wsgi --daemon
+            pm2 restart music_plugin_staging
