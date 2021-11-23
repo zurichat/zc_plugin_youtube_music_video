@@ -8,8 +8,9 @@ from django.http import Http404, JsonResponse
 from drf_spectacular.utils import extend_schema
 from music.pagination import SearchPagination
 from music.serializers import (AddToRoomSerializer, CommentSerializer,
+                               DeleteChatSerializer, DeleteSongSerializer,
                                LikeSongSerializer, RoomSerializer,
-                               SongLikeCountSerializer, SongSerializer, DeleteChatSerializer, DeleteSongSerializer)
+                               SongLikeCountSerializer, SongSerializer)
 from music.utils.data_access import *
 from music.utils.dataStorage import DataStorage, centrifugo_publish
 from requests import exceptions, status_codes
@@ -830,7 +831,7 @@ class DeleteRoomUserView(APIView):
     @extend_schema(
         request=RoomSerializer,
         responses={200: RoomSerializer},
-        description="view and remove users from the room list. Note: pass {'room_id':'xxxx','memberId':'xxxx'} as the request parameters to remove a user" ,
+        description="view and remove users from the room list. Note: pass {'room_id':'xxxx','memberId':'xxxx'} as the request parameters to remove a user",
         methods=["PUT"],
     )
     def remove_user(self, request, *args, **kwargs):
