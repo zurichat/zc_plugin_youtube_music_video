@@ -1,11 +1,5 @@
 import httpService, { endpoints } from "./httpService";
-import {
-	addedChat,
-	failChat,
-	removeChat,
-	sentChat,
-	setChats
-} from "../app/chatsSlice";
+import { addedChat, failChat, removeChat, sentChat } from "../app/chatsSlice";
 import store from "../app/store";
 import userService from "./userService";
 
@@ -17,8 +11,9 @@ const getChats = async () => {
 	try {
 		const result = await httpService.get(commentEndpoint);
 		const data = result.data.data ?? [];
-		dispatch(setChats(data));
+		return data;
 	} catch (e) {
+		console.log("error", e.message);
 		console.log(e.message);
 	}
 };
