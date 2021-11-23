@@ -13,7 +13,7 @@
     - [Start the client](#start-the-client)
     - [Start the single-spa root](#start-the-single-spa-root)
     - [Lint the Frontend](#lint-the-frontend)
-    - [Running tests](#running-tests)
+    - [Running Tests and generating test coverage report](#running-tests-and-generating-test-coverage-report)
   - [Backend](#backend)
     - [Run the Django Server](#run-the-django-server)
     - [Pre-commit and lint the Backend](#pre-commit-and-lint-the-backend)
@@ -191,7 +191,7 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
       $ cd server
 
-      - Create .env file in config and put variables for Secret Key as created in sample.env file
+      - Create .env file in config and specify variables for Secret Key and system environment using the sample.env file
 
       $ python manage.py runserver
 
