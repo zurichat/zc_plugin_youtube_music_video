@@ -17,6 +17,7 @@
   - [Backend](#backend)
     - [Run the Django Server](#run-the-django-server)
     - [Pre-commit and lint the Backend](#pre-commit-and-lint-the-backend)
+    - [Running Tests](#running-tests)
 - [Links to the project](#links-to-the-project)
 - [Status](#status)
 - [Contributing to the project](#contributing-to-the-project)
@@ -144,7 +145,7 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
 - #### Build the client
 
-      $ cd server/client
+      $ cd server/client (frontend folder)
       $ yarn
       $ yarn build
 
@@ -156,7 +157,7 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
 - #### Start the client
 
-      $ cd server/client
+      $ cd server/client (frontend folder)
       $ yarn
       $ yarn start
 
@@ -170,13 +171,13 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
 - #### Lint the Frontend
 
-      - cd into the frontend folder (server/client)
+      $ cd server/client (frontend folder)
 
       $ yarn lint --fix (or yarn lint --fix . to fix all files)
 
 - #### Running Tests and generating test coverage report
 
-      - cd into the frontend folder (server/client)
+      $ cd server/client (frontend folder)
 
       $ yarn test
 
@@ -189,7 +190,7 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
 - #### Run the Django Server
 
-      $ cd server
+      $ cd server (Backend folder)
 
       - Create .env file in config and specify variables for Secret Key and system environment using the sample.env file
 
@@ -197,10 +198,17 @@ An exhaustive list can be found in the requirements.txt file included in this pr
 
 - #### Pre-commit and lint the Backend
 
-      $ cd server
+      $ cd server (Backend folder)
+
       $ pre-commit run (or pre-commit run --all-files to check all files)
 
       - Backend devs: You don't need to run yarn start to test your endpoints.
+
+- #### Running Tests
+
+      $ cd server (Backend folder)
+
+      $ python manage.py test music/tests
 
 #
 
