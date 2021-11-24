@@ -30,7 +30,6 @@ function Playlist() {
 
 const Wrapper = styled.div`
 	box-sizing: border-box;
-	background: #fff;
 	padding: 20px;
 	margin-top: 40px;
 	height: 80%;
@@ -41,7 +40,6 @@ const Wrapper = styled.div`
 		top: 25px;
 		margin-bottom: 20px;
 		z-index: 2;
-		background: white;
 	}
 
 	&::-webkit-scrollbar {

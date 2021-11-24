@@ -16,16 +16,12 @@ function PlaylistItems({ songs }: Props) {
 	}, []);
 
 	return (
-		<Wrapper className="playlist-item-group" style={{ paddingBottom: "10px" }}>
+		<div className="playlist-item-group" style={{ paddingBottom: "10px" }}>
 			{songs.map((song, index) => (
 				<PlaylistItem key={index} song={song} users={users} />
 			))}
-		</Wrapper>
+		</div>
 	);
 }
-
-const Wrapper = styled.div`
-	background: white;
-`;
 
 export default PlaylistItems;

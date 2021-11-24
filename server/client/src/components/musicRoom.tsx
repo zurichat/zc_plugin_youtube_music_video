@@ -73,28 +73,22 @@ function MusicRoom() {
 		}
 	}, []);
 
-	// const handleCreateRoomMessages = message => {
-	// 	console.log("creating a message", message);
-	// };
+	const chatSidebarConfig = {
+		chatHeader: "Chats",
+		showChatSideBar: true,
 
-	const chatSidebarConfig = useMemo(
-		() => ({
-			sendChatMessageHandler: msg => {
-				alert(`${msg} here`);
-			},
+		sendChatMessageHandler: msg => {
+			alert(`${msg} here`);
+			console.log({ msg }, " here");
+		},
 
-			currentUserData: {
-				username: "Aleey",
-				imageUrl: ""
-			},
+		currentUserData: {
+			username: "Aleey",
+			imageUrl: ""
+		},
 
-			messages: [],
-
-			showChatSideBar: true,
-			chatHeader: "Chats"
-		}),
-		[]
-	);
+		messages: []
+	};
 
 	return (
 		<Wrapper overflowMain={showPasteUrl}>
@@ -138,7 +132,6 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	box-sizing: border-box;
 	display: flex;
 	margin: 0;
-	background-color: rgb(240, 240, 240);
 	min-height: 94vh;
 	max-height: 94vh;
 
@@ -159,8 +152,9 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	.room-chat-container {
 		position: relative;
 		background-color: white !important;
-		margin-top: 5px;
-		width: 500px;
+		margin: 5px 5px 0 0;
+		width: 600px;
+		border: 2px solid red;
 	}
 
 	.room-main::-webkit-scrollbar,
@@ -217,7 +211,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 		.room-chat-container {
 			position: fixed;
 			top: 40px;
-			display: none;
+			/* display: none; */
 			flex-basis: 40%;
 			z-index: 111;
 			max-height: 400px;

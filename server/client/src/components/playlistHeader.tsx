@@ -78,12 +78,10 @@ const PlaylistHeader = () => {
 };
 
 const Wrapper = styled.div`
-	background: white;
 	display: flex;
 	justify-content: center;
 	width: 100%;
 	overflow: hidden;
-	/* z-index: 30; */
 
 	.playlist-content-wrapper {
 		display: flex;

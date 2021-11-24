@@ -92,7 +92,7 @@ const Wrapper = styled.div<{ isPlaying: boolean }>`
 	box-sizing: border-box;
 	display: flex;
 	justify-content: space-between;
-	background: ${props => (props.isPlaying ? "#CBFFEE" : "#fff")};
+	background: ${props => (props.isPlaying ? "#CBFFEE" : "inherit")};
 	font-family: "Lato", sans-serif;
 	transition: all 200ms ease-in-out;
 	/* box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04); */
