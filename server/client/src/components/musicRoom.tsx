@@ -2,22 +2,19 @@ import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
 import { pluginHeader, headerConfig } from "../utils/config";
-import { MessageBoard } from "@zuri/zuri-ui";
 import Playlist from "./playlist";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectShowPasteUrl } from "../app/uiSlice";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import userService from "../services/userService";
-// import { chatData } from "../utils/mockdata";
+import MessageBoard from "./messageBoard";
 import {
-	selectCurrentUser,
 	selectIsMember,
 	setCurrentUser,
 	setMembership
 } from "../app/usersSlice";
-import chatService from "../services/chatService";
 import eventService from "../services/eventService";
 
 function MusicRoom() {
@@ -26,7 +23,6 @@ function MusicRoom() {
 
 	const showPasteUrl = useAppSelector(selectShowPasteUrl);
 	const isMember = useAppSelector(selectIsMember);
-	const user = useAppSelector(selectCurrentUser);
 
 	const dispatch = useAppDispatch();
 
@@ -43,52 +39,10 @@ function MusicRoom() {
 
 		try {
 			eventService.connect();
-
-			chatService.addChat({
-				id: Date.now() + "",
-				username: user.name,
-				userId: user.id,
-				time: Date.now(),
-				imageUrl: user.avatar,
-				emojies: [],
-				richUiData: {
-					blocks: [
-						{
-							data: {},
-							depth: 1,
-							entityRanges: [],
-							inlineStyleRanges: [],
-							key: "key",
-							text: "a text",
-							type: "type"
-						}
-					],
-					entityMap: {}
-				}
-			});
-
-			chatService.deleteChat("618fc4d6b350ab40022ac8a7");
 		} catch (error) {
 			console.log("comment error", error);
 		}
 	}, []);
-
-	const chatSidebarConfig = {
-		chatHeader: "Chats",
-		showChatSideBar: true,
-
-		sendChatMessageHandler: msg => {
-			alert(`${msg} here`);
-			console.log({ msg }, " here");
-		},
-
-		currentUserData: {
-			username: "Aleey",
-			imageUrl: ""
-		},
-
-		messages: []
-	};
 
 	return (
 		<Wrapper overflowMain={showPasteUrl}>
@@ -121,7 +75,7 @@ function MusicRoom() {
 			</div>
 
 			<div className="room-chat-container">
-				<MessageBoard chatsConfig={chatSidebarConfig} />
+				<MessageBoard />
 			</div>
 		</Wrapper>
 	);
