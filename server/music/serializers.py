@@ -118,4 +118,3 @@ class DeleteSongSerializer(serializers.Serializer):
 
 class DeleteChatSerializer(serializers.Serializer):
     _id = serializers.CharField(max_length=100)
-
