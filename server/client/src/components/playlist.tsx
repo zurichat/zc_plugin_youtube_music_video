@@ -39,7 +39,6 @@ const Wrapper = styled.div`
 		position: sticky;
 		top: 25px;
 		margin-bottom: 20px;
-		z-index: 2;
 	}
 
 	&::-webkit-scrollbar {

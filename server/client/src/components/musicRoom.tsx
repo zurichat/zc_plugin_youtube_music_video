@@ -138,7 +138,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	.plugin-header {
 		position: sticky;
 		top: 0px;
-		z-index: 1111;
+		z-index: 111;
 	}
 
 	.room-main {
@@ -146,15 +146,12 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 		overflow-y: ${props => (props.overflowMain ? "hidden" : "scroll")};
 		position: relative;
 		margin-right: 10px;
-		background-color: white;
 	}
 
 	.room-chat-container {
 		position: relative;
-		background-color: white !important;
 		margin: 5px 5px 0 0;
-		width: 600px;
-		border: 2px solid red;
+		width: 500px;
 	}
 
 	.room-main::-webkit-scrollbar,
