@@ -8,19 +8,20 @@ import Like from "./like";
 import option from "../../media/option.svg";
 import { useAppDispatch } from "../../app/hooks";
 import { likedSong } from "../../app/songsSlice";
+import { useState } from "react";
+import OptionMenu from "./optionMenu";
 
-// interface Props {
-//   duration?: string;
-//   likedBy: string[];
-//   songId: string;
-//   handleOption: any;
-// }
+interface Props {
+	song: Song;
+}
 
-function LikeOptionCount(props) {
+function LikeOptionCount(props: Props) {
+	const { duration, likedBy = [], id: songId } = props.song;
+
 	const dispatch = useAppDispatch();
-	const { duration, likedBy = [], songId, handleOption } = props;
 
 	const { id: userId } = useSelector(selectCurrentUser);
+	const [isOption, setOption] = useState(false);
 
 	const { length: count } = likedBy;
 	const liked = likedBy.some(id => id === userId);
@@ -39,6 +40,11 @@ function LikeOptionCount(props) {
 		});
 	};
 
+	const handleShowOption = e => {
+		e.stopPropagation();
+		setOption(!isOption);
+	};
+
 	const formatDuration = (duration: string) => {
 		const [h, ...rest] = duration.split(":");
 		return (h === "0" ? "" : `${h}:`) + rest.join(":");
@@ -46,6 +52,8 @@ function LikeOptionCount(props) {
 
 	return (
 		<Wrapper duration={duration}>
+			<OptionMenu {...{ song: props.song, isOption, setOption }} />
+
 			{duration && (
 				<div className="like-duration">{formatDuration(duration)} mins</div>
 			)}
@@ -57,10 +65,7 @@ function LikeOptionCount(props) {
 			</div>
 
 			<img
-				onClick={e => {
-					e.stopPropagation();
-					handleOption(true);
-				}}
+				onClick={handleShowOption}
 				data-option="option"
 				src={option}
 				alt="option img"
@@ -72,11 +77,11 @@ function LikeOptionCount(props) {
 }
 
 const Wrapper = styled.div<{ duration: string }>`
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	cursor: context-menu;
-	/* z-index: 1; */
 
 	& > * {
 		margin-right: 25px;

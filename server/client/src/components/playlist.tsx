@@ -16,21 +16,25 @@ function Playlist() {
 		<Wrapper>
 			<div className="playlist-header-container">
 				<PlaylistHeader />
-				{!show && <SearchSortFilter />}
 			</div>
+
+			{!show && <SearchSortFilter />}
 
 			{songs.length === 0 && <EmptyScreen />}
 
 			<Player />
 
-			{!show && <PlaylistItems songs={songs} />}
+			{!show && (
+				<div style={{ marginTop: "15px" }}>
+					<PlaylistItems songs={songs} />
+				</div>
+			)}
 		</Wrapper>
 	);
 }
 
 const Wrapper = styled.div`
 	box-sizing: border-box;
-	background: #fff;
 	padding: 20px;
 	margin-top: 40px;
 	height: 80%;
@@ -40,7 +44,6 @@ const Wrapper = styled.div`
 		position: sticky;
 		top: 25px;
 		margin-bottom: 20px;
-		z-index: 2;
 	}
 
 	&::-webkit-scrollbar {

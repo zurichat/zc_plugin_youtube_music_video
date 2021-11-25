@@ -3,11 +3,7 @@ import Filter from "./filter";
 import Search from "./search";
 import Sort from "./sort";
 
-interface Props {}
-
-function SearchSortFilter(props: Props) {
-	// const {} = props;
-
+const SearchSortFilter = () => {
 	return (
 		<Wrapper>
 			<Search className="ssf-search" />
@@ -15,13 +11,13 @@ function SearchSortFilter(props: Props) {
 			<Sort className="ssf-sort" />
 		</Wrapper>
 	);
-}
+};
 
 export default SearchSortFilter;
 
 const Wrapper = styled.div`
 	display: flex;
-	gap: 20px;
+	gap: 30px;
 
 	@media (max-width: 853px) {
 		.ssf-search {
