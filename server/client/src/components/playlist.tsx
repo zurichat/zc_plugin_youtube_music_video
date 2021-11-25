@@ -16,14 +16,18 @@ function Playlist() {
 		<Wrapper>
 			<div className="playlist-header-container">
 				<PlaylistHeader />
-				{!show && <SearchSortFilter />}
 			</div>
+			{!show && <SearchSortFilter />}
 
 			{songs.length === 0 && <EmptyScreen />}
 
 			<Player />
 
-			{!show && <PlaylistItems songs={songs} />}
+			{!show && (
+				<div style={{ marginTop: "15px" }}>
+					<PlaylistItems songs={songs} />
+				</div>
+			)}
 		</Wrapper>
 	);
 }

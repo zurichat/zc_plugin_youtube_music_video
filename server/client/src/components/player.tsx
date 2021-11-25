@@ -27,25 +27,26 @@ function Player() {
 	const player = useAppSelector(getPlayerState);
 	const songs = useAppSelector(selectSongs);
 	const song = useAppSelector(selectCurrentSong);
-	const upnext = getUpnext();
+	// const upnext = getUpnext();
 	const { currentsong: currentSongEndpoint } = httpService.endpoints;
 
 	const thumbnail = async (song: Song) => {
-		if (player.currentSongId === "")
-			song = {
-				id: "",
-				title: "",
-				duration: "",
-				albumCover: "",
-				url: "",
-				addedBy: "",
-				userId: "",
-				likedBy: [],
-				time: ""
-			};
+		// if (player.currentSongId === "")
+		// 	song = {
+		// 		id: "",
+		// 		title: "",
+		// 		duration: "",
+		// 		albumCover: "",
+		// 		url: "",
+		// 		addedBy: "",
+		// 		userId: "",
+		// 		likedBy: [],
+		// 		time: ""
+		// 	};
 		try {
-			await httpService.post(currentSongEndpoint, song);
-			console.log("Succesfully sent to current-song Endpoint");
+			if (player.currentSongId) {
+				await httpService.post(currentSongEndpoint, song);
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -124,13 +125,13 @@ function Player() {
 
 			<SearchSortFilter />
 
-			{upnext.length > 0 && (
+			{songs.length > 0 && (
 				<div className="player-next">
 					All songs <span>({songs.length})</span>
 				</div>
 			)}
 
-			<PlaylistItems songs={upnext} />
+			<PlaylistItems songs={songs} />
 		</Wrapper>
 	);
 }

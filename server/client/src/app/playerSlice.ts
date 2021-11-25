@@ -11,8 +11,8 @@ const slice = createSlice({
 	},
 
 	reducers: {
-		changedPlaying: (state, action: PayloadAction<boolean>) => {
-			state.playing = action.payload;
+		changedPlaying: (state, { payload }: PayloadAction<boolean>) => {
+			if (typeof payload === "boolean") state.playing = payload;
 		},
 
 		showedPlayer: (state, action: PayloadAction<boolean>) => {

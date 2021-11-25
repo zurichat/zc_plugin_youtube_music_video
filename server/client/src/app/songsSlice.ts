@@ -78,7 +78,7 @@ export const selectSongByUrl = (url: string) => (state: RootState) => {
 	return state.songs.list.find(song => song.url === url);
 };
 
-export const selectFirstSong = (state: RootState) => state.songs[0];
+export const selectFirstSong = (state: RootState) => state.songs.list[0];
 
 export const selectLikeCount =
 	({ songId, userId }: { songId: string; userId: string }) =>

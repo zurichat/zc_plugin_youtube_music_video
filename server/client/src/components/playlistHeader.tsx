@@ -26,9 +26,10 @@ const PlaylistHeader = () => {
 
 	const handleShowPlayer = () => {
 		if (text === "Play") {
-			dispatch(changedPlaying(true));
 			dispatch(showedPlayer(true));
-		} else dispatch(changedPlaying(false));
+		}
+
+		dispatch(changedPlaying(!player.playing));
 
 		if (!player.currentSongId) dispatch(changedCurrentSong(firstSong));
 	};
@@ -82,11 +83,11 @@ const Wrapper = styled.div`
 	justify-content: center;
 	width: 100%;
 	overflow: hidden;
+	margin-bottom: 10px;
 
 	.playlist-content-wrapper {
 		display: flex;
 		justify-content: space-between;
-		margin-bottom: 20px;
 		flex-grow: 1;
 	}
 	.playlist-img-div {

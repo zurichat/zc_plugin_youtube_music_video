@@ -9,12 +9,8 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectShowPasteUrl } from "../app/uiSlice";
 import { useEffect, useState } from "react";
 import userService from "../services/userService";
-import MessageBoard from "./messageBoard";
-import {
-	selectIsMember,
-	setCurrentUser,
-	setMembership
-} from "../app/usersSlice";
+// import MessageBoard from "./messageBoard";
+import { selectIsMember, setMembership } from "../app/usersSlice";
 import eventService from "../services/eventService";
 
 function MusicRoom() {
@@ -37,11 +33,7 @@ function MusicRoom() {
 	useEffect(() => {
 		// userService.getCurrentUser().then(user => dispatch(setCurrentUser(user)));
 
-		try {
-			eventService.connect();
-		} catch (error) {
-			console.log("comment error", error);
-		}
+		eventService.connect();
 	}, []);
 
 	return (
@@ -74,9 +66,9 @@ function MusicRoom() {
 				<Playlist />
 			</div>
 
-			<div className="room-chat-container">
+			{/* <div className="room-chat-container">
 				<MessageBoard />
-			</div>
+			</div> */}
 		</Wrapper>
 	);
 }
@@ -86,13 +78,16 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	box-sizing: border-box;
 	display: flex;
 	margin: 0;
-	min-height: 94vh;
-	max-height: 94vh;
+	min-height: 100vh;
+	max-height: 100vh;
 
 	.plugin-header {
-		position: sticky;
-		top: 0px;
-		z-index: 111;
+		position: fixed;
+		top: -1px;
+		left: -1px;
+		flex-grow: 1;
+		border: 1px solid red;
+		z-index: 99999999999999;
 	}
 
 	.room-main {
