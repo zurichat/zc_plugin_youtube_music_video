@@ -8,7 +8,15 @@ import { updatedSongId } from "../../app/deleteSongSlice";
 import { selectCurrentUser } from "../../app/usersSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
-const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
+interface Props {
+	song: Song;
+	isOption: boolean;
+	setOption: (value: boolean) => void;
+}
+
+const OptionMenu = ({ setOption, isOption, song }: Props) => {
+	const { url, id: songId, userId } = song;
+
 	let ref = useRef(null);
 
 	const dispatch = useAppDispatch();
@@ -16,7 +24,7 @@ const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
 
 	const handleClickOutside = e => {
 		if (ref.current && !ref.current.contains(e.target)) {
-			toggleOption && toggleOption(false);
+			setOption(false);
 		}
 	};
 
@@ -30,7 +38,7 @@ const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
 		};
 	});
 
-	if (!option) return null;
+	if (!isOption) return null;
 
 	function handleCopy() {
 		return (
@@ -42,6 +50,7 @@ const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
 	function handleDelete() {
 		if (user.id !== userId)
 			return toast.error("Sorry, you cannot delete this file.");
+
 		dispatch(updatedSongId(songId));
 		dispatch(showedDeleteModal(true));
 	}
@@ -52,6 +61,7 @@ const OptionMenu = ({ toggleOption, option, url, songId, userId }) => {
 				<img src={CopyIcon} alt="" />
 				<span>Copy link</span>
 			</button>
+
 			{user.id === userId && (
 				<button className="option-item" onClick={handleDelete}>
 					<img src={DeleteIcon} alt="" />

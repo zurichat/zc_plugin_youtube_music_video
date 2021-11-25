@@ -117,7 +117,7 @@ function Player() {
 			<div className="player-title">{song.title}</div>
 
 			<div style={{ display: "flex", justifyContent: "space-between" }}>
-				<LikeOptionCount likedBy={song.likedBy} songId={song.id} />
+				<LikeOptionCount song={{ ...song, duration: "" }} />
 
 				<div className="nextsong" onClick={handleNext}>
 					NEXT

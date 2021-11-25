@@ -5,8 +5,6 @@ import {
 	showedPlayer
 } from "../../app/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
-import OptionMenu from "./optionMenu";
-import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 interface Props {
@@ -22,11 +20,8 @@ function PlaylistItem(props: Props) {
 		id: songId,
 		userId,
 		duration,
-		likedBy,
-		url
+		likedBy
 	} = props.song;
-
-	const [showOption, setShowOption] = useState(false);
 
 	const dispatch = useAppDispatch();
 
@@ -44,32 +39,12 @@ function PlaylistItem(props: Props) {
 		}
 	};
 
-	const handleOption = e => {
-		setShowOption(e);
-	};
-
-	useEffect(() => {
-		const onClickOutside = () => {
-			setShowOption(false);
-		};
-		window.addEventListener("click", onClickOutside), false;
-		return () => {
-			window.removeEventListener("click", onClickOutside);
-		};
-	}, []);
-
 	return (
 		<Wrapper
 			data-play
 			isPlaying={currentSongId === props.song.id}
 			onClick={handlePlay}
 		>
-			<OptionMenu
-				option={showOption}
-				toggleOption={handleOption}
-				{...{ url, songId, userId }}
-			/>
-
 			<div className="item-group-1">
 				<img src={albumCover} alt="album cover" className="item-albumCover" />
 				<div className="item-info">
@@ -81,7 +56,7 @@ function PlaylistItem(props: Props) {
 				</div>
 			</div>
 
-			<LikeOptionCount {...{ songId, duration, likedBy, handleOption }} />
+			<LikeOptionCount song={props.song} />
 			{/* <div className="handle-play" onClick={handlePlay}></div> */}
 		</Wrapper>
 	);
