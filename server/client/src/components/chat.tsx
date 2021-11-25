@@ -96,7 +96,7 @@ function Chat(props) {
 		});
 		//setChats(newchats);
 		dispatch(setChats(list));
-		chatService.addChat({ ...test, failed: false });
+		// chatService.addChat({ ...test, failed: false });
 	};
 
 	const items = chat => {

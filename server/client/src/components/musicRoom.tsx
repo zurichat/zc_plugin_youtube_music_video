@@ -2,16 +2,16 @@ import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
 import Parcel from "single-spa-react/parcel";
 import { pluginHeader, headerConfig } from "../utils/config";
-import { MessageBoard } from "@zuri/zuri-ui";
 import Playlist from "./playlist";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectShowPasteUrl } from "../app/uiSlice";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import userService from "../services/userService";
-// import { chatData } from "../utils/mockdata";
+// import MessageBoard from "./messageBoard";
 import { selectIsMember, setMembership } from "../app/usersSlice";
+import eventService from "../services/eventService";
 
 function MusicRoom() {
 	const [members, setMembers] = useState([] as User[]);
@@ -30,27 +30,11 @@ function MusicRoom() {
 			.catch(console.log);
 	}, [reload, isMember]);
 
-	// const handleCreateRoomMessages = message => {
-	// 	console.log("creating a message", message);
-	// };
+	useEffect(() => {
+		// userService.getCurrentUser().then(user => dispatch(setCurrentUser(user)));
 
-	const chatSidebarConfig = useMemo(
-		() => ({
-			sendChatMessageHandler: msg => {
-				console.log({ msg }, "here");
-			},
-			currentUserData: {
-				username: "Aleey",
-				imageUrl: ""
-			},
-
-			messages: [],
-
-			showChatSideBar: true,
-			chatHeader: "Chats"
-		}),
-		[]
-	);
+		eventService.connect();
+	}, []);
 
 	return (
 		<Wrapper overflowMain={showPasteUrl}>
@@ -79,12 +63,14 @@ function MusicRoom() {
 					/>
 				</div>
 
-				<Playlist />
+				<div>
+					<Playlist />
+				</div>
 			</div>
 
-			<div className="room-chat-container">
-				<MessageBoard chatsConfig={chatSidebarConfig} />
-			</div>
+			{/* <div className="room-chat-container">
+				<MessageBoard />
+			</div> */}
 		</Wrapper>
 	);
 }
@@ -94,14 +80,16 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	box-sizing: border-box;
 	display: flex;
 	margin: 0;
-	background-color: rgb(240, 240, 240);
-	min-height: 94vh;
-	max-height: 94vh;
+	min-height: 100vh;
+	max-height: 100vh;
 
 	.plugin-header {
-		position: sticky;
-		top: 0px;
-		z-index: 1111;
+		position: absolute;
+		top: -1px;
+		left: -1px;
+		flex-grow: 1;
+		border: 1px solid red;
+		z-index: 99999999999999;
 	}
 
 	.room-main {
@@ -109,13 +97,11 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 		overflow-y: ${props => (props.overflowMain ? "hidden" : "scroll")};
 		position: relative;
 		margin-right: 10px;
-		background-color: white;
 	}
 
 	.room-chat-container {
 		position: relative;
-		background-color: white !important;
-		margin-top: 5px;
+		margin: 5px 5px 0 0;
 		width: 500px;
 	}
 
@@ -173,7 +159,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 		.room-chat-container {
 			position: fixed;
 			top: 40px;
-			display: none;
+			/* display: none; */
 			flex-basis: 40%;
 			z-index: 111;
 			max-height: 400px;

@@ -128,7 +128,7 @@ const Wrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	background-color: rgb(0, 0, 0, 0.2);
-	z-index: 111;
+	z-index: 9999999;
 
 	.submit-form {
 		position: absolute;

@@ -81,6 +81,8 @@ const Wrapper = styled.div<{ len: number }>`
 	.select-options {
 		position: absolute;
 		top: 30px;
+		box-shadow: 0px 2px 10px #d7d7d7;
+		z-index: 9999;
 	}
 	.select-option {
 		display: flex;
@@ -89,7 +91,6 @@ const Wrapper = styled.div<{ len: number }>`
 		padding: 10px;
 		gap: 20px;
 		font-size: 16px;
-		box-shadow: 0px 2px 10px #d7d7d7;
 		cursor: pointer;
 		background: #fff;
 		width: ${props => `clamp(200px, calc(28px * ${props.len / 3}), 300px)`};

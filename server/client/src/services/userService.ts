@@ -71,7 +71,7 @@ async function addMember(ids?: string[]) {
 			memberId: ids
 		});
 	} catch (reason) {
-		console.log(reason);
+		console.log(reason.message);
 		throw Error(reason.message);
 	}
 }
@@ -103,7 +103,7 @@ async function getMembers(workspaceUsers?: User[]): Promise<User[]> {
 		// Include currentUser in the members list if its a member and not in the list
 		return isMember && !inList ? [...members, currentUser] : members;
 	} catch (error) {
-		console.log("Members error:", error);
+		console.log("Members error:", error.message);
 		throw Error(error.message);
 	}
 }
@@ -112,7 +112,7 @@ async function isMember(): Promise<boolean> {
 	try {
 		const users = await getMembers();
 		const currentUser = await getCurrentUser();
-		console.log({ users, currentUser });
+		// console.log({ users, currentUser });
 		return users.some(user => user.id === currentUser.id);
 	} catch (error) {
 		throw Error(error.message);
