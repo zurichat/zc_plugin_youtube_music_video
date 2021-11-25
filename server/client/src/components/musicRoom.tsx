@@ -63,7 +63,9 @@ function MusicRoom() {
 					/>
 				</div>
 
-				<Playlist />
+				<div>
+					<Playlist />
+				</div>
 			</div>
 
 			{/* <div className="room-chat-container">
@@ -82,7 +84,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	max-height: 100vh;
 
 	.plugin-header {
-		position: fixed;
+		position: absolute;
 		top: -1px;
 		left: -1px;
 		flex-grow: 1;
