@@ -13,15 +13,7 @@ interface Props {
 }
 
 function PlaylistItem(props: Props) {
-	const {
-		title,
-		addedBy,
-		albumCover,
-		id: songId,
-		userId,
-		duration,
-		likedBy
-	} = props.song;
+	const { title, addedBy, albumCover, userId } = props.song;
 
 	const dispatch = useAppDispatch();
 
