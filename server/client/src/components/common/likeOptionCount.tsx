@@ -26,9 +26,7 @@ function LikeOptionCount(props: Props) {
 	const { length: count } = likedBy;
 	const liked = likedBy.some(id => id === userId);
 
-	const countText = count > 1 ? `${count} likes` : count === 1 ? "1 like" : "";
-
-	const countClasses = duration ? "like-count" : "like-count-player";
+	const countText = count ? `${count} ${count === 1 ? "like" : "likes"}` : "";
 
 	const handleLike = () => {
 		const likedObj = { songId, userId, like: !liked };
@@ -46,23 +44,27 @@ function LikeOptionCount(props: Props) {
 	};
 
 	const formatDuration = (duration: string) => {
+		if (!duration) return "";
+
 		const [h, ...rest] = duration.split(":");
-		return (h === "0" ? "" : `${h}:`) + rest.join(":");
+		return (h === "0" ? "" : `${h}:`) + rest.join(":") + " mins";
 	};
 
 	return (
-		<Wrapper duration={duration}>
+		<Wrapper>
 			<OptionMenu {...{ song: props.song, isOption, setOption }} />
 
 			{duration && (
-				<div className="like-duration">{formatDuration(duration)} mins</div>
+				<div className="like-duration">{formatDuration(duration)}</div>
 			)}
 
-			<div className={countClasses}>{countText}</div>
+			{duration && <div className="like-count">{countText}</div>}
 
-			<div className="like-button-div">
-				<Like className="like-button" liked={liked} onLike={handleLike} />
-			</div>
+			{!duration && countText && (
+				<div className="like-count-player">{countText}</div>
+			)}
+
+			<Like liked={liked} onLike={handleLike} />
 
 			<img
 				onClick={handleShowOption}
@@ -76,36 +78,24 @@ function LikeOptionCount(props: Props) {
 	);
 }
 
-const Wrapper = styled.div<{ duration: string }>`
+const Wrapper = styled.div`
 	position: relative;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	gap: 25px;
+	text-align: left;
 	cursor: context-menu;
-
-	& > * {
-		margin-right: 25px;
-	}
-
-	.like-icons {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		width: 60px;
-	}
-
-	.like-count,
-	.like-count-player {
-		color: rgba(153, 153, 153, 1);
-	}
 
 	.like-count {
 		min-width: 50px;
 		text-align: right;
+		color: rgba(153, 153, 153, 1);
+	}
+	.like-count-player {
+		color: rgba(153, 153, 153, 1);
 	}
 
 	.like-option {
-		margin-right: 0;
 		cursor: pointer;
 	}
 

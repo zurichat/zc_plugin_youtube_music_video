@@ -94,43 +94,45 @@ function Player() {
 		<Wrapper init={init}>
 			<div className="player-now">Now Playing</div>
 
-			<div className="player-wrapper">
-				<ReactPlayer
-					url={url}
-					className="react-player"
-					width="100%"
-					height="100%"
-					controls
-					playing={player.playing}
-					onPlay={handlePlay}
-					onPause={handlePause}
-					onEnded={handedEnded}
-					pip={true}
-					stopOnUnmount={false}
-					onEnablePIP={() => setInit(true)}
-					onDisablePIP={() => setInit(false)}
+			<div className="player-fixed-to-top">
+				<div className="player-wrapper">
+					<ReactPlayer
+						url={url}
+						className="react-player"
+						width="100%"
+						height="100%"
+						controls
+						playing={player.playing}
+						onPlay={handlePlay}
+						onPause={handlePause}
+						onEnded={handedEnded}
+						pip={true}
+						stopOnUnmount={false}
+						onEnablePIP={() => setInit(true)}
+						onDisablePIP={() => setInit(false)}
 
-					// config={{ playerVars: { showinfo: 1 } }}
-				/>
-			</div>
-
-			<div className="player-title">{song.title}</div>
-
-			<div style={{ display: "flex", justifyContent: "space-between" }}>
-				<LikeOptionCount song={{ ...song, duration: "" }} />
-
-				<div className="nextsong" onClick={handleNext}>
-					NEXT
+						// config={{ playerVars: { showinfo: 1 } }}
+					/>
 				</div>
-			</div>
 
-			<SearchSortFilter />
+				<div className="player-title">{song.title}</div>
 
-			{songs.length > 0 && (
-				<div className="player-next">
-					All songs <span>({songs.length})</span>
+				<div className="player-next-row">
+					<LikeOptionCount song={{ ...song, duration: undefined }} />
+
+					<div className="nextsong" onClick={handleNext}>
+						NEXT
+					</div>
 				</div>
-			)}
+
+				<SearchSortFilter />
+
+				{songs.length > 0 && (
+					<div className="player-next">
+						All songs <span>({songs.length})</span>
+					</div>
+				)}
+			</div>
 
 			<PlaylistItems songs={songs} />
 		</Wrapper>
@@ -143,10 +145,25 @@ const Wrapper = styled.div<{ init: boolean }>`
 	gap: 15px;
 	height: "100%";
 
+	.player-fixed-to-top {
+		position: sticky;
+		top: 44px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		background: #fff;
+		z-index: 111;
+	}
+
 	.player-wrapper {
 		position: relative;
-		padding-top: 56.25%; /* Player ratio: 100 / (1280 / 720) */
-		z-index: 111;
+		padding-top: 26.25%; // Player ratio: 100 / (1280 / 720)
+		height: 200px;
+	}
+
+	.player-next-row {
+		display: flex;
+		justify-content: space-between;
 	}
 
 	.nextsong {
@@ -157,7 +174,7 @@ const Wrapper = styled.div<{ init: boolean }>`
 
 	.nextsong:hover {
 		font-weight: 900;
-		cursor: grab;
+		cursor: pointer;
 	}
 
 	.react-player {
@@ -178,6 +195,7 @@ const Wrapper = styled.div<{ init: boolean }>`
 		font-weight: 600;
 		padding: 4px;
 		border-bottom: 4px solid hsla(160, 100%, 36%, 1);
+		width: auto;
 
 		span {
 			font-weight: 400;

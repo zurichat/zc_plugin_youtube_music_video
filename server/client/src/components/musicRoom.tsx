@@ -89,7 +89,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 		left: -1px;
 		flex-grow: 1;
 		border: 1px solid red;
-		z-index: 99999999999999;
+		z-index: 999;
 	}
 
 	.room-main {

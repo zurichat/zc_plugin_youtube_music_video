@@ -41,7 +41,7 @@ const Wrapper = styled.div`
 
 	.playlist-header-container {
 		position: sticky;
-		top: 60px;
+		top: 44px;
 		margin-bottom: 20px;
 		z-index: 1;
 		background: #fff;
