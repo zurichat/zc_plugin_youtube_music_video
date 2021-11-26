@@ -16,9 +16,8 @@ function Playlist() {
 		<Wrapper>
 			<div className="playlist-header-container">
 				<PlaylistHeader />
+				{!show && <SearchSortFilter />}
 			</div>
-
-			{!show && <SearchSortFilter />}
 
 			{songs.length === 0 && <EmptyScreen />}
 
@@ -42,8 +41,10 @@ const Wrapper = styled.div`
 
 	.playlist-header-container {
 		position: sticky;
-		top: 25px;
+		top: 60px;
 		margin-bottom: 20px;
+		z-index: 1;
+		background: #fff;
 	}
 
 	&::-webkit-scrollbar {
