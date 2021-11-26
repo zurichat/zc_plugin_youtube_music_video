@@ -12,6 +12,9 @@ function Playlist() {
 	const songs = useSelector(selectSongs);
 	const { show } = useSelector(getPlayerState);
 
+	// reminder
+	// height = docHeight > 667 ? docHeight - 300 : docHeight - 260;
+
 	return (
 		<Wrapper>
 			<div className="playlist-header-container">
@@ -24,7 +27,7 @@ function Playlist() {
 			<Player />
 
 			{!show && (
-				<div style={{ marginTop: "15px" }}>
+				<div className="playlist-items-container scroller">
 					<PlaylistItems songs={songs} />
 				</div>
 			)}
@@ -45,6 +48,11 @@ const Wrapper = styled.div`
 		margin-bottom: 20px;
 		z-index: 1;
 		background: #fff;
+	}
+
+	.playlist-items-container {
+		background: #fff;
+		margin-top: 15px;
 	}
 
 	&::-webkit-scrollbar {

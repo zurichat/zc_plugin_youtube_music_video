@@ -26,3 +26,12 @@ body::-webkit-scrollbar-thumb {
 	width: 6px;
 	background-color: #00b87c;
 }
+
+.scroller::-webkit-scrollbar {
+	width: 5px;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+	width: 6px;
+	background-color: #00b87c;
+}
