@@ -49,7 +49,6 @@ function PlaylistItem(props: Props) {
 			</div>
 
 			<LikeOptionCount song={props.song} />
-			{/* <div className="handle-play" onClick={handlePlay}></div> */}
 		</Wrapper>
 	);
 }
@@ -61,21 +60,14 @@ const Wrapper = styled.div<{ isPlaying: boolean }>`
 	justify-content: space-between;
 	background: ${props => (props.isPlaying ? "#CBFFEE" : "inherit")};
 	font-family: "Lato", sans-serif;
-	transition: all 200ms ease-in-out;
-	/* box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04); */
 	height: 50px;
 	margin-bottom: 8px;
 	cursor: pointer;
+	transition: all 200ms ease-in-out;
 
 	&:hover {
 		box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);
 	}
-
-	/* .handle-play {
-		position: absolute;
-		width: -webkit-fill-available;
-		height: 100%;
-	} */
 
 	.item-group-1 {
 		display: flex;
