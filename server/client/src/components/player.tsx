@@ -3,20 +3,16 @@ import ReactPlayer from "react-player/youtube";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-
 import store from "../app/store";
 import { selectSongs } from "../app/songsSlice";
-
 import {
 	getPlayerState,
 	changedPlaying,
 	changedCurrentSong,
 	selectCurrentSong
 } from "../app/playerSlice";
-
 import PlaylistItems from "./common/playlistItems";
 import LikeOptionCount from "./common/likeOptionCount";
-
 import httpService from "../services/httpService";
 import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
 import SearchSortFilter from "./searchSortFilter";
@@ -27,22 +23,9 @@ function Player() {
 	const player = useAppSelector(getPlayerState);
 	const songs = useAppSelector(selectSongs);
 	const song = useAppSelector(selectCurrentSong);
-	// const upnext = getUpnext();
 	const { currentsong: currentSongEndpoint } = httpService.endpoints;
 
 	const thumbnail = async (song: Song) => {
-		// if (player.currentSongId === "")
-		// 	song = {
-		// 		id: "",
-		// 		title: "",
-		// 		duration: "",
-		// 		albumCover: "",
-		// 		url: "",
-		// 		addedBy: "",
-		// 		userId: "",
-		// 		likedBy: [],
-		// 		time: ""
-		// 	};
 		try {
 			if (player.currentSongId) {
 				await httpService.post(currentSongEndpoint, song);
@@ -50,7 +33,6 @@ function Player() {
 		} catch (error) {
 			console.log(error);
 		}
-		return;
 	};
 
 	useEffect(() => {
@@ -61,13 +43,6 @@ function Player() {
 
 	const url =
 		"https://www.youtube.com/embed/" + getSongIdFromYouTubeUrl(song.url);
-
-	function getUpnext() {
-		if (!song) return songs;
-
-		const index = songs.findIndex(s => s.id === song.id);
-		return [...songs.slice(index + 1), song, ...songs.slice(0, index)];
-	}
 
 	const handlePlay = () => {
 		store.dispatch({ type: changedPlaying.type, payload: { playing: true } });
