@@ -67,14 +67,15 @@ const Wrapper = styled.div<{ isPlaying: boolean }>`
 	margin-bottom: 8px;
 	cursor: pointer;
 
-	.handle-play {
+	&:hover {
+		box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);
+	}
+
+	/* .handle-play {
 		position: absolute;
 		width: -webkit-fill-available;
 		height: 100%;
-		&:hover {
-			box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);
-		}
-	}
+	} */
 
 	.item-group-1 {
 		display: flex;
