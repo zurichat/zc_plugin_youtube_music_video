@@ -13,7 +13,7 @@ import {
 } from "../../app/uiSlice";
 
 import songService from "../../services/songService";
-import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
+import { getIdFromYouTubeUrl } from "../../utils/idGenerator";
 import { selectCurrentUser } from "../../app/usersSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addedSong } from "../../app/songsSlice";
@@ -47,7 +47,7 @@ const PasteUrl = (props: Props) => {
 		dispatch(loaded(true));
 
 		try {
-			getSongIdFromYouTubeUrl(url);
+			getIdFromYouTubeUrl(url);
 
 			const song: SongToAdd = {
 				url,

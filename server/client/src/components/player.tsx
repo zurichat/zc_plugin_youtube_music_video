@@ -14,7 +14,7 @@ import {
 import PlaylistItems from "./common/playlistItems";
 import LikeOptionCount from "./common/likeOptionCount";
 import httpService from "../services/httpService";
-import { getSongIdFromYouTubeUrl } from "../utils/idGenerator";
+import { getIdFromYouTubeUrl } from "../utils/idGenerator";
 import SearchSortFilter from "./searchSortFilter";
 
 function Player() {
@@ -41,8 +41,7 @@ function Player() {
 
 	if (!player.show) return null;
 
-	const url =
-		"https://www.youtube.com/embed/" + getSongIdFromYouTubeUrl(song.url);
+	const url = "https://www.youtube.com/embed/" + getIdFromYouTubeUrl(song.url);
 
 	const handlePlay = () => {
 		store.dispatch({ type: changedPlaying.type, payload: { playing: true } });
