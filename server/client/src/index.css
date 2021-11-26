@@ -27,11 +27,31 @@ body::-webkit-scrollbar-thumb {
 	background-color: #00b87c;
 }
 
+/* ==== SCROLLER ==== */
+
+.scoller {
+	overflow-y: scroll;
+}
 .scroller::-webkit-scrollbar {
 	width: 5px;
 }
-
 .scroller::-webkit-scrollbar-thumb {
 	width: 6px;
 	background-color: #00b87c;
+}
+
+/* ========= FIX ZURI MAIN ======== */
+
+/* Plugin Header */
+.plugin__header--blZCB__header-module {
+	width: 100%;
+}
+
+/* Members List Modal Container */
+.sc-nVkyK.bhVjWb {
+	z-index: 999;
+}
+/* Members List Modal */
+.sc-hiwPVj.eBwNE {
+	width: 80%;
 }
