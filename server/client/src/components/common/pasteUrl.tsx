@@ -121,14 +121,13 @@ const PasteUrl = (props: Props) => {
 };
 
 const Wrapper = styled.div`
-	position: absolute;
-	top: 1px;
+	position: fixed;
 	width: 100%;
 	height: 100%;
 	display: flex;
 	justify-content: center;
 	background-color: rgb(0, 0, 0, 0.2);
-	z-index: 9999999;
+	z-index: 999;
 
 	.submit-form {
 		position: absolute;

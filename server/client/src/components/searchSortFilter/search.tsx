@@ -77,7 +77,7 @@ export default Search;
 
 const Wrapper = styled.div`
 	position: relative;
-	width: 210px;
+	width: 100%;
 
 	.search-input-container {
 		display: flex;

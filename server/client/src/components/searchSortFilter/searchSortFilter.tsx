@@ -19,6 +19,10 @@ const Wrapper = styled.div`
 	display: flex;
 	gap: 30px;
 
+	.ssf-search {
+		flex-grow: 1;
+	}
+
 	@media (max-width: 853px) {
 		.ssf-search {
 			display: none;

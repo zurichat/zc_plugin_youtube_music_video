@@ -81,8 +81,9 @@ const Wrapper = styled.div<{ len: number }>`
 	.select-options {
 		position: absolute;
 		top: 30px;
+		left: auto;
 		box-shadow: 0px 2px 10px #d7d7d7;
-		z-index: 9999;
+		z-index: 999;
 	}
 	.select-option {
 		display: flex;

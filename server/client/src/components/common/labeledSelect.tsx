@@ -15,9 +15,11 @@ const LabeledSelect = (props: Props) => {
 
 	return (
 		<Wrapper className={className}>
-			{Icon}
+			<div className="labaledSelect-name-icon">
+				{Icon}
 
-			<div>{name}</div>
+				<div>{name}</div>
+			</div>
 
 			<Select value={value} onSelect={onSelect} options={options} />
 		</Wrapper>
@@ -28,9 +30,17 @@ export default LabeledSelect;
 
 const Wrapper = styled.div`
 	display: flex;
+	justify-content: space-between;
 	align-items: center;
 	height: 36px;
 	padding: 10px;
 	font-size: 16px;
-	gap: 10px;
+	gap: 25px;
+
+	.labaledSelect-name-icon {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+	}
 `;
