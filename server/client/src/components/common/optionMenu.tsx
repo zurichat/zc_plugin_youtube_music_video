@@ -16,12 +16,14 @@ interface Props {
 
 const OptionMenu = ({ setOption, isOption, song }: Props) => {
 	const { url, id: songId, userId } = song;
+	const uid = Date.now() + "uid";
 
 	const dispatch = useAppDispatch();
 	const user = useAppSelector(selectCurrentUser);
 
 	const handleClickOutside = e => {
-		if (!e.target.dataset.option) {
+		const { id, option } = e.target.dataset;
+		if (!option || id !== uid) {
 			setOption(false);
 		}
 	};
@@ -47,7 +49,7 @@ const OptionMenu = ({ setOption, isOption, song }: Props) => {
 	}
 
 	return (
-		<Wrapper role="dialog" data-option onClick={() => setOption(false)}>
+		<Wrapper role="dialog" data-id={uid} onClick={() => setOption(false)}>
 			<button autoFocus onClick={handleCopy} className="option-item">
 				<img src={CopyIcon} alt="" />
 				<span>Copy link</span>
@@ -66,9 +68,9 @@ const OptionMenu = ({ setOption, isOption, song }: Props) => {
 const Wrapper = styled.div`
 	position: absolute;
 	z-index: 10;
-	top: 46px;
-	width: 100%;
-	max-width: 200px;
+	top: 40px;
+	right: 3px;
+	width: 200px;
 	box-shadow: 0px 2px 10px #d7d7d7;
 	border-radius: 4px;
 	background: #ffffff;
