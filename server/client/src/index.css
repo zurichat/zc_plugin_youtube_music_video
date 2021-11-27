@@ -53,5 +53,5 @@ body::-webkit-scrollbar-thumb {
 }
 /* Members List Modal */
 .sc-hiwPVj.eBwNE {
-	width: 80%;
+	width: min(90%, 1000px);
 }
