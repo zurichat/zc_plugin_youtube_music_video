@@ -3,15 +3,13 @@ import styled from "styled-components";
 import { FiX } from "react-icons/fi";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-
 import { RootState } from "../../app/store";
 import {
-	loaded,
-	selectIsLoading,
+	setLoadeding,
+	selectLoading,
 	selectShowPasteUrl,
 	showedPasteUrl
 } from "../../app/uiSlice";
-
 import songService from "../../services/songService";
 import { getIdFromYouTubeUrl } from "../../utils/idGenerator";
 import { selectCurrentUser } from "../../app/usersSlice";
@@ -26,7 +24,6 @@ const PasteUrl = (props: Props) => {
 	const [url, setUrl] = useState("");
 
 	const dispatch = useAppDispatch();
-	const isLoading = useAppSelector(selectIsLoading);
 	const { name: addedBy, id: userId } = useAppSelector(selectCurrentUser);
 
 	const showPasteUrl = useAppSelector(selectShowPasteUrl);
@@ -42,9 +39,7 @@ const PasteUrl = (props: Props) => {
 			return toast.error("This song already exists.") && setUrl("");
 		}
 
-		if (isLoading) return;
-
-		dispatch(loaded(true));
+		dispatch(setLoadeding(true));
 
 		try {
 			getIdFromYouTubeUrl(url);
@@ -57,7 +52,7 @@ const PasteUrl = (props: Props) => {
 				time: `${Date.now()}`
 			};
 
-			songService.addSong(song, {
+			await songService.addSong(song, {
 				success: (song: Song) => {
 					dispatch(showedPasteUrl(false));
 					dispatch(addedSong(song));
@@ -69,7 +64,7 @@ const PasteUrl = (props: Props) => {
 			toast.error(`Error: ${e.message}`);
 		}
 
-		dispatch(loaded(false));
+		dispatch(setLoadeding(false));
 	};
 
 	const handleEscape = ev => {

@@ -12,6 +12,7 @@ import userService from "../services/userService";
 // import MessageBoard from "./messageBoard";
 import { selectIsMember, setMembership } from "../app/usersSlice";
 import eventService from "../services/eventService";
+import Loader from "./loader";
 
 function MusicRoom() {
 	const [members, setMembers] = useState([] as User[]);
@@ -40,6 +41,7 @@ function MusicRoom() {
 		<Wrapper overflowMain={showPasteUrl}>
 			<div className="room-main">
 				{/* Modals */}
+				<Loader />
 				<PasteUrl />
 				<EnterRoomModal isMember={isMember} />
 
