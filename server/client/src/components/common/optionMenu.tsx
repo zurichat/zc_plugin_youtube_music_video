@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import CopyIcon from "../../media/copy-icon.svg";
 import DeleteIcon from "../../media/delete-icon.svg";
