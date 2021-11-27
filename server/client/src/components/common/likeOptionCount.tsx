@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../app/hooks";
 import { likedSong } from "../../app/songsSlice";
 import { useState } from "react";
 import OptionMenu from "./optionMenu";
+import { getUUID } from "../../utils/idGenerator";
 
 interface Props {
 	song: Song;
@@ -17,6 +18,7 @@ interface Props {
 
 function LikeOptionCount(props: Props) {
 	const { duration, likedBy = [], id: songId } = props.song;
+	const [marker] = useState(getUUID());
 
 	const dispatch = useAppDispatch();
 
@@ -52,7 +54,7 @@ function LikeOptionCount(props: Props) {
 
 	return (
 		<Wrapper>
-			<OptionMenu {...{ song: props.song, isOption, setOption }} />
+			<OptionMenu {...{ song: props.song, isOption, setOption, marker }} />
 
 			{duration && (
 				<div className="like-duration">{formatDuration(duration)}</div>
@@ -69,6 +71,7 @@ function LikeOptionCount(props: Props) {
 			<img
 				onClick={handleShowOption}
 				data-option="option"
+				data-marker={marker}
 				src={option}
 				alt="option img"
 				style={{ cursor: "pointer", width: "20px", height: "20px" }}

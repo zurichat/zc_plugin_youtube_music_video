@@ -113,10 +113,11 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	}
 
 	.Toastify__toast-container {
-		position: absolute;
+		position: fixed;
 		top: 1px;
 		width: 100%;
 		right: 1px;
+		z-index: 999;
 
 		.Toastify__toast--success {
 			background-color: #cbffee;

@@ -12,20 +12,20 @@ interface Props {
 	song: Song;
 	isOption: boolean;
 	setOption: (value: boolean) => void;
+	marker: string; // must be unique
 }
 
-const OptionMenu = ({ setOption, isOption, song }: Props) => {
+const OptionMenu = ({ setOption, isOption, song, marker }: Props) => {
 	const { url, id: songId, userId } = song;
-	const uid = Date.now() + "uid";
 
 	const dispatch = useAppDispatch();
 	const user = useAppSelector(selectCurrentUser);
 
 	const handleClickOutside = e => {
-		const { id, option } = e.target.dataset;
-		if (!option || id !== uid) {
-			setOption(false);
-		}
+		const close = !e.target.closest(`.${marker}`);
+		const { marker: mk } = e.target.dataset;
+
+		if (close && mk !== marker) setOption(false);
 	};
 
 	useEffect(() => {
@@ -49,7 +49,11 @@ const OptionMenu = ({ setOption, isOption, song }: Props) => {
 	}
 
 	return (
-		<Wrapper role="dialog" data-id={uid} onClick={() => setOption(false)}>
+		<Wrapper
+			role="dialog"
+			className={marker}
+			onClick={() => setOption(!isOption)}
+		>
 			<button autoFocus onClick={handleCopy} className="option-item">
 				<img src={CopyIcon} alt="" />
 				<span>Copy link</span>
@@ -103,10 +107,6 @@ const Wrapper = styled.div`
 		color: #1d1c1d;
 		margin-left: 16px;
 	}
-
-	/* @media screen and (max-width: 540px) {
-		max-width: 160px;
-	} */
 `;
 
 export default OptionMenu;
