@@ -1,7 +1,8 @@
 import { MessageBoard } from "@zuri/zuri-ui";
+import { chatData } from "../utils/mockdata";
 
 function Message() {
-	const chatSidebarConfig = {
+	const messageBoardConfig = {
 		chatHeader: "Chats",
 		showChatSideBar: true,
 
@@ -18,7 +19,7 @@ function Message() {
 		messages: []
 	};
 
-	return <MessageBoard chatsConfig={chatSidebarConfig} />;
+	return <MessageBoard chatsConfig={messageBoardConfig} />;
 }
 
 export default Message;
