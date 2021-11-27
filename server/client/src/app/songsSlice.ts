@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "./store";
-
+import store, { RootState } from "./store";
 import { sanitize } from "../utils/sanitizer";
 import { sortByTime, sortByTitle } from "../utils/song";
+import { changedCurrentSong } from "./playerSlice";
 
 const songsSlice = createSlice({
 	name: "songs",
@@ -21,7 +21,10 @@ const songsSlice = createSlice({
 			state.list.unshift(sanitize(payload));
 		},
 
-		removedSong: (state, { payload }: PayloadAction<{ id: string }>) => {
+		removedSong: (
+			state,
+			{ payload }: PayloadAction<{ id: string; nextId: string }>
+		) => {
 			state.list = state.list.filter(song => song.id !== payload.id);
 		},
 

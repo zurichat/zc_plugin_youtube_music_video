@@ -31,20 +31,13 @@ const OptionMenu = ({ setOption, isOption, song }: Props) => {
 	useEffect(() => {
 		document.addEventListener("click", handleClickOutside, true);
 		document.addEventListener("contextmenu", handleClickOutside, true);
-
-		return () => {
-			document.removeEventListener("click", handleClickOutside, true);
-			document.removeEventListener("contextmenu", handleClickOutside, true);
-		};
 	});
 
 	if (!isOption) return null;
 
 	function handleCopy() {
-		return (
-			navigator.clipboard.writeText(url) &&
-			toast.success("Link copied to clipboard")
-		);
+		navigator.clipboard.writeText(url);
+		toast.success("Link copied to clipboard");
 	}
 
 	function handleDelete() {
@@ -56,7 +49,7 @@ const OptionMenu = ({ setOption, isOption, song }: Props) => {
 	}
 
 	return (
-		<Wrapper role="dialog" ref={ref}>
+		<Wrapper role="dialog" ref={ref} onClick={() => setOption(false)}>
 			<button autoFocus onClick={handleCopy} className="option-item">
 				<img src={CopyIcon} alt="" />
 				<span>Copy link</span>
@@ -111,9 +104,9 @@ const Wrapper = styled.div`
 		margin-left: 16px;
 	}
 
-	@media screen and (max-width: 540px) {
+	/* @media screen and (max-width: 540px) {
 		max-width: 160px;
-	}
+	} */
 `;
 
 export default OptionMenu;

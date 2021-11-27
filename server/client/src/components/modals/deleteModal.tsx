@@ -28,7 +28,9 @@ const DeleteModal = () => {
 		dispatch(showedDeleteModal(false));
 
 		const song = songs.find(s => s.id === id);
-		dispatch(removedSong({ id }));
+
+		let index = songs.indexOf(song) === 0 ? 1 : 0;
+		dispatch(removedSong({ id, nextId: songs[index].id }));
 
 		songService.deleteSong(id, {
 			success: () => dispatch(updatedSongId("")),
@@ -71,10 +73,8 @@ const DeleteModal = () => {
 };
 
 const Wrapper = styled.div`
-	box-sizing: border-box;
 	* {
 		margin: 0;
-		box-sizing: border-box;
 	}
 
 	position: fixed;
@@ -86,7 +86,7 @@ const Wrapper = styled.div`
 	width: 100vw;
 	height: 100vh;
 	background: rgba(64, 79, 74, 0.5);
-	z-index: 100;
+	z-index: 999;
 
 	img {
 		cursor: pointer;
