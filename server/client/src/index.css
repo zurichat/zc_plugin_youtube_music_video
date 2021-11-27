@@ -40,7 +40,7 @@ body::-webkit-scrollbar-thumb {
 	background-color: #00b87c;
 }
 
-/* ========= FIX ZURI MAIN ======== */
+/* ========= FIX FOR ZURI MAIN ======== */
 
 /* Plugin Header */
 .plugin__header--blZCB__header-module {
@@ -53,5 +53,5 @@ body::-webkit-scrollbar-thumb {
 }
 /* Members List Modal */
 .sc-hiwPVj.eBwNE {
-	width: min(90%, 1000px);
+	width: min(90%, 700px);
 }
