@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 import CopyIcon from "../../media/copy-icon.svg";
 import DeleteIcon from "../../media/delete-icon.svg";
@@ -12,39 +12,32 @@ interface Props {
 	song: Song;
 	isOption: boolean;
 	setOption: (value: boolean) => void;
+	marker: string; // must be unique
 }
 
-const OptionMenu = ({ setOption, isOption, song }: Props) => {
+const OptionMenu = ({ setOption, isOption, song, marker }: Props) => {
 	const { url, id: songId, userId } = song;
-
-	let ref = useRef(null);
 
 	const dispatch = useAppDispatch();
 	const user = useAppSelector(selectCurrentUser);
 
 	const handleClickOutside = e => {
-		if (ref.current && !ref.current.contains(e.target)) {
-			setOption(false);
-		}
+		const close = !e.target.closest(`.${marker}`);
+		const { marker: mk } = e.target.dataset;
+
+		if (close && mk !== marker) setOption(false);
 	};
 
 	useEffect(() => {
 		document.addEventListener("click", handleClickOutside, true);
 		document.addEventListener("contextmenu", handleClickOutside, true);
-
-		return () => {
-			document.removeEventListener("click", handleClickOutside, true);
-			document.removeEventListener("contextmenu", handleClickOutside, true);
-		};
-	});
+	}, []);
 
 	if (!isOption) return null;
 
 	function handleCopy() {
-		return (
-			navigator.clipboard.writeText(url) &&
-			toast.success("Link copied to clipboard")
-		);
+		navigator.clipboard.writeText(url);
+		toast.success("Link copied to clipboard");
 	}
 
 	function handleDelete() {
@@ -56,7 +49,11 @@ const OptionMenu = ({ setOption, isOption, song }: Props) => {
 	}
 
 	return (
-		<Wrapper role="dialog" ref={ref}>
+		<Wrapper
+			role="dialog"
+			className={marker}
+			onClick={() => setOption(!isOption)}
+		>
 			<button autoFocus onClick={handleCopy} className="option-item">
 				<img src={CopyIcon} alt="" />
 				<span>Copy link</span>
@@ -75,10 +72,9 @@ const OptionMenu = ({ setOption, isOption, song }: Props) => {
 const Wrapper = styled.div`
 	position: absolute;
 	z-index: 10;
-	top: 46px;
-	width: 100%;
-	max-width: 200px;
-	right: 0px;
+	top: 40px;
+	right: 3px;
+	width: 200px;
 	box-shadow: 0px 2px 10px #d7d7d7;
 	border-radius: 4px;
 	background: #ffffff;
@@ -110,10 +106,6 @@ const Wrapper = styled.div`
 		line-height: 170%;
 		color: #1d1c1d;
 		margin-left: 16px;
-	}
-
-	@media screen and (max-width: 540px) {
-		max-width: 160px;
 	}
 `;
 

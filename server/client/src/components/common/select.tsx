@@ -1,21 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 interface SelectProps {
 	value: string;
 	onSelect: (value: string) => void;
 	options: string[];
+	dropdown: boolean;
+	setDropdown?: (value: boolean) => void;
+	marker: string; // should be unique, will be used in className
 }
 
-const Select = ({ value, onSelect, options }: SelectProps) => {
-	const [dropdown, setDropdown] = useState(false);
-	const [marker] = useState("d" + Date.now()); // unique marker needed event listener
+const Select = (props: SelectProps) => {
+	let { value, onSelect, options, dropdown, setDropdown, marker } = props;
+
+	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		window.addEventListener("click", ({ target }: any) => {
-			if (!target.closest("." + marker)) setDropdown(false);
+		window.addEventListener("click", (e: any) => {
+			if (!e.target.closest("." + marker)) {
+				setDropdown(false);
+			}
 		});
-		// eslint-disable-next-line
 	}, []);
 
 	options = dropdown ? options : [];
@@ -23,13 +28,23 @@ const Select = ({ value, onSelect, options }: SelectProps) => {
 	const maxLen =
 		options.map(option => option.length).sort((a, b) => b - a)[0] ?? 1;
 
+	const getLeft = () => {
+		if (ref.current) {
+			const dim = ref.current.getBoundingClientRect();
+			const bw = document.body.offsetWidth;
+			return bw - dim.right >= 260;
+		}
+
+		return false;
+	};
+
 	const raiseSelect = (value: string) => {
 		setDropdown(false); // close the list after selection
 		onSelect(value); // raise select event
 	};
 
 	return (
-		<Wrapper className={marker} len={maxLen}>
+		<Wrapper className={marker} len={maxLen} left={getLeft()} ref={ref}>
 			<div
 				className="select-value-container"
 				onClick={() => setDropdown(!dropdown)}
@@ -56,9 +71,9 @@ const Select = ({ value, onSelect, options }: SelectProps) => {
 
 export default Select;
 
-const Wrapper = styled.div<{ len: number }>`
+const Wrapper = styled.div<{ len: number; left: boolean }>`
 	position: relative;
-	min-width: 100px;
+	/* min-width: 100px; */
 
 	.select-value-container {
 		display: flex;
@@ -67,7 +82,7 @@ const Wrapper = styled.div<{ len: number }>`
 		border-radius: 3px;
 		width: 100%;
 		background: white;
-		gap: 30px;
+		gap: 20px;
 		cursor: pointer;
 	}
 	.search-value {
@@ -81,8 +96,9 @@ const Wrapper = styled.div<{ len: number }>`
 	.select-options {
 		position: absolute;
 		top: 30px;
+		${props => (props.left ? "left: 1px" : "right: 1px")};
 		box-shadow: 0px 2px 10px #d7d7d7;
-		z-index: 9999;
+		z-index: 999;
 	}
 	.select-option {
 		display: flex;

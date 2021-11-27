@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-import { exitedModal, loaded, showedModal } from "../../app/uiSlice";
+import { exitedModal, setLoadeding, showedModal } from "../../app/uiSlice";
 import { useAppDispatch } from "../../app/hooks";
 
 import search from "../../media/search.svg";
@@ -19,11 +19,11 @@ const Exit = () => {
 	const handleLeaveRoom = () => {
 		userService.removeMember("");
 		dispatch(exitedModal(false));
-		dispatch(loaded(true));
+		dispatch(setLoadeding(true));
 
 		setTimeout(() => {
 			toast.dismiss();
-			dispatch(loaded(false));
+			dispatch(setLoadeding(false));
 		}, 1800);
 
 		setTimeout(() => {
