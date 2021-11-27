@@ -28,10 +28,11 @@ type PublishedMessage = {
 
 const connect = () => {
 	// initialize store
+
 	songService.getSongs().then(songs => {
 		store.dispatch(initializedSongs(songs.map(sanitize)));
 	});
-	chatService.getChats().then(v => console.log({ v }));
+	// chatService.getChats().then(v => console.log({ v }));
 
 	SubscribeToChannel(httpService.room_id, (message: PublishedMessage) => {
 		const {

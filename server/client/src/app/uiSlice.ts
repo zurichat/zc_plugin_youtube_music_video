@@ -16,7 +16,7 @@ const slice = createSlice({
 	},
 
 	reducers: {
-		loaded: (state, action: PayloadAction<boolean>) => {
+		setLoadeding: (state, action: PayloadAction<boolean>) => {
 			state.isLoading = action.payload;
 		},
 
@@ -51,7 +51,7 @@ const slice = createSlice({
 });
 
 export const {
-	loaded,
+	setLoadeding,
 	showedChat,
 	showedPasteUrl,
 	showedModal,
@@ -65,7 +65,7 @@ export const selectShowChat = (state: RootState) => state.ui.showChat;
 
 export const selectShowPasteUrl = (state: RootState) => state.ui.showPasteUrl;
 
-export const selectIsLoading = (state: RootState) => state.ui.isLoading;
+export const selectLoading = (state: RootState) => state.ui.isLoading;
 
 export const selectShowModal = (state: RootState) => state.ui.showModal;
 

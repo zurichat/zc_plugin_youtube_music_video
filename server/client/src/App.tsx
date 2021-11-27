@@ -29,11 +29,10 @@ function App() {
 }
 
 const Wrapper = styled.div`
-	box-sizing: border-box;
 	position: relative;
+	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	background: black;
 	height: 100%;
 	overflow: hidden;
 

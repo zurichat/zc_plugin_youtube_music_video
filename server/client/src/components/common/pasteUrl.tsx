@@ -3,17 +3,15 @@ import styled from "styled-components";
 import { FiX } from "react-icons/fi";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-
 import { RootState } from "../../app/store";
 import {
-	loaded,
-	selectIsLoading,
+	setLoadeding,
+	selectLoading,
 	selectShowPasteUrl,
 	showedPasteUrl
 } from "../../app/uiSlice";
-
 import songService from "../../services/songService";
-import { getSongIdFromYouTubeUrl } from "../../utils/idGenerator";
+import { getIdFromYouTubeUrl } from "../../utils/idGenerator";
 import { selectCurrentUser } from "../../app/usersSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addedSong } from "../../app/songsSlice";
@@ -26,7 +24,6 @@ const PasteUrl = (props: Props) => {
 	const [url, setUrl] = useState("");
 
 	const dispatch = useAppDispatch();
-	const isLoading = useAppSelector(selectIsLoading);
 	const { name: addedBy, id: userId } = useAppSelector(selectCurrentUser);
 
 	const showPasteUrl = useAppSelector(selectShowPasteUrl);
@@ -42,12 +39,10 @@ const PasteUrl = (props: Props) => {
 			return toast.error("This song already exists.") && setUrl("");
 		}
 
-		if (isLoading) return;
-
-		dispatch(loaded(true));
+		dispatch(setLoadeding(true));
 
 		try {
-			getSongIdFromYouTubeUrl(url);
+			getIdFromYouTubeUrl(url);
 
 			const song: SongToAdd = {
 				url,
@@ -57,7 +52,7 @@ const PasteUrl = (props: Props) => {
 				time: `${Date.now()}`
 			};
 
-			songService.addSong(song, {
+			await songService.addSong(song, {
 				success: (song: Song) => {
 					dispatch(showedPasteUrl(false));
 					dispatch(addedSong(song));
@@ -69,7 +64,7 @@ const PasteUrl = (props: Props) => {
 			toast.error(`Error: ${e.message}`);
 		}
 
-		dispatch(loaded(false));
+		dispatch(setLoadeding(false));
 	};
 
 	const handleEscape = ev => {
@@ -121,14 +116,13 @@ const PasteUrl = (props: Props) => {
 };
 
 const Wrapper = styled.div`
-	position: absolute;
-	top: 1px;
+	position: fixed;
 	width: 100%;
 	height: 100%;
 	display: flex;
 	justify-content: center;
 	background-color: rgb(0, 0, 0, 0.2);
-	z-index: 111;
+	z-index: 999;
 
 	.submit-form {
 		position: absolute;
