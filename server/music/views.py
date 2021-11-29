@@ -12,14 +12,14 @@ from music.serializers import (AddToRoomSerializer, CommentSerializer,
                                LikeSongSerializer, RoomSerializer,
                                SongLikeCountSerializer, SongSerializer)
 from music.utils.data_access import *
-from music.utils.dataStorage import DataStorage, centrifugo_publish, get_org_members
+from music.utils.dataStorage import (DataStorage, centrifugo_publish,
+                                     get_org_members)
 from requests import exceptions, status_codes
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 
 
 class change_room_image(APIView):
@@ -54,7 +54,7 @@ class change_room_image(APIView):
         )
 
 
-class SidebarView(GenericAPIView): 
+class SidebarView(GenericAPIView):
     permission_classes = [AllowAny]
 
     @extend_schema(
@@ -89,16 +89,16 @@ class SidebarView(GenericAPIView):
             "button_url": "/music",
             "public_rooms": [],
             "joined_rooms": [],
+            "starred_rooms": [],
         }
 
         if org_id and user_id:
             
-            org_members = get_org_members(requests, org_id=org_id)
-
-            if org_members.status_code == 200:
-                members = org_members.json()["data"]
-                for user in members:
-                    if user_id == user["_id"]:
+            org_members = get_org_members(org_id)
+            if org_members["status"] == 200:
+                org_members = org_members["data"]
+                for member in org_members:
+                    if member["_id"] == user_id:
                         sidebar_data = sidebar
                         sidebar_data["organisation_id"] = org_id
                         sidebar_data["room_id"] = room_id
@@ -111,6 +111,7 @@ class SidebarView(GenericAPIView):
                             "plugin_id": "music.zuri.chat",
                             "data": sidebar_data,
                         }
+                        
                         return Response(
                             sidebar_update_payload, status=status.HTTP_200_OK
                         )
@@ -166,14 +167,31 @@ class PluginPingView(GenericAPIView):
 
     @extend_schema(
         description="Plugin Ping",
-        responses={200: "Success"},
+        responses={
+            200: "Success", 
+            424: "Failed",
+        },
         methods=["GET"],
     )
     def get(self, request, *args, **kwargs):
-        server = [
-            {"status": "Success", "Report": ["The music.zuri.chat server is working"]}
-        ]
-        return JsonResponse({"server": server})
+        
+        url = "https://music.zuri.chat/music"
+        try:
+            response = requests.get(url, headers={"Content-Type": "application/json"})
+            if response.status_code == 200:
+                server = [
+                    {"status": "Success", "Report": ["The music.zuri.chat server is working"]}
+                ]
+                return Response({"server": server}, status=status.HTTP_200_OK)
+        except requests.exceptions.RequestException as e:
+            server = [
+                {
+                    'status': 'Failed',
+                    'Report': ['The music.zuri.chat server is not working'],
+                }
+            ]
+            return Response({"server": server}, status=status.HTTP_424_FAILED_DEPENDENCY)
+        
 
 
 # song views
@@ -197,7 +215,7 @@ class SongView(APIView):
             if data["status"] == 200:
                 return Response(data, status=status.HTTP_200_OK)
             return Response(
-                data={"no rooms in collection"}, status=status.HTTP_404_NOT_FOUND
+                data={"no songs in collection"}, status=status.HTTP_204_NO_CONTENT
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -222,11 +240,10 @@ class SongView(APIView):
                 "time": time_info,
             }
 
-        
             data = write_data(settings.SONG_COLLECTION, payload=payload)
 
             if data["status"] == 200:
-                
+
                 updated_data = read_data(settings.SONG_COLLECTION)
                 updated_object = updated_data["data"][-1]
                 # returns the updated_object alone
@@ -363,14 +380,18 @@ class LikeSongView(APIView):
                             },
                         }
                         centrifugo_response = centrifugo_publish(
-                        room=settings.ROOM_ID, event="Song liked", data=response_output
-                            )
+                            room=settings.ROOM_ID,
+                            event="Song liked",
+                            data=response_output,
+                        )
                         if centrifugo_response.get("status_code", None) == 200:
-                            return Response(response_output, status=status.HTTP_201_CREATED)
+                            return Response(
+                                response_output, status=status.HTTP_201_CREATED
+                            )
                         return Response(
                             "Song liked but Centrifugo is not available",
                             status=status.HTTP_424_FAILED_DEPENDENCY,
-                            )
+                        )
                     return Response(
                         "Song not liked", status=status.HTTP_424_FAILED_DEPENDENCY
                     )
@@ -520,7 +541,7 @@ class CommentView(APIView):
 
             if data["status"] == 200:
                 updated_data = read_data(settings.COMMENTS_COLLECTION)
-                
+
                 centrifugo_response = centrifugo_publish(
                     room=settings.ROOM_ID, event="New comment", data=updated_data
                 )
@@ -557,7 +578,7 @@ class DeleteCommentView(APIView):
 
             if data["status"] == 200:
                 updated_data = read_data(settings.COMMENTS_COLLECTION)
-                
+
                 centrifugo_response = centrifugo_publish(
                     room=settings.ROOM_ID, event="Delete Comment", data=updated_data
                 )
@@ -595,7 +616,6 @@ class UpdateCommentView(APIView):
                 method="PUT",
             )
 
-            
             if data["status"] == 200:
                 updated_data = read_data(settings.COMMENTS_COLLECTION)
                 centrifugo_response = centrifugo_publish(
@@ -747,8 +767,9 @@ class CreateRoom(APIView):
                             "room_name": room_name,
                             "plugin_name": plugin_name,
                             "description": description,
-                            "private": False,
-                            "archived": False,
+                            "created_by": memberId,
+                            "is_private": False,
+                            "is_archived": False,
                             "memberId": [memberId],
                         },
                     }
@@ -841,11 +862,12 @@ class DeleteRoomUserView(APIView):
             sidebar_data = {
                 "name": "Music Plugin",
                 "description": "User joins the music room",
-                "group_name": "Music",
+                "group_name": [],
                 "category": "Entertainment",
-                "show_group": True,
+                "show_group": False,
                 "button_url": "/music",
                 "public_rooms": [],
+                "starred_rooms": [],
                 "joined_rooms": [],
             }
 
@@ -857,7 +879,7 @@ class DeleteRoomUserView(APIView):
                     "action": "user removed successfully",
                 },
             }
-            
+
             channel = f"{org_id}_{user}_sidebar"
             centrifugo_data = centrifugo_publish(
                 room=channel, event="sidebar_update", data=sidebar_data
