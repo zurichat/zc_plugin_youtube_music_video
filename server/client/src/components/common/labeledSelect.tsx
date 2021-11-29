@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { getUUID } from "../../utils/idGenerator";
 import styled from "styled-components";
 import Select from "./select";
 
@@ -12,14 +14,29 @@ interface Props {
 
 const LabeledSelect = (props: Props) => {
 	const { name, value, options, onSelect, Icon, className } = props;
+	const [dropdown, setDropdown] = useState(false);
+	const [marker] = useState(getUUID());
 
 	return (
-		<Wrapper className={className}>
-			{Icon}
+		<Wrapper
+			className={`${className} ${marker}`}
+			data-drop
+			onClick={() => setDropdown(!dropdown)}
+		>
+			<div className="labaledSelect-name-icon">
+				{Icon}
 
-			<div>{name}</div>
+				<div>{name}</div>
+			</div>
 
-			<Select value={value} onSelect={onSelect} options={options} />
+			<Select
+				value={value}
+				onSelect={onSelect}
+				options={options}
+				dropdown={dropdown}
+				setDropdown={setDropdown}
+				marker={marker}
+			/>
 		</Wrapper>
 	);
 };
@@ -30,8 +47,15 @@ const Wrapper = styled.div`
 	display: flex;
 	align-items: center;
 	height: 36px;
-	padding: 10px;
+	padding: 10px 0;
 	font-size: 16px;
-	gap: 10px;
-	z-index: 111;
+	gap: 15px;
+	cursor: pointer;
+
+	.labaledSelect-name-icon {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+	}
 `;

@@ -93,8 +93,9 @@ class RoomSerializer(serializers.Serializer):
     room_name = serializers.CharField(max_length=100, required=False)
     plugin_name = serializers.CharField(max_length=300, required=False)
     description = serializers.CharField(max_length=300, required=False)
-    private = serializers.BooleanField(default=False, required=False)
-    archived = serializers.BooleanField(default=False, required=False)
+    created_by = serializers.CharField(max_length=100, required=False)
+    is_private = serializers.BooleanField(default=False, required=False)
+    is_archived = serializers.BooleanField(default=False, required=False)
     memberId = serializers.ListField(
         child=serializers.CharField(max_length=128), required=False, default=[]
     )
@@ -118,4 +119,3 @@ class DeleteSongSerializer(serializers.Serializer):
 
 class DeleteChatSerializer(serializers.Serializer):
     _id = serializers.CharField(max_length=100)
-

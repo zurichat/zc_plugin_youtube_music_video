@@ -5,7 +5,7 @@ import userService from "./userService";
 
 const { comments: commentEndpoint } = endpoints;
 
-const dispatch = store.dispatch;
+// const dispatch = store.dispatch;
 
 const getChats = async () => {
 	try {
@@ -14,33 +14,29 @@ const getChats = async () => {
 		return data;
 	} catch (e) {
 		console.log("error", e.message);
-		console.log(e.message);
+		return [];
 	}
 };
 
-const addChat = async (chat: Chat) => {
+const addChat = async (chat: ChatN) => {
 	const newChat: any = { ...chat };
 	delete newChat.id;
 
-	dispatch(addedChat({ ...chat, notSent: true }));
+	// dispatch(addedChat({ ...chat, notSent: true }));
 
 	try {
-		const { name, id: userId, avatar } = await userService.getCurrentUser();
+		// const { name, id: userId, avatar } = await userService.getCurrentUser();
 
-		await httpService.post(
-			commentEndpoint,
-			{ ...newChat, name, userId, avatar },
-			{ timeout: 15000 }
-		);
+		await httpService.post(commentEndpoint, chat, { timeout: 15000 });
 
-		sentChat({ ...chat });
+		// sentChat({ ...chat });
 
 		const { chats } = store.getState();
 
 		chats.slice(0, chats.length - 8).forEach(({ id }) => deleteChat(id));
 	} catch (error) {
 		console.log("Chat error:", error.message);
-		failChat({ ...chat });
+		// failChat({ ...chat });
 	}
 
 	return;

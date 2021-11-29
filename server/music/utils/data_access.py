@@ -7,7 +7,7 @@ from music.utils.request_client import RequestClient
 plugin_id = settings.PLUGIN_ID
 org_id = settings.ORGANIZATON_ID
 centrifugo = settings.CENTRIFUGO_TOKEN
-
+room_image = ["https://svgshare.com/i/aXm.svg"]
 headers = {"Authorization": "headers"}
 
 
@@ -231,3 +231,18 @@ def put_data(
         post_data=patch_data,
     )
     return response.response_data
+
+
+def get_room_info(room_id):
+    room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
+    if room_data["data"] is not None:
+        if room_data["status"] == 200:
+            room = {
+                "room_name": room_data["data"]["room_name"],
+                "room_url": f"/music/{room_id}",
+                "room_image": room_image[0],
+            }
+            return [room]
+        return {"error": "Room not found"}
+    return {"error": "Invalid room_id"}
+

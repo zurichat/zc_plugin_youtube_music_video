@@ -10,8 +10,8 @@ const Sort = ({ className }) => {
 		{ property: "", label: "Default", order: "asc" },
 		{ property: "title", label: "Ascending order A - Z", order: "asc" },
 		{ property: "title", label: "Descending order Z - A", order: "des" },
-		{ property: "time", label: "Date added Recent to Oldest", order: "asc" },
-		{ property: "time", label: "Date added Oldest to Recent", order: "des" }
+		{ property: "time", label: "Date added Recent to Oldest", order: "des" },
+		{ property: "time", label: "Date added Oldest to Recent", order: "asc" }
 	];
 
 	const options = sortParams.map(param => param.label);

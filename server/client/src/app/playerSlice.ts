@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import store, { RootState } from "./store";
+import { removedSong } from "./songsSlice";
+import { RootState } from "./store";
 
 const slice = createSlice({
 	name: "player",
@@ -11,8 +12,8 @@ const slice = createSlice({
 	},
 
 	reducers: {
-		changedPlaying: (state, action: PayloadAction<boolean>) => {
-			state.playing = action.payload;
+		changedPlaying: (state, { payload }: PayloadAction<boolean>) => {
+			if (typeof payload === "boolean") state.playing = payload;
 		},
 
 		showedPlayer: (state, action: PayloadAction<boolean>) => {
@@ -22,6 +23,15 @@ const slice = createSlice({
 		changedCurrentSong: (state, action: PayloadAction<{ id: string }>) => {
 			state.currentSongId = action.payload.id;
 		}
+	},
+
+	extraReducers: builder => {
+		builder
+			.addCase(removedSong, (state, action) => {
+				if (state.currentSongId === action.payload.id)
+					state.currentSongId = action.payload.nextId;
+			})
+			.addDefaultCase((state, ation) => {});
 	}
 });
 

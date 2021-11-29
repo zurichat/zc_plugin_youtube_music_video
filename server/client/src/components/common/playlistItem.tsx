@@ -5,8 +5,6 @@ import {
 	showedPlayer
 } from "../../app/playerSlice";
 import LikeOptionCount from "./likeOptionCount";
-import OptionMenu from "./optionMenu";
-import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 interface Props {
@@ -15,18 +13,7 @@ interface Props {
 }
 
 function PlaylistItem(props: Props) {
-	const {
-		title,
-		addedBy,
-		albumCover,
-		id: songId,
-		userId,
-		duration,
-		likedBy,
-		url
-	} = props.song;
-
-	const [showOption, setShowOption] = useState(false);
+	const { title, addedBy, albumCover, userId } = props.song;
 
 	const dispatch = useAppDispatch();
 
@@ -44,32 +31,12 @@ function PlaylistItem(props: Props) {
 		}
 	};
 
-	const handleOption = e => {
-		setShowOption(e);
-	};
-
-	useEffect(() => {
-		const onClickOutside = () => {
-			setShowOption(false);
-		};
-		window.addEventListener("click", onClickOutside), false;
-		return () => {
-			window.removeEventListener("click", onClickOutside);
-		};
-	}, []);
-
 	return (
 		<Wrapper
 			data-play
 			isPlaying={currentSongId === props.song.id}
 			onClick={handlePlay}
 		>
-			<OptionMenu
-				option={showOption}
-				toggleOption={handleOption}
-				{...{ url, songId, userId }}
-			/>
-
 			<div className="item-group-1">
 				<img src={albumCover} alt="album cover" className="item-albumCover" />
 				<div className="item-info">
@@ -81,8 +48,7 @@ function PlaylistItem(props: Props) {
 				</div>
 			</div>
 
-			<LikeOptionCount {...{ songId, duration, likedBy, handleOption }} />
-			{/* <div className="handle-play" onClick={handlePlay}></div> */}
+			<LikeOptionCount song={props.song} />
 		</Wrapper>
 	);
 }
@@ -92,21 +58,15 @@ const Wrapper = styled.div<{ isPlaying: boolean }>`
 	box-sizing: border-box;
 	display: flex;
 	justify-content: space-between;
-	background: ${props => (props.isPlaying ? "#CBFFEE" : "#fff")};
+	background: ${props => (props.isPlaying ? "#CBFFEE" : "inherit")};
 	font-family: "Lato", sans-serif;
-	transition: all 200ms ease-in-out;
-	/* box-shadow: 0px 4px 6px rgba(0, 36, 24, 0.04); */
 	height: 50px;
 	margin-bottom: 8px;
 	cursor: pointer;
+	transition: all 200ms ease-in-out;
 
-	.handle-play {
-		position: absolute;
-		width: -webkit-fill-available;
-		height: 100%;
-		&:hover {
-			box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);
-		}
+	&:hover {
+		box-shadow: 0 4px 6px rgba(0, 184, 124, 0.4);
 	}
 
 	.item-group-1 {

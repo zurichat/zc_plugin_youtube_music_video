@@ -9,9 +9,9 @@ from music.views import (AddUserToRoomView, CommentView, CreateRoom,
                          songLikeCountView)
 
 # current url with orgid and roomid:
-# https://music.zuri.chat/music/api/v1/org/61695d8bb2cc8a9af4833d46/room/6169d8b54bfde011fe582e65/
-# https://music.zuri.chat/music/api/v1/org/61695d8bb2cc8a9af4833d46/members/6169cafb2a3204f3be4a271f/create
-# https://music.zuri.chat/music/api/v1/org/61695d8bb2cc8a9af4833d46/room/6169d8b54bfde011fe582e65/members/remove
+# https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/room/6169d8b54bfde011fe582e65/
+# https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/members/6169cafb2a3204f3be4a271f/create
+# https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/room/6169d8b54bfde011fe582e65/members/remove
 
 
 urlpatterns = [
