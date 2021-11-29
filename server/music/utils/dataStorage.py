@@ -3,10 +3,12 @@ from urllib.parse import urlencode
 import requests
 from django.conf import settings
 from requests.exceptions import RequestException
+from requests import exceptions, status_codes
+from rest_framework import status
 
 centrifugo = "58c2400b-831d-411d-8fe8-31b6e337738b"
 PLUGIN_ID = "616991e5ef1c19335a2869f4"
-ORG_ID = "61695d8bb2cc8a9af4833d46"
+ORG_ID = "619ba4671a5f54782939d384"
 
 
 class DataStorage:
@@ -129,3 +131,10 @@ def centrifugo_publish(room, event, data, plugin_url="music.zuri.chat"):
         raise RequestException(error)
 
     return {"status_code": response.status_code, "message": response.json()}
+
+
+def get_org_members(request, org_id: str):
+    if org_id is not None:
+        url = f"https://api.zuri.chat/organizations/{org_id}/members"
+        return requests.request( "GET", url=url)
+    return {"message": "invalid org id"}
