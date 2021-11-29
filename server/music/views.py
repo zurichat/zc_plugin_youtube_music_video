@@ -12,7 +12,7 @@ from music.serializers import (AddToRoomSerializer, CommentSerializer,
                                LikeSongSerializer, RoomSerializer,
                                SongLikeCountSerializer, SongSerializer)
 from music.utils.data_access import *
-from music.utils.dataStorage import DataStorage, centrifugo_publish
+from music.utils.dataStorage import DataStorage, centrifugo_publish, get_org_members
 from requests import exceptions, status_codes
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
@@ -20,7 +20,6 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-room_image = ["https://svgshare.com/i/aXm.svg"]
 
 
 class change_room_image(APIView):
@@ -55,21 +54,7 @@ class change_room_image(APIView):
         )
 
 
-def get_room_info(room_id=None):
-    room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
-    output = []
-    if room_data["status"] == 200 and room_data["data"] is not None:
-        room = {
-            "room_name": room_data["data"]["room_name"],
-            "room_url": f"/music/{room_id}",
-            "room_image": room_image[0],
-        }
-        output.append(room)
-        return output
-    return output
-
-
-class SidebarView(GenericAPIView):
+class SidebarView(GenericAPIView): 
     permission_classes = [AllowAny]
 
     @extend_schema(
@@ -88,10 +73,9 @@ class SidebarView(GenericAPIView):
         user_id = request.GET.get("user", None)
         room_id = settings.ROOM_ID
         pub_room = get_room_info(room_id)
-        sidebar_update = "currentWorkspace_userInfo_sidebar"
-        subscription_channel = "{org_id}_{user_id}_sidebar"
-        url = f"https://api.zuri.chat/organizations/{org_id}/members"
-        headers = {}
+        # sidebar_update = "currentWorkspace_userInfo_sidebar"
+        # subscription_channel = "{org_id}_{user_id}_sidebar"
+        
         sidebar = {
             "name": "Music Plugin",
             "description": "This is a virtual lounge where people can add, watch and listen to YouTube videos or music",
@@ -108,15 +92,8 @@ class SidebarView(GenericAPIView):
         }
 
         if org_id and user_id:
-            if "Authorization" in request.headers:
-                headers["Authorization"] = request.headers["Authorization"]
-            else:
-                headers["Cookie"] = request.headers["Cookie"]
-            org_members = requests.request(
-                "GET",
-                url=url,
-                headers=headers,
-            )
+            
+            org_members = get_org_members(requests, org_id=org_id)
 
             if org_members.status_code == 200:
                 members = org_members.json()["data"]
