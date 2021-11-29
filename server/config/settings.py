@@ -221,7 +221,7 @@ if bool(os.environ.get("PRODUCTION_SERVER", default="")):
 ORGANIZATON_ID = "619ba4671a5f54782939d384"
 PLUGIN_ID = "616991e5ef1c19335a2869f4"
 CENTRIFUGO_TOKEN = "58c2400b-831d-411d-8fe8-31b6e337738b"
-ROOM_ID = "6169d8b54bfde011fe582e65"
+ROOM_ID = "61a4c1cd4f88198ec49dd636"
 
 # current collections
 ROOM_COLLECTION = "musicroom"

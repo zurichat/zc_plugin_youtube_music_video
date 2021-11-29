@@ -28,7 +28,9 @@ class Room:  # for the rooms
     _id: str
     room_name: str
     description: str
-    private: bool = False
+    created_by: str
+    is_private: bool = False
+    is_archived: bool = False
     memberId: dict = field(default_factory=dict)
 
 

@@ -233,17 +233,16 @@ def put_data(
     return response.response_data
 
 
-def get_room_info(room_id=None): 
+def get_room_info(room_id):
     room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
-    output = []
-    
-    if room_data["status"] == 200 and room_data["data"] is not None:
-        room = {
-            "room_name": room_data["data"]["room_name"],
-            "room_url": f"/music/{room_id}",
-            "room_image": room_image[0],
-        }
-        output.append(room)
-        return output
-    return output
+    if room_data["data"] is not None:
+        if room_data["status"] == 200:
+            room = {
+                "room_name": room_data["data"]["room_name"],
+                "room_url": f"/music/{room_id}",
+                "room_image": room_image[0],
+            }
+            return [room]
+        return {"error": "Room not found"}
+    return {"error": "Invalid room_id"}
 
