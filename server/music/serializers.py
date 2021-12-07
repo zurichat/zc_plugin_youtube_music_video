@@ -4,10 +4,6 @@ from rest_framework import serializers
 class SongSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
-    plugin_id = serializers.CharField(read_only=True)
-    organization_id = serializers.CharField(required=False)
-    collection_name = serializers.CharField(read_only=True)
-    room_id = serializers.CharField(required=False)
     title = serializers.CharField(required=False)
     duration = serializers.CharField(required=False)
     albumcover = serializers.CharField(required=False)
@@ -21,14 +17,14 @@ class SongSerializer(serializers.Serializer):
 
 
 class LikeSongSerializer(serializers.Serializer):
-    song_id = serializers.CharField(max_length=100)
-    memberId = serializers.CharField(max_length=100)
+    song_id = serializers.CharField(max_length=100, required=False)
+    memberId = serializers.CharField(max_length=100, required=False)
 
 
 class SongLikeCountSerializer(serializers.Serializer):
 
-    songId = serializers.CharField(max_length=100)
-    userId = serializers.CharField(max_length=100)
+    songId = serializers.CharField(max_length=100, required=False)
+    userId = serializers.CharField(max_length=100, required=False)
 
 
 class EmojiSerializer(serializers.Serializer):  # for the emojis
@@ -81,10 +77,6 @@ class UiDataSerializer(serializers.Serializer):  # for the ui data
 class CommentSerializer(serializers.Serializer):  # for the chat
 
     _id = serializers.CharField(read_only=True)
-    plugin_id = serializers.CharField(required=False)
-    organization_id = serializers.CharField(required=False)
-    collection_name = serializers.CharField(required=False)
-    room_id = serializers.CharField(required=False)
     username = serializers.CharField(max_length=256, required=False)
     userId = serializers.CharField(max_length=100, required=False)
     emojies = serializers.ListField(
@@ -100,9 +92,6 @@ class RoomSerializer(serializers.Serializer):
     _id = serializers.CharField(read_only=True)
     room_name = serializers.CharField(max_length=100, required=False)
     plugin_name = serializers.CharField(max_length=300, required=False)
-    plugin_id = serializers.CharField(max_length=300, required=False)
-    organization_id = serializers.CharField(max_length=300, required=False)
-    collection_name = serializers.CharField(max_length=300, required=False)
     description = serializers.CharField(max_length=300, required=False)
     created_by = serializers.CharField(max_length=100, required=False)
     is_private = serializers.BooleanField(default=False, required=False)
@@ -113,16 +102,15 @@ class RoomSerializer(serializers.Serializer):
 
 
 class AddToRoomSerializer(serializers.Serializer):
-    room_id = serializers.CharField(max_length=100)
+    room_id = serializers.CharField(max_length=100, required=False)
     memberId = serializers.ListField(
-        child=serializers.CharField(max_length=100), allow_empty=False, default=[]
+        child=serializers.CharField(max_length=100), allow_empty=False
     )
 
 
 class RemoveUserSerializer(serializers.Serializer):
-    room_id = serializers.CharField(max_length=100)
-    org_id = serializers.CharField(max_length=100)
-    memberId = serializers.CharField(max_length=100)
+    room_id = serializers.CharField(max_length=100, required=False)
+    memberId = serializers.CharField(max_length=100, required=False)
 
 
 class DeleteSongSerializer(serializers.Serializer):
