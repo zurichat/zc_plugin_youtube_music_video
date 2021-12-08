@@ -95,14 +95,23 @@ class CommentSerializer(serializers.Serializer):  # for the chat
     time = serializers.IntegerField(required=False)
 
 
+class UpdateCommentSerializer(serializers.Serializer):  # for the chat
+
+    _id = serializers.CharField(read_only=True)
+    emojies = serializers.ListField(
+        required=False, allow_empty=True, default=[], child=EmojiSerializer()
+    )
+    richUiData = UiDataSerializer(required=False, allow_null=True)
+
+
 class RoomSerializer(serializers.Serializer):
 
     _id = serializers.CharField(read_only=True)
     room_name = serializers.CharField(max_length=100, required=False)
     plugin_name = serializers.CharField(max_length=300, required=False)
     plugin_id = serializers.CharField(max_length=300, required=False)
-    organization_id = serializers.CharField(max_length=300, required=False)
-    collection_name = serializers.CharField(max_length=300, required=False)
+    org_id = serializers.CharField(max_length=300, required=False)
+    collection = serializers.CharField(max_length=300, required=False)
     description = serializers.CharField(max_length=300, required=False)
     created_by = serializers.CharField(max_length=100, required=False)
     is_private = serializers.BooleanField(default=False, required=False)
@@ -110,6 +119,15 @@ class RoomSerializer(serializers.Serializer):
     memberId = serializers.ListField(
         child=serializers.CharField(max_length=128), required=False, default=[]
     )
+
+
+class UpdateRoomSerializer(serializers.Serializer):
+
+    _id = serializers.CharField(read_only=True)
+    room_name = serializers.CharField(max_length=100, required=False)
+    description = serializers.CharField(max_length=300, required=False)
+    is_private = serializers.BooleanField(default=False, required=False)
+    is_archived = serializers.BooleanField(default=False, required=False)
 
 
 class AddToRoomSerializer(serializers.Serializer):

@@ -5,8 +5,8 @@ from music.views import (AddUserToRoomView, CommentView, CreateRoom,
                          PluginInfoView, PluginPingView, RoomDetailView,
                          RoomUserList, RoomView, SongSearchSuggestions,
                          SongSearchView, SongView, UninstallView,
-                         UpdateCommentView, UserCountView, change_room_image,
-                         songLikeCountView)
+                         UpdateCommentView, UpdateRoomView, UserCountView,
+                         change_room_image, songLikeCountView)
 
 # current url with orgid and roomid:
 # https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/room/6169d8b54bfde011fe582e65/
@@ -82,6 +82,11 @@ urlpatterns = [
         DeleteRoomView.as_view(),
         name="deleteroom",
     ),  # delete room
+    path(
+        "org/<str:org_id>/room/<str:_id>/update",
+        UpdateRoomView.as_view(),
+        name="deleteroom",
+    ),  # update room
     path(
         "org/<str:org_id>/members/<str:member_id>/create",
         CreateRoom.as_view(),

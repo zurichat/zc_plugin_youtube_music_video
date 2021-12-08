@@ -11,7 +11,8 @@ from music.serializers import (AddToRoomSerializer, CommentSerializer,
                                DeleteChatSerializer, DeleteSongSerializer,
                                LikeSongSerializer, RemoveUserSerializer,
                                RoomSerializer, SongLikeCountSerializer,
-                               SongSerializer)
+                               SongSerializer, UpdateCommentSerializer,
+                               UpdateRoomSerializer)
 from music.utils.data_access import (centrifugo_publish, delete_data,
                                      get_org_members, get_room_info, get_video,
                                      read_data, room_image, write_data)
@@ -181,8 +182,6 @@ class PluginPingView(GenericAPIView):
                     }
                 ]
                 return Response({"server": server}, status=status.HTTP_200_OK)
-        except requests.exceptions.RequestException as error:
-            print(error)
             server = [
                 {
                     "status": "Failed",
@@ -191,6 +190,11 @@ class PluginPingView(GenericAPIView):
             ]
             return Response(
                 {"server": server}, status=status.HTTP_424_FAILED_DEPENDENCY
+            )
+        except Exception:
+            return Response(
+                data="Connetion Error",
+                status=status.HTTP_424_FAILED_DEPENDENCY,
             )
 
 
@@ -210,12 +214,19 @@ class SongView(APIView):
         """
         serializer = SongSerializer(data=request.data)
         if serializer.is_valid():
-            data = read_data(settings.SONG_COLLECTION)
-            if data["status"] == 200:
-                return Response(data, status=status.HTTP_200_OK)
-            return Response(
-                data={"no songs in collection"}, status=status.HTTP_204_NO_CONTENT
-            )
+            try:
+                data = read_data(settings.SONG_COLLECTION)
+                if data["status"] == 200:
+                    return Response(data, status=status.HTTP_200_OK)
+                return Response(
+                    data={"no songs in collection"}, status=status.HTTP_204_NO_CONTENT
+                )
+
+            except Exception:
+                return Response(
+                    data="Error reading collection",
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
+                )
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, *args, **kwargs):
@@ -239,7 +250,6 @@ class SongView(APIView):
 
         """
         serializer = SongSerializer(data=request.data)
-
         media_info = get_video(request.data["url"])
         userId_info = request.data["userId"]
         addedBy_info = request.data["addedBy"]
@@ -250,7 +260,6 @@ class SongView(APIView):
         room_id = request.data["room_id"]
 
         if serializer.is_valid():
-
             payload = {
                 "title": media_info["title"],
                 "duration": media_info["duration"],
@@ -265,32 +274,24 @@ class SongView(APIView):
                 "collection_name": coll_name,
                 "room_id": room_id,
             }
-
-            data = write_data(settings.SONG_COLLECTION, payload=payload)
-
-            if data["status"] == 200:
-
-                new_object = read_data(settings.SONG_COLLECTION)
-                song_data = new_object["data"][-1]
-
-                response_output = {
-                    "event": "New Song",
-                    "message": data.get("message"),
-                    "data": {
-                        "action": "comment added successfully",
-                        "Song added": song_data,
-                    },
-                }
-                centrifugo_response = centrifugo_publish(
-                    room=settings.ROOM_ID, event="New song added", data=response_output
-                )
-                if centrifugo_response.get("status_code", None) == 200:
-                    return Response(response_output, status=status.HTTP_200_OK)
+            try:
+                data = write_data(settings.SONG_COLLECTION, payload=payload)
+                if data["status"] == 200:
+                    centrifugo_response = centrifugo_publish(
+                        room=settings.ROOM_ID, event="New song added", data=data
+                    )
+                    if centrifugo_response.get("status_code", None) == 200:
+                        return Response(data, status=status.HTTP_200_OK)
+                    return Response(
+                        "Song added but Centrifugo is not available",
+                        status=status.HTTP_424_FAILED_DEPENDENCY,
+                    )
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+            except Exception:
                 return Response(
-                    "Song updated but Centrifugo is not available",
+                    data="Error writing to collection",
                     status=status.HTTP_424_FAILED_DEPENDENCY,
                 )
-            return Response(data, status=status.HTTP_400_BAD_REQUEST)
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -317,7 +318,6 @@ class songLikeCountView(APIView):
 
         """
         helper = DataStorage()
-        # org_id = settings.ORGANIZATON_ID
         helper.organization_id = org_id
         serializer = SongLikeCountSerializer(data=request.data)
         if serializer.is_valid():
@@ -379,43 +379,30 @@ class DeleteSongView(APIView):
         if serializer.is_valid():
             song_id = request.data["_id"]
             song_data = read_data(settings.SONG_COLLECTION, object_id=song_id)
-            if song_data and song_data["status"] == 200:
-                if song_data["data"]["_id"] == song_id:
-                    try:
-                        response = delete_data(
-                            settings.SONG_COLLECTION, object_id=song_id
-                        )
-                        if response["status"] == 200:
+            if song_data["status"] == 200:
+                song_data["data"]["_id"] == song_id
+                try:
+                    response = delete_data(settings.SONG_COLLECTION, object_id=song_id)
+                except Exception:
+                    return None
 
-                            centrifugo_response = centrifugo_publish(
-                                room=settings.ROOM_ID,
-                                event="Song deleted",
-                                data=response,
-                            )
-                            if centrifugo_response.get("status_code", None) == 200:
-                                return Response(
-                                    response, status=status.HTTP_202_ACCEPTED
-                                )
-                            return Response(
-                                "Song deleted but Centrifugo is not available",
-                                status=status.HTTP_424_FAILED_DEPENDENCY,
-                            )
-                        return Response(
-                            data={"song not deleted"},
-                            status=status.HTTP_400_BAD_REQUEST,
-                        )
-                    except Exception as error:
-                        print(error)
-                        return Response(
-                            "Song deleted but Centrifugo is not available",
-                            status=status.HTTP_424_FAILED_DEPENDENCY,
-                        )
+                if response["status"] == 200:
+                    centrifugo_response = centrifugo_publish(
+                        room=settings.ROOM_ID,
+                        event="Song deleted",
+                        data=response,
+                    )
+                    if centrifugo_response.get("status_code", None) == 200:
+                        return Response(response, status=status.HTTP_202_ACCEPTED)
+                    return Response(
+                        "Song deleted but Centrifugo is not available",
+                        status=status.HTTP_424_FAILED_DEPENDENCY,
+                    )
                 return Response(
-                    data={"song not found"}, status=status.HTTP_404_NOT_FOUND
+                    data={"song not deleted"},
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
-            return Response(
-                data={"Unable to read collection"}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response(data={"Song not found"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -595,14 +582,19 @@ class CommentView(APIView):
         """
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
-
-            data = read_data(settings.COMMENTS_COLLECTION)
-            if data["status"] == 200:
-                return Response(data, status=status.HTTP_200_OK)
-            return Response(
-                data={"message": "cannot read collection"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            try:
+                data = read_data(settings.COMMENTS_COLLECTION)
+                if data["status"] == 200:
+                    return Response(data, status=status.HTTP_200_OK)
+                return Response(
+                    data={"Error reading data"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            except Exception:
+                return Response(
+                    data={"message": "Error reading from collection"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, *args, **kwargs):
@@ -644,33 +636,31 @@ class CommentView(APIView):
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
             payload = serializer.data
-            data = write_data(
-                settings.COMMENTS_COLLECTION, payload=payload, method="POST"
-            )
-            if data["status"] == 200:
-                new_object = read_data(settings.COMMENTS_COLLECTION)
-                chat_data = new_object["data"][-1]
-                response_output = {
-                    "event": "New Comment",
-                    "message": data.get("message"),
-                    "data": {
-                        "action": "comment added successfully",
-                        "data created": chat_data,
-                    },
-                }
-                centrifugo_response = centrifugo_publish(
-                    room=settings.ROOM_ID, event="New comment", data=response_output
+            try:
+                data = write_data(
+                    settings.COMMENTS_COLLECTION, payload=payload, method="POST"
                 )
-                if centrifugo_response.get("status_code", None) == 200:
-                    return Response(response_output, status=status.HTTP_200_OK)
+                if data["status"] == 200:
+                    centrifugo_response = centrifugo_publish(
+                        room=settings.ROOM_ID, event="New comment", data=data
+                    )
+                    if centrifugo_response.get("status_code", None) == 200:
+                        return Response(data, status=status.HTTP_200_OK)
+                    return Response(
+                        data={
+                            "message": "Comment added but Centrifugo is not available"
+                        },
+                        status=status.HTTP_424_FAILED_DEPENDENCY,
+                    )
                 return Response(
-                    data={"message": "Comment added but Centrifugo is not available"},
-                    status=status.HTTP_424_FAILED_DEPENDENCY,
+                    data={"message": "comment not created"},
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
-            return Response(
-                data={"message": "comment not created"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            except Exception:
+                return Response(
+                    data={"message": "Error writing to collection"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -697,50 +687,40 @@ class DeleteCommentView(APIView):
         if serializer.is_valid():
             chat_id = request.data["_id"]
             chat_data = read_data(settings.COMMENTS_COLLECTION, object_id=chat_id)
+            if chat_data["status"] == 200:
+                chat_data["data"]["_id"] == chat_id
+                try:
+                    response = delete_data(
+                        settings.COMMENTS_COLLECTION, object_id=chat_id
+                    )
+                except Exception:
+                    return None
 
-            if chat_data and chat_data["status"] == 200:
-                if chat_data["data"]["_id"] == chat_id:
-                    try:
-                        response = delete_data(
-                            settings.COMMENTS_COLLECTION, object_id=chat_id
-                        )
-                        if response["status"] == 200:
-
-                            centrifugo_response = centrifugo_publish(
-                                room=settings.ROOM_ID,
-                                event="Delete Comment",
-                                data=response,
-                            )
-                            if centrifugo_response.get("status_code", None) == 200:
-                                return Response(
-                                    response, status=status.HTTP_202_ACCEPTED
-                                )
-                            return Response(
-                                "Comment deleted but Centrifugo is not available",
-                                status=status.HTTP_424_FAILED_DEPENDENCY,
-                            )
-                        return Response(
-                            data={"Comment not deleted"},
-                            status=status.HTTP_400_BAD_REQUEST,
-                        )
-                    except Exception as error:
-                        print(error)
-                        return Response(
-                            "Comment deleted but Centrifugo is not available",
-                            status=status.HTTP_424_FAILED_DEPENDENCY,
-                        )
+                if response["status"] == 200:
+                    centrifugo_response = centrifugo_publish(
+                        room=settings.ROOM_ID,
+                        event="Delete Comment",
+                        data=response,
+                    )
+                    if centrifugo_response.get("status_code", None) == 200:
+                        return Response(response, status=status.HTTP_202_ACCEPTED)
+                    return Response(
+                        data={"Comment deleted but Centrifugo is not available"},
+                        status=status.HTTP_424_FAILED_DEPENDENCY,
+                    )
                 return Response(
-                    data={"comment not found"}, status=status.HTTP_404_NOT_FOUND
+                    data={"Comment not deleted"},
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
             return Response(
-                data={"Unable to read collection"}, status=status.HTTP_400_BAD_REQUEST
+                data={"Comment not found"}, status=status.HTTP_404_NOT_FOUND
             )
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UpdateCommentView(APIView):
     @extend_schema(
-        request=CommentSerializer,
+        request=UpdateCommentSerializer,
         responses={200: CommentSerializer},
         description="update comments",
         methods=["PUT"],
@@ -748,24 +728,16 @@ class UpdateCommentView(APIView):
     def put(self, request, *args, **kwargs):
 
         """
-        This endpoint is used to update a comment. All parameters except the comment_id are optional.
+        This endpoint is used to update a comment. Constants like plugin_id, user_id are not editable. All other parameters except the comment_id are optional.
 
         Sample request body
 
         {
             "_id": "61ae33d95a3812d0a9d0b217",
-            "plugin_id" : "616991e5ef1c19335a2869f4",
-            "organization_id" : "619ba4671a5f54782939d384",
-            "collection_name" : "chats",
-            "room_id" : "61a4c1cd4f88198ec49dd636",
-            "username" : "Pauline",
-            "userId" : "619bab3b1a5f54782939d400",
-            "imageUrl" : "https://i.ytimg.com/vi/ffcitRgiNDs/maxresdefault.jpg",
-            "time" : 1638734338282,
             "richUiData" : {
                 "blocks" : [{
                     "data" : {},
-                    "depth" : 7,
+                    "depth" : 3,
                     "entityRanges" : [],
                     "inlineStyleRanges" : [],
                     "key" : "musicroom",
@@ -782,52 +754,43 @@ class UpdateCommentView(APIView):
         }
 
         """
-        serializer = CommentSerializer(data=request.data)
+        serializer = UpdateCommentSerializer(data=request.data)
 
         if serializer.is_valid():
             payload = serializer.data
             chat_id = request.data["_id"]
             chat_data = read_data(settings.COMMENTS_COLLECTION, object_id=chat_id)
 
-            if chat_data and chat_data["status"] == 200:
-                if chat_data["data"]["_id"] == chat_id:
+            if chat_data["status"] == 200:
+                chat_data["data"]["_id"] == chat_id
+                try:
                     data = write_data(
                         settings.COMMENTS_COLLECTION,
                         object_id=chat_id,
                         payload=payload,
                         method="PUT",
                     )
-                    if data["status"] == 200:
-                        updated_object = read_data(settings.COMMENTS_COLLECTION)
-                        updated_data = updated_object["data"][-1]
-                        response_output = {
-                            "event": "Comment Update",
-                            "message": data.get("message"),
-                            "data": {
-                                "action": "comment updated successfully",
-                                "update": updated_data,
-                            },
-                        }
-                        centrifugo_response = centrifugo_publish(
-                            room=settings.ROOM_ID,
-                            event="Comment Update",
-                            data=response_output,
-                        )
-                        if centrifugo_response.get("status_code", None) == 200:
-                            return Response(response_output, status=status.HTTP_200_OK)
-                        return Response(
-                            "Comment updated but Centrifugo is not available",
-                            status=status.HTTP_424_FAILED_DEPENDENCY,
-                        )
+                except Exception:
+                    return None
+
+                if data["status"] == 200:
+                    centrifugo_response = centrifugo_publish(
+                        room=settings.ROOM_ID,
+                        event="Comment Update",
+                        data=data,
+                    )
+                    if centrifugo_response.get("status_code", None) == 200:
+                        return Response(data, status=status.HTTP_200_OK)
                     return Response(
-                        data={"message": "comment not updated"},
-                        status=status.HTTP_400_BAD_REQUEST,
+                        "Comment updated but Centrifugo is not available",
+                        status=status.HTTP_424_FAILED_DEPENDENCY,
                     )
                 return Response(
-                    data={"Invalid comment id"}, status=status.HTTP_404_NOT_FOUND
+                    data={"message": "comment not updated"},
+                    status=status.HTTP_400_BAD_REQUEST,
                 )
             return Response(
-                data={"Unable to read collection"}, status=status.HTTP_400_BAD_REQUEST
+                data={"Comment not found"}, status=status.HTTP_400_BAD_REQUEST
             )
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -843,12 +806,20 @@ class RoomView(APIView):
     def get(self, request, *args, **kwargs):
         serializer = RoomSerializer(data=request.data)
         if serializer.is_valid():
-            data = read_data(settings.ROOM_COLLECTION)
-            if data["status"] == 200:
-                return Response(data, status=status.HTTP_200_OK)
-            return Response(
-                data={"no rooms in collection"}, status=status.HTTP_404_NOT_FOUND
-            )
+            try:
+                data = read_data(settings.ROOM_COLLECTION)
+
+                if data["status"] == 200:
+                    return Response(data=data["data"], status=status.HTTP_200_OK)
+                return Response(
+                    data={"message": "rooms not found"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            except Exception:
+                return Response(
+                    data={"message": "Error reading from collection"},
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
+                )
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -863,12 +834,78 @@ class RoomDetailView(APIView):
         serializer = RoomSerializer(data=request.data)
         if serializer.is_valid():
             pk = kwargs["_id"]
-            data = read_data(settings.ROOM_COLLECTION, object_id=pk)
-            if data["status"] == 200:
-                return Response(data, status=status.HTTP_200_OK)
-            return Response(
-                data={"message": "room not found"}, status=status.HTTP_404_NOT_FOUND
-            )
+            try:
+                data = read_data(settings.ROOM_COLLECTION, object_id=pk)
+                if data["status"] == 200:
+                    return Response(data, status=status.HTTP_200_OK)
+                return Response(
+                    data={"room not found"}, status=status.HTTP_404_NOT_FOUND
+                )
+            except Exception:
+                return Response(
+                    data={"message": "Error reading from collection"},
+                    status=status.HTTP_424_FAILED_DEPENDENCY,
+                )
+        return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UpdateRoomView(APIView):
+    @extend_schema(
+        request=UpdateRoomSerializer,
+        responses={200: RoomSerializer},
+        description="update room",
+        methods=["PUT"],
+    )
+    def put(self, request, *args, **kwargs):
+
+        """
+        This endpoint is used to update the musicroom. Constants like plugin_id, org_id are not editable. All other parameters except the room_id are optional.
+
+        Sample request body
+
+        {
+            "room_name": "Music",
+            "description": "New music room"
+        }
+
+        """
+        serializer = UpdateRoomSerializer(data=request.data)
+
+        if serializer.is_valid():
+            payload = serializer.data
+            # room_id = request.data["_id"]
+            room_id = kwargs["_id"]
+            room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
+
+            if room_data["status"] == 200:
+                room_data["data"]["_id"] == room_id
+                try:
+                    data = write_data(
+                        settings.ROOM_COLLECTION,
+                        object_id=room_id,
+                        payload=payload,
+                        method="PUT",
+                    )
+                except Exception:
+                    return None
+
+                if data["status"] == 200:
+                    centrifugo_response = centrifugo_publish(
+                        room=settings.ROOM_ID,
+                        event="Room Update",
+                        data=data,
+                    )
+                    if centrifugo_response.get("status_code", None) == 200:
+                        return Response(data, status=status.HTTP_200_OK)
+                    return Response(
+                        "Room updated but Centrifugo is not available",
+                        status=status.HTTP_424_FAILED_DEPENDENCY,
+                    )
+                return Response(
+                    data={"message": "Room not updated"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            return Response(data={"Room not found"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -910,103 +947,87 @@ class DeleteRoomView(APIView):
 
 
 class CreateRoom(APIView):
-    serializer_class = RoomSerializer
-
     @extend_schema(
-        request=RoomSerializer,
+        request={RoomSerializer},
         responses={200: RoomSerializer},
         description="create a new room",
-        methods=["GET", "POST"],
+        methods=["POST"],
     )
-    def get(self, request, *args, **kwargs):
-        data = read_data(settings.ROOM_COLLECTION)
-        return Response(data, status=status.HTTP_200_OK)
-
     def post(self, request, *args, **kwargs):
 
         """
-        This endpoint is used to create a new room
+        This endpoint is used to create a new room. It checks for a valid org_id and member_id of the user creating the room. If the user is a member of the org, it creates a new room, adds the user to the memberId list and returns the room_id.
 
         Sample request body
 
         {
-            "plugin_id": "61ae33d95a3812d0a9d0b217"
-            "organization_id": "61ae33d95a3812d0a9d0b217"
-            "collection_name": "room"
-            "plugin_name": "Youtube music plugin"
-            "room_name": "Music"
-            "description": "New default music room"
-            "created_by": "61ae33d95a3812d0a9d0b217"
-            "is_private": False
-            "is_archived": False
-            "memberId": "61ae33d95a3812d0a9d0b217"
+            "plugin_name": "Youtube music plugin",
+            "room_name": "Music",
+            "description": "New music room"
         }
 
         """
-        org_id = request.data.get("org_id")
-        memberId = request.data.get("memberId")
-        collection = request.data.get("collection")
+        serializer = RoomSerializer(data=request.data)
+
+        org_id = kwargs.get("org_id")
+        member_id = kwargs.get("member_id")
+        created_by = member_id
+        collection = settings.ROOM_COLLECTION
         room_name = request.data.get("room_name")
         description = request.data.get("description")
         plugin_name = request.data.get("plugin_name")
-        plugin_id = request.data.get("plugin_id")
+        plugin_id = settings.PLUGIN_ID
 
-        serializer = self.serializer_class(data=request.data)
+        if org_id and member_id:
+            org_members = get_org_members(org_id)
+            if org_members["status"] == 200:
+                org_members = org_members["data"]
+                for member in org_members:
+                    if member["_id"] == member_id:
 
-        if serializer.is_valid():
-
-            rooms = serializer.data
-
-            rooms["org_id"] = org_id
-            rooms["plugin_id"] = plugin_id
-
-            data = write_data(settings.ROOM_COLLECTION, payload=rooms)
-            if data and data.get("status_code", None) is None:
-
-                room_url = (
-                    f"https://api.zuri.chat/data/read/{plugin_id}/{collection}/{org_id}"
-                )
-
-                new_room = requests.request("GET", url=room_url)
-
-                if new_room.status_code == 200:
-
-                    data = {
-                        "plugin_id": plugin_id,
-                        "organization_id": org_id,
-                        "collection_name": collection,
-                        "bulk_write": False,
-                        "payload": {
-                            "room_name": room_name,
-                            "plugin_name": plugin_name,
-                            "description": description,
-                            "created_by": memberId,
-                            "is_private": False,
-                            "is_archived": False,
-                            "memberId": [memberId],
-                        },
-                    }
-
-                    post_url = "https://api.zuri.chat/data/write"
-
-                    new_room = requests.request(
-                        "POST", url=post_url, data=json.dumps(data)
-                    )
-
-                    if new_room.status_code in [201, 200]:
-                        return Response(data=data, status=status.HTTP_200_OK)
-
+                        if serializer.is_valid():
+                            rooms = {
+                                "plugin_id": plugin_id,
+                                "org_id": org_id,
+                                "collection": collection,
+                                "room_name": room_name,
+                                "plugin_name": plugin_name,
+                                "description": description,
+                                "created_by": created_by,
+                                "is_private": False,
+                                "is_archived": False,
+                                "memberId": [created_by],
+                            }
+                            try:
+                                data = write_data(
+                                    settings.ROOM_COLLECTION, payload=rooms
+                                )
+                            except Exception:
+                                return Response(
+                                    data={"message": "Error writing to collection"},
+                                    status=status.HTTP_424_FAILED_DEPENDENCY,
+                                )
+                            if data["status"] == 200:
+                                return Response(data, status=status.HTTP_200_OK)
+                            return Response(
+                                data={"message": "Room not created"},
+                                status=status.HTTP_400_BAD_REQUEST,
+                            )
+                        return Response(
+                            data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST
+                        )
                     return Response(
-                        data={"message": "room created"}, status=status.HTTP_200_OK
+                        data={"message": "Member not found"},
+                        status=status.HTTP_404_NOT_FOUND,
                     )
-                return Response(
-                    data={"message": "failed"}, status=status.HTTP_424_FAILED_DEPENDENCY
-                )
             return Response(
-                data={"Unable to write to collection"},
-                status=status.HTTP_400_BAD_REQUEST,
+                data={"message": "Organization not found"},
+                status=status.HTTP_404_NOT_FOUND,
             )
-        return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            data={"message": "Invalid org_id or member_id"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 # user views
@@ -1031,7 +1052,7 @@ class UserCountView(APIView):
                         room=settings.ROOM_ID, event="user_count", data=user_count
                     )
                     if centrifugo_response.get("status_code", None) == 200:
-                        return Response(user_count, status=status.status.HTTP_200_OK)
+                        return Response(user_count, status=status.HTTP_200_OK)
                     return Response(
                         "Centrifugo is not available",
                         status=status.HTTP_424_FAILED_DEPENDENCY,
@@ -1142,7 +1163,7 @@ class RoomUserList(APIView):
                         data={"room_users": room_users}, status=status.HTTP_200_OK
                     )
                 return Response(
-                    data={"message": "no users in this room"}, status=status.HTTP_200_OK
+                    data={"message": "User not found"}, status=status.HTTP_200_OK
                 )
 
             return Response(
