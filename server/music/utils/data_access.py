@@ -207,32 +207,26 @@ def get_video(url):
 
 def get_room_info(room_id):
     room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
-    if room_data["data"] is None or room_data["status"] != 200:
-        return None
-
-    try:
-        return {
-            "room_id": room_id,
-            "room_name": room_data["data"]["room_name"],
-            "room_url": f"/music/{room_id}",
-            "image_url": room_image[0],
-        }
-    except Exception as error:
-        print(error)
-        return None
+    if room_data["data"] is not None or room_data["status"] == 200:
+        try:
+            return {
+                "room_id": room_id,
+                "room_name": room_data["data"]["room_name"],
+                "room_url": f"/music/{room_id}",
+                "image_url": room_image[0],
+            }
+        except requests.RequestException as error:
+            raise RequestException(error)
 
 
 def get_org_members(org_id):
     url = f"https://api.zuri.chat/organizations/{org_id}/members"
-    if org_id is None:
-        return None
-
-    try:
-        response = requests.get(url)
-        return response.json()
-    except Exception as error:
-        print(error)
-        return None
+    if org_id is not None:
+        try:
+            response = requests.get(url)
+            return response.json()
+        except requests.RequestException as error:
+            raise RequestException(error)
 
 
 def centrifugo_publish(room, event, data, plugin_url="music.zuri.chat"):
