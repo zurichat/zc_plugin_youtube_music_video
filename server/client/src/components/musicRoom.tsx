@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
-import Parcel from "single-spa-react/parcel";
-import { pluginHeader, headerConfig } from "../utils/config";
+import { headerConfig, PluginHeader } from "../utils/config";
 import Playlist from "./playlist";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
@@ -56,12 +55,7 @@ function MusicRoom() {
 					/>
 				</div>
 
-				<Parcel
-					config={pluginHeader}
-					// wrapWith="div"
-					// wrapStyle={{ width: "100%" }}
-					headerConfig={headerConfig(members, () => setReload(!reload))}
-				/>
+				<PluginHeader {...headerConfig(members, () => setReload(!reload))} />
 
 				<div>
 					<Playlist />
