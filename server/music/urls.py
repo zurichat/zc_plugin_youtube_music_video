@@ -11,6 +11,7 @@ from music.view.static import (InstallView, PluginInfoView, PluginPingView,
 # current url with orgid and roomid:
 # https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/room/61a4c1cd4f88198ec49dd636
 # https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/members/6169cafb2a3204f3be4a271f/create
+# http://music.zuri.chat/api/v1/sidebar?org=619ba4671a5f54782939d384&user=619baa6a1a5f54782939d38e
 
 
 urlpatterns = [
