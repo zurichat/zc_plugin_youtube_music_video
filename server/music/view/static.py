@@ -86,8 +86,8 @@ class SidebarView(GenericAPIView):
                         sidebar_data["organisation_id"] = org_id
                         sidebar_data["room_id"] = room_id
                         sidebar_data["user_id"] = user_id
-                        sidebar_data["public_rooms"] = pub_room
-                        sidebar_data["joined_rooms"] = pub_room
+                        sidebar_data["public_rooms"] = [pub_room]
+                        sidebar_data["joined_rooms"] = [pub_room]
                         sidebar_update_payload = {
                             "event": "sidebar_update",
                             "plugin_id": "music.zuri.chat",
