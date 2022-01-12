@@ -1,17 +1,16 @@
 from django.urls import path
-from music.views import (AddUserToRoomView, CommentView, CreateRoom,
-                         DeleteCommentView, DeleteRoomUserView, DeleteRoomView,
-                         DeleteSongView, InstallView, LikeSongView,
-                         PluginInfoView, PluginPingView, RoomDetailView,
-                         RoomUserList, RoomView, SongSearchSuggestions,
-                         SongSearchView, SongView, UninstallView,
-                         UpdateCommentView, UserCountView, change_room_image,
-                         songLikeCountView)
+from music.view.chat import CommentView, DeleteCommentView, UpdateCommentView
+from music.view.room import (AddUserToRoomView, CreateRoom, DeleteRoomUserView,
+                             DeleteRoomView, RoomDetailView, RoomUserList,
+                             RoomView, UpdateRoomView, UserCountView)
+from music.view.songs import (DeleteSongView, SongSearchSuggestions,
+                              SongSearchView, SongView, songLikeCountView)
+from music.view.static import (InstallView, PluginInfoView, PluginPingView,
+                               UninstallView, change_room_image)
 
 # current url with orgid and roomid:
-# https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/room/6169d8b54bfde011fe582e65/
+# https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/room/61a4c1cd4f88198ec49dd636
 # https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/members/6169cafb2a3204f3be4a271f/create
-# https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/room/6169d8b54bfde011fe582e65/members/remove
 
 
 urlpatterns = [
@@ -20,6 +19,8 @@ urlpatterns = [
     path("ping", PluginPingView.as_view(), name="ping"),
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
+    
+    
     # songs urls
     path(
         "org/<str:org_id>/room/<str:_id>/songs/current",
@@ -35,11 +36,6 @@ urlpatterns = [
         name="deletesong",
     ),  # delete song
     path(
-        "org/<str:org_id>/room/<str:_id>/songs/like",
-        LikeSongView.as_view(),
-        name="likesong",
-    ),  # like song
-    path(
         "search/<str:org_id>/<str:member_id>",
         SongSearchView.as_view(),
         name="songsearch",
@@ -50,10 +46,12 @@ urlpatterns = [
         name="songsuggestions",
     ),
     path(
-        "org/<str:org_id>/room/<str:_id>/songs/likecount",
+        "org/<str:org_id>/room/<str:_id>/songs/like",
         songLikeCountView.as_view(),
-        name="like-count",
-    ),
+        name="like",
+    ),  # like song
+    
+    
     # comments urls
     path(
         "org/<str:org_id>/room/<str:_id>/comments",
@@ -70,6 +68,8 @@ urlpatterns = [
         UpdateCommentView.as_view(),
         name="updatecomment",
     ),  # update comment
+    
+    
     # room urls
     path(
         "org/<str:org_id>/room", RoomView.as_view(), name="room"
@@ -83,11 +83,15 @@ urlpatterns = [
         name="deleteroom",
     ),  # delete room
     path(
+        "org/<str:org_id>/room/<str:_id>/update",
+        UpdateRoomView.as_view(),
+        name="deleteroom",
+    ),  # update room
+    path(
         "org/<str:org_id>/members/<str:member_id>/create",
         CreateRoom.as_view(),
         name="create",
     ),  # create room
-    # members urls
     path(
         "org/<str:org_id>/room/<str:_id>/members/count",
         UserCountView.as_view(),

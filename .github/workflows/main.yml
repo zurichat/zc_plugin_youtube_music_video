@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - name: auto deploy steps
         uses: appleboy/ssh-action@master
         with:
