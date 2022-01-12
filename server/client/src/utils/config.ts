@@ -1,9 +1,9 @@
 // @ts-ignore
-import { pluginHeader } from "@zuri/plugin-header";
+import { PluginHeader } from "@zuri/zuri-ui";
 import icon from "../media/musicRoomIcon.svg";
 import userService from "../services/userService";
 
-export { pluginHeader };
+export { PluginHeader };
 
 export const headerConfig = (members: User[], cb) => {
 	return {
