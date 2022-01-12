@@ -1,2 +1,2 @@
-# from .test_api import *
-# from .test_data import *
+# from .api_test import *
+# from .data_test import *

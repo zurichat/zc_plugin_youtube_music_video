@@ -1,13 +1,18 @@
+from urllib.parse import urlencode
+
 import requests
 from bs4 import BeautifulSoup
 from django.conf import settings
 from isodate import parse_duration
 from music.utils.request_client import RequestClient
+from requests import exceptions, status_codes
+from requests.exceptions import RequestException
+from rest_framework import status
 
 plugin_id = settings.PLUGIN_ID
 org_id = settings.ORGANIZATON_ID
 centrifugo = settings.CENTRIFUGO_TOKEN
-
+room_image = ["https://svgshare.com/i/aXm.svg"]
 headers = {"Authorization": "headers"}
 
 
@@ -107,58 +112,6 @@ def write_data(
     return response.response_data
 
 
-def centrifugo_post(room, data):
-    headers = {
-        "Content-type": "application/json",
-        "Authorization": "apikey " + centrifugo,
-    }
-    post_data = {"method": "publish", "params": {"channel": room, "data": data}}
-    request_client = RequestClient()
-
-    return request_client.request(
-        method="POST",
-        url="https://realtime.zuri.chat/api",
-        headers=headers,
-        post_data=post_data,
-    )
-
-
-def publish_to_sidebar(organization_id, user_id, data):
-    headers = {
-        "Content-type": "application/json",
-        "Authorization": "apikey " + centrifugo,
-    }
-    room = {"org_id": organization_id, "user_id": user_id}
-    post_data = {"method": "publish", "params": {"channel": room, "data": data}}
-    request_client = RequestClient()
-
-    return request_client.request(
-        method="POST",
-        url="https://realtime.zuri.chat/api",
-        headers=headers,
-        post_data=post_data,
-    )
-
-
-def get_video(url):
-    res = requests.get(url)
-
-    content = res.content
-
-    soup = BeautifulSoup(content, "html.parser")
-
-    return {
-        "title": soup.select_one('meta[itemprop="name"][content]')["content"],
-        "track_url": soup.select_one('link[itemprop="url"]')["href"],
-        "thumbnail_url": soup.select_one('link[itemprop="thumbnailUrl"]')["href"],
-        "duration": str(
-            parse_duration(
-                soup.select_one('meta[itemprop="duration"][content]')["content"]
-            )
-        ),
-    }
-
-
 def delete_data(
     collection,
     object_id=None,
@@ -231,3 +184,72 @@ def put_data(
         post_data=patch_data,
     )
     return response.response_data
+
+
+def get_video(url):
+    res = requests.get(url)
+
+    content = res.content
+
+    soup = BeautifulSoup(content, "html.parser")
+
+    return {
+        "title": soup.select_one('meta[itemprop="name"][content]')["content"],
+        "track_url": soup.select_one('link[itemprop="url"]')["href"],
+        "thumbnail_url": soup.select_one('link[itemprop="thumbnailUrl"]')["href"],
+        "duration": str(
+            parse_duration(
+                soup.select_one('meta[itemprop="duration"][content]')["content"]
+            )
+        ),
+    }
+
+
+def get_room_info(room_id):
+    room_data = read_data(settings.ROOM_COLLECTION, object_id=room_id)
+    if room_data["data"] is not None or room_data["status"] == 200:
+        try:
+            return {
+                "room_id": room_id,
+                "room_name": room_data["data"]["room_name"],
+                "room_url": f"/music/{room_id}",
+                "image_url": room_image[0],
+            }
+        except requests.RequestException as error:
+            raise RequestException(error)
+
+
+def get_org_members(org_id):
+    url = f"https://api.zuri.chat/organizations/{org_id}/members"
+    if org_id is not None:
+        try:
+            response = requests.get(url)
+            return response.json()
+        except requests.RequestException as error:
+            raise RequestException(error)
+
+
+def centrifugo_publish(room, event, data, plugin_url="music.zuri.chat"):
+    data_to_publish = {
+        "status": 200,
+        "event": event,
+        "plugin_url": plugin_url,
+        "plugin_id": plugin_id,
+        "data": data,
+    }
+
+    headers = {
+        "Content-type": "application/json",
+        "Authorization": "apikey " + centrifugo,
+    }
+    url = "https://realtime.zuri.chat/api"
+    command = {
+        "method": "publish",
+        "params": {"channel": room, "data": data_to_publish},
+    }
+    try:
+        response = requests.post(url=url, headers=headers, json=command)
+    except requests.RequestException as error:
+        raise RequestException(error)
+
+    return {"status_code": response.status_code, "message": response.json()}

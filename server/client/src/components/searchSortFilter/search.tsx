@@ -77,7 +77,7 @@ export default Search;
 
 const Wrapper = styled.div`
 	position: relative;
-	width: 210px;
+	width: 100%;
 
 	.search-input-container {
 		display: flex;
@@ -100,16 +100,18 @@ const Wrapper = styled.div`
 	.search-items {
 		position: absolute;
 		top: 38px;
+		width: min(400px, 94vw);
+		box-shadow: 0px 2px 10px #d7d7d7;
+		z-index: 9999;
 	}
 	.search-item-container {
 		display: flex;
 		align-items: center;
-		width: min(464px, 100vw);
+		width: 100%;
 		height: 48px;
 		padding: 10px;
 		gap: 20px;
 		font-size: 16px;
-		box-shadow: 0px 2px 10px #d7d7d7;
 		cursor: pointer;
 		background: #fefefe;
 	}

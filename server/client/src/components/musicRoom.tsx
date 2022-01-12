@@ -1,17 +1,17 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
-import Parcel from "single-spa-react/parcel";
-import { pluginHeader, headerConfig } from "../utils/config";
-import { MessageBoard } from "@zuri/zuri-ui";
+import { headerConfig, PluginHeader } from "../utils/config";
 import Playlist from "./playlist";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { selectShowPasteUrl } from "../app/uiSlice";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import userService from "../services/userService";
-// import { chatData } from "../utils/mockdata";
+// import MessageBoard from "./messageBoard";
 import { selectIsMember, setMembership } from "../app/usersSlice";
+import eventService from "../services/eventService";
+import Loader from "./loader";
 
 function MusicRoom() {
 	const [members, setMembers] = useState([] as User[]);
@@ -30,32 +30,17 @@ function MusicRoom() {
 			.catch(console.log);
 	}, [reload, isMember]);
 
-	// const handleCreateRoomMessages = message => {
-	// 	console.log("creating a message", message);
-	// };
+	useEffect(() => {
+		// userService.getCurrentUser().then(user => dispatch(setCurrentUser(user)));
 
-	const chatSidebarConfig = useMemo(
-		() => ({
-			sendChatMessageHandler: msg => {
-				console.log({ msg }, "here");
-			},
-			currentUserData: {
-				username: "Aleey",
-				imageUrl: ""
-			},
-
-			messages: [],
-
-			showChatSideBar: true,
-			chatHeader: "Chats"
-		}),
-		[]
-	);
+		eventService.connect();
+	}, []);
 
 	return (
 		<Wrapper overflowMain={showPasteUrl}>
 			<div className="room-main">
 				{/* Modals */}
+				<Loader />
 				<PasteUrl />
 				<EnterRoomModal isMember={isMember} />
 
@@ -70,21 +55,16 @@ function MusicRoom() {
 					/>
 				</div>
 
-				<div className="plugin-header">
-					<Parcel
-						config={pluginHeader}
-						wrapWith="div"
-						wrapStyle={{ width: "100%" }}
-						headerConfig={headerConfig(members, () => setReload(!reload))}
-					/>
+				<PluginHeader {...headerConfig(members, () => setReload(!reload))} />
+
+				<div>
+					<Playlist />
 				</div>
-
-				<Playlist />
 			</div>
 
-			<div className="room-chat-container">
-				<MessageBoard chatsConfig={chatSidebarConfig} />
-			</div>
+			{/* <div className="room-chat-container">
+				<MessageBoard />
+			</div> */}
 		</Wrapper>
 	);
 }
@@ -94,28 +74,19 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	box-sizing: border-box;
 	display: flex;
 	margin: 0;
-	background-color: rgb(240, 240, 240);
-	min-height: 94vh;
-	max-height: 94vh;
-
-	.plugin-header {
-		position: sticky;
-		top: 0px;
-		z-index: 1111;
-	}
+	min-height: 100vh;
+	max-height: 100vh;
 
 	.room-main {
 		flex-grow: 1;
 		overflow-y: ${props => (props.overflowMain ? "hidden" : "scroll")};
 		position: relative;
 		margin-right: 10px;
-		background-color: white;
 	}
 
 	.room-chat-container {
 		position: relative;
-		background-color: white !important;
-		margin-top: 5px;
+		margin: 5px 5px 0 0;
 		width: 500px;
 	}
 
@@ -138,10 +109,11 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 	}
 
 	.Toastify__toast-container {
-		position: absolute;
+		position: fixed;
 		top: 1px;
 		width: 100%;
 		right: 1px;
+		z-index: 999;
 
 		.Toastify__toast--success {
 			background-color: #cbffee;
@@ -173,7 +145,7 @@ const Wrapper = styled.div<{ overflowMain: boolean }>`
 		.room-chat-container {
 			position: fixed;
 			top: 40px;
-			display: none;
+			/* display: none; */
 			flex-basis: 40%;
 			z-index: 111;
 			max-height: 400px;

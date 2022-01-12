@@ -2,11 +2,12 @@ from urllib.parse import urlencode
 
 import requests
 from django.conf import settings
+from requests import exceptions, status_codes
 from requests.exceptions import RequestException
+from rest_framework import status
 
-centrifugo = "58c2400b-831d-411d-8fe8-31b6e337738b"
 PLUGIN_ID = "616991e5ef1c19335a2869f4"
-ORG_ID = "61695d8bb2cc8a9af4833d46"
+ORG_ID = "619ba4671a5f54782939d384"
 
 
 class DataStorage:
@@ -39,8 +40,7 @@ class DataStorage:
             return None
         if response.status_code == 201:
             return response.json()
-        else:
-            return {"status_code": response.status_code, "message": response.reason}
+        return {"status_code": response.status_code, "message": response.reason}
 
     def update(self, collection_name, document_id, data):
         body = dict(
@@ -57,8 +57,7 @@ class DataStorage:
             return None
         if response.status_code == 200:
             return response.json()
-        else:
-            return {"status_code": response.status_code, "message": response.reason}
+        return {"status_code": response.status_code, "message": response.reason}
 
     def read(self, collection_name, filter={}):
         try:
@@ -81,8 +80,7 @@ class DataStorage:
             return None
         if response.status_code == 200:
             return response.json().get("data")
-        else:
-            return {"status_code": response.status_code, "message": response.reason}
+        return {"status_code": response.status_code, "message": response.reason}
 
     def delete(self, collection_name, document_id):
         body = dict(
@@ -98,34 +96,7 @@ class DataStorage:
             return None
         if response.status_code == 200:
             return response.json()
-        else:
-            return {"status_code": response.status_code, "message": response.reason}
+        return {"status_code": response.status_code, "message": response.reason}
 
 
 DB = DataStorage()
-
-
-def centrifugo_publish(room, event, data, plugin_url="music.zuri.chat"):
-    data_to_publish = {
-        "status": 200,
-        "event": event,
-        "plugin_url": plugin_url,
-        "plugin_id": settings.PLUGIN_ID,
-        "data": data,
-    }
-
-    headers = {
-        "Content-type": "application/json",
-        "Authorization": "apikey " + centrifugo,
-    }
-    url = "https://realtime.zuri.chat/api"
-    command = {
-        "method": "publish",
-        "params": {"channel": room, "data": data_to_publish},
-    }
-    try:
-        response = requests.post(url=url, headers=headers, json=command)
-    except requests.RequestException as error:
-        raise RequestException(error)
-
-    return {"status_code": response.status_code, "message": response.json()}

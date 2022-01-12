@@ -5,6 +5,10 @@ from dataclasses import dataclass, field
 class Song:  # for the songs
 
     _id: str
+    plugin_id: str
+    organization_id: str
+    collection_name: str
+    room_id: str
     title: str
     duration: str
     albumCover: str
@@ -26,9 +30,15 @@ class songLikeCount:
 class Room:  # for the rooms
 
     _id: str
+    plugin_id: str
+    organization_id: str
+    collection_name: str
+    plugin_name: str
     room_name: str
     description: str
-    private: bool = False
+    created_by: str
+    is_private: bool = False
+    is_archived: bool = False
     memberId: dict = field(default_factory=dict)
 
 
@@ -55,6 +65,10 @@ class Emojis:  # for the emojis
 class Chat:  # for the chats
 
     _id: str
+    plugin_id: str
+    organization_id: str
+    collection_name: str
+    room_id: str
     username: str
     userId: str
     time: int

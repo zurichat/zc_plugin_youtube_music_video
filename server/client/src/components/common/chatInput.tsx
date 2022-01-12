@@ -40,14 +40,14 @@ function ChatInput(props) {
 
 	const handleSend = async () => {
 		//sends message to the comments endpoint
-		chatService.addChat({
-			id: "test", // this will be taken care of by db
-			userId: "",
-			message: inputStr,
-			time: Date.now(),
-			name: "",
-			avatar: ""
-		});
+		// chatService.addChat({
+		// 	id: "test", // this will be taken care of by db
+		// 	userId: "",
+		// 	message: inputStr,
+		// 	time: Date.now(),
+		// 	name: "",
+		// 	avatar: ""
+		// });
 
 		//clears the current contents of the input box
 		clearInput();
