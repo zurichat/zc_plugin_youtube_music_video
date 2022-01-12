@@ -11,6 +11,7 @@ from music.view.static import (InstallView, PluginInfoView, PluginPingView,
 # current url with orgid and roomid:
 # https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/room/61a4c1cd4f88198ec49dd636
 # https://music.zuri.chat/music/api/v1/org/619ba4671a5f54782939d384/members/6169cafb2a3204f3be4a271f/create
+# http://music.zuri.chat/api/v1/sidebar?org=619ba4671a5f54782939d384&user=619baa6a1a5f54782939d38e
 
 
 urlpatterns = [
@@ -19,6 +20,8 @@ urlpatterns = [
     path("ping", PluginPingView.as_view(), name="ping"),
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
+    
+    
     # songs urls
     path(
         "org/<str:org_id>/room/<str:_id>/songs/current",
@@ -48,6 +51,8 @@ urlpatterns = [
         songLikeCountView.as_view(),
         name="like",
     ),  # like song
+    
+    
     # comments urls
     path(
         "org/<str:org_id>/room/<str:_id>/comments",
@@ -64,6 +69,8 @@ urlpatterns = [
         UpdateCommentView.as_view(),
         name="updatecomment",
     ),  # update comment
+    
+    
     # room urls
     path(
         "org/<str:org_id>/room", RoomView.as_view(), name="room"
@@ -86,7 +93,6 @@ urlpatterns = [
         CreateRoom.as_view(),
         name="create",
     ),  # create room
-    # members urls
     path(
         "org/<str:org_id>/room/<str:_id>/members/count",
         UserCountView.as_view(),

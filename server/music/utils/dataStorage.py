@@ -6,6 +6,7 @@ from requests import exceptions, status_codes
 from requests.exceptions import RequestException
 from rest_framework import status
 
+centrifugo = "58c2400b-831d-411d-8fe8-31b6e337738b"
 PLUGIN_ID = "616991e5ef1c19335a2869f4"
 ORG_ID = "619ba4671a5f54782939d384"
 
@@ -100,3 +101,43 @@ class DataStorage:
 
 
 DB = DataStorage()
+
+
+def centrifugo_publish(room, event, data, plugin_url="music.zuri.chat"):
+    data_to_publish = {
+        "status": 200,
+        "event": event,
+        "plugin_url": plugin_url,
+        "plugin_id": settings.PLUGIN_ID,
+        "data": data,
+    }
+
+    headers = {
+        "Content-type": "application/json",
+        "Authorization": "apikey " + centrifugo,
+    }
+    url = "https://realtime.zuri.chat/api"
+    command = {
+        "method": "publish",
+        "params": {"channel": room, "data": data_to_publish},
+    }
+    try:
+        response = requests.post(url=url, headers=headers, json=command)
+    except requests.RequestException as error:
+        raise RequestException(error)
+
+    return {"status_code": response.status_code, "message": response.json()}
+
+
+def get_org_members(org_id=None):
+    if org_id is not None:
+        url = f"https://api.zuri.chat/organizations/{org_id}/members"
+        try:
+            response = requests.get(url=url)
+            if response.status_code == status.HTTP_200_OK:
+                return response.json()
+            return {"error": "Error in getting the org members"}
+        except exceptions.RequestException as e:
+            return {"status": status.HTTP_400_BAD_REQUEST, "error": e}
+    return {"message": "invalid org id"}
+    
