@@ -19,6 +19,8 @@ urlpatterns = [
     path("ping", PluginPingView.as_view(), name="ping"),
     path("install", InstallView.as_view(), name="install"),
     path("uninstall", UninstallView.as_view(), name="uninstall"),
+    
+    
     # songs urls
     path(
         "org/<str:org_id>/room/<str:_id>/songs/current",
@@ -48,6 +50,8 @@ urlpatterns = [
         songLikeCountView.as_view(),
         name="like",
     ),  # like song
+    
+    
     # comments urls
     path(
         "org/<str:org_id>/room/<str:_id>/comments",
@@ -64,6 +68,8 @@ urlpatterns = [
         UpdateCommentView.as_view(),
         name="updatecomment",
     ),  # update comment
+    
+    
     # room urls
     path(
         "org/<str:org_id>/room", RoomView.as_view(), name="room"
@@ -86,7 +92,6 @@ urlpatterns = [
         CreateRoom.as_view(),
         name="create",
     ),  # create room
-    # members urls
     path(
         "org/<str:org_id>/room/<str:_id>/members/count",
         UserCountView.as_view(),
