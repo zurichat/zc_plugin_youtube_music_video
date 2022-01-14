@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 
-class change_room_image(APIView):
+class RoomImageView(APIView):
     permission_classes = [AllowAny]
 
     @extend_schema(
