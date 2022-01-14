@@ -112,7 +112,7 @@ class SongView(APIView):
         return Response(data={"Bad request"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SongLikeCountView(APIView):
+class songLikeCountView(APIView):
     serializer_class = SongLikeCountSerializer
 
     @extend_schema(
