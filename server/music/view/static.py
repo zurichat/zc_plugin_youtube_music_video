@@ -2,7 +2,7 @@ import requests
 from django.conf import settings
 from django.http import JsonResponse
 from drf_spectacular.utils import extend_schema
-from music.utils.data_access import get_org_members, get_room_info, room_image
+from music.utils.data_access import get_org_members, get_room_info, musicroom_image
 from music.utils.request_client import RequestClient
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
@@ -34,11 +34,11 @@ class RoomImageView(APIView):
         data = request.data
 
         if data["albumCover"] == "":
-            room_image[0] = "https://svgshare.com/i/aXm.svg"
+            musicroom_image[0] = "https://svgshare.com/i/aXm.svg"
         else:
-            room_image[0] = data["albumCover"]
+            musicroom_image[0] = data["albumCover"]
         return Response(
-            {"room_image": room_image, "curent-song": data}, status=status.HTTP_200_OK
+            {"room_image": musicroom_image, "curent-song": data}, status=status.HTTP_200_OK
         )
 
 
