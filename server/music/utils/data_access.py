@@ -12,7 +12,7 @@ from rest_framework import status
 plugin_id = settings.PLUGIN_ID
 org_id = settings.ORGANIZATON_ID
 centrifugo = settings.CENTRIFUGO_TOKEN
-room_image = ["https://svgshare.com/i/aXm.svg"]
+musicroom_image = ["https://svgshare.com/i/aXm.svg"]
 headers = {"Authorization": "headers"}
 
 
@@ -213,7 +213,7 @@ def get_room_info(room_id):
                 "room_id": room_id,
                 "room_name": room_data["data"]["room_name"],
                 "room_url": f"/music/{room_id}",
-                "image_url": room_image[0],
+                "room_image": musicroom_image[0],
             }
         except requests.RequestException as error:
             raise RequestException(error)
