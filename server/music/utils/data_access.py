@@ -213,7 +213,7 @@ def get_room_info(room_id):
                 "room_id": room_id,
                 "room_name": room_data["data"]["room_name"],
                 "room_url": f"/music/{room_id}",
-                "image_url": room_image[0],
+                "room_image": room_image[0],
             }
         except requests.RequestException as error:
             raise RequestException(error)
