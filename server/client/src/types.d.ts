@@ -18,10 +18,8 @@ declare global {
 		url: string;
 		addedBy: string;
 		userId: string;
-		likedBy?: string[]; // an array of userIds who have liked this song.
+		likedBy: string[]; // an array of userIds who have liked this song.
 		time: string; // time in milliseconds
-		room_id?: string,
-		organization_id?: string,
 	}
 
 	interface SongMetadata {

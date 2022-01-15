@@ -41,7 +41,8 @@ class DataStorage:
             return None
         if response.status_code == 201:
             return response.json()
-        return {"status_code": response.status_code, "message": response.reason}
+        else:
+            return {"status_code": response.status_code, "message": response.reason}
 
     def update(self, collection_name, document_id, data):
         body = dict(
@@ -58,7 +59,8 @@ class DataStorage:
             return None
         if response.status_code == 200:
             return response.json()
-        return {"status_code": response.status_code, "message": response.reason}
+        else:
+            return {"status_code": response.status_code, "message": response.reason}
 
     def read(self, collection_name, filter={}):
         try:
@@ -81,7 +83,8 @@ class DataStorage:
             return None
         if response.status_code == 200:
             return response.json().get("data")
-        return {"status_code": response.status_code, "message": response.reason}
+        else:
+            return {"status_code": response.status_code, "message": response.reason}
 
     def delete(self, collection_name, document_id):
         body = dict(
@@ -97,7 +100,8 @@ class DataStorage:
             return None
         if response.status_code == 200:
             return response.json()
-        return {"status_code": response.status_code, "message": response.reason}
+        else:
+            return {"status_code": response.status_code, "message": response.reason}
 
 
 DB = DataStorage()

@@ -5,26 +5,21 @@ import { GetUserInfo, GetWorkspaceUser } from "@zuri/utilities";
 async function getCurrentUser(): Promise<User> {
 	try {
 		const {
-			user: {
-				_id: id,
-				email,
-				display_name,
-				user_name,
-				image_url: avatar }
+			0: { email: identifier }
 		} = await GetUserInfo();
 
-		// const {
-		// 	_id: id,
-		// 	email,
-		// 	display_name,
-		// 	user_name,
-		// 	image_url: avatar
-		// } = await GetWorkspaceUser(identifier);
+		const {
+			_id: id,
+			email,
+			display_name,
+			user_name,
+			image_url: avatar
+		} = await GetWorkspaceUser(identifier);
 
 		return {
 			id,
 			email,
-			name: user_name || display_name,
+			name: display_name || user_name,
 			avatar
 		};
 	} catch (error) {
