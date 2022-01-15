@@ -14,7 +14,8 @@ import songService from "../../services/songService";
 import { getIdFromYouTubeUrl } from "../../utils/idGenerator";
 import { selectCurrentUser } from "../../app/usersSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { addedSong } from "../../app/songsSlice";
+import { addedSong, initializedSongs } from "../../app/songsSlice";
+import { sanitize } from "../../utils/sanitizer";
 
 interface Props {
 	getSongByUrl: (url: string) => Song;
@@ -48,14 +49,18 @@ const PasteUrl = (props: Props) => {
 				url,
 				addedBy,
 				userId,
-				likedBy: [],
+				room_id: sessionStorage.getItem("currentRoom") || "",
+				organization_id: localStorage.getItem("currentWorkspace") || "",
 				time: `${Date.now()}`
 			};
 
 			await songService.addSong(song, {
 				success: (song: Song) => {
 					dispatch(showedPasteUrl(false));
-					dispatch(addedSong(song));
+					songService.getSongs().then(songs => {
+						dispatch(initializedSongs(songs.map(sanitize)));
+					});
+					// dispatch(addedSong(song));
 					toast.success("Added Successfully");
 					setUrl("");
 				}

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
-import Parcel from "single-spa-react/parcel";
-import { pluginHeader, headerConfig } from "../utils/config";
+import { headerConfig, PluginHeader } from "../utils/config";
 import Playlist from "./playlist";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
@@ -10,7 +9,11 @@ import { selectShowPasteUrl } from "../app/uiSlice";
 import { useEffect, useState } from "react";
 import userService from "../services/userService";
 // import MessageBoard from "./messageBoard";
-import { selectIsMember, setMembership } from "../app/usersSlice";
+import {
+	selectIsMember,
+	setCurrentUser,
+	setMembership
+} from "../app/usersSlice";
 import eventService from "../services/eventService";
 import Loader from "./loader";
 
@@ -32,7 +35,7 @@ function MusicRoom() {
 	}, [reload, isMember]);
 
 	useEffect(() => {
-		// userService.getCurrentUser().then(user => dispatch(setCurrentUser(user)));
+		userService.getCurrentUser().then(user => dispatch(setCurrentUser(user)));
 
 		eventService.connect();
 	}, []);
@@ -56,12 +59,7 @@ function MusicRoom() {
 					/>
 				</div>
 
-				<Parcel
-					config={pluginHeader}
-					// wrapWith="div"
-					// wrapStyle={{ width: "100%" }}
-					headerConfig={headerConfig(members, () => setReload(!reload))}
-				/>
+				<PluginHeader {...headerConfig(members, () => setReload(!reload))} />
 
 				<div>
 					<Playlist />
