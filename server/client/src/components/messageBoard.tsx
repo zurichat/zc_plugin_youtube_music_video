@@ -1,4 +1,4 @@
-import { MessageBoard } from "@zuri/zuri-ui";
+import { MessageBoard } from "@zuri/ui";
 import { chatData } from "../utils/mockdata";
 
 function Message() {
