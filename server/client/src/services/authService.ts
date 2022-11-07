@@ -1,8 +1,9 @@
-import { GetUserInfo, GetWorkspaceUser } from "@zuri/utilities";
+// import { getWorkspaceUser } from "@zuri/utilities";
 
 async function getUserInfo(email: string) {
 	try {
-		const info = await GetWorkspaceUser(email);
+		// const info = await getWorkspaceUser(email);
+		const info = { email: "", user_name: "" };
 
 		return { email: info.email, name: info.user_name };
 	} catch (error) {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
-import { headerConfig, PluginHeader } from "../utils/config";
+import { headerConfig } from "../utils/config";
 import Playlist from "./playlist";
 import PasteUrl from "./common/pasteUrl";
 import EnterRoomModal from "./modals/enterRoom";
@@ -59,7 +59,7 @@ function MusicRoom() {
 					/>
 				</div>
 
-				<PluginHeader {...headerConfig(members, () => setReload(!reload))} />
+				{/* <PluginHeader {...headerConfig(members, () => setReload(!reload))} /> */}
 
 				<div>
 					<Playlist />

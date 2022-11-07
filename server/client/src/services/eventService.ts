@@ -1,4 +1,4 @@
-import { SubscribeToChannel } from "@zuri/utilities";
+import { subscribeToChannel } from "@zuri/utilities";
 
 import songService from "./songService";
 import chatService from "./chatService";
@@ -34,7 +34,7 @@ const connect = () => {
 	});
 	// chatService.getChats().then(v => console.log({ v }));
 
-	SubscribeToChannel(httpService.room_id, (message: PublishedMessage) => {
+	subscribeToChannel(httpService.room_id, (message: PublishedMessage) => {
 		const {
 			event,
 			data: { data }
