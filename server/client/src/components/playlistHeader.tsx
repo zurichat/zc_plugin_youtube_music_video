@@ -10,6 +10,7 @@ import {
 import { showedPasteUrl } from "../app/uiSlice";
 import Button from "./common/button";
 import Headset from "../media/playlistIcon.svg";
+import Icon from "../media/icon22.png";
 import { selectFirstSong, selectSongs } from "../app/songsSlice";
 import { totalDuration } from "../utils/song";
 
@@ -42,7 +43,7 @@ const PlaylistHeader = () => {
 		<Wrapper>
 			<div className="playlist-content-wrapper">
 				<div className="playlist-img-div">
-					<img src={Headset} alt="Playlist Header" className="playlist-img" />
+					<img src={Icon} style={{height:"10rem", width:"10rem"}} alt="Playlist Header" className="playlist-img" />
 				</div>
 
 				<div className="playlist-content">
